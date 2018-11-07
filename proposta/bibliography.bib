@@ -1,0 +1,1301 @@
+@article{overview_hpc,
+    author = {D K Mór, Stéfano and Alves, Marco Antonio Zanata and Lima, João and B Maillard, Nicolas and Navaux, Philippe},
+    year = {2015},
+    month = {10},
+    pages = {},
+    title = {Eficiência Energética em Computação de Alto Desempenho: Uma Abordagem em Arquitetura e Programação para Green Computing}
+}
+
+@inproceedings{gamsa_tornado:_1999,
+	location = {New Orleans, Louisiana, {USA}},
+	title = {Tornado: Maximizing Locality and Concurrency in a Shared Memory Multiprocessor Operating System},
+	isbn = {1-880446-39-1},
+	url = {https://dl.acm.org/citation.cfm?id=296814},
+	series = {{OSDI} '99},
+	abstract = {We describe the design and implementation of Tornado, a new operating system designed from the ground up specifically for today's shared memory multiprocessors. The need for im-proved locality in the operating system is growing as multipro-cessor hardware evolves, increasing the costs for cache misses and sharing, and adding complications due to {NUMAness}. Tor-nado is optimized so that locality and independence in applica-tion requests for operating system services - whether from mul-tiple sequential applications or a single parallel application - are mapped onto locality and independence in the servicing of these requests in the kernel and system servers. By contrast, previous shared memory multiprocessor operating systems all evolved from designs constructed at a time when sharing costs were low, memory latency was low and uniform, and caches were small; for these systems, concurrency was the main per-formance concern and locality was not an important issue. Tornado achieves this locality by starting with an object-oriented structure, where every virtual and physical resource is represented by an independent object. Locality, as well as concurrency, is further enhanced with the introduction of three key innovations: (i) clustered objects that support the partition-ing of contended objects across processors, (ii) a protected pro-cedure call facility that preserves the locality and concurrency of {IPC}'s, and (iii) a new locking strategy that allows all lock-ing to be encapsulated within the objects being protected and greatly simplifies the overall locking protocols. As a result of these techniques, Tornado has far better performance character-istics, particularly for multithreaded applications, than existing commercial operating systems. Tornado has been fully imple-mented and runs both on Toronto's {NUMAchine} hardware and on the {SimOS} simulator.},
+	eventtitle = {{USENIX} Conference on Operating Systems Design and Implementation ({OSDI})},
+	pages = {87--100},
+	booktitle = {{OSDI} '99 Proceedings of the Third Symposium on Operating Systems Design and Implementation},
+	publisher = {{USENIX}},
+	author = {Gamsa, Ben and Krieger, Orran and Appavoo, Jonathan and Stumm, Michael},
+	date = {1999-02-22},
+	keywords = {{PhD}, Operating Systems, Microkernel},
+	file = {Gamsa et al. - 1999 - Tornado Maximizing Locality and Concurrency in a .pdf:/home/ppenna/Zotero/storage/MN982UQX/Gamsa et al. - 1999 - Tornado Maximizing Locality and Concurrency in a .pdf:application/pdf}
+}
+
+@inproceedings{giampapa_experiences_2010,
+	location = {New Orleans, Louisiana, {USA}},
+	title = {Experiences with a Lightweight Supercomputer Kernel: Lessons Learned from Blue Gene's {CNK}},
+	isbn = {978-1-4244-7557-5},
+	doi = {10.1109/SC.2010.22},
+	series = {{SC} '10},
+	abstract = {The Petascale era has recently been ushered in and many researchers have already turned their attention to the challenges of exascale computing. To achieve petascale computing two broad approaches for kernels were taken, a lightweight approach embodied by {IBM} Blue Gene's {CNK}, and a more fullweight approach embodied by Cray's {CNL}. There are strengths and weaknesses to each approach. Examining the current generation can provide insight as to what mechanisms may be needed for the exascale generation. The contributions of this paper are the experiences we had with {CNK} on Blue Gene/P. We demonstrate it is possible to implement a small lightweight kernel that scales well but still provides a Linux environment and functionality desired by {HPC} programmers. Such an approach provides the values of reproducibility, low noise, high and stable performance, reliability, and ease of effectively exploiting unique hardware features. We describe the strengths and weaknesses of this approach.},
+	eventtitle = {International Conference for High Performance Computing, Networking, Storage and Analysis ({SC})},
+	pages = {1--10},
+	booktitle = {{SC} '10: Proceedings of the 2010 {ACM}/{IEEE} International Conference for High Performance Computing, Networking, Storage and Analysis},
+	publisher = {{IEEE}},
+	author = {Giampapa, Mark and Gooding, Thomas and Inglett, Todd and Wisniewski, Robert},
+	date = {2010-11-13},
+	keywords = {{PhD}, Operating Systems, Hybrid Kernel},
+	file = {Giampapa et al. - 2010 - Experiences with a Lightweight Supercomputer Kerne.pdf:/home/ppenna/Zotero/storage/D6PNR4ZQ/Giampapa et al. - 2010 - Experiences with a Lightweight Supercomputer Kerne.pdf:application/pdf}
+}
+
+@inproceedings{klues_processes_2010,
+	location = {Berkeley},
+	title = {Processes and Resource Management in a Scalable Many-Core {OS}},
+	url = {https://www.usenix.org/conference/hotpar-10/processes-and-resource-management-scalable-many-core-os},
+	abstract = {The emergence of many-core architectures necessitates a redesign of operating systems, including the interfaces they expose to an application. We propose a new operat- ing system, called {ROS}, designed specifically to address many limitations of current {OSs} as we move into the many-core era. Our goals are (1) to provide better sup- port for parallel applications for both high-performance and general purpose computing, and (2) to scale the ker- nel to thousands of cores. In this paper, we focus on the process model and resource management mechanisms of {ROS}.We expand the traditional process model to include the notion of a ‘many-core' process designed to naturally support parallel applications. Additionally, we discuss our method of resource management that builds on the ideas of Space-Time Partitioning presented in our previ- ous work. Central to our design is the notion that protection domains should not necessarily be coupled with resource management, and resource partitioning is not necessarily coupled with resource allocation.},
+	pages = {1--6},
+	booktitle = {{USENIX} Conference on Hot Topics in Parallelism ({HotPar})},
+	publisher = {{USENIX}},
+	author = {Klues, Kevin and Rhoden, Barret and Zhu, David and Waterman, Andrew and Brewer, Eric},
+	date = {2010-06},
+	keywords = {Needs Review, {PhD}, Operating Systems},
+	file = {Attachment:/home/ppenna/Zotero/storage/GLMTU477/Klues et al. - 2010 - Processes and Resource Management in a Scalable Many-Core OS.pdf:application/pdf}
+}
+
+@inproceedings{song_case_2011,
+	location = {Salzburg},
+	title = {A Case for Scaling Applications to Many-Core with {OS} Clustering},
+	isbn = {978-1-4503-0634-8},
+	url = {http://portal.acm.org/citation.cfm?doid=1966445.1966452},
+	doi = {10.1145/1966445.1966452},
+	abstract = {This paper proposes an approach to scaling {UNIX}-like operating systems for many cores in a backward-compatible way, which still enjoys common wisdom in new operating system designs. The proposed system, called Cerberus, mitigates contention on many shared data structures within {OS} kernels by clustering multiple commodity operating systems atop a {VMM}, and providing applications with the traditional shared memory interface. Cerberus extends a traditional {VMMwith} efficient support for resource sharing and communication among the clustered operating systems. It also routes system calls of an application among operating systems, to provide applications with the illusion of running on a single operating system. We have implemented a prototype system based on Xen/Linux, which runs on an Intel machine with 16 core and an {AMD} machine with 48 cores. Experiments with an unmodified {MapReduce} application, dbench, Apache Web Server and Memcached show that, given the nontrivial performance overhead incurred by the virtualization layer, Cerberus achieves up to 1.74X and 4.95X performance speedup compared to native Linux. It also scales better than a single Linux configuration. Profiling results further show that Cerberus wins due to mitigated contention and more efficient use of resources.},
+	pages = {61--76},
+	booktitle = {European Conference on Computer Systems ({EuroSys})},
+	publisher = {{ACM}},
+	author = {Song, Xiang and Chen, Haibo and Chen, Rong and Wang, Yuanxuan and Zang, Binyu},
+	date = {2011-04},
+	keywords = {Needs Review, {PhD}, Operating Systems},
+	file = {Attachment:/home/ppenna/Zotero/storage/TFTH6M9Q/p61-song.pdf:application/pdf}
+}
+
+@inproceedings{gerofi_clone_n:_2012,
+	title = {clone\_n(): Parallel Thread Creation for Upcoming Many-Core Architectures},
+	isbn = {978-0-7695-4807-4},
+	url = {http://ieeexplore.ieee.org/document/6337830/},
+	doi = {10.1109/CLUSTER.2012.85},
+	abstract = {Heterogeneous architectures, where a multicore processor, which is optimized for fast single-thread performance, is accompanied with a large number of simpler, but more power-efficient cores optimized for parallel workloads, such as {NVIDIA}'s {GPUs} or Intel's Many Integrated Core ({MIC}), have been receiving a lot attention recently. Although {NVIDIA}'s {GPUs} include built-in support for parallelism control, the {MIC} uses classical software thread creation and scheduling done by the operating system ({OS}). While efficient thread creation is desired in such many-core environments, current {OS} {APIs} provide the facility of creating only one thread at a time. In this paper, we propose a new system call for parallel thread creation on many-core coprocessors and show that it can perform up to 6.9 times better than the sequential version when executed on Intel's {MIC} software development platform.},
+	pages = {592--596},
+	booktitle = {International Conference on Cluster Computing},
+	publisher = {{IEEE}},
+	author = {Gerofi, Balazs and Hori, Atsushi and Ishikawa, Yutaka},
+	date = {2012-09},
+	keywords = {Needs Review, {PhD}, Operating Systems}
+}
+
+@inproceedings{tsai_cooperation_2014,
+	location = {Amsterdam, Netherlands},
+	title = {Cooperation and Security Isolation of Library {OSes} for Multi-Process Applications},
+	isbn = {978-1-4503-2704-6},
+	url = {http://dl.acm.org/citation.cfm?doid=2592798.2592812},
+	doi = {10.1145/2592798.2592812},
+	series = {{EuroSys} '14},
+	abstract = {Library {OSes} are a promising approach for applications to efficiently obtain the benefits of virtual machines, including security isolation, host platform compatibility, and migration. Library {OSes} refactor a traditional {OS} kernel into an application library, avoiding overheads incurred by duplicate functionality. When compared to running a single application on an {OS} kernel in a {VM}, recent library {OSes} reduce the memory footprint by an order-of-magnitude. Previous library {OS} ({libOS}) research has focused on single-process applications, yet many Unix applications, such as network servers and shell scripts, span multiple processes. Key design challenges for a multi-process {libOS} include management of shared state and minimal expansion of the security isolation boundary. This paper presents Graphene, a library {OS} that seamlessly and efficiently executes both single and multi-process applications, generally with low memory and performance overheads. Graphene broadens the {libOS} paradigm to support secure, multi-process {APIs}, such as copy-on-write fork, signals, and System V {IPC}. Multiple {libOS} instances coordinate over pipe-like byte streams to implement a consistent, distributed {POSIX} abstraction. These coordination streams provide a simple vantage point to enforce security isolation.},
+	eventtitle = {European Conference on Computer Systems ({EuroSys})},
+	pages = {1--14},
+	booktitle = {{EuroSys} '14 Proceedings of the Ninth European Conference on Computer Systems},
+	publisher = {{ACM}},
+	author = {Tsai, Chia-Che and Porter, Donald and Arora, Kumar Saurabh and Bandi, Nehal and Jain, Bhushan and Jannen, William and John, Jitin and Kalodner, Harry and Kulkarni, Vrushali and Oliveira, Daniela},
+	date = {2014-04-13},
+	keywords = {{PhD}, Operating Systems, Exokernel},
+	file = {Tsai et al. - 2014 - Cooperation and Security Isolation of Library OSes.pdf:/home/ppenna/Zotero/storage/INTPDIDN/Tsai et al. - 2014 - Cooperation and Security Isolation of Library OSes.pdf:application/pdf}
+}
+
+@article{diener_kernel-based_2016,
+	title = {Kernel-Based Thread and Data Mapping for Improved Memory Affinity},
+	volume = {27},
+	doi = {10.1109/TPDS.2015.2504985},
+	abstract = {Reducing the cost of memory accesses, both in terms of performance and energy consumption, is a major challenge in shared-memory architectures. Modern systems have deep and complex memory hierarchies with multiple cache levels and memory controllers, leading to a Non-Uniform Memory Access ({NUMA}) behavior. In such systems, there are two ways to improve the memory affinity: First, by mapping threads that share data to cores with a shared cache, cache usage and communication performance are optimized. Second, by mapping memory pages to memory controllers that perform the most accesses to them and are not overloaded, the average cost of accesses is reduced. We call these two techniques thread mapping and data mapping, respectively. Thread and data mapping should be performed in an integrated way to achieve a compounding effect that results in higher improvements overall. Previous work in this area requires expensive tracing operations to perform the mapping, or require changes to the hardware or to the parallel application. In this paper, we propose {kMAF}, a mechanism that performs integrated thread and data mapping in the kernel. {kMAF} uses the page faults of parallel applications to characterize their memory access behavior and performs the mapping during the execution of the application based on the detected behavior. In an evaluation with a large set of parallel benchmarks executing on three {NUMA} architectures, {kMAF} achieved substantial performance and energy efficiency improvements, close to an Oracle-based mechanism and significantly higher than previous proposals.},
+	pages = {2653--2666},
+	number = {9},
+	journaltitle = {{IEEE} Transactions on Parallel and Distributed Systems ({TPDS})},
+	author = {Diener, Matthias and Cruz, Eduardo and Alves, Marco and Navaux, Philippe and Busse, Anselm and Heiss, Hans-Ulrich},
+	date = {2016},
+	keywords = {Needs Review, {PhD}, Operating Systems}
+}
+
+@inproceedings{hollis_nos:_2016,
+	location = {Scottsdale, Arizona, {USA}},
+	title = {{nOS}: A nano-sized Distributed Operating System for Many-Core Embedded Systems},
+	isbn = {978-1-5090-5142-7},
+	url = {http://ieeexplore.ieee.org/document/7753278/},
+	doi = {10.1109/ICCD.2016.7753278},
+	series = {{ICCD} '16},
+	abstract = {We introduce {nOS}, a "nano-sized" fully distributed operating system aimed at large-scale, many-core embedded systems. {nOS} enables dynamic runtime optimisation of energy and execution time through lightweight and scalable distributed protocols. {nOS} implements new dynamic resource optimisation algorithms, and provides an intuitive and easy-to-use programmer {API} that supports runtime task energy optimisation through dynamic frequency scaling, transparent task communication tracking, and automatic task mapping. Critically, {nOS} has a completely distributed implementation, providing excellent scalability. Contrary to other approaches, the dynamic runtime optimisations require no a priori knowledge of workload or communication patterns. By generating runtime measurements of thread performance, core load, and process communication, we show that {nOS} can deliver improvements that would not be possible with only static analysis. Using a many-core system called Swallow, we show a fullstack implementation of {nOS} together with application, {OS} and hardware. Using two applications with different communication patterns, we illustrate the power and flexibility of our approach, as well as various tradeoffs in energy and performance from making better mapping choices than would be available offline.},
+	eventtitle = {International Conference on Computer Design ({ICCD})},
+	pages = {177--184},
+	booktitle = {2016 {IEEE} 34th International Conference on Computer Design ({ICCD})},
+	publisher = {{IEEE}},
+	author = {Hollis, Simon and Ma, Edward and Marculescu, Radu},
+	date = {2016-10-02},
+	keywords = {{PhD}, Operating Systems, Exokernel},
+	file = {Hollis et al. - 2016 - nOS A nano-sized Distributed Operating System for.pdf:/home/ppenna/Zotero/storage/TR69KEEX/Hollis et al. - 2016 - nOS A nano-sized Distributed Operating System for.pdf:application/pdf}
+}
+
+@inproceedings{asmussen_m3:_2016,
+	location = {Atlanta, Georgia, {USA}},
+	title = {M3: A Hardware/Operating-System Co-Design to Tame Heterogeneous Manycores},
+	volume = {44},
+	isbn = {978-1-4503-4091-5},
+	url = {http://dl.acm.org/citation.cfm?doid=2980024.2872371},
+	doi = {10.1145/2980024.2872371},
+	series = {{ASPLOS} '16},
+	abstract = {In the last decade, the number of available cores increased and heterogeneity grew. In this work, we ask the question whether the design of the current operating systems ({OSes}) is still appropriate if these trends continue and lead to abundantly available but heterogeneous cores, or whether it forces a fundamental rethinking of how systems are designed. We argue that: 1. hiding heterogeneity behind a common hardware interface unifies, to a large extent, the control and coordination of cores and accelerators in the {OS}, 2. isolating at the network-on-chip rather than with processor features (like privileged mode, memory management unit, ...), allows running untrusted code on arbitrary cores, and 3. providing {OS} services via protocols over the network-on-chip, instead of via system calls, makes them accessible to arbitrary types of cores as well. In summary, this turns accelerators into first-class citizens and enables a single and convenient programming environment for all cores without the need to trust any application. In this paper, we introduce network-on-chip-level isolation, present the design of our microkernel-based {OS}, M3, and the common hardware interface, and evaluate the performance of our prototype in comparison to Linux. A bit surprising, without using accelerators, M3 outperforms Linux in some application-level benchmarks by more than a factor of five.},
+	eventtitle = {International Conference on Architectural Support for Programming Languages and Operating Systems ({ASPLOS})},
+	pages = {189--203},
+	booktitle = {{ASPLOS} '16 Proceedings of the Twenty-First International Conference on Architectural Support for Programming Languages and Operating Systems},
+	publisher = {{ACM}},
+	author = {Asmussen, Nils and Völp, Marcus and Nöthen, Benedikt and Härtig, Hermann and Fettweis, Gerhard},
+	date = {2016-04-02},
+	keywords = {{PhD}, Operating Systems, Microkernel},
+	file = {Asmussen et al. - 2016 - M3 A HardwareOperating-System Co-Design to Tame .pdf:/home/ppenna/Zotero/storage/NKFDWYP5/Asmussen et al. - 2016 - M3 A HardwareOperating-System Co-Design to Tame .pdf:application/pdf}
+}
+
+@inproceedings{riesen_what_2015,
+	location = {Portland, Oregon, {USA}},
+	title = {What is a Lightweight Kernel?},
+	isbn = {978-1-4503-3606-2},
+	url = {http://dl.acm.org/citation.cfm?doid=2768405.2768414},
+	doi = {10.1145/2768405.2768414},
+	series = {{ROSS} '15},
+	abstract = {Lightweight kernels ({LWK}) have been in use on the compute nodes of supercomputers for decades. Although many high-end systems now run Linux, interest in options and alternatives has increased in the last couple of years. Future extreme-scale systems require rethinking of the operating system, and modern {LWKs} may well play a role in the final solution. In the course of our research, it has become clear that no single definition for a lightweight kernel exists. This paper describes what we mean by the term and what makes {LWKs} different from other operating system kernels.},
+	eventtitle = {International Workshop on Runtime and Operating Systems for Supercomputers ({ROSS})},
+	pages = {1--8},
+	booktitle = {{ROSS} '15 Proceedings of the 5th International Workshop on Runtime and Operating Systems for Supercomputers},
+	publisher = {{ACM}},
+	author = {Riesen, Rolf and Wisniewski, Robert and Brightwell, Ron and Inglett, Todd and Park, Yoonho and Ishikawa, Yutaka and Maccabe, Arthur Barney and Gerofi, Balazs and Lombard, David and Lange, John Jack and Pedretti, Kevin and Ferreira, Kurt and Lang, Mike and Keppel, Pardo},
+	date = {2015-06-16},
+	keywords = {{PhD}, Operating Systems, Lightweight Kernel, Survery},
+	file = {Riesen et al. - 2015 - What is a Lightweight Kernel.pdf:/home/ppenna/Zotero/storage/URV4TY7T/Riesen et al. - 2015 - What is a Lightweight Kernel.pdf:application/pdf}
+}
+
+@inproceedings{barbalace_popcorn:_2015,
+	location = {Bordeaux, France},
+	title = {Popcorn: Bridging the Programmability Gap in Heterogeneous-{ISA} Platforms},
+	isbn = {978-1-4503-3238-5},
+	url = {http://dl.acm.org/citation.cfm?doid=2741948.2741962},
+	doi = {10.1145/2741948.2741962},
+	series = {{EuroSys} '15},
+	abstract = {The recent possibility of integrating multiple-{OS}-capable, high-core-count, heterogeneous-{ISA} processors in the same platform poses a question: given the tight integration between system components, can a shared memory programming model be adopted, enhancing programmability? If this can be done, an enormous amount of existing code written for shared memory architectures would not have to be rewritten to use a new programming paradigm (e.g., code offloading) that is often very expensive and error prone. We propose a new software architecture that is composed of an operating system and a compiler framework to run ordinary shared memory applications, written for homogeneous machines, on {OS}-capable heterogeneous-{ISA} machines. Applications run transparently amongst different {ISA} processors while exploiting the most optimized instruction set for each code block. We have implemented and tested our system, called Popcorn, on a multi-core Intel Xeon machine with a {PCIe} Intel Xeon Phi to demonstrate the viability of our approach. Application execution on Popcorn demonstrates to be up to 52\% faster than the most performant native execution on Linux, on either Xeon or Xeon Phi, while removing the burden of the programmer having to adopt a different programming model than shared memory on a heterogeneous system. When compared to an offloading programming model, Popcorn is shown to be up to 6.2 times faster.},
+	eventtitle = {European Conference on Computer Systems ({EuroSys})},
+	pages = {1--16},
+	booktitle = {{EuroSys} '15 Proceedings of the 10th European Conference on Computer Systems},
+	publisher = {{ACM}},
+	author = {Barbalace, Antonio and Sadini, Marina and Ansary, Saif and Jelesnianski, Christopher and Ravichandran, Akshay and Kendir, Cagil and Murray, Alastair and Ravindran, Binoy},
+	date = {2015-04-21},
+	keywords = {{PhD}, Operating Systems, Multikernel, Starred, Popcorn Linux},
+	file = {Barbalace et al. - 2015 - Popcorn Bridging the Programmability Gap in Heter.pdf:/home/ppenna/Zotero/storage/8AWMZQUY/Barbalace et al. - 2015 - Popcorn Bridging the Programmability Gap in Heter.pdf:application/pdf}
+}
+
+@inproceedings{wisniewski_mos:_2014,
+	location = {Munich, Germany},
+	title = {{mOS}: An Architecture for Extreme-Scale Operating Systems},
+	isbn = {978-1-4503-2950-7},
+	url = {http://dl.acm.org/citation.cfm?doid=2612262.2612263},
+	doi = {10.1145/2612262.2612263},
+	series = {{ROSS} '14},
+	abstract = {Linux, or more specifically, the Linux {API}, plays a key role in {HPC} computing. Even for extreme-scale computing, a known and familiar {API} is required for production machines. However, an off-the-shelf Linux distribution faces challenges at extreme scale. To date, two approaches have been used to address the challenges of providing an operating system ({OS}) at extreme scale. In the Full-Weight Kernel ({FWK}) approach, an {OS}, typically Linux, forms the starting point, and work is undertaken to remove features from the environment so that it will scale up across more cores and out across a large cluster. A Light-Weight Kernel ({LWK}) approach often starts with a new kernel and work is undertaken to add functionality to provide a familiar {API}, typically Linux. Either approach however, results in an execution environment that is not fully Linux compatible. {mOS} (multi Operating System) runs both an {FWK} (Linux), and an {LWK}, simultaneously as kernels on the same compute node. {mOS} thereby achieves the scalability and reliability of {LWKs}, while providing the full Linux functionality of an {FWK}. Further, {mOS} works in concert with Operating System Nodes ({OSNs}) to offload system calls, e.g., I/O, that are too invasive to run on the compute nodes at extreme-scale. Beyond providing full Linux capability with {LWK} performance, other advantages of {mOS} include the ability to effectively manage different types of compute and memory resources, interface easily with proposed asynchronous and fine-grained runtimes, and nimbly manage new technologies. This paper is an architectural description of {mOS}. As a prototype is not yet finished, the contributions of this work are a description of {mOS}'s architecture, an exploration of the tradeoffs and value of this approach for the purposes listed above, and a detailed architecture description of each of the six components of {mOS}, including the tradeoffs we considered. The uptick of {OS} research work indicates that many view this as an important area for getting to extreme scale. Thus, most importantly, the goal of the paper is to generate discussion in this area at the workshop.},
+	eventtitle = {International Workshop on Runtime and Operating Systems for Supercomputers ({ROSS})},
+	pages = {1--8},
+	booktitle = {{ROSS} '14 Proceedings of the 4th International Workshop on Runtime and Operating Systems for Supercomputers},
+	publisher = {{ACM}},
+	author = {Wisniewski, Robert and Inglett, Todd and Keppel, Pardo and Murty, Ravi and Riesen, Rolf},
+	date = {2014-06-10},
+	keywords = {{PhD}, Operating Systems, Hybrid Kernel},
+	file = {Wisniewski et al. - 2014 - mOS An Architecture for Extreme-Scale Operating S.pdf:/home/ppenna/Zotero/storage/EW2DLCZ7/Wisniewski et al. - 2014 - mOS An Architecture for Extreme-Scale Operating S.pdf:application/pdf}
+}
+
+@inproceedings{kluge_operating_2014,
+	location = {Reno, Nevada, {USA}},
+	title = {An Operating System for Safety-Critical Applications on Manycore Processors},
+	isbn = {978-1-4799-4430-9},
+	url = {http://ieeexplore.ieee.org/document/6899155/},
+	doi = {10.1109/ISORC.2014.30},
+	series = {{ISORC} '14},
+	abstract = {Processor technology is advancing from bus-based multicores to network-on-chip-based many cores, posing new challenges for operating system design. In this paper, we discuss why future safety-critical systems can profit from such new architectures. To make the potentials of many core processors usable in safety-critical systems, we devise the operating system {MOSSCA} that is adapted to the special requirements prevailing in this domain. {MOSSCA} introduces abstractions that support an application developer in his work of writing safety-critical applications. Internally, {MOSSCA} runs in a distributed manner to achieve a high parallelism while still guaranteeing a predictable behaviour.},
+	eventtitle = {International Symposium on Object/Component/Service-Oriented Real-Time Distributed Computing ({ISORC})},
+	pages = {238--245},
+	booktitle = {2014 {IEEE} 17th International Symposium on Object/Component/Service-Oriented Real-Time Distributed Computing},
+	publisher = {{IEEE}},
+	author = {Kluge, Florian and Gerdes, Mike and Ungerer, Theo},
+	date = {2014-06-10},
+	keywords = {{PhD}, Operating Systems, Multikernel, Starred, {MOSSCA}},
+	file = {Kluge et al. - 2014 - An Operating System for Safety-Critical Applicatio.pdf:/home/ppenna/Zotero/storage/F628BMKJ/Kluge et al. - 2014 - An Operating System for Safety-Critical Applicatio.pdf:application/pdf}
+}
+
+@article{de_dinechin_distributed_2013,
+	title = {A Distributed Run-Time Environment for the Kalray {MPPA}-256 Integrated Manycore Processor},
+	volume = {18},
+	url = {http://linkinghub.elsevier.com/retrieve/pii/S1877050913004766},
+	doi = {10.1016/j.procs.2013.05.333},
+	series = {Procedia Computer Science},
+	abstract = {The Kalray {MPPA}®-256 is a single-chip manycore processor that integrates 256 user cores and 32 system cores in 28 nm {CMOS} technology. These cores are distributed across 16 compute clusters of 16+1 cores, and 4 quad-core I/O subsystems. Each compute cluster and I/O subsystem owns a private address space, while communication and synchronization between them is ensured by data and control Networks-on-Chip ({NoC}). This processor targets embedded applications whose program- ming models fall within the following classes: Kahn Process Networks ({KPN}), as motivated by media processing; single program multiple data ({SPMD}), traditionally used for numerical kernels; and time-triggered control systems. We describe a run-time environment that supports these classes of programming models and their composition. This environment combines classic {POSIX} single-process multi-threaded execution inside the compute clusters and I/O subsystems, with a set of specific Inter-Process Communication ({IPC}) primitives that exploit the {NoC} architecture. We combine these primitives in order to provide the run-time support for the different target programming models. Interestingly enough, all these {NoC}-specific {IPC} primitives can be mapped to a subset of the classic synchronous and asynchronous {POSIX} file descriptor operations. This design thus extends the canonical ‘pipe-and-filters' software component model, where {POSIX} processes are the atomic components, and {IPC} instances are the connectors.},
+	pages = {1654--1663},
+	journaltitle = {2013 International Conference on Computational Science},
+	author = {de Dinechin, Benoît Dupont and de Massas, Pierre Guironnet and Lager, Guillaume and Léger, Clément and Orgogozo, Benjamin and Reybert, Jérôme and Strudel, Thierry},
+	date = {2013-06-05},
+	keywords = {{PhD}, Operating Systems, Exokernel},
+	file = {de Dinechin et al. - 2013 - A Distributed Run-Time Environment for the Kalray .pdf:/home/ppenna/Zotero/storage/XVPF5CPY/de Dinechin et al. - 2013 - A Distributed Run-Time Environment for the Kalray .pdf:application/pdf}
+}
+
+@inproceedings{sato_design_2012,
+	location = {Venice, Italy},
+	title = {A Design of Hybrid Operating System for a Parallel Computer with Multi-Core and Many-Core Processors},
+	isbn = {978-1-4503-1460-2},
+	url = {http://dl.acm.org/citation.cfm?doid=2318916.2318927},
+	doi = {10.1145/2318916.2318927},
+	series = {{ROSS} '12},
+	abstract = {This paper describes the design of an operating system to manage the hybrid computer system architecture with multi-core and many-core processors for Exa-scale computing. In this study, a host operating system (Host {OS}) on a multi-core processor performs some functions of a lightweight operating system ({LWOS}) on a many-core processor, in order to dedicate to executing the application program on a many-core processor. In particular, to ensure that {LWOS} execution does not disturb the application program executed on the many-core processor, the functions such as process management, memory management, and I/O management are delegated to the Host {OS}. To demonstrate this design, we made an prototype system of a computer equipped with a multi-core processor and a many-core processor using an Intel Xeon dual-core processor system. The Linux and original {LWOS} were loaded on to each processor and the overhead for executing the program for {LWOS} from Linux was evaluated. Using this prototype system, the {LWOS} process can be started with at least 110 μsec overhead for the many-core program.},
+	eventtitle = {International Workshop on Runtime and Operating Systems for Supercomputers ({ROSS})},
+	pages = {1--8},
+	booktitle = {{ROSS} '12 Proceedings of the 2nd International Workshop on Runtime and Operating Systems for Supercomputers},
+	publisher = {{ACM}},
+	author = {Sato, Mikiko and Fukazawa, Go and Nagamine, Kiyohiko and Sakamoto, Ryuichi and Namiki, Mitaro and Yoshinaga, Kazumi and Tsujita, Yuichi and Hori, Atsushi and Ishikawa, Yutaka},
+	date = {2012-06-29},
+	keywords = {{PhD}, Operating Systems, Lightweight Kernel},
+	file = {Sato et al. - 2012 - A Design of Hybrid Operating System for a Parallel.pdf:/home/ppenna/Zotero/storage/45I393Q3/Sato et al. - 2012 - A Design of Hybrid Operating System for a Parallel.pdf:application/pdf}
+}
+
+@inproceedings{park_fusedos:_2012,
+	location = {New York, New York, {USA}},
+	title = {{FusedOS}: Fusing {LWK} Performance with {FWK} Functionality in a Heterogeneous Environment},
+	isbn = {978-0-7695-4907-1},
+	url = {http://ieeexplore.ieee.org/document/6374791/},
+	doi = {10.1109/SBAC-PAD.2012.14},
+	series = {{SBAC}-{PAD} '12},
+	abstract = {Traditionally, there have been two approaches to providing an operating environment for high performance computing ({HPC}). A Full-Weight Kernel({FWK}) approach starts with a general-purpose operating system and strips it down to better scale up across more cores and out across larger clusters. A Light-Weight Kernel ({LWK}) approach starts with a new thin kernel code base and extends its functionality by adding more system services needed by applications. In both cases, the goal is to provide end-users with a scalable {HPC} operating environment with the functionality and services needed to reliably run their applications. To achieve this goal, we propose a new approach, called Fused {OS}, that combines the {FWK} and {LWK} approaches. Fused {OS} provides an infrastructure capable of partitioning the resources of a multicoreheterogeneous system and collaboratively running different operating environments on subsets of the cores and memory, without the use of a virtual machine monitor. With Fused {OS}, {HPC} applications can enjoy both the performance characteristics of an {LWK} and the rich functionality of an {FWK} through cross-core system service delegation. This paper presents the Fused {OS} architecture and a prototype implementation on Blue Gene/Q. The Fused {OS} prototype leverages Linux with small modifications as a {FWK} and implements a user-level {LWK} called Compute Library ({CL}) by leveraging {CNK}. We present {CL} performance results demonstrating low noise and show micro-benchmarks running with performance commensurate with that provided by {CNK}.},
+	eventtitle = {International Symposium on Computer Architecture and High Performance Computing ({SBAC}-{PAD})},
+	pages = {211--218},
+	booktitle = {2012 {IEEE} 24th International Symposium on Computer Architecture and High Performance Computing},
+	publisher = {{IEEE}},
+	author = {Park, Yoonho and Van Hensbergen, Eric and Hillenbrand, Marius and Inglett, Todd and Rosenburg, Bryan and Ryu, Kyung Dong and Wisniewski, Robert},
+	date = {2012-10-24},
+	keywords = {{PhD}, Operating Systems, Hybrid Kernel},
+	file = {Park et al. - 2012 - FusedOS Fusing LWK Performance with FWK Functiona.pdf:/home/ppenna/Zotero/storage/27DN5XIQ/Park et al. - 2012 - FusedOS Fusing LWK Performance with FWK Functiona.pdf:application/pdf}
+}
+
+@report{wentzlaff_fleets:_2011,
+	location = {Cambridge, Massachusetts, {USA}},
+	title = {Fleets: Scalable Services in a Factored Operating System},
+	url = {https://dspace.mit.edu/handle/1721.1/61640},
+	abstract = {Current monolithic operating systems are designed for uniprocessor systems, and their architecture reflects this. The rise of multicore and cloud computing is drastically changing the tradeoffs in operating system design. The culture of scarce computational resources is being replaced with one of abundant cores, where spatial layout of processes supplants time multiplexing as the primary scheduling concern. Efforts to parallelize monolithic kernels have been difficult and only marginally successful, and new approaches are needed. This paper presents fleets, a novel way of constructing scalable {OS} services. With fleets, traditional {OS} services are factored out of the kernel and moved into user space, where they are further parallelized into a distributed set of concurrent, message-passing servers. We evaluate fleets within fos, a new factored operating system designed from the ground up with scalability as the first-order design constraint. This paper details the main design principles of fleets, and how the system architecture of fos enables their construction. We describe the design and implementation of three critical fleets (network stack, page allocation, and file system) and compare with Linux. These comparisons show that fos achieves superior performance and has better scalability than Linux for large multicores; at 32 cores, fos's page allocator performs 4.5 times better than Linux, and fos's network stack performs 2.5 times better. Additionally, we demonstrate how fleets can adapt to changing resource demand, and the importance of spatial scheduling for good performance in multicores.},
+	pages = {1--13},
+	number = {{MIT}-{CSAIL}-{TR}-2011-012},
+	institution = {{MIT}},
+	author = {Wentzlaff, David and Gruenwald, Charles and Beckmann, Nathan and Belay, Adam and Kasture, Harshad and Modzelewski, Kevin and Youseff, Lamia and Miller, Jason and Agarwal, Anant},
+	date = {2011-03-09},
+	keywords = {{PhD}, Operating Systems, Multikernel, {FOS}},
+	file = {Wentzlaff et al. - 2011 - Fleets Scalable Services in a Factored Operating .pdf:/home/ppenna/Zotero/storage/I5UNTQ4M/Wentzlaff et al. - 2011 - Fleets Scalable Services in a Factored Operating .pdf:application/pdf}
+}
+
+@inproceedings{wentzlaff_operating_2010,
+	location = {Indianapolis, Indiana, {USA}},
+	title = {An Operating System for Multicore and Clouds},
+	isbn = {978-1-4503-0036-0},
+	url = {https://dl.acm.org/citation.cfm?doid=1807128.1807132},
+	doi = {10.1145/1807128.1807132},
+	series = {{SoCC} '10},
+	abstract = {Cloud computers and multicore processors are two emerging classes of computational hardware that have the potential to provide unprecedented compute capacity to the average user. In order for the user to effectively harness all of this computational power, operating systems ({OSes}) for these new hardware platforms are needed. Existing multicore operating systems do not scale to large numbers of cores, and do not support clouds. Consequently, current day cloud systems push much complexity onto the user, requiring the user to manage individual Virtual Machines ({VMs}) and deal with many system-level concerns. In this work we describe the mechanisms and implementation of a factored operating system named fos. fos is a single system image operating system across both multicore and Infrastructure as a Service ({IaaS}) cloud systems. fos tackles {OS} scalability challenges by factoring the {OS} into its component system services. Each system service is further factored into a collection of Internet-inspired servers which communicate via messaging. Although designed in a manner similar to distributed Internet services, {OS} services instead provide traditional kernel services such as file systems, scheduling, memory management, and access to hardware. fos also implements new classes of {OS} services like fault tolerance and demand elasticity. In this work, we describe our working fos implementation, and provide early performance measurements of fos for both intra-machine and inter-machine operations.},
+	eventtitle = {{ACM} Symposium on Cloud Computing ({SoCC})},
+	pages = {3--14},
+	booktitle = {{SoCC} '10 Proceedings of the 1st {ACM} Symposium on Cloud Computing},
+	publisher = {{ACM}},
+	author = {Wentzlaff, David and Gruenwald, Charles and Beckmann, Nathan and Modzelewski, Kevin and Belay, Adam and Youseff, Lamia and Miller, Jason and Agarwal, Anant},
+	date = {2010-06-10},
+	keywords = {{PhD}, Operating Systems, Multikernel, {FOS}},
+	file = {Wentzlaff et al. - 2010 - An Operating System for Multicore and Clouds.pdf:/home/ppenna/Zotero/storage/JTMTDNT5/Wentzlaff et al. - 2010 - An Operating System for Multicore and Clouds.pdf:application/pdf}
+}
+
+@inproceedings{qingbo_yuan_generos:_2010,
+	location = {Atlanta, Georgia, {USA}},
+	title = {{GenerOS}: An Asymmetric Operating System Kernel for Multi-Core Systems},
+	isbn = {978-1-4244-6442-5},
+	url = {http://ieeexplore.ieee.org/document/5470363/},
+	doi = {10.1109/IPDPS.2010.5470363},
+	series = {{IPDPS} '10},
+	abstract = {Due to complex abstractions implemented over shared data structures protected by locks, conventional symmetric multithreaded operating system kernel such as Linux is hard to achieve high scalability on the emerging multi-core architectures, which integrate more and more cores on a single die. This paper presents {GenerOS} - a general asymmetric operating system kernel for multi-core systems. In principal, {GenerOS} partitions processing cores into application core, kernel core and interrupt core, each of which is dedicated to a specified function. In implementation, we conduct a delicate modification to Linux kernel and provide the same interface as Linux kernel so that {GenerOS} is compatible with legacy applications. The better performance of {GenerOS} mainly benefits from: (1) Applications run on their own cores with minimal interrupt and kernel support; (2) Every kernel service is encapsulated in to a serial process so that there will be fewer contentions than conventional symmetric kernel; (3) A slim schedule policy is used in the kernel core to support schedule between system calls with low overhead. Experiments with two typical workloads on 16-core {AMD} machine show that {GenerOS} behaves better than original Linux kernel when there are more processing cores (19.6\% for {TPC}-H using oracle database management system and 42.8\% for httperf using apache web server).},
+	eventtitle = {International Symposium on Parallel and Distributed Processing ({IPDPS})},
+	pages = {1--10},
+	booktitle = {2010 {IEEE} International Symposium on Parallel \& Distributed Processing ({IPDPS})},
+	publisher = {{IEEE}},
+	author = {{Qingbo Yuan} and {Jianbo Zhao} and {Mingyu Chen} and {Ninghui Sun}},
+	date = {2010-04-19},
+	keywords = {{PhD}, Operating Systems, Full Weight Kernel},
+	file = {Qingbo Yuan et al. - 2010 - GenerOS An Asymmetric Operating System Kernel for.pdf:/home/ppenna/Zotero/storage/JLZ4MBD6/Qingbo Yuan et al. - 2010 - GenerOS An Asymmetric Operating System Kernel for.pdf:application/pdf}
+}
+
+@inproceedings{lange_palacios_2010,
+	location = {Atlanta, Georgia, {USA}},
+	title = {Palacios and Kitten: New High Performance Operating Systems for Scalable Virtualized and Native Supercomputing},
+	isbn = {978-1-4244-6442-5},
+	url = {http://ieeexplore.ieee.org/document/5470482/},
+	doi = {10.1109/IPDPS.2010.5470482},
+	series = {{IPDPS} '10},
+	abstract = {Palacios is a new open-source {VMM} under development at Northwestern University and the University of New Mexico that enables applications executing in a virtualized environment to achieve scalable high performance on large machines. Palacios functions as a modularized extension to Kitten, a high performance operating system being developed at Sandia National Laboratories to support large-scale supercomputing applications. Together, Palacios and Kitten provide a thin layer over the hardware to support full-featured virtualized environments alongside Kitten's lightweight native environment. Palacios supports existing, unmodified applications and operating systems by using the hardware virtualization technologies in recent {AMD} and Intel processors. Additionally, Palacios leverages Kitten's simple memory management scheme to enable low-overhead pass-through of native devices to a virtualized environment. We describe the design, implementation, and integration of Palacios and Kitten. Our benchmarks show that Palacios provides near native (within 5\%), scalable performance for virtualized environments running important parallel applications. This new architecture provides an incremental path for applications to use supercomputers, running specialized lightweight host operating systems, that is not significantly performance-compromised.},
+	eventtitle = {International Symposium on Parallel and Distributed Processing ({IPDPS})},
+	pages = {1--12},
+	booktitle = {2010 {IEEE} International Symposium on Parallel \& Distributed Processing ({IPDPS})},
+	publisher = {{IEEE}},
+	author = {Lange, John and Pedretti, Kevin and Hudson, Trammell and Dinda, Peter and Cui, Zheng and Xia, Lei and Bridges, Patrick and Gocke, Andy and Jaconette, Steven and Levenhagen, Mike and Brightwell, Ron},
+	date = {2010-04-19},
+	keywords = {{PhD}, Operating Systems, Lightweight Kernel},
+	file = {Lange et al. - 2010 - Palacios and Kitten New High Performance Operatin.pdf:/home/ppenna/Zotero/storage/6X5LAB5I/Lange et al. - 2010 - Palacios and Kitten New High Performance Operatin.pdf:application/pdf}
+}
+
+@article{wentzlaff_factored_2009,
+	title = {Factored Operating Systems ({FOS}): The Case for a Scalable Operating System for Multicores},
+	volume = {43},
+	issn = {0163-5980},
+	url = {https://dl.acm.org/citation.cfm?doid=1531793.1531805},
+	doi = {10.1145/1531793.1531805},
+	abstract = {The next decade will afford us computer chips with 100's to 1,000's of cores on a single piece of silicon. Contemporary operating systems have been designed to operate on a single core or small number of cores and hence are not well suited to manage and provide operating system services at such large scale. If multicore trends continue, the number of cores that an operating system will be managing will continue to double every 18 months. The traditional evolutionary approach of redesigning {OS} subsystems when there is insufficient parallelism will cease to work because the rate of increasing parallelism will far outpace the rate at which {OS} designers will be capable of redesigning subsystems. The fundamental design of operating systems and operating system data structures must be rethought to put scalability as the prime design constraint. This work begins by documenting the scalability problems of contemporary operating systems. These studies are used to motivate the design of a factored operating system (fos). fos is a new operating system targeting manycore systems with scalability as the primary design constraint, where space sharing replaces time sharing to increase scalability.We describe fos, which is built in a message passing manner, out of a collection of Internet inspired services. Each operating system service is factored into a set of communicating servers which in aggregate implement a system service. These servers are designed much in the way that distributed Internet services are designed, but instead of providing high level Internet services, these servers provide traditional kernel services and replace traditional kernel data structures in a factored, spatially distributed manner. fos replaces time sharing with space sharing. In other words, fos's servers are bound to distinct processing cores and by doing so do not fight with end user applications for implicit resources such as {TLBs} and caches. We describe how fos's design is well suited to attack the scalability challenge of future multicores and discuss how traditional application-operating systems interfaces can be redesigned to improve scalability.},
+	pages = {76--85},
+	number = {2},
+	journaltitle = {{ACM} {SIGOPS} Operating Systems Review},
+	author = {Wentzlaff, David and Agarwal, Anant},
+	date = {2009-04},
+	keywords = {{PhD}, Operating Systems, Multikernel, Starred, {FOS}},
+	file = {Wentzlaff and Agarwal - 2009 - Factored Operating Systems (FOS) The Case for a S.pdf:/home/ppenna/Zotero/storage/U6YDWHR3/Wentzlaff and Agarwal - 2009 - Factored Operating Systems (FOS) The Case for a S.pdf:application/pdf}
+}
+
+@inproceedings{boyd-wickizer_corey:_2008,
+	location = {San Diego, California, {USA}},
+	title = {Corey: An Operating System for Many Cores},
+	url = {https://dl.acm.org/citation.cfm?id=1855745},
+	series = {{OSDI} '08},
+	abstract = {Multiprocessor application performance can be limited by the operating system when the application uses the operating system frequently and the operating system services use data structures shared and modified by multiple processing cores. If the application does not need the sharing, then the operating system will become an unnecessary bottleneck to the application's performance. This paper argues that applications should control sharing: the kernel should arrange each data structure so that only a single processor need update it, unless directed otherwise by the application. Guided by this design principle, this paper proposes three operating system abstractions (address ranges, kernel cores, and shares) that allow applications to control inter-core sharing and to take advantage of the likely abundance of cores by dedicating cores to specific operating system functions. Measurements of microbenchmarks on the Corey prototype operating system, which embodies the new abstractions, show how control over sharing can improve performance. Application benchmarks, using {MapReduce} and a Web server, show that the improvements can be significant for overall performance: {MapReduce} on Corey performs 25\% faster than on Linux when using 16 cores. Hardware event counters confirm that these improvements are due to avoiding operations that are expensive on multicore machines.},
+	eventtitle = {{USENIX} Conference on Operating Systems Design and Implementation ({OSDI})},
+	pages = {43--57},
+	booktitle = {{OSDI} '08 Proceedings of the 8th {USENIX} Conference on Operating Systems Design and Implementation},
+	publisher = {{USENIX}},
+	author = {Boyd-Wickizer, Silas and Chen, Haibo and Chen, Rong and Mao, Yandong and Kaashoek, Frans and Morris, Robert and Pesterev, Aleksey and Stein, Lex and Wu, Ming and Dai, Yuehua and Zhang, Yang and Zhang, Zheng},
+	date = {2008-12-08},
+	keywords = {{PhD}, Operating Systems, Exokernel},
+	file = {Boyd-Wickizer et al. - 2008 - Corey An Operating System for Many Cores.pdf:/home/ppenna/Zotero/storage/VLRHRA5Q/Boyd-Wickizer et al. - 2008 - Corey An Operating System for Many Cores.pdf:application/pdf}
+}
+
+@inproceedings{liu_tessellation:_2009,
+	location = {Berkeley, California, {USA}},
+	title = {Tessellation: Space-Time Partitioning in a Manycore Client {OS}},
+	url = {https://www.usenix.org/legacy/event/hotpar09/tech/full_papers/liu/liu.pdf},
+	series = {{HotPar} '09},
+	abstract = {We argue for space-time partitioning ({STP}) in manycore operating systems. {STP} divides resources such as cores, cache, and network bandwidth amongst interacting software components. Components are given unrestricted access to their resources and may schedule them in an application-specific fashion, which is critical for good parallel application performance. Components communicate via messages, which are strictly controlled to enhance correctness and security. We discuss properties of {STP} and ways in which hardware can assist {STP}. We introduce Tessellation, a new operating system built on top of {STP}, which restructures a traditional operating system as a set of distributed interacting services. In Tessellation, parallel applications can efficiently coexist and interact with one another.},
+	eventtitle = {{USENIX} Conference on Hot Topics in Parallelism ({HotPar})},
+	pages = {1--6},
+	booktitle = {{HotPar} '09 Proceedings of the 1st {USENIX} Conference on Hot Topics in Parallelism},
+	publisher = {{USENIX}},
+	author = {Liu, Rose and Klues, Kevin and Bird, Sarah and Hofmeyr, Steven and Asanović, Krste and Kubiatowicz, John},
+	date = {2009-03-30},
+	keywords = {{PhD}, Operating Systems, Multikernel, Starred, Tessellation},
+	file = {Liu et al. - 2009 - Tessellation Space-Time Partitioning in a Manycor.pdf:/home/ppenna/Zotero/storage/VNPS5A7J/Liu et al. - 2009 - Tessellation Space-Time Partitioning in a Manycor.pdf:application/pdf}
+}
+
+@inproceedings{colmenares_resource_2010,
+	location = {Berkeley, California, {USA}},
+	title = {Resource Management in the Tessellation Manycore {OS}},
+	url = {https://www.usenix.org/legacy/events/hotpar10/final_posters/Colmenares.pdf},
+	series = {{HotPar} '10},
+	abstract = {Tessellation is a manycore {OS} predicated on two central ideas: Space-Time Partitioning ({STP}) and Two-Level Scheduling. {STP} exploits novel hardware and software mechanisms to provide performance isolation and strong partitioning of resources (such as cores or memory bandwidth) among interacting software components, called “Cells”. Two-Level Scheduling separates global decisions about the allocation and distribution of resources to Cells from application-specific scheduling of resources within Cells. We describe Tessellation's Cell model, its resource allocation architecture, and basic policies for resource management. We present results from our prototype running on both an 8-core Nehalem machine and an {FPGA}-emulation of a 64-core machine with memory bandwidth partitioning hardware.},
+	eventtitle = {{USENIX} Conference on Hot Topics in Parallelism ({HotPar})},
+	pages = {2--6},
+	booktitle = {{HotPar} '10 Proceedings of the 2nd {USENIX} Conference on Hot Topics in Parallelism},
+	publisher = {{USENIX}},
+	author = {Colmenares, Juan and Bird, Sarah and Cook, Henry and Pearce, Paul and Zhu, David and Shalf, John and Asanović, Krste and Kubiatowicz, John},
+	date = {2010-06-14},
+	keywords = {{PhD}, Operating Systems, Multikernel, Tessellation},
+	file = {Colmenares et al. - 2010 - Resource Management in the Tessellation Manycore O.pdf:/home/ppenna/Zotero/storage/VC3TMTNM/Colmenares et al. - 2010 - Resource Management in the Tessellation Manycore O.pdf:application/pdf}
+}
+
+@inproceedings{krieger_k42:_2006,
+	location = {Leuven, Belgium},
+	title = {K42: Building a Complete Operating System},
+	isbn = {1-59593-322-0},
+	url = {https://dl.acm.org/citation.cfm?doid=1218063.1217949},
+	doi = {10.1145/1218063.1217949},
+	series = {{EuroSys} '06},
+	abstract = {K42 is one of the few recent research projects that is examining operating system design structure issues in the context of new whole-system design. K42 is open source and was designed from the ground up to perform well and to be scalable, customizable, and maintainable. The project was begun in 1996 by a team at {IBM} Research. Over the last nine years there has been a development effort on K42 from between six to twenty researchers and developers across {IBM}, collaborating universities, and national laboratories. K42 supports the Linux {API} and {ABI}, and is able to run unmodified Linux applications and libraries. The approach we took in K42 to achieve scalability and customizability has been successful.The project has produced positive research results, has resulted in contributions to Linux and the Xen hypervisor on Power, and continues to be a rich platform for exploring system software technology. Today, K42, is one of the key exploratory platforms in the {DOE}'s {FAST}-{OS} program, is being used as a prototyping vehicle in {IBM}'s {PERCS} project, and is being used by universities and national labs for exploratory research. In this paper, we provide insight into building an entire system by discussing the motivation and history of K42, describing its fundamental technologies, and presenting an overview of the research directions we have been pursuing.},
+	eventtitle = {European Conference on Computer Systems ({EuroSys})},
+	pages = {133--145},
+	booktitle = {{EuroSys} '06 Proceedings of the 1st {EuroSys} European Conference on Computer Systems},
+	publisher = {{ACM}},
+	author = {Krieger, Orran and Mergen, Mark and Waterland, Amos and Uhlig, Volkmar and Auslander, Marc and Rosenburg, Bryan and Wisniewski, Robert and Xenidis, Jimi and Da Silva, Dilma and Ostrowski, Michal and Appavoo, Jonathan and Butrico, Maria},
+	date = {2006-04-18},
+	keywords = {{PhD}, Operating Systems, Microkernel},
+	file = {Krieger et al. - 2006 - K42 Building a Complete Operating System.pdf:/home/ppenna/Zotero/storage/MTFUC3N3/Krieger et al. - 2006 - K42 Building a Complete Operating System.pdf:application/pdf}
+}
+
+@inproceedings{liedtke_micro-kernel_1995,
+	location = {Copper Mountain, Colorado, {USA}},
+	title = {On Micro-Kernel Construction},
+	isbn = {0-89791-715-4},
+	url = {https://dl.acm.org/citation.cfm?doid=224056.224075},
+	doi = {10.1145/224056.224075},
+	series = {{SOSP} '95},
+	abstract = {From a software-technology point of view, the p-kernel concept is superior to large integrated kernels. On the other hand, it is widely believed that (a) p-kernel based systems are inherently inefficient and (b) they are not sufficiently flexible. Contradictory to this belief, we show and support by documentary evidence that inefficiency and inflexibility of current p-kernels is not inherited from the basic idea but mostly from overloading the kernel and/or from improper implementation. Based on functional reasons, we describe some concepts which must be implemented by a p-kernel and illustrate their flexibility. Then, we analyze the performance critical points. We show what performance is achievable, that the efficiency is sufficient with respect to macro-kernels and why some published contradictory measurements are not evident. Furthermore, we describe some implementation techniques and illustrate why p-kernels are inherently not port able, although they improve portability of the whole system.},
+	eventtitle = {{ACM} Symposium on Operating Systems Principles ({SOPS})},
+	pages = {237--250},
+	booktitle = {{SOSP} '95 Proceedings of the 15th {ACM} Symposium on Operating Systems Principles},
+	publisher = {{ACM}},
+	author = {Liedtke, Jochen},
+	date = {1995-12-03},
+	keywords = {{PhD}, Operating Systems, Microkernel},
+	file = {Liedtke - 1995 - On Micro-Kernel Construction.pdf:/home/ppenna/Zotero/storage/7A7C485T/Liedtke - 1995 - On Micro-Kernel Construction.pdf:application/pdf}
+}
+
+@inproceedings{baumann_multikernel:_2009,
+	location = {Big Sky, Montana, {USA}},
+	title = {The Multikernel: A New {OS} Architecture for Scalable Multicore Systems},
+	isbn = {978-1-60558-752-3},
+	url = {https://dl.acm.org/citation.cfm?doid=1629575.1629579},
+	doi = {10.1145/1629575.1629579},
+	series = {{SOSP} '09},
+	abstract = {Commodity computer systems contain more and more processor cores and exhibit increasingly diverse architectural tradeoffs, including memory hierarchies, interconnects, instruction sets and variants, and {IO} configurations. Previous high-performance computing systems have scaled in specific cases, but the dynamic nature of modern client and server workloads, coupled with the impossibility of statically optimizing an {OS} for all workloads and hardware variants pose serious challenges for operating system structures. We argue that the challenge of future multicore hardware is best met by embracing the networked nature of the machine, rethinking {OS} architecture using ideas from distributed systems. We investigate a new {OS} structure, the multikernel, that treats the machine as a network of independent cores, assumes no inter-core sharing at the lowest level, and moves traditional {OS} functionality to a distributed system of processes that communicate via message-passing. We have implemented a multikernel {OS} to show that the approach is promising, and we describe how traditional scalability problems for operating systems (such as memory management) can be effectively recast using messages and can exploit insights from distributed systems and networking. An evaluation of our prototype on multicore systems shows that, even on present-day machines, the performance of a multikernel is comparable with a conventional {OS}, and can scale better to support future hardware.},
+	eventtitle = {{ACM} {SIGOPS} Symposium on Operating Systems Principles ({SOSP})},
+	pages = {29--44},
+	booktitle = {{SOSP} '09 Proceedings of the 22nd {ACM} Symposium on Operating Systems Principles},
+	publisher = {{ACM}},
+	author = {Baumann, Andrew and Barham, Paul and Dagand, Pierre-Evariste and Harris, Tim and Isaacs, Rebecca and Peter, Simon and Roscoe, Timothy and Schüpbach, Adrian and Singhania, Akhilesh},
+	date = {2009-10-11},
+	keywords = {{PhD}, Operating Systems, Multikernel, Barrelfish, Starred},
+	file = {Baumann et al. - 2009 - The Multikernel A New OS Architecture for Scalabl.pdf:/home/ppenna/Zotero/storage/3QUVJR68/Baumann et al. - 2009 - The Multikernel A New OS Architecture for Scalabl.pdf:application/pdf}
+}
+
+@inproceedings{engler_exokernel:_1995,
+	location = {Copper Mountain, Colorado, {USA}},
+	title = {Exokernel: An Operating System Architecture for Application-Level Resource Management},
+	isbn = {0-89791-715-4},
+	url = {https://dl.acm.org/citation.cfm?doid=224057.224076},
+	doi = {10.1145/224056.224076},
+	series = {{SOSP} '95},
+	abstract = {Traditional operating systems limit the performance, flexibility, and functionality of applications by fixing the interface and implemen- tation of operating system abstractions such as interprocess com- munication and virtual memory. The exokernel operating system architecture addresses this problem by providing application-level management of physical resources. In the exokernel architecture, a small kernel securely exports all hardware resources through a low- level interface to untrusted library operating systems. Library op- erating systems use this interface to implement system objects and policies. This separation of resource protection from management allows application-specific customization of traditional operating system abstractions by extending, specializing, or even replacing libraries. We have implemented a prototype exokernel operating system. Measurements show that most primitive kernel operations (such as exception handling and protected control transfer) are ten to 100 times faster than in Ultrix, a mature monolithic {UNIX} operating sys- tem. In addition, we demonstrate that an exokemel allows applica- tions to control machine resources in ways not possible in traditional operating systems. For instance, virtual memory and interprocess communication abstractions are implemented entirely within an application-level library. Measurements show that application-level virtual memory and interprocess communication primitives are five to 40 times faster than Ultrix's kernel primitives. Compared to state-of-the-art implementations from the literature, the prototype exokemel system is at least five times faster on operations such as exception dispatching and interprocess communication.},
+	eventtitle = {{ACM} Symposium on Operating Systems Principles ({SOPS})},
+	pages = {251--266},
+	booktitle = {{SOSP} '95 Proceedings of the 15th {ACM} Symposium on Operating Systems Principles},
+	publisher = {{ACM}},
+	author = {Engler, Dawson and Kaashoek, Frans and O'Toole Jr., James},
+	date = {1995-12-03},
+	year = {1995},
+	keywords = {{PhD}, Operating Systems, Exokernel},
+	file = {Engler et al. - 1995 - Exokernel An Operating System Architecture for Ap.pdf:/home/ppenna/Zotero/storage/CXCQS932/Engler et al. - 1995 - Exokernel An Operating System Architecture for Ap.pdf:application/pdf}
+}
+
+@article{appavoo_experience_2005,
+	title = {Experience with K42, An Open-Source, Linux-compatible, Scalable Operating-System Kernel},
+	volume = {44},
+	issn = {0018-8670},
+	url = {https://ieeexplore.ieee.org/document/5386724},
+	doi = {10.1147/sj.442.0427},
+	abstract = {K42 is an open-source, Linux-compatible, scalable operating-system kernel that can be used for rapid prototyping of operating-system policies and mechanisms. This paper reviews the structure and design philosophy of K42 and discusses our experiences in developing and using K42 in the open-source environment.},
+	pages = {427--440},
+	number = {2},
+	journaltitle = {{IBM} Systems Journal},
+	author = {Appavoo, Jonathan and Auslander, Marc and Butrico, Maria and da Silva, Dilma and Krieger, Orran and Mergen, Mark and Ostrowski, Michal and Rosenburg, Bryan and Wisniewski, Robert and Xenidis, Jimi},
+	date = {2005},
+	keywords = {{PhD}, Operating Systems, Microkernel},
+	file = {Appavoo et al. - 2005 - Experience with K42, An Open-Source, Linux-compati.pdf:/home/ppenna/Zotero/storage/4AEZSM54/Appavoo et al. - 2005 - Experience with K42, An Open-Source, Linux-compati.pdf:application/pdf}
+}
+
+@book{waldspurger_lottery_1994,
+	location = {Monterey, {USA}},
+	title = {Lottery Scheduling: Flexible Proportional-Share Resource Management},
+	abstract = {This paper presents lottery scheduling, a novel randomized resource allocation mechanism. Lottery scheduling provides efficient, responsive control over the relative execution rates of computations. Such control is beyond the capabilities of conventional schedulers, and is desirable in systems that service requests of varying importance, such as databases, media-based applications, and networks. Lottery scheduling also supports modular resource management by enabling concurrent modules to insulate their resource allocation policies from one another. A currency abstraction is introduced to flexibly name, share, and protect resource rights. We also show that lottery scheduling can be generalized to manage many diverse resources, such as I/O bandwidth, memory, and access to locks. We have implemented a prototype lottery scheduler for the Mach 3.0 microkernel, and found that it provides flexible and responsive control over the relative execution rates of a wide range of applications. The overhead imposed by our unoptimized prototype is comparable to that of the standard Mach timesharing policy.},
+	pagetotal = {1},
+	publisher = {{USENIX} Association},
+	author = {Waldspurger, Carl A. and Weihl, William},
+	date = {1994},
+	keywords = {Needs Review, {PhD}, Operating Systems},
+	file = {Attachment:/home/ppenna/Zotero/storage/NXTXN8HD/Waldspurger, Weihl - 1994 - Lottery Scheduling Flexible Proportional-Share Resource Management.pdf:application/pdf}
+}
+
+@inproceedings{baumann_your_2009,
+	location = {Monte Verità, Switzerland},
+	title = {Your Computer Is Already a Distributed System. Why Isn't Your {OS}?},
+	url = {https://dl.acm.org/citation.cfm?id=1855580},
+	series = {{HotOS} '09},
+	abstract = {Cache coherence protocols encourage {OS} designers to selectively ignore this, except for limited performance reasons. Commodity {OS} designs have mostly assumed fixed, uniform {CPU} architectures and memory systems. It is time for researchers to abandon this approach and engage fully with the distributed nature of the machine, carefully applying (but also modifying) ideas from dis- tributed systems to the design of new operating systems. Our goal is to make it easier to design and construct robust {OSes} that effectively exploit heterogeneous, multi- core hardware at scale. We approach this through a new {OS} architecture resembling a distributed system. The use of heterogeneous multicore in commodity computer systems, running dynamic workloads with in- creased reliance on {OS} services, will face newchallenges not addressed by monolithic {OSes} in either general- purpose or high-performance computing. It is possible that existing {OS} architectures can be evolved and scaled to address these challenges. How- ever, we claim that stepping back and reconsidering {OS} structure is a better way to get insight into the problem, regardless of whether the goal is to retrofit new ideas to existing systems, or to replace them over time.},
+	eventtitle = {Workshop on Hot Topics in Operating Systems ({HotOS})},
+	pages = {12--12},
+	booktitle = {{HotOS} '09 Proceedings of the 12th Workshop on Hot Topics in Operating Systems},
+	publisher = {{USENIX} Association},
+	author = {Baumann, Andrew and Peter, Simon and Schüpbach, Adrian and Singhania, Akhilesh and Roscoe, Timothy and Barham, Paul and Isaacs, Rebecca},
+	date = {2009-05-18},
+	keywords = {{PhD}, Operating Systems, Survery, Multikernel},
+	file = {Baumann et al. - 2009 - Your computer Is Already a Distributed system. Why.pdf:/home/ppenna/Zotero/storage/CGK77BCC/Baumann et al. - 2009 - Your computer Is Already a Distributed system. Why.pdf:application/pdf}
+}
+
+@inproceedings{boyd-wickizer_analysis_2010,
+	location = {Vancouver, Canada},
+	title = {An Analysis of Linux Scalability to Many Cores},
+	url = {https://dl.acm.org/citation.cfm?id=1924944},
+	abstract = {This paper analyzes the scalability of seven system applications (Exim, memcached, Apache, {PostgreSQL}, gmake, Psearchy, and {MapReduce}) running on Linux on a 48- core computer. Except for gmake, all applications trigger scalability bottlenecks inside a recent Linux kernel. Using mostly standard parallel programming techniques– this paper introduces one new technique, sloppy counters– these bottlenecks can be removed from the kernel or avoided by changing the applications slightly. Modifying the kernel required in total 3002 lines of code changes. A speculative conclusion from this analysis is that there is no scalability reason to give up on traditional operating system organizations just yet.},
+	eventtitle = {{USENIX} Conference on Operating Systems Design and Implementation ({OSDI})},
+	pages = {1--16},
+	booktitle = {{OSDI}'10 Proceedings of the 9th {USENIX} Conference on Operating Systems Design and Implementation},
+	publisher = {{USENIX} Association},
+	author = {Boyd-Wickizer, Silas and Clements, Austin and Mao, Yandong and Pesterev, Aleksey and Kaashoek, Frans and Morris, Robert and Zeldovich, Nickolai},
+	date = {2010},
+	keywords = {{PhD}, Operating Systems},
+	file = {Boyd-Wickizer et al. - 2010 - An Analysis of Linux Scalability to Many Cores.pdf:/home/ppenna/Zotero/storage/ZDNHE3MB/Boyd-Wickizer et al. - 2010 - An Analysis of Linux Scalability to Many Cores.pdf:application/pdf}
+}
+
+@inproceedings{ge_distributed_2010,
+	location = {Anaheim, {USA}},
+	title = {Distributed Task Migration for Thermal Management in Many-Core Systems},
+	isbn = {978-1-4503-0002-5},
+	doi = {10.1145/1837274.1837417},
+	abstract = {In the deep submicron era, thermal hot spots and large temperature gradients significantly impact system reliability, performance, cost and leakage power. As the system complexity increases, it is more and more difficult to perform thermal management in a centralized manner because of state explosion and the overhead of monitoring the entire chip. In this paper, we propose a framework for distributed thermal management for many-core systems where balanced thermal profile can be achieved by proactive task migration among neighboring cores. The framework has a low cost agent residing in each core that observes the local workload and temperature and communicates with its nearest neighbor for task migration/exchange. By choosing only those migration requests that will result balanced workload without generating thermal emergency, the proposed framework maintains workload balance across the system and avoids unnecessary migration. Experimental results show that, compared with existing proactive task migration technique, our approach generates less hotspots and smoother thermal gradient with less migration overhead and higher processing throughput.},
+	pages = {579},
+	booktitle = {Design Automation Conference ({DAC})},
+	publisher = {{IEEE}},
+	author = {Ge, Yang and Malani, Parth and Qiu, Qinru},
+	date = {2010},
+	keywords = {Needs Review, {PhD}, Operating Systems},
+	file = {Attachment:/home/ppenna/Zotero/storage/KJ8Z7K8Q/Ge, Malani, Qiu - 2010 - Distributed Task Migration for Thermal Management in Many-Core Systems.pdf:application/pdf}
+}
+
+@inproceedings{rhoden_improving_2011,
+	location = {Cascais, Portugal},
+	title = {Improving Per-Node Efficiency in the Datacenter with New {OS} Abstractions},
+	isbn = {978-1-4503-0976-9},
+	url = {https://dl.acm.org/citation.cfm?id=2038941},
+	doi = {10.1145/2038916.2038941},
+	series = {{SoCC} '11},
+	abstract = {We believe datacenters can benefit from more focus on per-node efficiency, performance, and predictability, versus the more common focus so far on scalability to a large number of nodes. Improving per-node efficiency decreases costs and fault recovery because fewer nodes are required for the same amount of work. We believe that the use of complex, general-purpose operating systems is a key contributing factor to these inefficiencies. Traditional operating system abstractions are ill-suited for high performance and parallel applications, especially on large-scale {SMP} and many-core architectures. We propose four key ideas that help to overcome these limitations. These ideas are built on a philosophy of exposing as much information to applications as possible and giving them the tools necessary to take advantage of that information to run more efficiently. In short, high-performance applications need to be able to peer through layers of virtualization in the software stack to optimize their behavior. We explore abstractions based on these ideas and discuss how we build them in the context of a new operating system called Akaros.},
+	eventtitle = {{ACM} Symposium on Cloud Computing ({SoCC})},
+	pages = {1--8},
+	booktitle = {{SoCC} '11 Proceedings of the 2nd {ACM} Symposium on Cloud Computing},
+	publisher = {{ACM}},
+	author = {Rhoden, Barret and Klues, Kevin and Zhu, David and Brewer, Eric},
+	date = {2011-10-26},
+	keywords = {{PhD}, Operating Systems, Multikernel, Starred, Akaros},
+	file = {Attachment:/home/ppenna/Zotero/storage/JF3WDSEL/Rhoden et al. - 2011 - Improving Per-Node Efficiency in the Datacenter with New OS Abstractions.pdf:application/pdf}
+}
+
+@inproceedings{koufaty_bias_2010,
+	location = {New York, New York, {USA}},
+	title = {Bias scheduling in heterogeneous multi-core architectures},
+	isbn = {978-1-60558-577-2},
+	url = {http://portal.acm.org/citation.cfm?doid=1755913.1755928},
+	doi = {10.1145/1755913.1755928},
+	abstract = {Heterogeneous architectures that integrate a mix of big and small cores are very attractive because they can achieve high single-threaded performance while enabling high performance thread-level parallelism with lower energy costs. Despite their benefits, they pose significant challenges to the operating system software. Thread scheduling is one of the most critical challenges. In this paper we propose bias scheduling for heterogeneous systems with cores that have different microarchitectures and performance.We identify key metrics that characterize an application bias, namely the core type that best suits its resource needs. By dynamically monitoring application bias, the operating system is able to match threads to the core type that can maximize system throughput. Bias scheduling takes advantage of this by influencing the existing scheduler to select the core type that bests suits the application when performing load balancing operations. Bias scheduling can be implemented on top of most existing schedulers since its impact is limited to changes in the load balancing code. In particular, we implemented it over the Linux scheduler on a real system that models microarchitectural differences accurately and found that it can improve system performance significantly, and in proportion to the application bias diversity present in the workload. Unlike previous work, bias scheduling does not require sampling of {CPI} on all core types or offline profiling. We also expose the limits of dynamic voltage/frequency scaling as an evaluation vehicle for heterogeneous systems.},
+	pages = {125},
+	booktitle = {European Conference on Computer Systems ({EuroSys})},
+	publisher = {{ACM} Press},
+	author = {Koufaty, David and Reddy, Dheeraj and Hahn, Scott},
+	date = {2010},
+	keywords = {Needs Review, {PhD}, Operating Systems}
+}
+
+@inproceedings{kobbe_distrm:_2011,
+	location = {Taipei, Taiwan},
+	title = {{DistRM}: Distributed Resource Management for On-Chip Many-Core Systems},
+	isbn = {978-1-4503-0715-4},
+	url = {http://dl.acm.org/citation.cfm?doid=2039370.2039392},
+	doi = {10.1145/2039370.2039392},
+	abstract = {The trend towards many-core systems comes with various issues, among them their highly dynamic and non-predictable workloads. Hence, new paradigms for managing resources of many-core systems are of paramount importance. The problem of resource management, e.g. mapping applications to processor cores, is {NP}-hard though, requiring heuristics especially when performed online. In this paper, we therefore present a novel resource-management scheme that supports so-called malleable applications. These applications can adopt their level of parallelism to the assigned resources. By design, our (decentralized) scheme is scalable and it copes with the computational complexity by focusing on local decision-making. Our simulations show that the quality of the mapping decisions of our approach is able to stay near the mapping quality of state-of-the-art (i.e. centralized) online schemes for malleable applications but at a reduced overall communication overhead (only about 12,75\% on a 1024 core system with a total workload of 32 multi-threaded applications). In addition, our approach is scalable as opposed to a centralized scheme and therefore it is practically useful for employment in large many-core systems as our extensive studies and experiments show.},
+	pages = {119--128},
+	booktitle = {International conference on Hardware/Software Codesign and System Synthesis ({CODES})},
+	publisher = {{ACM}},
+	author = {Kobbe, Sebastian and Bauer, Lars and Lohmann, Daniel and Schröder-Preikschat, Wolfgang and Henkel, Jörg},
+	date = {2011},
+	keywords = {Needs Review, {PhD}, Operating Systems},
+	file = {Attachment:/home/ppenna/Zotero/storage/DC46VDH5/Kobbe et al. - 2011 - DistRM Distributed Resource Management for On-Chip Many-Core Systems.pdf:application/pdf}
+}
+
+@article{polze_trends_2012,
+	title = {Trends and Challenges in Operating Systems - From Parallel Computing to Cloud Computing},
+	volume = {24},
+	doi = {10.1002/cpe.1903},
+	abstract = {Over many decades, advances in computer system design and processor manufacturing have resulted in an ever-increasing per-chip transistor count, which, in combination with increased clock frequencies, has led to a tremendous increase in single-thread performance in desktop and server {CPUs}. The trend to higher integration in processor manufacturing will continue for the next couple of years. However, the increased transistor count leads to additional compute cores within a {CPU}, rather than to an increased single-thread performance. Programming and utilizing these future {CPUs} impose a number of problems commonly referred to as the multicore challenge. These trends primarily affect server computers, whereas on client systems, a break-even between users' willingness to pay for compute power and today's {CPU} implementation seems to be reached. In this paper, we argue that the full exploitation of many-core architectures on the server demands better support by the operating system. This relates to the support of new application programming models, the seamless integration of internal and external services, security, as well as on monitoring and (self-adaptive) management of such server environments. Within this paper, we discuss three major trends that will drive the adoption of server operating systems to modern many-core hardware: dynamic parallelism, dynamic partitioning, and dynamic provisioning.},
+	pages = {676--686},
+	number = {7},
+	journaltitle = {Concurrency and Computation: Practice and Experience ({CCPE})},
+	author = {Polze, Andreas and Tröger, Peter},
+	date = {2012},
+	keywords = {Needs Review, {PhD}, Operating Systems}
+}
+
+@article{peter_arrakis:_2016,
+	title = {Arrakis: The Operating System Is the Control Plane},
+	volume = {33},
+	issn = {0734-2071},
+	url = {http://doi.acm.org/10.1145/2812806},
+	doi = {10.1145/2812806},
+	abstract = {Recent device hardware trends enable a new approach to the design of network server operating systems. In a traditional operating system, the kernel mediates access to device hardware by server applications to enforce process isolation as well as network and disk security. We have designed and implemented a new operating system, Arrakis, that splits the traditional role of the kernel in two. Applications have direct access to virtualized I/O devices, allowing most I/O operations to skip the kernel entirely, while the kernel is re-engineered to provide network and disk protection without kernel mediation of every operation. We describe the hardware and software changes needed to take advantage of this new abstraction, and we illustrate its power by showing improvements of 2 to 5x in latency and 9 × throughput for a popular persistent {NoSQL} store relative to a well-tuned Linux implementation.},
+	pages = {1--30},
+	number = {4},
+	journaltitle = {{ACM} Transactions on Computer Systems},
+	shortjournal = {{TOCS}},
+	author = {Peter, Simon and Li, Jialin and Zhang, Irene and Ports, Dan R. K. and Woos, Doug and Krishnamurthy, Arvind and Anderson, Thomas and Roscoe, Timothy},
+	date = {2016-01-04},
+	keywords = {{PhD}, Operating Systems, Arrakis, Nanokernel},
+	file = {Peter et al. - 2016 - Arrakis The Operating System Is the Control Plane.pdf:/home/ppenna/Zotero/storage/N8S4B8AR/Peter et al. - 2016 - Arrakis The Operating System Is the Control Plane.pdf:application/pdf}
+}
+
+@inproceedings{madhavapeddy_unikernels:_2013,
+	location = {Houston, Texas, {USA}},
+	title = {Unikernels: Library Operating Systems for the Cloud},
+	volume = {48},
+	url = {http://doi.acm.org/10.1145/2499368.2451167},
+	doi = {10.1145/2499368.2451167},
+	series = {{ASPLOS} '13},
+	eventtitle = {International Conference on Architectural Support for Programming Languages and Operating Systems ({ASPLOS})},
+	pages = {461--472},
+	booktitle = {{ASPLOS} '13 Proceedings of the 18th International Conference on Architectural Support for Programming Languages and Operating Systems},
+	publisher = {{ACM}},
+	author = {Madhavapeddy, Anil and Mortier, Richard and Rotsos, Charalampos and Scott, David and Singh, Balraj and Gazagnaire, Thomas and Smith, Steven and Hand, Steven and Crowcroft, Jon},
+	date = {2013-03},
+	keywords = {{PhD}, Operating Systems, Exokernel},
+	file = {Madhavapeddy et al. - 2013 - Unikernels Library Operating Systems for the Clou.pdf:/home/ppenna/Zotero/storage/WDJL8VU4/Madhavapeddy et al. - 2013 - Unikernels Library Operating Systems for the Clou.pdf:application/pdf}
+}
+
+@inproceedings{baumann_embracing_2008,
+	location = {Boston, Massachusetts, {USA}},
+	title = {Embracing Diversity in the Barrelfish Manycore Operating System},
+	url = {http://www.barrelfish.org/publications/barrelfish_mmcs08.pdf},
+	series = {{MMCS} '08},
+	abstract = {We discuss diversity and heterogeneity in manycore computer systems, and identify three distinct types of diversity, all of which present challenges to operating system designers and application writers alike. We observe that most current research work has concentrated on a narrow form of one of these (non-uniform memory access) to the exclusion of the others, and show with measurement why this makes sense in the short term. However, we claim that this is not viable in the long term given current processor and system roadmaps, and present our approach to dealing with both heterogeneous hardware within a single system, and the increasing diversity of complete system configurations: we directly represent detailed system information in an expressive “system knowledge base” accessible to applications and {OS} subsystems alike, and use this to control tasks such as scheduling and resource allocation.},
+	eventtitle = {Workshop on Managed Many-Core Systems ({MMCS})},
+	booktitle = {{MMCS} '08 Proceedings of the Workshop on Managed Many-Core Systems},
+	publisher = {{ACM}},
+	author = {Baumann, Andrew and Barham, Paul and Harris, Tim and Isaacs, Rebecca},
+	date = {2008-06-24},
+	keywords = {{PhD}, Operating Systems, Multikernel, Barrelfish, Starred},
+	file = {Baumann et al. - 2008 - Embracing diversity in the Barrelfish manycore ope.pdf:/home/ppenna/Zotero/storage/ZIQYUQ3X/Baumann et al. - 2008 - Embracing diversity in the Barrelfish manycore ope.pdf:application/pdf}
+}
+
+@article{tanenbaum_distributed_1985,
+	title = {Distributed Operating Systems},
+	volume = {17},
+	issn = {0360-0300},
+	url = {http://doi.acm.org/10.1145/6041.6074},
+	doi = {10.1145/6041.6074},
+	abstract = {Distributed operating systems have many aspects in common with centralized ones, but they also differ in certain ways. This paper is intended as an introduction to distributed operating systems, and especially to current university research about them. After a discussion of what constitutes a distributed operating system and how it is distinguished from a computer network, various key design issues are discussed. Then several examples of current research projects are examined in some detail, namely, the Cambridge Distributed Computing System, Amoeba, V, and Eden.},
+	pages = {419--470},
+	number = {4},
+	journaltitle = {{ACM} Computing Surveys},
+	shortjournal = {{CSUR}},
+	author = {Tanenbaum, Andrew S. and Van Renesse, Robbert},
+	date = {1985-12},
+	keywords = {{PhD}, Operating Systems, Survery, Multikernel, Starred},
+	file = {Tanenbaum and Van Renesse - 1985 - Distributed Operating Systems.pdf:/home/ppenna/Zotero/storage/KCUBXKDY/Tanenbaum and Van Renesse - 1985 - Distributed Operating Systems.pdf:application/pdf}
+}
+
+@inproceedings{nightingale_helios:_2009,
+	location = {Big Sky, Montana, {USA}},
+	title = {Helios: Heterogeneous Multiprocessing with Satellite Kernels},
+	isbn = {978-1-60558-752-3},
+	url = {http://doi.acm.org/10.1145/1629575.1629597},
+	doi = {10.1145/1629575.1629597},
+	series = {{SOSP} '09},
+	abstract = {Helios is an operating system designed to simplify the task of writing, deploying, and tuning applications for heterogeneous platforms. Helios introduces satellite kernels, which export a single, uniform set of {OS} abstractions across {CPUs} of disparate architectures and performance characteristics. Access to I/O services such as file systems are made transparent via remote message passing, which extends a standard microkernel message-passing abstraction to a satellite kernel infrastructure. Helios retargets applications to available {ISAs} by compiling from an intermediate language. To simplify deploying and tuning application performance, Helios exposes an affinity metric to developers. Affinity provides a hint to the operating system about whether a process would benefit from executing on the same platform as a service it depends upon.
+
+We developed satellite kernels for an {XScale} programmable I/O card and for cache-coherent {NUMA} architectures. We offloaded several applications and operating system components, often by changing only a single line of metadata. We show up to a 28\% performance improvement by offloading tasks to the {XScale} I/O card. On a mail-server benchmark, we show a 39\% improvement in performance by automatically splitting the application among multiple {NUMA} domains.},
+	eventtitle = {{ACM} Symposium on Operating Systems Principles ({SOPS})},
+	pages = {221--234},
+	booktitle = {{SOSP} '09 Proceedings of the {ACM} {SIGOPS} 22nd Symposium on Operating Systems Principles},
+	publisher = {{ACM}},
+	author = {Nightingale, Edmund B. and Hodson, Orion and {McIlroy}, Ross and Hawblitzel, Chris and Hunt, Galen},
+	date = {2009-10-11},
+	keywords = {{PhD}, Operating Systems, Multikernel, Starred, {HeliOS}},
+	file = {Nightingale et al. - 2009 - Helios Heterogeneous Multiprocessing with Satelli.pdf:/home/ppenna/Zotero/storage/DEXPA8DY/Nightingale et al. - 2009 - Helios Heterogeneous Multiprocessing with Satelli.pdf:application/pdf}
+}
+
+@article{hunt_singularity:_2007,
+	title = {Singularity: Rethinking the Software Stack},
+	volume = {41},
+	issn = {0163-5980},
+	url = {http://doi.acm.org/10.1145/1243418.1243424},
+	doi = {10.1145/1243418.1243424},
+	abstract = {Every operating system embodies a collection of design decisions. Many of the decisions behind today's most popular operating systems have remained unchanged, even as hardware and software have evolved. Operating systems form the foundation of almost every software stack, so inadequacies in present systems have a pervasive impact. This paper describes the efforts of the Singularity project to re-examine these design choices in light of advances in programming languages and verification tools. Singularity systems incorporate three key architectural features: software-isolated processes for protection of programs and system services, contract-based channels for communication, and manifest-based programs for verification of system properties. We describe this foundation in detail and sketch the ongoing research in experimental systems that build upon it.},
+	pages = {37--49},
+	number = {2},
+	journaltitle = {{ACM} {SIGOPS} Operating Systems Review},
+	author = {Hunt, Galen C. and Larus, James R.},
+	date = {2007-04},
+	keywords = {{PhD}, Operating Systems},
+	file = {Hunt and Larus - 2007 - Singularity Rethinking the Software Stack.pdf:/home/ppenna/Zotero/storage/4ZWU3TBY/Hunt and Larus - 2007 - Singularity Rethinking the Software Stack.pdf:application/pdf}
+}
+
+@inproceedings{peter_arrakis:_2013,
+	location = {Santa Ana Pueblo, New Mexico, {USA}},
+	title = {Arrakis: A Case for the End of the Empire},
+	url = {https://www.usenix.org/conference/hotos13/arrakis-case-end-empire},
+	series = {{HotOS} '13},
+	abstract = {In this paper, we argue that recent device hardware trends enable a new approach to the design of operating systems: instead of the operating system mediating access to hardware, applications run directly on top of virtualized I/O devices, where the kernel provides only control plane services. This new division of labor is transparent to the user, except that applications are able to offer more robust extensibility, security and performance than was previously possible. We discuss some of the hardware and software challenges to realizing this vision.},
+	eventtitle = {Workshop on Hot Topics in Operating Systems ({HotOS})},
+	booktitle = {{HotOS} '09 Proceedings of the 14th Workshop on Hot Topics in Operating Systems},
+	publisher = {{USENIX} Association},
+	author = {Peter, Simon and Anderson, Thomas},
+	date = {2013-05-13},
+	keywords = {{PhD}, Operating Systems, Survery, Nanokernel},
+	file = {Peter and Anderson - 2013 - Arrakis A Case for the End of the Empire.pdf:/home/ppenna/Zotero/storage/EB29V5HR/Peter and Anderson - 2013 - Arrakis A Case for the End of the Empire.pdf:application/pdf}
+}
+
+@inproceedings{chapin_hive:_1995,
+	location = {Copper Mountain, Colorado, {USA}},
+	title = {Hive: Fault Containment for Shared-memory Multiprocessors},
+	isbn = {0-89791-715-4},
+	url = {http://doi.acm.org/10.1145/224056.224059},
+	doi = {10.1145/224056.224059},
+	series = {{SOSP} '95},
+	pages = {12--25},
+	booktitle = {Proceedings of the Fifteenth {ACM} Symposium on Operating Systems Principles},
+	publisher = {{ACM}},
+	author = {Chapin, J. and Rosenblum, M. and Devine, S. and Lahiri, T. and Teodosiu, D. and Gupta, A.},
+	date = {1995-12-03},
+	keywords = {{PhD}, Operating Systems, Multikernel, Starred, Hive},
+	file = {Chapin et al. - 1995 - Hive Fault Containment for Shared-memory Multipro.pdf:/home/ppenna/Zotero/storage/KVLSKWT6/Chapin et al. - 1995 - Hive Fault Containment for Shared-memory Multipro.pdf:application/pdf}
+}
+
+%========= EMMANUEL *** =====
+@inproceedings{gysi15,
+  author={T. Gysi and T. Grosser and T. Hoefler},
+  title= {MODESTO: Data-centric Analytic Optimization of Complex Stencil Programs on Heterogeneous Architectures},
+  comments = {Proceedings of the 29th International Conference on Supercomputing},
+  booktitle = {ACM ICS},  
+  pages={177--186},
+  year={2015}
+}
+
+@INPROCEEDINGS{buono13, 
+author={D. Buono and M. Danelutto and S. Lametti and M. Torquati}, 
+booktitle={2013 21st Euromicro International Conference on Parallel, Distributed, and Network-Based Processing}, 
+title={Parallel Patterns for General Purpose Many-Core}, 
+year={2013}, 
+pages={131-139},  
+doi={10.1109/PDP.2013.27}, 
+ISSN={1066-6192}, 
+month={Feb},}
+
+@book{demmel97,
+  title={Applied numerical linear algebra},
+  author={Demmel, James W},
+  year={1997},
+  publisher={{SIAM}}
+}
+
+@article{fur,
+author = {Economou, Andrew D. and Ohazama, Atsushi and Porntaveetus, Thantrira and Sharpe, Paul T and Kondo, Shigeru and Basson, M. Albert and Gritli-Linde, Amel and Cobourne, Martyn T. and Green, Jeremy B. A.},
+title = {Periodic stripe formation by a Turing-mechanism operating at growth zones in the mammalian palate},
+journal = {Nature genetics},
+year = {2012},
+issn = {1546-1718},
+pages = {348--351},
+volume = {44},
+issue = {3},
+doi = {10.1038/ng.1090},
+}
+
+@article{Castro-Souza-CCPE:2016,
+author = {Souza, Matheus A. and Penna, Pedro Henrique and Queiroz, Matheus M. and Pereira, Alyson D. and G{\'{o}}es, Lu{\'{i}}s Fabricio W. and Freitas, Henrique C. and Castro, M{\'{a}}rcio and Navaux, Philippe O.A. and M{\'{e}}haut, Jean‐Fran{\c{c}}ois},
+doi = {10.1002/cpe.3892},
+issn = {1532-0634},
+journal = {Concurrency and Computation: Practice and Experience},
+title = {{CAP Bench: A Benchmark Suite for Performance and Energy Evaluation of Low-power Many-core Processors}},
+year = {2016}
+}
+
+@inproceedings{SCCEnergy:2012,
+address = {New Brunswick, Canada},
+author = {Totoni, Ehsan and Behzad, Babak and Ghike, Swapnil and Torrellas, Josep},
+booktitle = {IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
+doi = {10.1109/ISPASS.2012.6189208},
+pages = {78--87},
+publisher = {IEEE Computer Society},
+title = {{Comparing the Power and Performance of Intel's SCC to State-of-the-Art CPUs and GPUs}},
+year = {2012}
+}
+
+@inproceedings{thoraransen16, 
+author={S. Thorarensen and R. Cuello and C. Kessler and L. Li and B. Barry}, 
+booktitle={2016 24th Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP)}, 
+title={Efficient Execution of SkePU Skeleton Programs on the Low-Power Multicore Processor Myriad2}, 
+year={2016}, 
+pages={398-402},  
+doi={10.1109/PDP.2016.123}, 
+month={Feb},
+}
+
+@article{sunway:2016,
+  author    = {Haohuan Fu and
+               Junfeng Liao and
+               Jinzhe Yang and
+               Lanning Wang and
+               Zhenya Song and
+               Xiaomeng Huang and
+               Chao Yang and
+               Wei Xue and
+               Fangfang Liu and
+               Fang{-}Li Qiao and
+               Wei Zhao and
+               Xunqiang Yin and
+               Chaofeng Hou and
+               Chenglong Zhang and
+               Wei Ge and
+               Jian Zhang and
+               Yangang Wang and
+               Chunbo Zhou and
+               Guangwen Yang},
+  title     = {The Sunway TaihuLight supercomputer: system and applications},
+  journal   = {{SCIENCE} {CHINA} Information Sciences},
+  volume    = {59},
+  number    = {7},
+  pages     = {072001:1--072001:16},
+  year      = {2016},
+  doi       = {10.1007/s11432-016-5588-7},
+}
+
+@inproceedings{Castro-SBAC-PAD:2014,
+	Address = {Paris, France},
+	Author = {Castro, M\'{a}rcio and Dupros, Fabrice and Francesquini, Emilio and M\'{e}haut, Jean-Fran\c{c}ois and Navaux, Philippe Olivier Alexandre},
+	Booktitle = {International Symposium on Computer Architecture and High Performance Computing (SBAC-PAD)},
+	Date-Modified = {2014-12-20 16:48:35 +0000},
+	Pages = {57--64},
+	Publisher = {IEEE Computer Society},
+	Title = {Energy Efficient Seismic Wave Propagation Simulation on a Low-power Manycore Processor},
+	Year = {2014},
+	Bdsk-Url-1 = {http://dx.doi.org/10.1109/SBAC-PAD.2014.28}
+}
+
+@article{Castro-PARCO:2016,
+abstract = {The large processing requirements of seismic wave propagation simulations make High Performance Computing (HPC) architectures a natural choice for their execution. However, to keep both the current pace of performance improvements and the power consumption under a strict power budget, HPC systems must be more energy efficient than ever. As a response to this need, energy-efficient and low-power processors began to make their way into the market. In this paper we employ a novel low-power processor, the MPPA-256 manycore, to perform seismic wave propagation simulations. It has 256 cores connected by a NoC, no cache-coherence and only a limited amount of on-chip memory. We describe how its particular architectural characteristics influenced our solution for an energy-efficient implementation. As a counterpoint to the low-power MPPA-256 architecture, we employ Xeon Phi, a performance-centric manycore. Although both processors share some architectural similarities, the challenges to implement an efficient seismic wave propagation kernel on these platforms are very different. In this work we compare the performance and energy efficiency of our implementations for these processors to proven and optimized solutions for other hardware platforms such as general-purpose processors and a GPU. Our experimental results show that MPPA-256 has the best energy efficiency, consuming at least 77{\%} less energy than the other evaluated platforms, whereas the performance of our solution for the Xeon Phi is on par with a state-of-the-art solution for GPUs.},
+author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Dupros, Fabrice and Aochi, Hideo and Navaux, Philippe O.A. and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+doi = {10.1016/j.parco.2016.01.011},
+issn = {01678191},
+journal = {Parallel Computing},
+keywords = {Energy efficiency,HPC,MPPA-256,Performance,Seismic wave propagation,Xeon Phi},
+pages = {108--120},
+title = {{Seismic wave propagation simulations on low-power and performance-centric manycores}},
+url = {http://www.sciencedirect.com/science/article/pii/S0167819116000417},
+volume = {54},
+year = {2016}
+}
+
+@inproceedings{Castro-IA3:2013,
+	Address = {Denver, EUA},
+	Author = {Castro, M\'{a}rcio and Francesquini, Emilio and Ngu\'{e}l\'{e}, Thomas M. and M\'{e}haut, Jean-Fran\c{c}ois},
+	Booktitle = {Workshop on Irregular Applications: Architectures \& Algorithms (IA\^{}3)},
+	Date-Modified = {2014-12-20 17:53:13 +0000},
+	Pages = {5:1--5:8},
+	Publisher = {ACM},
+	Title = {Analysis of Computing and Energy Performance of Multicore, {NUMA}, and Manycore Platforms for an Irregular Application},
+	Year = {2013}
+	}
+
+@inproceedings{Varghese14,
+	Address = {Phoenix, USA},
+	Author = {Anish Varghese and Bob Edwards and Gaurav Mitra and Alistair P. Rendell},
+	Booktitle = {International Parallel Distributed Processing Symposium Workshops (IPDPSW)},
+	Date-Modified = {2014-12-20 17:04:09 +0000},
+	Pages = {984-992},
+	Publisher = {IEEE Computer Society},
+	Title = {Programming the {A}dapteva {E}piphany 64-Core Network-on-Chip Coprocessor},
+	Year = {2014},
+	Bdsk-Url-1 = {http://dx.doi.org/10.1109/IPDPSW.2014.112}
+}
+
+@inproceedings{Valero:2012,
+	Address = {New York, USA},
+	Author = {Alessandro Morari and Antonino Tumeo and Oreste Villa and Simone Secchi and Mateo Valero},
+	Booktitle = {International Symposium on Computer Architecture and High Performance Computing (SBAC-PAD)},
+	Date-Modified = {2014-12-29 13:40:46 +0000},
+	Pages = {171-178},
+	Publisher = {IEEE Computer Society},
+	Title = {Efficient Sorting on the {T}ilera Manycore Architecture},
+	Year = {2012}
+}
+
+@article{cole-skeleton:2004,
+ author = {Cole, Murray},
+ title = {Bringing Skeletons out of the Closet: A Pragmatic Manifesto for Skeletal Parallel Programming},
+ journal = {Parallel Comput.},
+ issue_date = {March 2004},
+ volume = {30},
+ number = {3},
+ month = mar,
+ year = {2004},
+ issn = {0167-8191},
+ pages = {389--406},
+ numpages = {18},
+ url = {http://dx.doi.org/10.1016/j.parco.2003.12.002},
+ doi = {10.1016/j.parco.2003.12.002},
+ acmid = {1007985},
+ publisher = {Elsevier Science Publishers B. V.},
+ address = {Amsterdam, The Netherlands, The Netherlands},
+ keywords = {MPI, libraries, parallel programming, patterns, skeletons},
+} 
+
+@inproceedings{steuwer11, 
+ author = {Steuwer, Michel and Kegel, Philipp and Gorlatch, Sergei},
+ title = "{SkelCL - A Portable Skeleton Library for High-Level GPU Programming}",
+ booktitle = {Proceedings of the 2011 IEEE International Symposium on Parallel and Distributed Processing Workshops and PhD Forum},
+ series = {IPDPSW '11},
+ year = {2011},
+ isbn = {978-0-7695-4577-6},
+ pages = {1176--1182},
+ numpages = {7},
+ DELurl = {http://dx.doi.org/10.1109/IPDPS.2011.269},
+ DELdoi = {10.1109/IPDPS.2011.269},
+ acmid = {2058824},
+ publisher = {IEEE Computer Society},
+ address = {Washington, DC, USA},
+ location = {Shanghai, China},
+}
+
+@inproceedings{enmyren10,
+ author = {Enmyren, Johan and Kessler, Christoph W.},
+ title = "{SkePU: A Multi-backend Skeleton Programming Library for multi-GPU Systems}",
+ booktitle = {Proceedings of the Fourth International Workshop on High-level Parallel Programming and Applications},
+ series = {HLPP '10},
+ year = {2010},
+ isbn = {978-1-4503-0254-8},
+ location = {Baltimore, Maryland, USA},
+ pages = {5--14},
+ numpages = {10},
+ DELurl = {http://doi.acm.org/10.1145/1863482.1863487},
+ DELdoi = {10.1145/1863482.1863487},
+ acmid = {1863487},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {cuda, data parallelism, gpu, opencl, skeleton programming},
+}
+
+@inproceedings{dinechin13, 
+ author={B. D. de Dinechin and R. Ayrignac and P. E. Beaucamps and P. Couvert and B. Ganne and P. G. de Massas and F. Jacquet and S. Jones and N. M. Chaisemartin and F. Riss and T. Strudel}, 
+ booktitle={High Performance Extreme Computing Conference (HPEC), 2013 IEEE}, 
+ title={A clustered manycore processor architecture for embedded and accelerated applications}, 
+ year={2013}, 
+ pages={1-6},
+ month={Sept}
+}
+
+@inproceedings{silva10,
+ author = {da Silva, Alisson Rodrigo and Gouv\^{e}a,Jr., Maury Meirelles},
+ title = "{Cloud Dynamics Simulation with Cellular Automata}",
+ comments = {Proceedings of the 2010 Summer Computer Simulation Conference},
+ booktitle = {SCSC},
+ pages = {278--283},
+ year = {2010}
+} 
+
+@article{gardner70,
+ author = {Gardner, Martin},
+ title = "{Mathematical Games - The Fantastic Combinations of John Conway's New Solitaire Game 'Life'}",
+ journal = {Scientific American},
+ volume = 223,
+ number = 3,
+ year = 1970
+}
+
+@inproceedings{penha05,
+ author = {Penha, Dulcineia and Corr{\^e}a, Joao and Ramos, Luiz and Pousa, Christiane and Martins, Carlos},
+ title = "{Performance Evaluation of Programming Paradigms and Languages Using Multithreading on Digital Image Processing}",
+ booktitle = {Proceedings of the 4th WSEAS International Conference on Applied Mathematics and Computer Science},
+ series = {AMCOS'05},
+ year = {2005},
+ isbn = {960-8457-17-3},
+ location = {Rio de Janeiro, Brazil},
+ pages = {12:1--12:6},
+ articleno = {12},
+ numpages = {6},
+ DELurl = {http://dl.acm.org/citation.cfm?id=1374038.1374050},
+ acmid = {1374050},
+ publisher = {World Scientific and Engineering Academy and Society (WSEAS)},
+ address = {Stevens Point, Wisconsin, USA},
+ keywords = {concurrency, convolution, image, languages, paradigms, parallelism, performance, programming},
+}
+
+@inproceedings{Rahman:2011:USC:2016604.2016641,
+ author = {Rahman, Shah M. Faizur and Yi, Qing and Qasem, Apan},
+ title = {Understanding Stencil Code Performance on Multicore Architectures},
+ booktitle = {ACM International Conference on Computing Frontiers (CF)},
+ year = {2011},
+ isbn = {978-1-4503-0698-0},
+ location = {Ischia, Italy},
+ pages = {30:1--30:10},
+ doi = {10.1145/2016604.2016641},
+ publisher = {ACM},
+ }
+
+@article {pereira15,
+ author = {Pereira, Alyson D. and Ramos, Luiz and G\'{o}es, Lu\'{i}s F. W.},
+ title = {{PSkel}: A Stencil Programming Framework for CPU-GPU Systems},
+ journal = {Concurrency and Computation: Practice and Experience},
+ year = {2015},
+ pages = {4938--4953},
+ volume = {27},
+ number = {17},
+}
+
+@article{Castro-IA3-JPDC:2014,
+author = {Francesquini, Emilio and Castro, M{\'{a}}rcio and Penna, Pedro H. and Dupros, Fabrice and de Freitas, Henrique Cota and Navaux, Philippe Olivier Alexandre and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+doi = {10.1016/j.jpdc.2014.11.002},
+journal = {J. Parallel Distrib. Comput.},
+pages = {32--48},
+title = {On the Energy Efficiency and Performance of Irregular Applications on Multicore, {NUMA} and Manycore Platforms},
+volume = {76},
+year = {2014}
+}
+
+
+
+@article{lutz13,
+ author = {Lutz, Thibaut and Fensch, Christian and Cole, Murray},
+ journal = {ACM Trans. Archit. Code Optim.},
+ number = {4},
+ title = "{PARTANS: An Autotuning Framework for Stencil Computation on Multi-GPU Systems}",
+ volume = {9},
+ pages = {59:1-59:24},
+ year = {2013}
+}
+
+@inproceedings{holewinski12,
+ author = {Holewinski, Justin and Pouchet, Louis-No\"{e}l and Sadayappan, P.},
+ booktitle = {ACM ICS},
+ title = "{High-Performance Code Generation for Stencil Computations on GPU Architectures}",
+ pages={311--320},
+ year = {2012}
+}
+
+@inproceedings{mccool10,
+ author = {McCool, Michael D.},
+ booktitle = {USENIX HotPar},
+ title = "{Structured Parallel Programming With Deterministic Patterns}",
+ pages ={5},
+ year = {2010}
+} 
+
+
+@inproceedings{christen11,
+ author = {Christen, Matthias and Schenk, Olaf and Burkhart, Helmar},
+ booktitle = {IEEE IPDPS},
+ title = {PATUS: A Code Generation and Autotuning Framework for Parallel Iterative Stencil Computations on Modern Microarchitectures},
+ pages={676--687}, 
+ year = {2011}
+}
+
+@article{meng11,
+ issn = {0885-7458},
+ journal = {International Journal of Parallel Programming},
+ volume = {39},
+ number = {1},
+ title="{A Performance Study for Iterative Stencil Loops on GPUs with Ghost Zone Optimizations}",
+ publisher={Springer US},
+ author={Meng, Jiayuan and Skadron, Kevin},
+ pages={115-142},
+ year = 2011
+}
+
+@book{gonzalez06,
+ author = {Gonzalez, Rafael C. and Woods, Richard E.},
+ publisher = {Prentice-Hall, Inc.},
+ title = "{Digital Image Processing (3rd Edition)}",
+ year = 2006}
+
+
+@inproceedings{datta08,
+  author = {Datta, Kaushik and Murphy, Mark and Volkov, Vasily and Williams, Samuel and Carter, Jonathan and Oliker, Leonid and Patterson, David and Shalf, John and Yelick, Katherine},
+  booktitle = {ACM/IEEE SC},
+  title = "{Stencil Computation Optimization and Auto-Tuning on State-of-the-Art Multicore Architectures}",
+  year = {2008}
+}
+
+@inproceedings{maruyama11,
+ author = {Maruyama, Naoya and Nomura, Tatsuo and Sato, Kento and Matsuoka, Satoshi},
+ booktitle = {ACM/IEEE SC},
+ title = "{Physis: An Implicitly Parallel Programming Model for Stencil Computations on Large-Scale GPU-Accelerated Supercomputers}",
+ pages={11:1--11:12},
+ year = {2011}
+}
+
+@inproceedings{kamil10,
+ author = {Kamil, S. and Chan, C. and Oliker, L. and Shalf, J. and Williams, S.},
+ booktitle = {IEEE IPDPS},
+ title = "{An Auto-Tuning Framework for Parallel Multicore Stencil Computations}",
+ pages={1--12},
+ year = {2010}
+}
+
+@inproceedings{rosten05,
+ author = {Rosten, Edward and Tom Drummond},
+ booktitle = {IEEE ICCV},
+ title = "{Fusing Points and Lines for High Performance Tracking}",
+ pages = {1508--1515},
+ year = {2005}
+}
+
+@inproceedings{rosten06,
+ author = {Rosten, Edward and Tom Drummond},
+ booktitle = {ECCV},
+ title = "{Machine Learning for High-Speed Corner Detection}",
+ pages = {430--443},
+ year = {2006}
+}
+
+% ======= ***** news =====
+@inproceedings{Appel:1991:VMP:106972.106984,
+ author = {Appel, Andrew W. and Li, Kai},
+ title = {Virtual Memory Primitives for User Programs},
+ booktitle = {Proceedings of the Fourth International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS IV},
+ year = {1991},
+ isbn = {0-89791-380-9},
+ location = {Santa Clara, California, USA},
+ pages = {96--107},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/106972.106984},
+ doi = {10.1145/106972.106984},
+ acmid = {106984},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@inproceedings{Cao:1994:IPA:1267638.1267651,
+ author = {Cao, Pei and Felten, Edward W. and Li, Kai},
+ title = {Implementation and Performance of Application-controlled File Caching},
+ booktitle = {Proceedings of the 1st USENIX Conference on Operating Systems Design and Implementation},
+ series = {OSDI '94},
+ year = {1994},
+ location = {Monterey, California},
+ articleno = {13},
+ url = {http://dl.acm.org/citation.cfm?id=1267638.1267651},
+ acmid = {1267651},
+ publisher = {USENIX Association},
+ address = {Berkeley, CA, USA},
+}
+
+@inproceedings{Harty:1992:APM:143365.143511,
+ author = {Harty, Kieran and Cheriton, David R.},
+ title = {Application-controlled Physical Memory Using External Page-cache Management},
+ booktitle = {Proceedings of the Fifth International Conference on Architectural Support for Programming Languages and Operating Systems},
+ series = {ASPLOS V},
+ year = {1992},
+ isbn = {0-89791-534-8},
+ location = {Boston, Massachusetts, USA},
+ pages = {187--197},
+ numpages = {11},
+ url = {http://doi.acm.org/10.1145/143365.143511},
+ doi = {10.1145/143365.143511},
+ acmid = {143511},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@inproceedings{Krueger:1993:TDA:165854.165867,
+ author = {Krueger, Keith and Loftesness, David and Vahdat, Amin and Anderson, Thomas},
+ title = {Tools for the Development of Application-specific Virtual Memory Management},
+ booktitle = {Proceedings of the Eighth Annual Conference on Object-oriented Programming Systems, Languages, and Applications},
+ series = {OOPSLA '93},
+ year = {1993},
+ isbn = {0-89791-587-9},
+ location = {Washington, D.C., USA},
+ pages = {48--64},
+ numpages = {17},
+ url = {http://doi.acm.org/10.1145/165854.165867},
+ doi = {10.1145/165854.165867},
+ acmid = {165867},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@article{Stonebraker:1981:OSS:358699.358703,
+ author = {Stonebraker, Michael},
+ title = {Operating System Support for Database Management},
+ journal = {Commun. ACM},
+ issue_date = {July 1981},
+ volume = {24},
+ number = {7},
+ month = jul,
+ year = {1981},
+ issn = {0001-0782},
+ pages = {412--418},
+ numpages = {7},
+ url = {http://doi.acm.org/10.1145/358699.358703},
+ doi = {10.1145/358699.358703},
+ acmid = {358703},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {buffer management, database management, file systems, interprocess communication, operating systems, scheduling},
+}
+
+@article{Levy:Exception,
+ author = {Thekkath, C.A. and Levy, H.M.},
+ year = {1994},
+ month = {01},
+ pages = {110-119},
+ title = {Hardware and Software Support for Efficient Exception Handling},
+ volume = {29},
+ doi = {10.1145/195470.195515}
+}
+
+@article{darpa:exascale,
+ author = {Kogge, Peter and Borkar, S and Campbell, Dan and Carlson, William and Dally, William and Denneau, Monty and Franzon, Paul and Harrod, William and Hiller, Jon and Keckler, Stephen and Klein, Dean and Lucas, Robert},
+ year = {2008},
+ month = {01},
+ pages = {},
+ title = {ExaScale Computing Study: Technology Challenges in Achieving Exascale Systems},
+ volume = {15},
+ journal = {Defense Advanced Research Projects Agency Information Processing Techniques Office (DARPA IPTO), Techinal Representative}
+}
+
+@unknown{nanvix,
+ author = {Penna, Pedro Henrique},
+ year = {2017},
+ month = {03},
+ pages = {},
+ title = {The Nanvix Operating System},
+ doi = {10.13140/RG.2.2.20036.22407}
+}
+
+@unpublished{os:rmen,
+ author = {Penna, Pedro Henrique and Souza, Matheus and Nascimento, Bruno and Castro, Márcio and Broquedis, François and Freitas, Henrique and Méhaut, Jean-François and Podestá Jr, Emmanuel},
+ year = {2018},
+ month = {10},
+ pages = {},
+ note = {Poster},
+ title = {An OS Service for Transparent Remote Memory Accesses in NoC-Based Lightweight Manycores},
+ doi = {10.13140/RG.2.2.19732.96649}
+}
+
+@article{pskel:podesta,
+ author = {Podestá Jr, Emmanuel and Pereira, Alyson and Penna, Pedro Henrique and Rocha, Rodrigo and Góes, Luís},
+ year = {2016},
+ month = {04},
+ pages = {},
+ title = {PSkel-MPPA: Uma Adaptação do Framework PSkel para o Processador Manycore MPPA-256},
+ doi = {10.13140/RG.2.1.3182.5521}
+}
+
+
+@techreport{penna2017,
+	address = {Belo Horizonte},
+	title = {The {Nanvix} {Operating} {System}},
+	url = {https://hal.archives-ouvertes.fr/hal-01495741},
+	abstract = {Nanvix is an operating system created by Pedro H. Penna for educational purposes. It was designed from scratch to be small and simple, and yet modern and fully featured, so that it could help enthusiasts in operating systems, to learn about kernel hacking. The first release of Nanvix came out in early 2011, and since then the system has undergone through several changes. This paper details the internals of Nanvix 1.2. All previous and future releases are available at www.github.com/nanvix/nanvix, under the GPLv3 license.},
+	language = {English},
+	institution = {HAL},
+	author = {Penna, Pedro Henrique},
+	month = mar,
+	year = {2017},
+	doi = {10.13140/RG.2.2.20036.22407},
+	pages = {20},
+}
+
+@inproceedings{penna2017-1,
+	address = {Curitiba, Brazil},
+	series = {{SBESC} `17},
+	title = {Using the {Nanvix} {Operating} {System} in {Undergraduate} {Operating} {System} {Courses}},
+	isbn = {978-1-5386-3590-2},
+	url = {http://ieeexplore.ieee.org/document/8116579/},
+	doi = {10.1109/SBESC.2017.33},
+	abstract = {Operating Systems (OSs) have an important position in the Computer Science curriculum. When students face this subject, they study core concepts, mechanisms and strategies that apply to several fields. To support practical lectures in an OSs course, instructors may adopt an OS on which students can work, exercising their knowledge and enhancing their practical skills. In this context, we present Nanvix, a new OS designed to address this use in undergraduate OSs courses. We introduce a flexible assignment-based teaching methodology for our OS, and we assess the effectiveness of this methodology by applying it in the OSs course of the Pontifical Catholic University of Minas Gerais. When using Nanvix, the average score of the students in the course increased in 11.2\%, and the failure rate dropped 47.7\%. Moreover, we observed that with Nanvix students got more motivated and interested in the OSs field.},
+	language = {English},
+	booktitle = {2017 {VII} {Brazilian} {Symposium} on {Computing} {Systems} {Engineering}},
+	publisher = {IEEE},
+	author = {Penna, Pedro Henrique and Castro, Márcio Bastos and Freitas, Henrique and Méhaut, Jean-François and Caram, João},
+	month = nov,
+	year = {2017},
+	pages = {193--198}
+}
