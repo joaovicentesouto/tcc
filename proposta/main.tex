@@ -445,23 +445,16 @@ Critérios de aceitação
 % resumo em português
 \begin{resumo}
 
-Ainda precisa ser desenvolvido.
+As decisões de design no desenvolvimento de qualquer aplicação influência diretamente seu desempenho e consumo de energia.
+Sistemas operacionais não são diferentes, incorporando um conjunto de decisões de design que, em muitos casos, são herdadas e permanecem inalteradas mesmo que o hardware e o software tenham evoluído com o passar dos anos.
+Pelo fato de sistemas operacionais formarem a base de quase todas as pilhas de software, suas inadequações nos sistemas atuais possuem um impacto generalizado. \cite{hunt_singularity:_2007}. 
 
-% Aplicações paralelas podem ser classificadas de acordo com o padrão de computação e coordenação. Dentre os padrões mais conhecidos destacam-se o \textit{map}, \textit{reduce}, \textit{pipeline}, \textit{scan} e \textit{stencil}. Este último é muito utilizado em áreas como simulação de física partículas, previsão meteorológica, termodinâmica, resolução de funções diferenciais, manipulação de imagens, entre outras. O PSkel é um \textit{framework} de programação paralela desenvolvido para simplificar o desenvolvimento de aplicações que seguem esse padrão. Utilizando uma abstração de alto nível, o programador define o \emph{kernel} da computação, enquanto o \textit{framework} se encarrega de executar a computação paralela em \textit{multicores} e \textit{Graphics Processing Units} (GPUs) de maneira eficiente.
+O objetivo deste trabalho é propor um sistema operacional minimalista, denominado \textit{exokernel}, que abstraia a alocação, manipulação e segurança dos recursos de comunicação do processador \textit{manycore} Kalray MPPA-256.
+A motivação para o seu desenvolvimento está relacionado às abstrações de alto-nível para comunicação inter-processos (\ipc) disponibilizadas pela Kalray, onde, apesar de fornecer uma facilidade no desenvolvimento de aplicações paralelas e distribuídas para o MPPA-256, elas dependem de uma pilha de software acessiva.
+Como alternativa, é possível utilizar bibliotecas de baixo nível que são utilizadas por estas abstrações, porém, características como alocação, sincronização, multiplexação e segurança dos recursos necessários, torna o desenvolvimento muito mais complexo.
+Neste ponto, o \textit{exokernel} fornecerá as mesmas abstrações \ipc disponíveis agregado a menor quantidade de camadas de software intermediárias, havendo a possibilidade do aumento do desempenho e eficiência energética do processador MPPA-256.
 
-% O objetivo deste trabalho é propor uma adaptação do \textit{framework} PSkel para o processador \textit{manycore} emergente MPPA-256 batizada de PSkel-MPPA. A motivação para tal adaptação está relacionada à dificuldade de desenvolvimento de aplicações do padrão \textit{stencil} para o MPPA-256, tendo em vista as suas características arquiteturais intrínsecas que tornam o desenvolvimento de aplicações onerosas e suscetíveis a erros. Dentre as principais características destacam-se a sua arquitetura de memória híbrida (memória compartilha e distribuída), comunicação explícita entre processos e ausência de coerência em \textit{cache}. A adaptação do \textit{framework} permitirá simplificar o desenvolvimento de aplicações \textit{stencil} para o MPPA-256, escondendo do desenvolvedor detalhes de implementação tais como a comunicação e a distribuição de computações entre os núcleos de processamento, abstraindo as características que dificultam o desenvolvimento. 
-
-% Serão efetuados diversos experimentos com a solução proposta para o MPPA-256 (PSkel-MPPA) e também em outras arquiteturas suportadas pelo PSkel (\textit{multicores} e GPUs). Esses resultados permitirão a realização de um estudo comparativo dos resultados obtidos. Como métricas, serão considerados o desempenho e a eficiência energética obtidos nessas arquiteturas, além de outras possíveis métricas que possam ser interessantes para o projeto.
-
-%  Segundo a \citeonline[3.1-3.2]{NBR6028:2003}, o resumo deve ressaltar o
-%  objetivo, o método, os resultados e as conclusões do documento. A ordem e a extensão
-%  destes itens dependem do tipo de resumo (informativo ou indicativo) e do
-%  tratamento que cada item recebe no documento original. O resumo deve ser
-%  precedido da referência do documento, com exceção do resumo inserido no
-%  próprio documento. (\ldots) As palavras-chave devem figurar logo abaixo do
-%  resumo, antecedidas da expressão Palavras-chave:, separadas entre si por
-%  ponto e finalizadas também por ponto.\citeonline{Emma}.\citeonline{Nielsen}.
-%  \citeonline{Goodfellow-et-al-2016}
+... Falta um parágrafo sobre resultados e conclusões. (última frase soa como conclusão?) ...
 
  \vspace{\onelineskip}
     
@@ -541,25 +534,6 @@ Ainda precisa ser desenvolvido.
 \chapter{Projeto}
 \section{Introdução}
 
-% An Overview on the Manycore Era
-% Nos últimos anos, o aumento constante da frequência de \textit{clock} e aperfeiçoamento de técnicas de paralelismo à nível de instrução deu lugar à corrida pelo aumento do paralelismo à nível de \textit{threads}, dando origem a \textit{chips} com um quantidade elevada de núcleos de processamento, nomeados \textit{multi-core} \cite{overview_hpc}. Porém, como apontado pelo DARPA \cite{DARPA}, o desenvolvimento de plataformas de \hpc mostram aumento exponencial de performance mas também de consumo de energia.
-
-% Durante a década passada, o desempenho de plataformas de Computação de Alto Desempenho (\textit{High Performance Computing} -- HPC) pôde ser atribuído ao crescente número de núcleos de processamento em um único \textit{chip}.
-% Porém, o aumento do consumo energético, em paralelo ao aumento da complexidade arquitetural, desses \textit{chips} abriu lugar para pesquisas sobre uma nova categoria de processadores de alto desempenho e baixo consumo energético.
-
-% Um processador que pertença a essa categoria é denominado \textit{low-power manycore processor?} e apresentam diversas características arquitetônicas únicas em comparação aos processadores \textit{multi-cores} existentes \cite{PENNA}, tais como,
-% (i) integração de centenas, até milhares, de núcleos em um único Chip,
-% (ii) apresentam um sistema de memória restrito e
-% (iii) realizam a comunicação por troca de mensagens encima de uma Rede-em-Chip (\textit{Network-On-Chip} -- NoC).
-% Desta forma, apesar
-
-
-% % An Overview on the Manycore Era
-% Nos últimos anos, o aumento constante da frequência de \textit{clock} e aperfeiçoamento de técnicas de paralelismo à nível de instrução deu lugar à corrida pelo aumento do paralelismo à nível de \textit{threads}, dando origem a \textit{chips} com um quantidade elevada de núcleos de processamento, nomeados \textit{multi-core} \cite{overview_hpc}. Porém, como apontado pelo DARPA \cite{DARPA}, o desenvolvimento de plataformas de \hpc mostram aumento exponencial de performance mas também de consumo de energia.
-
-
-% ==================== 1 =======================
-% An Overview on the Manycore Era
 Nas últimas décadas, a medida que os limites de melhoria para um único núcleo de processamento começaram a ser alcançados, o desenvolvimento de arquiteturas paralelas, possuindo processadores com centenas e até milhares de núcleos, supriu a crescente necessidade de poder de processamento das plataformas de Computação de Alto Desempenho (\hpc).
 No entanto, o aumento da capacidade computacional foi acompanhada pelo aumento no consumo de energia, tornando-se a maior desvantagem para plataformas \hpc.
 
@@ -596,7 +570,6 @@ Neste contexto, a pilha de software disponibilizada pelo processador \mppa possu
 Nos \textit{Io Clusters}, é possível executar uma variação do sistema operacional Linux, \rtems, possibilitando a comunicação da máquina \textit{host} com o dispositivo, além da comunicação entre os \textit{IO} e \textit{Compute Clusters}.
 Por outro lado, nos \textit{Compute Clusters}, o sistema operacional projetado para adequar-se aos 2-MB de memória local, \nodeos, é executado no \rman com o objetivo de auxiliar e gerenciar a comunicação dos \pe com os demais elementos do processador.
 
-
 % FOTO DA SOFTWARE STACK
 \begin{figure}[t]
 	\begin{center}
@@ -623,28 +596,6 @@ Uma alternativa viável, capaz de fornecer o gerenciamento e proteção dos recu
 % , com foco em fornecer primitivas \ipc,
 que seja independente de plataforma.
 Deste modo, os custos e complexidades no desenvolvimento vão ser amenizados pela maior familiaridade provida pelo \textit{exokernel} e portabilidade das aplicações permitindo o uso personalizado dos recursos disponíveis.
-
-% Um exemplo de arquitetura \textit{manycore} é o processador \mppa  \cite{(CASTRO et al., 2013) emmanuel - proposta}, como pode ser visto na figure{mppa}, o \mppa é composto por 4 subsistemas de E/S, 16 clusters de computação e uma \noc responsável pela interconeção desses elementos.
-% Cada subsistema de E/S possui 4 núcleos, compartilham uma cache coerente de 2 níveis e são responsáveis por realizarem a comunicação com a máquina \textit{host}.
-% Cada \textit{clusters} de computação possui 16 núcleos de propósito geral, denominado \pe, 1 núcleo dedicado ao sistema operacional, denominado \rman, e compartilham 2-MB de memória local sem suporte à coerência de cache.
-% A comunicação pode ser realizada através de duas \nocs distintas, uma de baixa banda para pequenas mensagens, denominada \cnoc; e outra com banda maior dedicada a transferência de dados, denominada \dnoc.
-
-
-% % Exokernel approach
-% Falar da camada exokernel, não implementa servições apenas expoe componentes de hardware para melhor gerenciamento
-
-% % MPPA specs
-% Arquitetura foco deste trabalho: Hardware e software
-
-% % Problem Definition e justificativa
-% Falar como pretendo usar bibliotecas de mais baixo nível para melhorar a performance e gargalo do SO para as aplicações
-
-% % Results
-% Uma abstração que forneça e gerencia recursos e que otimize o uso de tais recursos. Menos overhead do OS.
-
-% Recentemente, vários processadores \textit{manycore} de alto desempenho e baixo consumo de energia estão surgindo. Um exemplo deles é o MPPA-256 \cite{Castro-IA3:2013}, que fornece um grande poder de processamento para o paralelismo de dados e tarefas com um baixo consumo de energia. Apesar desses processadores \textit{manycore} fornecerem uma melhor eficiência energética~\cite{Castro-IA3-JPDC:2014}, eles possuem uma arquitetura particular que torna o desenvolvimento de aplicações paralelas uma tarefa desafiadora~\cite{Varghese14,Castro-PARCO:2016,Castro-SBAC-PAD:2014}. Núcleos de processamento sem coerência de \textit{cache} são, geralmente, distribuídos em uma arquitetura organizada em \textit{clusters}, onde cada \textit{cluster} possui uma memória local (compartilhada somente entre os núcleos do \textit{cluster}). Dessa forma, a comunicação entre \textit{clusters} deve que ser efetuada através de uma Rede-em-Chip (\textit{Network-On-Chip} -- NoC) de maneira distribuída.
-% Por essa razão, o tempo de comunicação pode variar entre os núcleos que estão se comunicando.
-% %Explicar as dificuldades.
 
 \section{Objetivos}
 
@@ -694,15 +645,6 @@ Para isso, o orientando necessitará utilizar as bibliotecas de baixo nível do 
 \item Entregas cumpridas.
 \end{itemize}
 \end{flushleft}
-
-Deve responder às perguntas: Como o trabalho será feito? Onde o trabalho será feito?
-Com que ferramentas e meios o trabalho será feito?
-Neste capítulo você mostrará como será executada a pesquisa e o desenho
-metodológico que se pretende adotar: será do tipo quantitativa, qualitativa, descritiva,
-explicativa ou exploratória.
-Indique os passos de desenvolvimento do modelo ou produto se o TCC direcionado
-para tal finalidade. A denominação Método de Pesquisa poderia ser substituída por
-Procedimentos Metodológicos ou Materiais e Métodos.
 
 \section{Método de Pesquisa}
  O andamento deste projeto ocorrerá em paralelo a pesquisa de doutorado do coorientador deste projeto, Pedro Henrique Penna, e utilizará como base o protótipo do sistema operacional \textit{multikernel} implementando pelo grupo de pesquisa Nanvix \cite{Penna2017,Penna2017-1} disponibilizado em \url{https://github.com/nanvix/multikernel}.
