@@ -618,11 +618,26 @@ Critérios de aceitação
     \section{Exokernel}
     \label{sec:exokernel}
     
-        (Desenvolver melhor a explicação, este trecho estava na introdução)
+        O \textit{Exokernel} é um sistema operacional minimalista, desenvolvido pelo \unimit, que implementa uma arquitetura diferente dos sistemas operacionais tradicionais. 
+        Ao contrário da abordagem comum escolhida por sistemas operacionais monolíticos, expondo os recursos de hardware através de abstrações de alto nível, o \textit{Exokernel} transfere a responsabilidade de implementar essas abstrações para o desenvolver das aplicações, como pode ser visto na figura \ref{figexokernel}.
+        Neste ponto, o \textit{Exokernel} também se opõe a ideia dos \textit{microkernels}, que, ao contrário de buscar fornecer as mesmas abstrações de sistemas monolíticos com uma quantidade menor de camadas intermediárias, propõe apenas separar a função de proteção dos recursos de hardware da função de gerenciamento.
+        Desta forma, ao não impor abstrações ao desenvolvedor, permite a personalização do ambiente de execução em prol do domínio da aplicação.
         
-        Como solução, Engler \textit{et al}, propõe um micro \textit{kernel} que exporta, com segurança, todos os recursos de hardware através de uma interface de baixo nível.
-        Desta forma, bibliotecas e aplicações utilizam essa interface para implementar suas próprias abstrações, personalizando-as de acordo com o domínio da aplicação.
-        A separação entre proteção de recursos e gerenciamento permite a personalização específica das abstrações tradicionais de sistemas operacionais, estendendo, especializando ou até mesmo substituindo-as \cite{engler_exokernel:_1995}.
+        % FOTO DO EXOKERNEL
+        \begin{figure}[t]
+        	\begin{center}
+            	\caption{Arquitetura \textit{Exokernel}.}
+                   \label{figexokernel}
+        		\begin{tabular}{ccc}
+            	    \includegraphics[width=0.6\textwidth]{figs/exokernel.png} \\
+        		\end{tabular}
+                \vspace{1ex} \\
+                Fonte: \cite{engler_exokernel:_1995}
+            \end{center}
+           \vspace{-2ex}
+        \end{figure}
+        
+        A arquitetura de software definida pelo \textit{Exokernel} demonstrou ser uma alternativa viável as arquiteturas de sistemas operacionais tradicionais chegando a conclusões como, (i) um número limitado de primitivas simplificadas permite implementa-las eficientemente; (ii) a proteção dos recursos pode ser realizada de forma eficaz com implementações de baixo nível; (iii) abstrações tradicionais de sistemas operacionais podem ser desenvolvidas encima dessas primitivas de forma eficiente; e (iv) aplicações estão aptas a desenvolver abstrações de propósito geral com pequenas modificações em uma biblioteca \cite{engler_exokernel:_1995}.
     
 \chapter{Objetivos}
 \label{cap:objetivos}
