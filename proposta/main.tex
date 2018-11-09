@@ -138,7 +138,7 @@
 \tipotrabalho{Trabalho de Conclusão de Curso de Graduação}
 % O preambulo deve conter o tipo do trabalho, o objetivo, 
 % o nome da instituição e a área de concentração 
-\preambulo{Monografia submetida ao Programa
+\preambulo{Proposta de monografia submetida ao Programa
 de Graduação em Ciência da Computação
 para a obtenção do Grau de Bacharel.}
 % ---
@@ -445,21 +445,22 @@ Critérios de aceitação
 % resumo em português
 \begin{resumo}
 
-As decisões de design no desenvolvimento de qualquer aplicação influência diretamente seu desempenho e consumo de energia.
-Sistemas operacionais não são diferentes, incorporando um conjunto de decisões de design que, em muitos casos, são herdadas e permanecem inalteradas mesmo que o hardware e o software tenham evoluído com o passar dos anos.
-Pelo fato de sistemas operacionais formarem a base de quase todas as pilhas de software, suas inadequações nos sistemas atuais possuem um impacto generalizado. \cite{hunt_singularity:_2007}. 
-
-O objetivo deste trabalho é propor um sistema operacional minimalista, denominado \textit{exokernel}, que abstraia a alocação, manipulação e segurança dos recursos de comunicação do processador \textit{manycore} Kalray MPPA-256.
-A motivação para o seu desenvolvimento está relacionado às abstrações de alto-nível para comunicação inter-processos (\ipc) disponibilizadas pela Kalray, onde, apesar de fornecer uma facilidade no desenvolvimento de aplicações paralelas e distribuídas para o MPPA-256, elas dependem de uma pilha de software acessiva.
-Como alternativa, é possível utilizar bibliotecas de baixo nível que são utilizadas por estas abstrações, porém, características como alocação, sincronização, multiplexação e segurança dos recursos necessários, torna o desenvolvimento muito mais complexo.
-Neste ponto, o \textit{exokernel} fornecerá as mesmas abstrações \ipc disponíveis agregado a menor quantidade de camadas de software intermediárias, havendo a possibilidade do aumento do desempenho e eficiência energética do processador MPPA-256.
-
-... Falta um parágrafo sobre resultados e conclusões. (última frase soa como conclusão?) ...
+    As decisões de design no desenvolvimento de qualquer aplicação influencia diretamente seu desempenho e consumo de energia.
+    Sistemas operacionais não são diferentes, incorporando um conjunto de decisões de design que, em muitos casos, são herdadas e permanecem inalteradas mesmo que o hardware e o software tenham evoluído com o passar dos anos.
+    Pelo fato dos sistemas operacionais formarem a base de quase todas as pilhas de software, suas inadequações possuem um impacto generalizado nos sistemas atuais. \cite{hunt_singularity:_2007}. 
+    
+    O objetivo deste trabalho é propor um sistema operacional minimalista, denominado \textit{exokernel}, que abstraia a alocação, manipulação e segurança dos recursos de comunicação do processador \textit{manycore} Kalray MPPA-256.
+    A motivação para o seu desenvolvimento está relacionado às abstrações de alto-nível para comunicação entre processos (\ipc) disponibilizadas para o processador MPPA-256, onde, apesar de facilitar o desenvolvimento de aplicações paralelas e distribuídas, elas dependem de uma pilha de software acessiva.
+    Como alternativa, é possível recorrer as bibliotecas de baixo nível que são utilizadas por tais abstrações, porém, características como alocação, sincronização, multiplexação e segurança dos recursos necessários, aumenta a complexidade do desenvolvimento e diminui a portabilidade das aplicações.
+    Neste ponto, o \textit{exokernel} fornecerá as mesmas abstrações \ipc disponíveis com uma comunicação entre processos eficiente, agregado a uma quantidade menor de camadas de software intermediárias e conservando a facilidade e portabilidade existentes.
+    
+    Diversos experimentos serão efetuados com as abstrações disponibilizadas pela Kalray e implementadas pelo \textit{exokernel} com o propósito de comparar as duas soluções.
+    A análise ocorrerá sobre métricas relevantes para o projeto, buscando avaliar, principalmente, o aumento do desempenho e eficiência energética do processador MPPA-256.
 
  \vspace{\onelineskip}
     
  \noindent
- \textbf{Palavras-chaves}: \textit{manycores}. MPPA-256. \textit{exokernel}. \textit{lightweith}.
+ \textbf{Palavras-chaves}: \textit{manycores}. MPPA-256. \textit{exokernel}. \textit{lightweight}. \textit{comunicação}. \textit{IPC}.
 \end{resumo}
 
 % resumo em inglês
@@ -531,132 +532,164 @@ Neste ponto, o \textit{exokernel} fornecerá as mesmas abstrações \ipc dispon�
 % ----------------------------------------------------------
 % Introdução
 % ----------------------------------------------------------
-\chapter{Projeto}
-\section{Introdução}
+% \chapter{Projeto}
+% \section{Introdução}
+% \label{sec:introducao}
 
-Nas últimas décadas, a medida que os limites de melhoria para um único núcleo de processamento começaram a ser alcançados, o desenvolvimento de arquiteturas paralelas, possuindo processadores com centenas e até milhares de núcleos, supriu a crescente necessidade de poder de processamento das plataformas de Computação de Alto Desempenho (\hpc).
-No entanto, o aumento da capacidade computacional foi acompanhada pelo aumento no consumo de energia, tornando-se a maior desvantagem para plataformas \hpc.
+\chapter{Introdução}
+\label{cap:introducao}
 
-Em uma era em que os computadores alcançaram o Petaflop, um relatório feito pela Departamento de Defesa do Governo dos Estados Unidos (DARPA/IPTO) \cite{darpa:exascale}, mostra o aumento da preocupação com o consumo de energia, à medida que se torna mais importante ter uma relação equilibrada entre processamento e eficiência energética afim de atingirmos o Exascale. Em virtude disso, pesquisas científicas e industriais voltaram sua atenção para a aplicabilidade de arquiteturas \textit{manycore} de baixo consumo em problemas que demandam alto desempenho \cite{Castro-SBAC-PAD:2014, Castro-PARCO:2016}.
+    Nas últimas décadas, a medida que os limites de melhoria para um único núcleo de processamento começaram a ser alcançados, o desenvolvimento de arquiteturas paralelas, possuindo processadores com centenas e até milhares de núcleos, supriu a crescente necessidade de poder de processamento das plataformas de Computação de Alto Desempenho (\hpc).
+    No entanto, o aumento da capacidade computacional foi acompanhada pelo aumento no consumo de energia, tornando-se a maior desvantagem para plataformas \hpc.
+    
+    Em uma era em que os computadores alcançaram o Petaflop, um relatório feito pelo Departamento de Defesa do Governo dos Estados Unidos (DARPA/IPTO) \cite{darpa:exascale}, mostra o aumento da preocupação com o consumo de energia à medida que se torna mais importante ter uma relação equilibrada entre processamento e eficiência energética afim de atingirmos o \textit{Exascale}. Em virtude disso, pesquisas científicas e industriais voltaram sua atenção para a aplicabilidade de arquiteturas \textit{manycore} de baixo consumo em problemas que demandam alto desempenho \cite{Castro-SBAC-PAD:2014, Castro-PARCO:2016}.
+    
+    Essa nova classe de arquiteturas \textit{manycore} de baixo consumo energético apresentam diversas características distintas das arquiteturas \textit{multicore} e \textit{manycore} existentes, tais como: (i) centenas ou até mesmo milhares de núcleos de processamento simplificados em um único chip; (ii) comunicação entre núcleos baseada em troca de mensagens usando uma Rede-em-Chip (\noc); e (iii) possuem subsistemas de memória restritiva.
+    Embora a relação entre poder de processamento e eficiência energética seja boa, tais características dificultam o desenvolvimento de aplicações paralelas e distribuídas \cite{Castro-Souza-CCPE:2016, Castro-PARCO:2016, os:rmen}.
+    
+    Além dos aspectos de hardware, aspectos de software também influenciam no desenvolvimento e, principalmente, no desempenho de aplicações para qualquer arquitetura.
+    Decisões de design, nível de abstração utilizado e sistema operacional escolhido, por exemplo, podem causar uma sobrecarga indesejada na execução de uma determinada aplicação \cite{Appel:1991:VMP:106972.106984, Cao:1994:IPA:1267638.1267651, Harty:1992:APM:143365.143511, Krueger:1993:TDA:165854.165867, Stonebraker:1981:OSS:358699.358703, Levy:Exception, hunt_singularity:_2007}.
+    Dessa forma, uma aplicação estará acumulando uma sobrecarga indesejada inserida pelas camadas de software intermediárias escolhidas no planejamento de um determinado ambiente de execução.
+    E Mesmo que a aplicação utilize adequadamente todos os recursos disponíveis, ela deixará de explorar possíveis otimizações do seu domínio por não possuir acesso direto ao recursos do hardware.
+    
+    Como alternativa, muitas vezes existe a opção de utilizar bibliotecas de baixo nível que permitem a elaboração personalizada do ambiente de execução, otimizando ao máximo o seu desempenho. Contudo, ao optar por se aproximar de uma plataforma específica, a portabilidade e complexidade do desenvolvimento se tornam um fator crítico ao projeto.
+    
+    Neste contexto, o problema de gerenciamento e proteção dos recursos de hardware (para comunicação entre processos?) associado a um nível de abstração que não comprometa o desempenho de aplicações para processadores \textit{manycores} de baixo consumo energético permanece em discussão.
+    Uma alternativa viável é o desenvolvimento de um \textit{exokernel} que concretize, através do uso de bibliotecas de baixo nível, uma camada de abstração de hardware (HAL) consciente (???) e minimalista (leve).
 
-Essa nova classe de arquiteturas \textit{manycore} de baixo consumo energético apresentam diversas características distintas das arquiteturas \textit{multicore} existentes, tais como: (i) centenas ou até mesmo milhares de núcleos de processamento simplificados em um único chip; (ii) comunicação entre núcleos baseada em troca de mensagens usando uma Rede-em-Chip (\noc); e (iii) possuem subsistemas de memória restritiva.
-Embora a relação entre poder de processamento e eficiência energética seja bom, essas características dificultam o desenvolvimento de aplicações paralelas \cite{Castro-Souza-CCPE:2016, Castro-PARCO:2016, os:rmen}.
+\chapter{Fundamentação Teórica}
+\label{sec:fundamentacao}
 
-Um exemplo de arquitetura \textit{manycore} é o processador \mppa  \cite{Castro-IA3:2013}, como pode ser visto na figura \ref{figmppa}. Ele é um processador que integra 256 núcleos de propósito geral, denominados \pe, e 32 núcleos dedicados ao sistema operacional, denominados \rman, criados sobre uma tecnologia CMOS de 28nm. Esses núcleos são distribuídos através de 16 \textit{clusters} de computação (\textit{Compute Clusters}) com 16 \pe + 1 \rman cada e 4 \textit{quad-core} para os subsistemas de E/S (\textit{IO clusters}). Cada \textit{cluster} e subsistema possui espaço de endereçamento privado, enquanto a comunicação e sincronização ocorrem através de uma \noc dedicada a dados (\dnoc) e outra dedicada a mensagens pequenas (\cnoc).
+    Nesta seção serão descritos os principais objetos de estudos e conceitos necessários para a viabilidade deste projeto. (desenvolver um paragrafo mais completo?)
 
-% FIGURA DA ARQUITETURA
-\begin{figure}[t]
-	\begin{center}
-    	\caption{Visão geral do \mppa.}
-           \label{figmppa}
-		\begin{tabular}{ccc}
-			\includegraphics[width=0.7\textwidth]{figs/mppa.png} \\
-		\end{tabular}
-      \vspace{1ex} \\
-      Fonte: (\citeonline{pskel:podesta})
-     \end{center}
-   \vspace{-2ex}
-\end{figure}
+    \section{Processador \textit{manycore} MPPA-256}
+    \label{sec:mppa}
+    
+        O processador MPPA-256 é um exemplo de arquitetura \textit{manycore} de baixo consumo energético \cite{Castro-IA3:2013} desenvolvido pela empresa francesa Kalray, podendo ser visto na figura \ref{figmppa}.
+        Ele é um processador que integra 256 núcleos de propósito geral, denominados \pe, e 32 núcleos dedicados ao sistema operacional, denominados \rman, criados sobre uma tecnologia CMOS de 28nm.
+        Esses núcleos são distribuídos através de 16 \textit{clusters} de computação (\cpclusters) com 16 \pe e 1 \rman cada, somados a 4 \textit{quad-cores} para os subsistemas de E/S (\ioclusters).
+        Cada \textit{cluster} possui um espaço de endereçamento privado, enquanto as comunicações ocorrem através de uma \noc dedicada a dados (\dnoc) e outra dedicada a controles (\cnoc).
+            
+        % FIGURA DA ARQUITETURA
+        \begin{figure}[t]
+            \begin{center}
+                \caption{Visão geral do \mppa.}
+                    \label{figmppa}
+                \begin{tabular}{ccc}
+                    \includegraphics[width=0.6\textwidth]{figs/mppa-overview.pdf}\\
+                \end{tabular}
+                \vspace{1ex} \\
+                Fonte: (\citeonline{os:rmen})
+            \end{center}
+            \vspace{-2ex}
+        \end{figure}
+            
+        As camadas de software disponibilizadas para o processador \mppa, como pode ser visto na figura \ref{figruntime}, possui
+        (i) suporte a programação paralela e distribuída, como \textit{POSIX}, \textit{OpenMP} etc;
+        (ii) primitivas para sincronização e comunicação entre processos (\ipc), tais como, \textit{sync}, \textit{portal} e \textit{mailbox};
+        (iii) sistemas operacionais para cada tipo de \textit{cluster}; e
+        (iv) acesso aos recursos do hardware através de bibliotecas de baixo nível.
+    
+        % FOTO DA SOFTWARE STACK
+        \begin{figure}[t]
+        	\begin{center}
+            	\caption{Ambiente de execução do processador \mppa.}
+                   \label{figruntime}
+        		\begin{tabular}{ccc}
+        			\includegraphics[width=0.67\textwidth]{figs/software_stack.png} \\
+        		\end{tabular}
+                \vspace{1ex} \\
+                Fonte: Documentação do processador \mppa
+            \end{center}
+           \vspace{-2ex}
+        \end{figure}
+        
+        Nos \ioclusters, é possível executar uma variação do sistema operacional Linux, \rtems, possibilitando a comunicação da máquina \textit{host} com o dispositivo, além da comunicação com os \cpclusters.
+        Sobre outra perspectiva, nos \cpclusters, o sistema operacional \nodeos, projetado para adequar-se aos 2-MB de memória local de um \cpcluster, é executado no \rman com o objetivo de auxiliar e gerenciar a comunicação dos \pe com os demais elementos do processador.
+        Em alternativa a esses ambientes de execução, existe a possibilidade de utilizar o processador MPPA-256 apenas o \textit{hypervisor} e o auxílio de bibliotecas de baixo nível.
+        
+        A comunicação entre processos em \textit{clusters} distintos ocorre de maneira explícita, principalmente  através de três primitivas \ipc.
+        Entre elas estão,
+        (i) \textbf{\textit{Sync:}} permite a sincronização de \textit{N:M} processos através da \cnoc;
+        (ii) \textbf{\textit{Mailbox:}} envio de pequenas mensagens de tamanho (é 64 bytes pela cnoc? confirmar); e
+        (iii) \textbf{\textit{Portal:}} envio de grandes quantidade de dados através da \dnoc.
+        De forma semelhante aos sistemas operacionais, o desenvolvedor tem a liberdade de lidar com bibliotecas de baixo nível que são utilizadas por essas primitivas.
+    
+    \section{Exokernel}
+    \label{sec:exokernel}
+    
+        (Desenvolver melhor a explicação, este trecho estava na introdução)
+        
+        Como solução, Engler \textit{et al}, propõe um micro \textit{kernel} que exporta, com segurança, todos os recursos de hardware através de uma interface de baixo nível.
+        Desta forma, bibliotecas e aplicações utilizam essa interface para implementar suas próprias abstrações, personalizando-as de acordo com o domínio da aplicação.
+        A separação entre proteção de recursos e gerenciamento permite a personalização específica das abstrações tradicionais de sistemas operacionais, estendendo, especializando ou até mesmo substituindo-as \cite{engler_exokernel:_1995}.
+    
+\chapter{Objetivos}
+\label{cap:objetivos}
 
-%\end{figure}\includegraphics[width=10cm]{figs/25gray}
+    Utilizando os conceitos apresentados nos capítulos anteriores como base, o presente trabalho tem como objetivo propor um \textit{exokernel} que exponha e proteja os recursos do processador \mppa com a menor interferência possível dentro do escopo deste trabalho.
+    Essa camada de abstração de hardware deverá ser independente de plataforma com o intuito de proporcionar maior facilidade e menor custo no desenvolvimento de aplicações e bibliotecas para o processador MPPA-256. De modo que não ocorra a perda de desempenho e eficiência energética.
+    
+    O \textit{exokernel} deverá, dada a utilização das primitivas \ipc para comunicação e sincronização entre processos em \textit{clusters} distintos, realizar a alocação, proteção e multiplexação dos recursos necessários, além da configuração e envio/recebimento de dados.
+    Ao prover a comunicação, o \textit{exokernel} deverá implementar uma política de troca de mensagens assíncronas abaixo de sua interface, a fim de providenciar uma comunicação eficiente.
+    Para isso, o orientando necessitará utilizar as bibliotecas de baixo nível do processador \mppa. 
+    
+    \begin{flushleft}
+    \textbf{Restrições:}
+    \begin{itemize}
+        \item Aplicações executadas no processador;
+        \item Utilizar a API do próprio processador;
+        \item Utilizar no máximo 2MB de memória nos \textit{clusters} do processador;
+        \item Utilizar no máximo 2GB de memória no sistema de entrada e saída.
+    \end{itemize}
+    
+    \textbf{Premissas:}
+    \begin{itemize}
+        \item Processador disponível; 
+        \item Acesso ao processador de forma móvel; 
+        \item Computador disponível; 
+        \item Disponibilidade de Água; 
+        \item Disponibilidade de Luz; 
+        \item Disponibilidade de Energia; 
+        \item Acesso à Internet.
+    \end{itemize}
+    
+    \textbf{Marcos:}
+    \begin{itemize}
+        \item Entrega da proposta: 08-05-2017; 
+        \item Entrega do projeto em fase inicial : 12-06-2017; 
+        \item Entrega do resumo em TCC I: 16ª semana de 17.2; 
+        \item Primeira entrega da monografia em TCCII: 9ª semana de 18.1; 
+        \item Apresentação da monografia: 13ª a 14ª semana de 18.1;
+        \item Segunda entrega da monografia em TCCII (versão final): 15ª semana de 18.1.
+    \end{itemize}
+    
+    \textbf{Critérios de aceite:}
+    \begin{itemize}
+        \item Aprovação pela banca;
+        \item Aprovação do orientador;
+        \item Conformidade com as normas definidas pela instituição;
+        \item Prazos cumpridos;
+        \item Entregas cumpridas.
+    \end{itemize}
+    \end{flushleft}
 
-Além dos aspectos de hardware, aspectos de software também influenciam no desenvolvimento e, principalmente, no desempenho de aplicações para qualquer arquitetura.
-O nível de abstração de hardware fornecido, assim como o sistema operacional utilizado, podem causar uma sobrecarga indesejada na execução de uma determinada aplicação \cite{Appel:1991:VMP:106972.106984, Cao:1994:IPA:1267638.1267651, Harty:1992:APM:143365.143511, Krueger:1993:TDA:165854.165867, Stonebraker:1981:OSS:358699.358703, Levy:Exception}.
-Como solução, Engler \textit{et al}, propõe um pequeno \textit{kernel} que exporta, com segurança, todos os recursos de hardware através de uma interface de baixo nível.
-Desta forma, bibliotecas e aplicações utilizam essa interface para implementar suas próprias abstrações, personalizando-as de acordo com o domínio da aplicação.
-A separação entre proteção de recursos e gerenciamento permite a personalização específica das abstrações tradicionais de sistemas operacionais, estendendo, especializando ou até mesmo substituindo-as \cite{engler_exokernel:_1995}.
+\chapter{Método de Pesquisa}
+\label{cap:metodo-pesquisa}
 
-Neste contexto, a pilha de software disponibilizada pelo processador \mppa possui (i) suporte a programação paralela e distribuída, como \textit{POSIX}, \textit{OpenMP} etc; (ii) primitivas para sincronização e comunicação inter-processos (\ipc), tais como, \textit{sync}, \textit{portal} e \textit{mailbox}; e (iii) sistemas operacionais para cada tipo de \textit{cluster} como pode ser visto na figura \ref{figruntime}.
-Nos \textit{Io Clusters}, é possível executar uma variação do sistema operacional Linux, \rtems, possibilitando a comunicação da máquina \textit{host} com o dispositivo, além da comunicação entre os \textit{IO} e \textit{Compute Clusters}.
-Por outro lado, nos \textit{Compute Clusters}, o sistema operacional projetado para adequar-se aos 2-MB de memória local, \nodeos, é executado no \rman com o objetivo de auxiliar e gerenciar a comunicação dos \pe com os demais elementos do processador.
-
-% FOTO DA SOFTWARE STACK
-\begin{figure}[t]
-	\begin{center}
-    	\caption{Ambiente de execução do processador \mppa.}
-           \label{figruntime}
-		\begin{tabular}{ccc}
-			\includegraphics[width=0.7\textwidth]{figs/software_stack.png} \\
-		\end{tabular}
-      \vspace{1ex} \\
-      Fonte: Documentação do processador \mppa
-     \end{center}
-   \vspace{-2ex}
-\end{figure}
-
-%\end{figure}\includegraphics[width=10cm]{figs/25gray}
-
-Porém, ao utilizar esses \textit{runtimes} e abstrações de alto nível, uma aplicação estará acumulando a sobrecarga inserida pela pilha de software e as decisões de \textit{design} escolhidas no planejamento do ambiente de execução da Kalray.
-Mesmo que a aplicação utilize adequadamente todos recursos disponíveis, ela deixará de explorar possíveis otimizações do seu domínio por não possuir acesso direto ao recursos do hardware.
-Apesar disso, a Kalray também oferece bibliotecas de baixo nível com acesso direto aos recursos do processador, como a \textit{LibNoc} utilizada para \ipc.
-% Embora a execução ainda aconteça sobre o \textit{hypervisor}, as camadas intermediárias são eliminadas, ... .
-Contudo, essa opção aumenta o custo e complexidade do desenvolvimento das aplicações.
-
-Uma alternativa viável, capaz de fornecer o gerenciamento e proteção dos recursos do processador \mppa, é o desenvolvimento de um \textit{exokernel} minimalista que utilize as bibliotecas de baixo nível disponíveis para prover uma camada de abstração de hardware (HAL)
-% , com foco em fornecer primitivas \ipc,
-que seja independente de plataforma.
-Deste modo, os custos e complexidades no desenvolvimento vão ser amenizados pela maior familiaridade provida pelo \textit{exokernel} e portabilidade das aplicações permitindo o uso personalizado dos recursos disponíveis.
-
-\section{Objetivos}
-
-Utilizando os conceitos apresentados na seção anterior como base, o objetivo do TCC é desenvolver um \textit{exokernel} minimalista que exponha e proteja os recursos do processador \mppa.
-Essa camada de abstração de hardware deverá  ser independente de plataforma, com o intuito de fornecer uma maior facilidade e menor custo no desenvolvimento das aplicações e bibliotecas que executam acima do \textit{exokernel}, sem a perda de desempenho ou do uso personalizado dos recursos.
-
-O \textit{exokernel} deverá, dada a utilização das primitivas \ipc para comunicação e sincronização entre processos em \textit{clusters} distintos, realizar a alocação, proteção e multiplexação dos recursos necessários, além da configuração e envio/recebimento de dados.
-Ao prover a comunicação, o \textit{exokernel} deverá implementar uma política de troca de mensagens assíncronas abaixo de sua interface, a fim de providenciar uma comunicação eficiente.
-Para isso, o orientando necessitará utilizar as bibliotecas de baixo nível do processador \mppa. 
-
-\begin{flushleft}
-\textbf{Restrições:}
-\begin{itemize}
-\item Aplicações executadas no processador;
-\item Utilizar a API do próprio processador;
-\item Utilizar no máximo 2MB de memória nos \textit{clusters} do processador;
-\item Utilizar no máximo 2GB de memória no sistema de entrada e saída.
-\end{itemize}
-
-\textbf{Premissas:}
-\begin{itemize}
-\item Processador disponível; 
-\item Acesso ao processador de forma móvel; 
-\item Computador disponível; 
-\item Disponibilidade de Água; 
-\item Disponibilidade de Luz; 
-\item Disponibilidade de Energia; 
-\item Acesso à Internet.
-\end{itemize}
-
-\textbf{Marcos:}
-\begin{itemize}
-\item Entrega da proposta: 08-05-2017; 
-\item Entrega do projeto em fase inicial : 12-06-2017; 
-\item Entrega do resumo em TCC I: 16ª semana de 17.2; 
-\item Primeira entrega da monografia em TCCII: 9ª semana de 18.1; 
-\item Apresentação da monografia: 13ª a 14ª semana de 18.1;
-\item Segunda entrega da monografia em TCCII (versão final): 15ª semana de 18.1.
-
-\end{itemize}
-\textbf{Critérios de aceite:}
-\begin{itemize}
-\item Aprovação pela banca;
-\item Aprovação do orientador;
-\item Conformidade com as normas definidas pela instituição;
-\item Prazos cumpridos;
-\item Entregas cumpridas.
-\end{itemize}
-\end{flushleft}
-
-\section{Método de Pesquisa}
- O andamento deste projeto ocorrerá em paralelo a pesquisa de doutorado do coorientador deste projeto, Pedro Henrique Penna, e utilizará como base o protótipo do sistema operacional \textit{multikernel} implementando pelo grupo de pesquisa Nanvix \cite{Penna2017,Penna2017-1} disponibilizado em \url{https://github.com/nanvix/multikernel}.
-
-O desenvolvimento do trabalho será feito na linguagem C e dividido em cinco módulos, os quais são,
-(i) \textbf{\noc Driver}: utilização da biblioteca de baixo nível da \noc para controle, manipulação e multiplexação dos \textit{buffers} de comunicação;
-(ii) \textbf{Core Driver}: identificação e configuração dos elementos ativos do sistemas (\textit{IO e Compute Clusters}); 
-(iii) \textbf{Sync}: abstração para sincronização entre processos localizados em \textit{clusters} distintos;
-(iv) \textbf{Mailbox}: abstração para troca de mensagens pequenas, geralmente associadas a controle; e 
-(v) \textbf{Portal}: abstração dedicada a troca de dados intensa. Os módulos \textit{sync} e \textit{mailbox} são dependentes dos primeiros módulos, assim como o \textit{portal} é dependente dos demais.
-
-Os módulos e testes desenvolvidos utilizaram as bibliotecas e documentação disponibilizados pela Kalray e executados no processador MPPA-256, acesso remotamente em um servidor na França. O trabalho será efetuado no laboratório LaPeSD, localizado na Universidade Federal de Santa Catarina (UFSC), no qual o orientando possuirá acesso e uma máquina disponível para o desenvolvimento do trabalho. Além disso, o desenvolvimento deste trabalho ocorrerá associado a bolsa de iniciação científica do orientando, contribuindo com a sua formação e a qualidade final do trabalho desenvolvido.
+    O andamento deste projeto ocorrerá em paralelo a pesquisa de doutorado do coorientador deste projeto, Pedro Henrique Penna, e utilizará como base o protótipo do sistema operacional distribuído \textit{multikernel} implementando pelo grupo de pesquisa Nanvix \cite{Penna2017,Penna2017-1} disponibilizado em \url{https://github.com/nanvix/multikernel}.
+    
+    O desenvolvimento do trabalho será feito na linguagem C e dividido em cinco módulos, os quais são,
+    (i) \textbf{\noc Driver}: utilização da biblioteca de baixo nível da \noc para controle, manipulação e multiplexação dos \textit{buffers} de comunicação;
+    (ii) \textbf{Core Driver}: identificação e configuração dos elementos ativos do sistemas (\ioclusters e \cpclusters); 
+    (iii) \textbf{Sync}: abstração para sincronização entre processos localizados em \textit{clusters} distintos;
+    (iv) \textbf{Mailbox}: abstração para troca de mensagens pequenas, geralmente associadas a controle; e 
+    (v) \textbf{Portal}: abstração dedicada a troca de dados intensa. Os módulos \textit{sync} e \textit{mailbox} são dependentes dos dois primeiros módulos, assim como o \textit{portal} é dependente dos demais.
+    
+    Os módulos e testes desenvolvidos utilizaram as bibliotecas e documentação disponibilizados pela Kalray e executados no processador MPPA-256.
+    A plataforma que contém o MPPA-256 está localizado na França e o acesso remoto é proporcionado por uma parceria entre o LaPeSD (colocar comando!) e o LIG (colocar comando!).
+    O orientando terá acesso ao laboratório LaPeSD, localizado na Universidade Federal de Santa Catarina (UFSC), no qual possuirá uma máquina disponível para o desenvolvimento do trabalho.
+    Além disso, o desenvolvimento deste trabalho ocorrerá associado a bolsa de iniciação científica do aluno, contribuindo com a sua formação e na qualidade final do trabalho desenvolvido.
 
 % ----------------------------------------------------------
 % PARTE - preparação da pesquisa
