@@ -684,8 +684,9 @@ Critérios de aceitação
         máquina \textit{host} com o dispositivo, além da comunicação
         com os \cpclusters.
         Sobre outra perspectiva, nos \cpclusters, o sistema operacional
-        \nodeos, projetado para adequar-se aos 2-MB de memória local, é executado no \rman com o objetivo de auxiliar e
-        gerenciar a comunicação dos \pes com os demais elementos do processador.
+        \nodeos, projetado para adequar-se aos 2-MB de memória local, é executado 
+        no \rman com o objetivo de auxiliar e gerenciar a comunicação dos \pes
+        com os demais elementos do processador.
         Em alternativa à esses ambientes de execução, existe a possibilidade
         de utilizar o processador MPPA-256 apenas com o \textit{hypervisor} 
         e o auxílio de bibliotecas de baixo nível.
@@ -694,7 +695,7 @@ Critérios de aceitação
         de maneira explícita, principalmente  através de três primitivas \ipc.
         Entre elas estão,
         (i) \textbf{\textit{Sync:}} permite a sincronização de \textit{N:M} processos através da \cnoc;
-        (ii) \textbf{\textit{Mailbox:}} envio de pequenas mensagens de tamanho ( ****** é 64 bytes pela cnoc? confirmar); e
+        (ii) \textbf{\textit{Mailbox:}} envio de mensagens pequenas através da \dnoc; e
         (iii) \textbf{\textit{Portal:}} envio de grandes quantidade de dados através da \dnoc.
         De forma semelhante aos sistemas operacionais, o desenvolvedor tem a
         liberdade de lidar com bibliotecas de baixo nível que são utilizadas
@@ -708,7 +709,8 @@ Critérios de aceitação
         recursos de hardware através de uma interface de baixo nível.
         Seu objetivo é proporcionar o gerenciamento de recursos físicos
         no nível da aplicação em oposição a limitação do desempenho, da
-        flexibilidade e da funcionalidade impostas por sistemas operacionais tradicionais.
+        flexibilidade e da funcionalidade impostas por sistemas operacionais 
+        tradicionais.
 
         Ao contrário da abordagem comum escolhida por sistemas operacionais
         monolíticos, expondo os recursos de hardware através de abstrações
@@ -757,7 +759,8 @@ Critérios de aceitação
     exponha e proteja os recursos do processador \mppa com a menor interferência
     no desempenho e consumo de energia possível dentro do escopo deste trabalho.
     Essa camada de abstração de hardware deverá ser independente de plataforma
-    com o intuito de proporcionar maior facilidade, flexibilidade e funcionalidade no desenvolvimento de aplicações e bibliotecas para o
+    com o intuito de proporcionar maior facilidade, flexibilidade e funcionalidade
+    no desenvolvimento de aplicações e bibliotecas para o
     processador MPPA-256. Além disso, o \textit{exokernel} não deverá provocar
     perda de desempenho ou eficiência energética em relação aos ambientes de
     execução existentes.
@@ -822,10 +825,14 @@ Critérios de aceitação
     
     O desenvolvimento do trabalho será feito na linguagem C e dividido em
     cinco módulos, os quais são,
-    (i) \textbf{\noc Driver}: utilização da biblioteca de baixo nível da \noc para controle, manipulação e multiplexação dos \textit{buffers} de comunicação;
-    (ii) \textbf{Core Driver}: identificação e configuração dos elementos ativos do sistemas (\ioclusters e \cpclusters); 
-    (iii) \textbf{Sync}: abstração para sincronização entre processos localizados em \textit{clusters} distintos;
-    (iv) \textbf{Mailbox}: abstração para troca de mensagens pequenas, geralmente associadas a controle; e 
+    (i) \textbf{\noc Driver}: utilização da biblioteca de baixo nível da \noc
+    para controle, manipulação e multiplexação dos \textit{buffers} de comunicação;
+    (ii) \textbf{Core Driver}: identificação e configuração dos elementos ativos 
+    do sistemas (\ioclusters e \cpclusters); 
+    (iii) \textbf{Sync}: abstração para sincronização entre processos localizados
+    em \textit{clusters} distintos;
+    (iv) \textbf{Mailbox}: abstração para troca de mensagens pequenas, geralmente 
+    associadas a controle; e 
     (v) \textbf{Portal}: abstração dedicada a troca de dados intensa. 
     Os módulos \textit{sync} e \textit{mailbox} são dependentes dos dois
     primeiros módulos, assim como o \textit{portal} é dependente dos demais.
@@ -833,9 +840,8 @@ Critérios de aceitação
     Os módulos e testes desenvolvidos utilizaram as bibliotecas e documentação
     disponibilizados pela Kalray e executados no processador MPPA-256.
     A plataforma que contém o MPPA-256 está localizado na França e o acesso
-    remoto é proporcionado por uma parceria entre o LaPeSD (colocar comando!)
-    e o LIG (colocar comando!).
-    O orientando terá acesso ao laboratório LaPeSD, localizado na Universidade
+    remoto é proporcionado por uma parceria entre o \lapesd e o \lig.
+    O orientando terá acesso ao laboratório \lapesd, localizado na Universidade
     Federal de Santa Catarina (UFSC), no qual possuirá uma máquina disponível
     para o desenvolvimento do trabalho.
     Além disso, o desenvolvimento deste trabalho ocorrerá associado a bolsa
@@ -883,6 +889,21 @@ Defesa                  &     &     &     &     &     &     &     &     &     & 
 Ajustes e Envio Final   &     &     &     &     &     &     &     &     &     &     &     &     &     & \cc & \cc \\ \hline
 \end{tabular}
 \end{flushleft}
+
+O planejamento deste trabalho está organizado da seguinte maneira.
+O desenvolvimento da solução abrange a especificação do trabalho apresentado
+no capítulo \ref{cap:metodo-pesquisa}.
+O primeiro resumo da monografia, relacionado ao relatório do Projeto I, 
+desenvolverá a estrutura básica da monografia e conterá os resultados obtidos
+até o momento. 
+As conclusões encerrarão o desenvolvimento da solução, levando em consideração
+o retorno obtido do relatório do Projeto I e iniciarão a síntese dos resultados. 
+O rascunho relacionado ao Projeto II envolverá as atividades de elaboração da 
+monografia e o preparo da apresentação para a defesa. 
+A defesa apresentará o trabalho desenvolvido e os resultados alcançados.
+Por fim, serão realizados os ajustes e correções solicitados pelos membros da 
+banca e a versão final da monografia será enviada ao acervo da UFSC.
+
 % ---
 
 % ---
