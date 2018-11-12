@@ -122,7 +122,7 @@
 % ---
 % Informações de dados para CAPA e FOLHA DE ROSTO
 % ---
-\titulo{Desenvolvimento de um \textit{Exokernel} minimalista para o Processador \textit{Manycore} MPPA-256}
+\titulo{Desenvolvimento de um \textit{Exokernel} para o Processador \textit{Manycore} MPPA-256}
 % \titulo{Desenvolvimento de um Lightweight Exokernel para o Processador Manycore MPPA-256}
 \autor{João Vicente Souto}
 \local{Florianópolis}
@@ -445,17 +445,17 @@ para a obtenção do Grau de Bacharel.}
 % resumo em português
 \begin{resumo}
 
-    As decisões de design no desenvolvimento de qualquer aplicação influencia
+    As decisões de projeto no desenvolvimento de qualquer aplicação influencia
     diretamente seu desempenho e consumo de energia.
     Sistemas operacionais não são diferentes, incorporando um conjunto de
-    decisões de design que, em muitos casos, são herdadas e permanecem
+    decisões de projeto que, em muitos casos, são herdadas e permanecem
     inalteradas mesmo que o hardware e o software tenham evoluído com o
     passar dos anos.
     Pelo fato dos sistemas operacionais formarem a base de quase todas as
     pilhas de software, suas inadequações possuem um impacto generalizado
     nos sistemas atuais. \cite{hunt_singularity:_2007}. 
     
-    O objetivo deste trabalho é propor um sistema operacional minimalista,
+    O objetivo deste trabalho é propor um \textit{kernel} minimalista,
     denominado \textit{exokernel}, que abstraia a alocação, manipulação e
     segurança dos recursos de comunicação do processador \textit{manycore} 
     Kalray MPPA-256.
@@ -475,8 +475,8 @@ para a obtenção do Grau de Bacharel.}
     a facilidade e portabilidade existentes.
     
     Diversos experimentos serão efetuados com as abstrações disponibilizadas
-    pela Kalray e implementadas pelo \textit{exokernel} com o propósito de
-    comparar as duas soluções.
+    pela Kalray e implementadas pelo \textit{exokernel} proposto, com o propósito
+    de comparar as duas soluções.
     A análise ocorrerá sobre métricas relevantes para o projeto, buscando
     avaliar, principalmente, o aumento do desempenho e eficiência energética
     do processador MPPA-256.
@@ -619,6 +619,78 @@ para a obtenção do Grau de Bacharel.}
     concretize, através do uso de bibliotecas de baixo nível, uma camada de
     abstração de hardware (HAL) consistente e minimalista.
 
+\chapter{Objetivos}
+\label{cap:objetivos}
+
+    Atualmente a Kalray disponibiliza dois ambientes de execução que
+    proporcionam facilidades no desenvolvimento de aplicações paralelas
+    e distribuídas para o processador MPPA-256.
+    Porém, tais ambientes inferem uma sobrecarga no desempenho das aplicações
+    e forçam o desenvolvedor a lidar com as decisões de projeto definidas
+    pelos projetistas da Kalray.
+    
+    Utilizando os conceitos apresentados no capítulo anterior, o presente
+    trabalho tem como objetivo propor um ambiente de execução alternativo que
+    equilibre flexibilidade, funcionalidade, desempenho e eficiência energética
+    para o processador MPPA-256.
+    Desta forma, ao utilizar camadas mais próximas do hardware e exportar e
+    proteger os recursos físicos através de uma camada de abstração,
+    o \textit{exokernel} proposto proporcionará maior liberdade ao
+    desenvolver em explorar otimizações para o domínio de aplicações de alto
+    desempenho e, ao mesmo tempo, não aumentando a complexidade do projeto por
+    não trabalhar diretamente com um hardware específico.
+    
+    O \textit{exokernel} deverá, dada a utilização das primitivas \ipc para
+    comunicação e sincronização entre processos em \textit{clusters} distintos,
+    realizar a alocação, proteção e multiplexação dos recursos necessários, 
+    além da configuração e envio/recebimento de dados.
+    Ao prover a comunicação, o \textit{exokernel} deverá implementar uma 
+    política de troca de mensagens assíncronas abaixo de sua interface, 
+    a fim de providenciar uma comunicação eficiente e não provocar perda de
+    desempenho ou eficiência energética em relação aos ambientes de execução
+    existentes.
+    Para isso, o orientando necessitará utilizar as bibliotecas de baixo 
+    nível do processador MPPA-256.
+    
+    \begin{flushleft}
+    \textbf{Restrições:}
+    \begin{itemize}
+        \item Executar aplicações no processador;
+        \item Utilizar as bibliotecas de baixo nível do processador;
+        \item Memória limitada nos \textit{Compute Clusters} do processador, dividida entre o sistema operacional e a aplicação;
+        \item Respeitar as datas de entregas.
+    \end{itemize}
+    
+    \textbf{Premissas:}
+    \begin{itemize}
+        \item Processador disponível;
+        \item Documentação disponível;
+        \item Acesso ao processador de forma remota; 
+        \item Computador disponível; 
+        \item Disponibilidade de água, luz e energia;
+        \item Acesso à Internet.
+    \end{itemize}
+    
+    \textbf{Marcos:}
+    \begin{itemize}
+        \item Entrega da proposta: 12-11-2018;
+        \item Entrega do resumo em TCC I: junho de 19; 
+        \item Primeira entrega da monografia em TCCII: outubro de 19; 
+        \item Apresentação da monografia: novembro de 19;
+        \item Segunda entrega da monografia em TCCII (versão final): dezembro de 19.
+    \end{itemize}
+    
+    \textbf{Critérios de aceite:}
+    \begin{itemize}
+        \item Aprovação pela banca;
+        \item Aprovação do orientador;
+        \item Conformidade com as normas definidas pela instituição;
+        \item Prazos cumpridos;
+        \item Entregas cumpridas.
+    \end{itemize}
+    \end{flushleft}
+
+
 \chapter{Fundamentação Teórica}
 \label{sec:fundamentacao}
 
@@ -694,9 +766,9 @@ para a obtenção do Grau de Bacharel.}
         A comunicação entre processos em \textit{clusters} distintos ocorre
         de maneira explícita, principalmente  através de três primitivas \ipc.
         Entre elas estão,
-        (i) \textbf{\textit{Sync:}} permite a sincronização de \textit{N:M} processos através da \cnoc;
-        (ii) \textbf{\textit{Mailbox:}} envio de mensagens pequenas através da \dnoc; e
-        (iii) \textbf{\textit{Portal:}} envio de grandes quantidade de dados através da \dnoc.
+        (i) \textit{Sync}: permite a sincronização de \textit{N:M} processos através da \cnoc;
+        (ii) \textit{Mailbox}: envio de mensagens pequenas através da \dnoc; e
+        (iii) \textit{Portal}: envio de grandes quantidade de dados através da \dnoc.
         De forma semelhante aos sistemas operacionais, o desenvolvedor tem a
         liberdade de lidar com bibliotecas de baixo nível que são utilizadas
         por essas primitivas.
@@ -704,8 +776,8 @@ para a obtenção do Grau de Bacharel.}
     \section{Exokernel}
     \label{sec:exokernel}
     
-        O \textit{Exokernel} é um sistema operacional minimalista,
-        desenvolvido pelo \unimit, que exporta com segurança todos os
+        O \textit{Exokernel} consiste em uma arquitetura desenvolvida
+        pelo \unimit que exporta com segurança todos os
         recursos de hardware através de uma interface de baixo nível.
         Seu objetivo é proporcionar o gerenciamento de recursos físicos
         no nível da aplicação em oposição a limitação do desempenho, da
@@ -731,10 +803,10 @@ para a obtenção do Grau de Bacharel.}
             	\caption{Arquitetura \textit{Exokernel}.}
                    \label{figexokernel}
         		\begin{tabular}{ccc}
-            	    \includegraphics[width=0.6\textwidth]{figs/exokernel.png} \\
+            	    \includegraphics[width=0.5\textwidth]{figs/exokernel.png} \\
         		\end{tabular}
                 \vspace{1ex} \\
-                Fonte: \cite{engler_exokernel:_1995}
+                Fonte: \cite{misc:exokernel}
             \end{center}
            \vspace{-2ex}
         \end{figure}
@@ -750,68 +822,6 @@ para a obtenção do Grau de Bacharel.}
         primitivas de forma eficiente; e 
         (iv) permite que aplicações desenvolvam abstrações de propósito
         geral através de pequenas modificações \cite{engler_exokernel:_1995}.
-    
-\chapter{Objetivos}
-\label{cap:objetivos}
-
-    Utilizando os conceitos apresentados nos capítulos anteriores como base,
-    o presente trabalho tem como objetivo propor um \textit{exokernel} que
-    exponha e proteja os recursos do processador MPPA-256 com a menor interferência
-    no desempenho e consumo de energia possível dentro do escopo deste trabalho.
-    Essa camada de abstração de hardware deverá ser independente de plataforma
-    com o intuito de proporcionar maior facilidade, flexibilidade e funcionalidade
-    no desenvolvimento de aplicações e bibliotecas para o
-    MPPA-256. Além disso, o \textit{exokernel} não deverá provocar
-    perda de desempenho ou eficiência energética em relação aos ambientes de
-    execução existentes.
-    
-    O \textit{exokernel} deverá, dada a utilização das primitivas \ipc para
-    comunicação e sincronização entre processos em \textit{clusters} distintos,
-    realizar a alocação, proteção e multiplexação dos recursos necessários, 
-    além da configuração e envio/recebimento de dados.
-    Ao prover a comunicação, o \textit{exokernel} deverá implementar uma 
-    política de troca de mensagens assíncronas abaixo de sua interface, 
-    a fim de providenciar uma comunicação eficiente.
-    Para isso, o orientando necessitará utilizar as bibliotecas de baixo 
-    nível do processador MPPA-256. 
-    
-    \begin{flushleft}
-    \textbf{Restrições:}
-    \begin{itemize}
-        \item Executar aplicações no processador;
-        \item Utilizar as bibliotecas de baixo nível do processador;
-        \item Memória limitada nos \textit{Compute Clusters} do processador, dividida entre o sistema operacional e a aplicação;
-        \item Respeitar as datas de entregas.
-    \end{itemize}
-    
-    \textbf{Premissas:}
-    \begin{itemize}
-        \item Processador disponível;
-        \item Documentação disponível;
-        \item Acesso ao processador de forma remota; 
-        \item Computador disponível; 
-        \item Disponibilidade de água, luz e energia;
-        \item Acesso à Internet.
-    \end{itemize}
-    
-    \textbf{Marcos:}
-    \begin{itemize}
-        \item Entrega da proposta: 12-11-2018;
-        \item Entrega do resumo em TCC I: junho de 19; 
-        \item Primeira entrega da monografia em TCCII: outubro de 19; 
-        \item Apresentação da monografia: novembro de 19;
-        \item Segunda entrega da monografia em TCCII (versão final): dezembro de 19.
-    \end{itemize}
-    
-    \textbf{Critérios de aceite:}
-    \begin{itemize}
-        \item Aprovação pela banca;
-        \item Aprovação do orientador;
-        \item Conformidade com as normas definidas pela instituição;
-        \item Prazos cumpridos;
-        \item Entregas cumpridas.
-    \end{itemize}
-    \end{flushleft}
 
 \chapter{Método de Pesquisa}
 \label{cap:metodo-pesquisa}
@@ -824,15 +834,15 @@ para a obtenção do Grau de Bacharel.}
     
     O desenvolvimento do trabalho será feito na linguagem C e dividido em
     cinco módulos, os quais são,
-    (i) \textbf{\noc Driver}: utilização da biblioteca de baixo nível da \noc
+    (i) \textit{\noc Driver}: utilização da biblioteca de baixo nível da \noc
     para controle, manipulação e multiplexação dos \textit{buffers} de comunicação;
-    (ii) \textbf{Core Driver}: identificação e configuração dos elementos ativos 
+    (ii) \textit{Core Driver}: identificação e configuração dos elementos ativos 
     do sistemas (\ioclusters e \cpclusters); 
-    (iii) \textbf{Sync}: abstração para sincronização entre processos localizados
+    (iii) \textit{Sync}: abstração para sincronização entre processos localizados
     em \textit{clusters} distintos;
-    (iv) \textbf{Mailbox}: abstração para troca de mensagens pequenas, geralmente 
+    (iv) \textit{Mailbox}: abstração para troca de mensagens pequenas, geralmente 
     associadas a controle; e 
-    (v) \textbf{Portal}: abstração dedicada a troca de dados intensa. 
+    (v) \textit{Portal}: abstração dedicada a troca de dados intensa. 
     Os módulos \textit{sync} e \textit{mailbox} são dependentes dos dois
     primeiros módulos, assim como o \textit{portal} é dependente dos demais.
     
