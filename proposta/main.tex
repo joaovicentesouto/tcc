@@ -576,7 +576,7 @@ para a obtenção do Grau de Bacharel.}
     feito pelo Departamento de Defesa do Governo dos Estados Unidos
     (DARPA/IPTO) \cite{darpa:exascale}, mostra o aumento da preocupação
     com o consumo de energia à medida que se torna mais importante ter uma
-    relação equilibrada entre poder de processamento e eficiência energética afim de
+    relação equilibrada entre poder de processamento e eficiência energética a fim de
     atingirmos o \textit{Exascale}. Em virtude disso, pesquisas científicas
     e industriais voltaram sua atenção para a aplicabilidade de arquiteturas
     \textit{manycore} de baixo consumo em problemas que demandam alto
@@ -586,7 +586,7 @@ para a obtenção do Grau de Bacharel.}
     energético apresentam diversas características distintas das arquiteturas
     \textit{multicore} e \textit{manycore} existentes, tais como: 
     (i) centenas ou até mesmo milhares de núcleos de processamento
-    simplificados em um único chip;
+    simplificados em um único \textit{chip};
     (ii) comunicação entre núcleos baseada em troca de mensagens usando
     uma Rede-em-Chip (\noc); e 
     (iii) possuem subsistemas de memória restritiva.
@@ -595,15 +595,15 @@ para a obtenção do Grau de Bacharel.}
     paralelas e distribuídas para essas arquiteturas
      \cite{Castro-Souza-CCPE:2016, Castro-PARCO:2016, os:rmen}.
     
-    Além dos aspectos de hardware, aspectos de software também influenciam
+    Além dos aspectos de \textit{hardware}, aspectos de \textit{software} também influenciam
     no desenvolvimento e, principalmente, no desempenho de aplicações para
     qualquer arquitetura.
-    Decisões de design, nível de abstração utilizado e sistema operacional
+    Decisões de projeto, nível de abstração utilizado e sistema operacional
     escolhido, por exemplo, podem causar uma sobrecarga indesejada na execução
     de uma determinada aplicação \cite{Appel:1991:VMP:106972.106984, Cao:1994:IPA:1267638.1267651, Harty:1992:APM:143365.143511, Krueger:1993:TDA:165854.165867, Stonebraker:1981:OSS:358699.358703, Levy:Exception, hunt_singularity:_2007}.
-    E mesmo que a aplicação utilize adequadamente todos os recursos
+    Além disso, mesmo que a aplicação utilize adequadamente todos os recursos
     disponíveis, ela deixará de explorar possíveis otimizações do seu
-    domínio por não possuir acesso direto ao recursos do hardware.
+    domínio por não possuir acesso direto ao recursos do \textit{hardware}.
     
     Como alternativa, muitas vezes existe a opção de utilizar bibliotecas
     de baixo nível que permitem a elaboração personalizada do ambiente de
@@ -612,12 +612,12 @@ para a obtenção do Grau de Bacharel.}
     desenvolvimento se tornam um fator crítico ao projeto.
     
     Neste contexto, o problema de gerenciamento e proteção dos recursos de
-    hardware associado a um nível de abstração que não comprometa o desempenho
+    \textit{hardware} associado a um nível de abstração que não comprometa o desempenho
     de aplicações para processadores \textit{manycore} de baixo consumo
     energético permanece em discussão.
     Uma alternativa viável é o desenvolvimento de um \textit{exokernel} que
     concretize, através do uso de bibliotecas de baixo nível, uma camada de
-    abstração de hardware (HAL) consistente e minimalista.
+    abstração de \textit{hardware} (\hal) consistente e minimalista.
 
 \chapter{Objetivos}
 \label{cap:objetivos}
@@ -629,16 +629,15 @@ para a obtenção do Grau de Bacharel.}
     e forçam o desenvolvedor a lidar com as decisões de projeto definidas
     pelos projetistas da Kalray.
     
-    Utilizando os conceitos apresentados no capítulo anterior, o presente
-    trabalho tem como objetivo propor um ambiente de execução alternativo que
+    O presente trabalho tem como objetivo propor um ambiente de execução alternativo que
     equilibre flexibilidade, funcionalidade, desempenho e eficiência energética
     para o processador MPPA-256.
-    Desta forma, ao utilizar camadas mais próximas do hardware e exportar e
+    Desta forma, ao utilizar camadas mais próximas do \textit{hardware} e exportar e
     proteger os recursos físicos através de uma camada de abstração,
     o \textit{exokernel} proposto proporcionará maior liberdade ao
-    desenvolver em explorar otimizações para o domínio de aplicações de alto
-    desempenho e, ao mesmo tempo, não aumentando a complexidade do projeto por
-    não trabalhar diretamente com um hardware específico.
+    desenvolver em explorar otimizações para o domínio de aplicações de \hpc e,
+    ao mesmo tempo, não aumentará a complexidade do projeto por
+    não trabalhar diretamente com um \textit{hardware} específico.
     
     O \textit{exokernel} deverá, dada a utilização das primitivas \ipc para
     comunicação e sincronização entre processos em \textit{clusters} distintos,
@@ -649,15 +648,14 @@ para a obtenção do Grau de Bacharel.}
     a fim de providenciar uma comunicação eficiente e não provocar perda de
     desempenho ou eficiência energética em relação aos ambientes de execução
     existentes.
-    Para isso, o orientando necessitará utilizar as bibliotecas de baixo 
-    nível do processador MPPA-256.
+    Para isso, serão utilizadas bibliotecas de baixo nível do processador MPPA-256.
     
     \begin{flushleft}
     \textbf{Restrições:}
     \begin{itemize}
         \item Executar aplicações no processador;
         \item Utilizar as bibliotecas de baixo nível do processador;
-        \item Memória limitada nos \textit{Compute Clusters} do processador, dividida entre o sistema operacional e a aplicação;
+        \item Memória limitada no \textit{chip}, dividida entre o sistema operacional e a aplicação;
         \item Respeitar as datas de entregas.
     \end{itemize}
     
