@@ -29,20 +29,20 @@
 % ------------------------------------------------------------------------
 
 \documentclass[
-  % -- opções da classe memoir --
-  12pt,       % tamanho da fonte
-  openright,      % capítulos começam em pág ímpar (insere página vazia caso preciso)
-  twoside,      % para impressão em verso e anverso. Oposto a oneside
-  a4paper,      % tamanho do papel. 
-  % -- opções da classe abntex2 --
-  %chapter=TITLE,   % títulos de capítulos convertidos em letras maiúsculas
-  %section=TITLE,   % títulos de seções convertidos em letras maiúsculas
-  %subsection=TITLE,  % títulos de subseções convertidos em letras maiúsculas
-  %subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
-  % -- opções do pacote babel --
-  english,      % idioma adicional para hifenização
-  brazil,       % o último idioma é o principal do documento
-  ]{abntex2}
+	% -- opções da classe memoir --
+	12pt,				% tamanho da fonte
+	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	twoside,			% para impressão em verso e anverso. Oposto a oneside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	]{abntex2}
 
 
 % ---
@@ -52,14 +52,14 @@
 % ---
 % Pacotes fundamentais 
 % ---
-\usepackage{cmap}       % Mapear caracteres especiais no PDF
-\usepackage{lmodern}      % Usa a fonte Latin Modern
-\usepackage[T1]{fontenc}    % Selecao de codigos de fonte.
-\usepackage[utf8]{inputenc}   % Codificacao do documento (conversão automática dos acentos)
-\usepackage{lastpage}     % Usado pela Ficha catalográfica
-\usepackage{indentfirst}    % Indenta o primeiro parágrafo de cada seção.
-\usepackage{color}        % Controle das cores
-\usepackage{graphicx}     % Inclusão de gráficos
+\usepackage{cmap}				% Mapear caracteres especiais no PDF
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{lastpage}			% Usado pela Ficha catalográfica
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
 \usepackage{xspace}
 \usepackage{fourier} 
 \usepackage{array}
@@ -90,14 +90,14 @@
 % ---
 % Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
 % ---
-\usepackage{lipsum}       % para geração de dummy text
+\usepackage{lipsum}				% para geração de dummy text
 % ---
 
 % ---
 % Pacotes de citações
 % ---
-%\usepackage[brazilian,hyperpageref]{backref}  % Paginas com as citações na bibl
-\usepackage[alf]{abntex2cite}                  % Citações padrão ABNT
+%\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	                 % Citações padrão ABNT
 % --- 
 % CONFIGURAÇÕES DE PACOTES
 % --- 
@@ -110,13 +110,13 @@
 %\renewcommand{\backref}{}
 % Define os textos da citação
 %\renewcommand*{\backrefalt}[4]{
-% \ifcase #1 %
-%   Nenhuma citação no texto.%
-% \or
-%   Citado na página #2.%
-% \else
-%   Citado #1 vezes nas páginas #2.%
-% \fi}%
+%	\ifcase #1 %
+%		Nenhuma citação no texto.%
+%	\or
+%		Citado na página #2.%
+%	\else
+%		Citado #1 vezes nas páginas #2.%
+%	\fi}%
 % ---
 
 % ---
@@ -153,19 +153,19 @@ para a obtenção do Grau de Bacharel.}
 % informações do PDF
 \makeatletter
 \hypersetup{
-      %pagebackref=true,
-    pdftitle={\@title}, 
-    pdfauthor={\@author},
-      pdfsubject={\imprimirpreambulo},
-      pdfcreator={LaTeX with abnTeX2},
-    pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
-    hidelinks,
-    colorlinks=false,         % false: boxed links; true: colored links
-      linkcolor=blue,           % color of internal links
-      citecolor=blue,           % color of links to bibliography
-      filecolor=magenta,        % color of file links
-    urlcolor=blue,
-    bookmarksdepth=4
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
+		hidelinks,
+		colorlinks=false,       	% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      	% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
 }
 \makeatother
 % --- 
@@ -227,39 +227,39 @@ para a obtenção do Grau de Bacharel.}
 % %     \includepdf{fig_ficha_catalografica.pdf}
 % % \end{fichacatalografica}
 % \begin{fichacatalografica}
-%   \vspace*{\fill}         % Posição vertical
-%   \hrule              % Linha horizontal
-%   \begin{center}          % Minipage Centralizado
-%   \begin{minipage}[c]{12.5cm}   % Largura
-  
-%   Podestá Junior, Emmanuel
-  
-%   \hspace{0.5cm} \imprimirtitulo \ / \imprimirautor;  \imprimirorientadorRotulo~\imprimirorientador; \imprimirlocal, \imprimirdata-
-  
-%   \hspace{0.5cm} \pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
-  
-%   %\hspace{0.5cm} \imprimirorientadorRotulo~\imprimirorientador, Coorientador: Daniel Priori \\
-  
-%   \hspace{0.5cm}
-%   \imprimirtipotrabalho \ --\ Universidade Federal de Santa Catarina, Departamento de Informática e Estatística, Ciência da Computação,
-%   \imprimirdata.\\
-  
-% %   \hspace{0.5cm} Inclui referências \\
-  
-% %   \hspace{0.5cm}
-% %     1. Ciência da Computação.
-% %     2. Inteligência Artificial.
-% %     3. Deep Learning.
-% %     I. Mauro Roisenberg.
-% %     II. Daniel Priori.
-% %     III. Universidade Federal de Santa Catarina.
-% %     IV. Título \\       
-  
-%   %\hspace{8.75cm} CDU 02:141:005.7\\
-  
-%   \end{minipage}
-%   \end{center}
-%   \hrule
+% 	\vspace*{\fill}					% Posição vertical
+% 	\hrule							% Linha horizontal
+% 	\begin{center}					% Minipage Centralizado
+% 	\begin{minipage}[c]{12.5cm}		% Largura
+	
+% 	Podestá Junior, Emmanuel
+	
+% 	\hspace{0.5cm} \imprimirtitulo \ / \imprimirautor;  \imprimirorientadorRotulo~\imprimirorientador; \imprimirlocal, \imprimirdata-
+	
+% 	\hspace{0.5cm} \pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
+	
+% 	%\hspace{0.5cm} \imprimirorientadorRotulo~\imprimirorientador, Coorientador: Daniel Priori \\
+	
+% 	\hspace{0.5cm}
+% 	\imprimirtipotrabalho \ --\ Universidade Federal de Santa Catarina, Departamento de Informática e Estatística, Ciência da Computação,
+% 	\imprimirdata.\\
+	
+% % 	\hspace{0.5cm} Inclui referências \\
+	
+% % 	\hspace{0.5cm}
+% % 		1. Ciência da Computação.
+% % 		2. Inteligência Artificial.
+% % 		3. Deep Learning.
+% % 		I. Mauro Roisenberg.
+% % 		II. Daniel Priori.
+% % 		III. Universidade Federal de Santa Catarina.
+% % 		IV. Título \\ 			
+	
+% 	%\hspace{8.75cm} CDU 02:141:005.7\\
+	
+% 	\end{minipage}
+% 	\end{center}
+% 	\hrule
 % \end{fichacatalografica}
 % ---
 
@@ -286,14 +286,14 @@ para a obtenção do Grau de Bacharel.}
 %   \end{center}
 %   \renewcommand\theadalign{cb}
 %   \renewcommand\theadfont{\bfseries}
-% \renewcommand\theadgape{\Gape[4pt]}
-% \renewcommand\cellgape{\Gape[4pt]}
+%	\renewcommand\theadgape{\Gape[4pt]}
+%	\renewcommand\cellgape{\Gape[4pt]}
 %   %\def\arraystretch{2}%  1 is the default, change whatever you need
-% \begin{flushleft}
+%	\begin{flushleft}
 %    \resizebox{\columnwidth}{!}{%
-% \begin{tabular}{|l|l|}
-% \hline
-%     \textbf{Acadêmico(s)} &  João Vicente Souto \hspace{74mm} \\ \hline
+%	\begin{tabular}{|l|l|}
+%	\hline
+%			\textbf{Acadêmico(s)} &  João Vicente Souto \hspace{74mm} \\ \hline
 %            \textbf{Título do Trabalho}  & \makecell[l]{PSkel-MPPA: Uma Adaptação do Framework PSkel para \\ o Processador Manycore %MPPA-256}\\ \hline
 %            \textbf{Curso} & Ciências da Computação/INE/UFSC \\ \hline
 %            \textbf{Área de Concentração} & \textbf{DETERMINAR ÁREAS DE CONCENTRAÇÃO} \\ \hline
@@ -313,8 +313,8 @@ para a obtenção do Grau de Bacharel.}
 %    \resizebox{\columnwidth}{!}{%
 %    \begin{tabular}{|C|A|A|A|A|O|}
 %    \hline
-%     \multirow{2}{*}{\textbf{Critérios}} & \multicolumn{4}{c|}{\textbf{Aprovado}} & \multirow{2}{*}{\textbf{Observação}} \\[1ex]
-% \cline{2-5}
+%    	\multirow{2}{*}{\textbf{Critérios}} & \multicolumn{4}{c|}{\textbf{Aprovado}} & \multirow{2}{*}{\textbf{Observação}} \\[1ex]
+%	\cline{2-5}
 %        & \textbf{Sim} & \textbf{Parcial} & \textbf{Não} & \textbf{Não se aplica} & \\
 %        \hline
 %        \makecell[l]{O trabalho é adequado para um TCC em CCO \\ (relevância / abrangência)?}& & & & & \\
@@ -353,9 +353,9 @@ para a obtenção do Grau de Bacharel.}
 %    \hline
 %    \makecell[l]{Avaliação}\hspace{35mm} \makecell[c]{\answerbox Aprovado \hspace{15mm} \answerbox Não Aprovado} \\ \hline
 %    \end{tabular}
-%     \begin{tabular}{|A|A|A|A|}
+%   	\begin{tabular}{|A|A|A|A|}
 %    \hline
-%     Professor Responsável & & & \\ \hline
+%    	Professor Responsável & & & \\ \hline
 %    \end{tabular}
 
 %    \end{flushleft}
@@ -428,13 +428,13 @@ para a obtenção do Grau de Bacharel.}
 % ---
 %\begin{epigrafe}
 %   \vspace*{\fill}
-% \begin{flushright}
-%   \textit{``Não vos amoldeis às estruturas deste mundo, \\
-%   mas transformai-vos pela renovação da mente, \\
-%   a fim de distinguir qual é a vontade de Deus: \\
-%   o que é bom, o que Lhe é agradável, o que é perfeito.\\
-%   (Bíblia Sagrada, Romanos 12, 2)}
-% \end{flushright}
+%	\begin{flushright}
+%		\textit{``Não vos amoldeis às estruturas deste mundo, \\
+%		mas transformai-vos pela renovação da mente, \\
+%		a fim de distinguir qual é a vontade de Deus: \\
+%		o que é bom, o que Lhe é agradável, o que é perfeito.\\
+%		(Bíblia Sagrada, Romanos 12, 2)}
+%	\end{flushright}
 %\end{epigrafe}
 % ---
 
@@ -726,7 +726,7 @@ para a obtenção do Grau de Bacharel.}
         enquanto as comunicações ocorrem através de uma \noc dedicada a
         dados, denominada \dnoc, e outra dedicada a controles, denominada \cnoc.
             
-        As camadas de \textit{software} disponibilizadas para o processador MPPA-256,
+        As camadas de \textit{software} disponibilizadas para o  MPPA-256,
         como pode ser visto na Figura \ref{figruntime}, possuem
         (i) suporte a programação paralela e distribuída, como
         \textit{POSIX}, \textit{OpenMP} etc;
@@ -737,12 +737,12 @@ para a obtenção do Grau de Bacharel.}
 
         % FOTO DA SOFTWARE STACK
         \begin{figure}[b]
-          \begin{center}
-              \caption{Ambiente de execução do processador MPPA-256.}
+        	\begin{center}
+            	\caption{Ambiente de execução do processador MPPA-256.}
                    \label{figruntime}
-            \begin{tabular}{ccc}
-              \includegraphics[width=0.6\textwidth]{figs/software_stack.png} \\
-            \end{tabular}
+        		\begin{tabular}{ccc}
+        			\includegraphics[width=0.6\textwidth]{figs/software_stack.png} \\
+        		\end{tabular}
                 \vspace{1ex} \\
                 Fonte: Documentação do processador MPPA-256
             \end{center}
@@ -758,7 +758,7 @@ para a obtenção do Grau de Bacharel.}
         no \rman com o objetivo de auxiliar e gerenciar a comunicação dos \pes
         com os demais elementos do processador.
         Em alternativa a esses ambientes de execução, existe a possibilidade
-        de utilizar o processador MPPA-256 apenas com o \textit{hypervisor} 
+        de utilizar o MPPA-256 apenas com o \textit{hypervisor} 
         e o auxílio de bibliotecas de baixo nível.
         
         A comunicação entre processos em \textit{clusters} distintos ocorre
@@ -809,12 +809,12 @@ para a obtenção do Grau de Bacharel.}
 
         % FOTO DO EXOKERNEL
         \begin{figure}[t]
-          \begin{center}
-              \caption{Arquitetura \textit{Exokernel}.}
+        	\begin{center}
+            	\caption{Arquitetura \textit{Exokernel}.}
                    \label{figexokernel}
-            \begin{tabular}{ccc}
-                  \includegraphics[width=0.4\textwidth]{figs/exokernel.png} \\
-            \end{tabular}
+        		\begin{tabular}{ccc}
+            	    \includegraphics[width=0.4\textwidth]{figs/exokernel.png} \\
+        		\end{tabular}
                 \vspace{1ex} \\
                 Fonte: \cite{misc:exokernel}
             \end{center}
@@ -877,6 +877,8 @@ para a obtenção do Grau de Bacharel.}
 \chapter{Planejamento}
 
 Este capítulo apresenta planejamento do trabalho, o qual é composto pelo cronograma de atividades, os recursos humanos necessários e os seus custos. Além disso, serão descritas as atividades de comunicação necessárias para a execução do projeto, assim como os possíveis riscos associados às atividades.
+
+\vspace{-2.45ex}
 
 % ---
 \section{Cronograma}
