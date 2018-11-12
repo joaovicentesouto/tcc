@@ -460,7 +460,7 @@ para a obtenção do Grau de Bacharel.}
     segurança dos recursos de comunicação do processador \textit{manycore} 
     Kalray MPPA-256.
     A motivação para o seu desenvolvimento está relacionado às abstrações
-    de alto nível para comunicação entre processos (\ipc) disponibilizadas
+    de alto nível para comunicação entre processos denominadas \ipc e disponibilizadas
     para o processador MPPA-256, onde, apesar de facilitar o desenvolvimento
     de aplicações paralelas e distribuídas, elas dependem de uma pilha de
     \textit{software} excessiva.
@@ -567,7 +567,7 @@ para a obtenção do Grau de Bacharel.}
     núcleo de processamento começaram a ser alcançados, o desenvolvimento
     de arquiteturas paralelas, possuindo processadores com centenas e até
     milhares de núcleos, supriu a crescente necessidade de poder de
-    processamento das plataformas de Computação de Alto Desempenho (\hpc).
+    processamento das plataformas de \hpc.
     No entanto, o aumento da capacidade computacional foi acompanhada pelo
     aumento no consumo de energia, tornando-se a maior desvantagem para
     plataformas \hpc.
@@ -588,7 +588,7 @@ para a obtenção do Grau de Bacharel.}
     (i) centenas ou até mesmo milhares de núcleos de processamento
     simplificados em um único \textit{chip};
     (ii) comunicação entre núcleos baseada em troca de mensagens usando
-    uma Rede-em-Chip (\noc); e 
+    uma \noc; e 
     (iii) possuem subsistemas de memória restritiva.
     Embora a relação entre poder de processamento e eficiência energética
     seja vantajosa, tais características dificultam o desenvolvimento de aplicações
@@ -617,7 +617,7 @@ para a obtenção do Grau de Bacharel.}
     energético permanece em discussão.
     Uma alternativa viável é o desenvolvimento de um \textit{exokernel} que
     concretize, através do uso de bibliotecas de baixo nível, uma camada de
-    abstração de \textit{hardware} (\hal) consistente e minimalista.
+    abstração de \textit{hardware} consistente e minimalista denominada \hal.
 
 \chapter{Objetivos}
 \label{cap:objetivos}
@@ -700,12 +700,12 @@ para a obtenção do Grau de Bacharel.}
     \label{sec:mppa}
     
         % FIGURA DA ARQUITETURA
-        \begin{figure}[h]
+        \begin{figure}[t]
             \begin{center}
                 \caption{Visão geral do MPPA-256.}
                     \label{figmppa}
                 \begin{tabular}{ccc}
-                    \includegraphics[width=0.67\textwidth]{figs/mppa-overview.pdf}\\
+                    \includegraphics[width=0.5\textwidth]{figs/mppa-overview.pdf}\\
                 \end{tabular}
                 \vspace{1ex} \\
                 Fonte: (\citeonline{os:rmen})
@@ -715,40 +715,40 @@ para a obtenção do Grau de Bacharel.}
     
         O processador MPPA-256 é um exemplo de arquitetura \textit{manycore}
         de baixo consumo energético \cite{Castro-IA3:2013} desenvolvido pela
-        empresa francesa Kalray. Como mostra a figura \ref{figmppa}, o MPPA-256
+        empresa francesa Kalray. Como mostra a Figura \ref{figmppa}, o MPPA-256
         é um processador que integra 256 núcleos de propósito geral,
-        denominados \pe, e 32 núcleos dedicados ao sistema operacional,
-        denominados \rman, criados sobre uma tecnologia CMOS de 28nm.
+        denominados \pes, e 32 núcleos dedicados ao sistema operacional,
+        denominados \rmans, criados sobre uma tecnologia CMOS de 28nm.
         Esses núcleos são distribuídos através de 16 \textit{clusters} de
         computação (\cpclusters) com 16 \pes e 1 \rman cada, somados a 
         4 \textit{quad-cores} para os subsistemas de E/S (\ioclusters).
         Cada \textit{cluster} possui um espaço de endereçamento privado,
         enquanto as comunicações ocorrem através de uma \noc dedicada a
-        dados (\dnoc) e outra dedicada a controles (\cnoc).
+        dados, denominada \dnoc, e outra dedicada a controles, denominada \cnoc.
             
-        As camadas de software disponibilizadas para o processador MPPA-256,
-        como pode ser visto na figura \ref{figruntime}, possui
+        As camadas de \textit{software} disponibilizadas para o processador MPPA-256,
+        como pode ser visto na Figura \ref{figruntime}, possuem
         (i) suporte a programação paralela e distribuída, como
         \textit{POSIX}, \textit{OpenMP} etc;
         (ii) primitivas para sincronização e comunicação entre processos
         (\ipc), tais como, \textit{sync}, \textit{portal} e \textit{mailbox};
         (iii) sistemas operacionais para cada tipo de \textit{cluster}; e
-        (iv) acesso aos recursos do hardware através de bibliotecas de baixo nível.
-    
+        (iv) acesso aos recursos do \textit{hardware} através de bibliotecas de baixo nível.
+
         % FOTO DA SOFTWARE STACK
-        \begin{figure}[t]
+        \begin{figure}[b]
         	\begin{center}
             	\caption{Ambiente de execução do processador MPPA-256.}
                    \label{figruntime}
         		\begin{tabular}{ccc}
-        			\includegraphics[width=0.67\textwidth]{figs/software_stack.png} \\
+        			\includegraphics[width=0.6\textwidth]{figs/software_stack.png} \\
         		\end{tabular}
                 \vspace{1ex} \\
                 Fonte: Documentação do processador MPPA-256
             \end{center}
            \vspace{-2ex}
         \end{figure}
-        
+
         Nos \ioclusters, é possível executar uma variação do sistema
         operacional Linux, nomeada \rtems, possibilitando a comunicação da
         máquina \textit{host} com o dispositivo, além da comunicação
@@ -757,7 +757,7 @@ para a obtenção do Grau de Bacharel.}
         \nodeos, projetado para adequar-se aos 2-MB de memória local, é executado 
         no \rman com o objetivo de auxiliar e gerenciar a comunicação dos \pes
         com os demais elementos do processador.
-        Em alternativa à esses ambientes de execução, existe a possibilidade
+        Em alternativa a esses ambientes de execução, existe a possibilidade
         de utilizar o processador MPPA-256 apenas com o \textit{hypervisor} 
         e o auxílio de bibliotecas de baixo nível.
         
@@ -776,50 +776,50 @@ para a obtenção do Grau de Bacharel.}
     
         O \textit{Exokernel} consiste em uma arquitetura desenvolvida
         pelo \unimit que exporta com segurança todos os
-        recursos de hardware através de uma interface de baixo nível.
+        recursos de \textit{hardware} através de uma interface de baixo nível.
         Seu objetivo é proporcionar o gerenciamento de recursos físicos
         no nível da aplicação em oposição a limitação do desempenho, da
         flexibilidade e da funcionalidade impostas por sistemas operacionais 
         tradicionais.
 
         Ao contrário da abordagem comum escolhida por sistemas operacionais
-        monolíticos, expondo os recursos de hardware através de abstrações
+        monolíticos, expondo os recursos de \textit{hardware} através de abstrações
         de alto nível, o \textit{Exokernel} transfere a responsabilidade de
-        implementar-las para o desenvolver da aplicação, como pode ser visto
-        na figura \ref{figexokernel}.
+        implementá-las para o desenvolver da aplicação, como pode ser visto
+        na Figura \ref{figexokernel}.
         Neste ponto, o \textit{Exokernel} também se opõe a ideia dos 
         \textit{microkernels}, que, ao contrário de buscar fornecer as
         mesmas abstrações de sistemas monolíticos com uma quantidade menor
         de camadas intermediárias, propõe apenas separar a função de proteção
-        dos recursos do hardware da função de gerenciamento.
+        dos recursos do \textit{hardware} da função de gerenciamento.
         Desta forma, ao não impor abstrações ao desenvolvedor, permite a
         personalização do ambiente de execução em prol do domínio da aplicação.
-        
-        % FOTO DO EXOKERNEL
-        \begin{figure}[t]
-        	\begin{center}
-            	\caption{Arquitetura \textit{Exokernel}.}
-                   \label{figexokernel}
-        		\begin{tabular}{ccc}
-            	    \includegraphics[width=0.5\textwidth]{figs/exokernel.png} \\
-        		\end{tabular}
-                \vspace{1ex} \\
-                Fonte: \cite{misc:exokernel}
-            \end{center}
-           \vspace{-2ex}
-        \end{figure}
-        
-        Por fim, a arquitetura de software definida pelo \textit{Exokernel}
+                
+        Por fim, a arquitetura de \textit{software} definida pelo \textit{Exokernel}
         provou ser uma alternativa viável às arquiteturas de sistemas
         operacionais tradicionais demonstrando que, 
         (i) um número limitado de primitivas simplificadas permite 
         implementa-las eficientemente; 
         (ii) a proteção dos recursos pode ser realizada de forma eficaz com
         implementações de baixo nível; (iii) abstrações tradicionais de
-        sistemas operacionais podem ser desenvolvidas encima dessas
+        sistemas operacionais podem ser desenvolvidas em cima dessas
         primitivas de forma eficiente; e 
         (iv) permite que aplicações desenvolvam abstrações de propósito
         geral através de pequenas modificações \cite{engler_exokernel:_1995}.
+
+        % FOTO DO EXOKERNEL
+        \begin{figure}[t]
+        	\begin{center}
+            	\caption{Arquitetura \textit{Exokernel}.}
+                   \label{figexokernel}
+        		\begin{tabular}{ccc}
+            	    \includegraphics[width=0.4\textwidth]{figs/exokernel.png} \\
+        		\end{tabular}
+                \vspace{1ex} \\
+                Fonte: \cite{misc:exokernel}
+            \end{center}
+           \vspace{-2ex}
+        \end{figure}
 
 \chapter{Método de Pesquisa}
 \label{cap:metodo-pesquisa}
