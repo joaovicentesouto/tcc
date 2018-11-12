@@ -79,7 +79,7 @@
 % \newcommand{\fws}{\textit{frameworks}\xspace}
 
 % \newcommand{\pskel}{{\small \textsf{PSkel}}\xspace}
-% \newcommand{\mppa}{{\small \textsf{MPPA-256}}\xspace}
+% \newcommand{MPPA-256}{{\small \textsf{MPPA-256}}\xspace}
 
 % Acronyms
 \usepackage[acronym,nowarn]{glossaries}
@@ -122,7 +122,7 @@
 % ---
 % Informações de dados para CAPA e FOLHA DE ROSTO
 % ---
-\titulo{Desenvolvimento de um Exokernel minimalista para o Processador Manycore MPPA-256}
+\titulo{Desenvolvimento de um \textit{Exokernel} minimalista para o Processador \textit{Manycore} MPPA-256}
 % \titulo{Desenvolvimento de um Lightweight Exokernel para o Processador Manycore MPPA-256}
 \autor{João Vicente Souto}
 \local{Florianópolis}
@@ -371,8 +371,8 @@ para a obtenção do Grau de Bacharel.}
 %    \assinatura{\textbf{Professor}}
 
 %  ******
-Critérios de aceitação
-% 	\includepdf{Template_Proposta_TCC_V6}
+
+\includepdf{template_aceitacao}
 
    %\begin{center}
    % \vspace*{0.5cm}
@@ -576,7 +576,7 @@ Critérios de aceitação
     feito pelo Departamento de Defesa do Governo dos Estados Unidos
     (DARPA/IPTO) \cite{darpa:exascale}, mostra o aumento da preocupação
     com o consumo de energia à medida que se torna mais importante ter uma
-    relação equilibrada entre processamento e eficiência energética afim de
+    relação equilibrada entre poder de processamento e eficiência energética afim de
     atingirmos o \textit{Exascale}. Em virtude disso, pesquisas científicas
     e industriais voltaram sua atenção para a aplicabilidade de arquiteturas
     \textit{manycore} de baixo consumo em problemas que demandam alto
@@ -632,7 +632,7 @@ Critérios de aceitação
         % FIGURA DA ARQUITETURA
         \begin{figure}[h]
             \begin{center}
-                \caption{Visão geral do \mppa.}
+                \caption{Visão geral do MPPA-256.}
                     \label{figmppa}
                 \begin{tabular}{ccc}
                     \includegraphics[width=0.67\textwidth]{figs/mppa-overview.pdf}\\
@@ -656,7 +656,7 @@ Critérios de aceitação
         enquanto as comunicações ocorrem através de uma \noc dedicada a
         dados (\dnoc) e outra dedicada a controles (\cnoc).
             
-        As camadas de software disponibilizadas para o processador \mppa,
+        As camadas de software disponibilizadas para o processador MPPA-256,
         como pode ser visto na figura \ref{figruntime}, possui
         (i) suporte a programação paralela e distribuída, como
         \textit{POSIX}, \textit{OpenMP} etc;
@@ -668,19 +668,19 @@ Critérios de aceitação
         % FOTO DA SOFTWARE STACK
         \begin{figure}[t]
         	\begin{center}
-            	\caption{Ambiente de execução do processador \mppa.}
+            	\caption{Ambiente de execução do processador MPPA-256.}
                    \label{figruntime}
         		\begin{tabular}{ccc}
         			\includegraphics[width=0.67\textwidth]{figs/software_stack.png} \\
         		\end{tabular}
                 \vspace{1ex} \\
-                Fonte: Documentação do processador \mppa
+                Fonte: Documentação do processador MPPA-256
             \end{center}
            \vspace{-2ex}
         \end{figure}
         
         Nos \ioclusters, é possível executar uma variação do sistema
-        operacional Linux, \rtems, possibilitando a comunicação da
+        operacional Linux, nomeada \rtems, possibilitando a comunicação da
         máquina \textit{host} com o dispositivo, além da comunicação
         com os \cpclusters.
         Sobre outra perspectiva, nos \cpclusters, o sistema operacional
@@ -756,12 +756,12 @@ Critérios de aceitação
 
     Utilizando os conceitos apresentados nos capítulos anteriores como base,
     o presente trabalho tem como objetivo propor um \textit{exokernel} que
-    exponha e proteja os recursos do processador \mppa com a menor interferência
+    exponha e proteja os recursos do processador MPPA-256 com a menor interferência
     no desempenho e consumo de energia possível dentro do escopo deste trabalho.
     Essa camada de abstração de hardware deverá ser independente de plataforma
     com o intuito de proporcionar maior facilidade, flexibilidade e funcionalidade
     no desenvolvimento de aplicações e bibliotecas para o
-    processador MPPA-256. Além disso, o \textit{exokernel} não deverá provocar
+    MPPA-256. Além disso, o \textit{exokernel} não deverá provocar
     perda de desempenho ou eficiência energética em relação aos ambientes de
     execução existentes.
     
@@ -773,25 +773,24 @@ Critérios de aceitação
     política de troca de mensagens assíncronas abaixo de sua interface, 
     a fim de providenciar uma comunicação eficiente.
     Para isso, o orientando necessitará utilizar as bibliotecas de baixo 
-    nível do processador \mppa. 
+    nível do processador MPPA-256. 
     
     \begin{flushleft}
     \textbf{Restrições:}
     \begin{itemize}
         \item Executar aplicações no processador;
         \item Utilizar as bibliotecas de baixo nível do processador;
-        \item Memória limitada nos \cpclusters do processador dividida entre SO e aplicação;
-        \item Utilizar no máximo 2GB de memória no sistema de entrada e saída.
+        \item Memória limitada nos \textit{Compute Clusters} do processador, dividida entre o sistema operacional e a aplicação;
+        \item Respeitar as datas de entregas.
     \end{itemize}
     
     \textbf{Premissas:}
     \begin{itemize}
-        \item Processador disponível; 
-        \item Acesso ao processador de forma móvel; 
+        \item Processador disponível;
+        \item Documentação disponível;
+        \item Acesso ao processador de forma remota; 
         \item Computador disponível; 
-        \item Disponibilidade de Água; 
-        \item Disponibilidade de Luz; 
-        \item Disponibilidade de Energia; 
+        \item Disponibilidade de água, luz e energia;
         \item Acesso à Internet.
     \end{itemize}
     
@@ -819,7 +818,7 @@ Critérios de aceitação
 
     O andamento deste projeto ocorrerá em paralelo a pesquisa de doutorado do
     coorientador deste projeto, Pedro Henrique Penna, e utilizará como base o
-    protótipo do sistema operacional distribuído \textit{multikernel}
+    protótipo do sistema operacional distribuído , denomidado \textit{multikernel},
     implementando pelo grupo de pesquisa Nanvix \cite{Penna2017,Penna2017-1}
     disponibilizado em \url{https://github.com/nanvix/multikernel}.
     
@@ -844,7 +843,7 @@ Critérios de aceitação
     O orientando terá acesso ao laboratório \lapesd, localizado na Universidade
     Federal de Santa Catarina (UFSC), no qual possuirá uma máquina disponível
     para o desenvolvimento do trabalho.
-    Além disso, o desenvolvimento deste trabalho ocorrerá associado a bolsa
+    Além disso, o andamento deste trabalho ocorrerá associado a bolsa
     de iniciação científica do orientando, contribuindo com a sua formação e
     na qualidade final do trabalho desenvolvido.
 
