@@ -1,2 +1,5 @@
 *.ilg
 *.ind
+
+*.DS_Store
+*.vscode
