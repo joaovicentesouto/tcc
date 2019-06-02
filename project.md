@@ -28,18 +28,23 @@ __Contribution:__ Assist on development of a new approach of Operating Systems t
             * MPPA-256
                 * Hardware
                 * Software
+    * Operating Systems Components
+        * Decide on what OS components and how to speak about them (What detailed level do you use?).
     * Nanvix OS
         * Multikernel (Basic overview)
         * Microkernel (Basic overview)
         * HAL
+    * Benchmarks
+        * Producer-Consumer
+        * Matrix (?)
+        * TSP
 
 * Related Work
-    * Operating Systems for Manycores
-    * Search...
-    * Search...
+    * Operating Systems for Manycores (Search...)
 
 * Nanvix HAL implementation on MPPA-256
-    * Overview
+    * Overview of implementation
+        * Code Style
 
     * Logical Layers Approach
         * Cluster AL
