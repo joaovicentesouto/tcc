@@ -1,0 +1,24 @@
+Category { bib-ref => pdf-name }
+
+Arch {
+	DeDinechin2013-1 => arch-mppa256
+	olofsson2014     => arch-epiphany
+	zheng2015        => ""
+	Wallentowitz2013 => arch-optimsoc
+	Kurth2017        => arch-risc-v-hero
+}
+
+OS {
+	Baumann2009      => os-multikernel
+	Kluge2014        => os-mossca
+	nightingale2009  => os-helios
+	rhoden2011.      => os-akaros
+}
+
+Nanvix {
+	""               => nanvix-erad2019
+	""               => nanvix-compas2019
+	Penna2017-1      => ""
+	Penna2017-2      => ""
+	penna2019        => ""
+}
