@@ -9,7 +9,7 @@
     % Por outro lado, o aperfeiçoamento constante da tecnologia de semicondutores ajudaram a amenizar o impacto dessa proibição, possibilitando construir processadores mais potentes.
     % Desta forma, conhecendo a barreira de frequência e o iminente fim da Lei de Moore~\cite{moore:1965}, a academia e a indústria começaram a pesquisar e investir em alternativas para manter o aumento do poder de processamento dos sistemas computacionais.
     For some years now, it was common to increase the frequency of processors to improve their processing power.
-    However, as a side effect, the temperature rise was much higher, making this practice prohibitive.
+    However, as a side effect, the temperature rise was much higher than the performance, making this practice prohibitive.
     Alternatively, the constant improvement of semiconductor technology helped to mitigate the impact of this prohibition, permitting to build more powerful processors with the same frequency.
     Therefore, knowing the frequency barrier and the imminent end of Moore's Law~\cite{moore:1965}, the academy and the industry began to research and invest in alternatives to keep increasing the processing power of the computer systems.
 
@@ -20,7 +20,7 @@
     % Onde, o principal conjunto de arquiteturas, denominada \textit{multicores}, possibilitou o aumento continuo do poder de processamento.
     Such researches have led to a wide diversity of trade-offs in modern architectures.
     For instance, in a single core, a large quantity of enhancement surged like different types of instruction sets, instruction parallelism, out-of-order processing techniques, detour prediction techniques, and various memory hierarchies.
-    Analogous, the enhancement of a single chip through increasing the number of components such as processing cores, accelerators, IO devices and, as a consequence, different types of interconnections and mechanisms of coherence of operations and memory.
+    Analogous, the enhancement of a single die occurred by increasing the number of components such as processing cores, accelerators, IO devices, and, as a consequence, different types of interconnections and mechanisms of coherence of memory.
     Where, the major set of architectures, called \textit{multicores}, allowed the continuous rise of the computing performance.
 
 % - From multicore to manycores
@@ -37,26 +37,26 @@
 % - Manycores characteristics
     These new processors:
     \begin{itemize}
-        \item integrate thousands of low-power cores in a single die;
-        \item are designed to cope with \mimd workloads;
-        \item rely on a high-bandwidth \noc for fast and reliable message-passing communication;
-        \item present constrained memory systems; and
-        \item frequently feature a heterogeneous configuration.
+        \item Integrate thousands of low-power cores in a single die organized in clusters;
+        \item Are designed to cope with \mimd workloads;
+        \item Rely on a high-bandwidth \noc for fast and reliable message-passing communication;
+        \item Present constrained memory systems; and
+        \item Frequently feature a heterogeneous configuration.
     \end{itemize}
     Some industry-successful examples of lightweight manycores are
-    the \mppa~\cite{DeDinechin2013-1};
-    the \epiphany~\cite{Olofsson2014}; and
-    the \taihulight~\cite{Zheng2015}.
+    the \mppa~\cite{DINECHIN20131654};
+    the \epiphany~\cite{olofsson2014}; and
+    the \taihulight~\cite{zheng2015}.
 
 % Motivation
 % - Difficults from Manycores
     Jointly with further performance scalability and energy efficiency, manycores brought a new set of challenges in software development coming from their architectural particularities.
     Precisely, these particularities introduce the following difficulties:
     \begin{itemize}
-        \item due to the presence of rich \nocs, engineers are frequently required to adopt a message-passing programming model~\cite{Kelly2013};
-        \item the usually-missing hardware support for cache coherency forces programmers to handle it explicitly in software level and frequently calls out for a redesign in their applications~\cite{Francesquini2015};
-        \item the frequent presence of multiple physical address spaces and small local memories require data tiling and prefetching to be handled by the software~\cite{Castro2016};
-        \item the heterogeneous configuration turned the actual deployment of applications in lightweight manycores in a complex task ~\cite{Barbalace2015}.
+        \item \textbf{Hybrid programming model:} due to the parallel and distributed nature of the architecture, engineers are frequently required to adopt a message-passing programming model to deal with the presence of rich \nocs~\cite{kelly2013} and a shared-memory model on local cluster.
+        \item \textbf{Missing hardware support for cache coherency:} for enhacement the power consuption, the usually-missing hardware support for cache coherency forces programmers to handle it explicitly in software level and frequently calls out for a redesign in their applications~\cite{francesquini2015};
+        \item \textbf{Constrained memory system:} the frequent presence of multiple physical address spaces and small local memories require data tiling and prefetching to be handled by the software~\cite{Castro2016};
+        \item \textbf{Heterogeneous configuration:} the different programmable components on lightweight manycores turned the actual deployment of applications in a complex task~\cite{barbalace2015}.
     \end{itemize}
 
 % - Why is development on manycores difficult?
@@ -65,11 +65,13 @@
     % O processo de paralização das estruturas internas, mudança nos paradigmas de comunicação e no uso inadequado dos recursos do hardware formentam o desenvolvimento de novos sistemas operacionais desenvolvidos do zero\cite{OSs}.
     % Por outro lado, os runtimes existentes não lidam, ou lidam parcialmente, com todos as particulatidades dos manycores.
     % Desta forma, jogando a responsabilidade para as camadas superiores, torna o processo de desenvolvimento complexo e as aplicações dependentes das arquiteturas, dificeis de manter e portar.
-    Part of these challenges derives from existing operating systems and runtimes.
-    Firstly, the port of the traditional operating systems with a monolithic view and designed for homogeneous hardware translate in a complicated task~\cite{multikernel}.
-    In another perspective, the complex process of paralyzing internal structures, changing communication paradigms, and inefficient use of hardware is leading to the development of new operating systems developed from scratch.
-    Finally, existing runtimes partially deal with some particulars of manycores like cache-coherency.
-    Thus, throwing the responsibility to the upper layers makes the development process complex and applications dependent on the architectures, challenging to maintain and carry.
+
+    % a concurrent internal structures, changing communication paradigms, and inefficient use of hardware 
+    % the port of the traditional \oses with a monolithic view and designed for translate in a complicated task~\cite{Baumann2009}.
+
+    Part of these challenges derives from existing \oses and runtimes.
+    Firstly, the complicated portability and scalability of traditional \oses with a monolithic view, designed to homogeneous hardware, on lightweight many-cores, is leading to the development of new \oses from scratch~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
+    Finally, existing runtimes only partially address some of the details of manycores like cache-coherency, throwing responsibility to higher levels make the process of developing, porting, and maintaining applications translate in a complicated task and turned them dependent on architectures.
 
 % Challenges and Problem Definition
 % - How are OSs essential in this context?
@@ -81,32 +83,34 @@
 % - Redesign from scratch around all their tight architectural constraints.
 % - Focus on addressing first-order programmability challenges
 % - Introducing generic and flexible HAL for lightweight manycores
-    % Nexte contexto, o doutorando e coorientador deste trabalho, Pedro H. Penna, mirando a maior programabilidade e portabilidade para lightweight manycores, propeem que sistemas operacionais para essa nova geração de processadores deve ser reprojetada do zero baseando-se em todas as suas restrições arquiteturais.
+    % Nexte contexto, o doutorando e coorientador deste trabalho, Pedro H. Penna, mirando a maior programabilidade e portabilidade para lightweight manycores, propoe que sistemas operacionais para essa nova geração de processadores deve ser reprojetada do zero baseando-se em todas as suas restrições arquiteturais.
     % Sua proposta envolve um sistema operacional completo distribuido baseado em uma arquitetura multikernel~\cite{multikernel}.
     % Para isso, baseados em resultados de serviços experimentais desenvolvidos encimado do mppa256~\cite{rmem}, a pesquisa começou buscando resolver os primeiros desafios que surgiram.
     % Especificamente, foi introduzido uma \hal genérica e flexivel para lightweight manycores que lidam com os problemas chaves encontrados no desenvolvimento para esses processadores.
     % Em seguida, a pesquisa seguirá em desenvolver um microkernel para prover os mecanismos básicos para desenvolvimento de um OS completo sobre ele.
     % Por fim, o desenvolvimento de serviços do multikernel serão alcançados.
-    In this context, the Ph.D. student and co-advisor of this work, Pedro H. Penna, aiming at improving programmability and portability for lightweight manycores, propose that operating systems for this next-generation of processors must be redesigned from scratch based on all its tights architectural constraints.
-    Your proposal involves a complete, distributed operating system based on a \multikernel approach~\cite{multikernel}.
-    In this regard, based on the results of experimental distributed services developed on \mppa~\cite{rmem}, the research began solving the first challenges that arise.
-    Specifically, introducing a generic and flexible HAL for lightweight \manycores that address the key issues encountered in the development for these processors.
-    Then the research will continue to develop a microkernel to provide the necessary mechanisms for developing a fully featured OS on it.
-    Finally, the development of \multikernel services will be achieved.
+
+    In this context, the Ph.D. student and co-advisor of this monograph, Pedro H. Penna, aiming at improving programmability and portability for lightweight manycores, propose that \oses for this next-generation of processors must be redesigned from scratch based on all its tights architectural constraints.
+    Your proposal involves a fully feature distributed \os based on a \multikernel approach~\cite{Baumann2009}.
+    In this regard, based on the results of experimental distributed services developed on \mppa~\cite{os:rmem}, the research began solving the first-order challenges that arise.
+    Specifically, introducing a generic and flexible \hal for \textit{lightweight} \manycores that address the key issues encountered in the development for these processors. This \hal is structured in two major logic layers: one that abstracts the management of a single cluster, which is named \textit{Cluster Abstraction Layer}; and another that encapsulates architectural features that spawn across multiple clusters, which is called \textit{Processor Abstraction Layer}.
+    And today, it has been ported to the manycores \mppa and \optimsoc.
+    Then 
+    Finally, the Ph.D.research aims a microkernel to provide the necessary mechanisms for developing a fully featured OS on it and, then, research of \multikernel services for manycores.
 
 \section{Objectives}
-    Ajudar a desenvolver a \hal para o processador \mppa
+    Assist to research and develop \hal for \textit{lightweight} manycores.
 
 \subsection{General Objective}
-    This is a general objective.
+    On the basis of the foregoing, the following general objective and the specific objectives of this project.
     
 \subsection{Specific Objectives}
     \begin{itemize}
-        \item Implementar o módulo Inter-cluster connection.
-        \item Auxiliar no desenvolvimentos dos outros módulos.
-        \item Aperfeiçoar os módulos conforme a necessidade.
-        \item Aprender a desenvolver pesquisa no estado da arte
+        \item Present and discuss hal \textit{lightweight} manycores.
+        \item Design and develop the Inter-cluster communication module.
+        \item Assist in the development and improvement of other modules.
+        \item Perform a performance analysis of the proposed \hal for the \mppa.
     \end{itemize}
     
-\section{Organization Of The Work}
-    The work is organized as follows.
+% \section{Organization Of The Work}
+%     This section is under development.
