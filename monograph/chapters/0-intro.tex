@@ -33,7 +33,7 @@
     At this point, with the popularization of embedded systems as well as the aim to reach the \exascale (10$^{18}$ FLOPS), a new class of parallel processors, named \textit{lightweight} \manycores, emerged to provide high parallelism with low-power consumption.
     
 % - Manycores characteristics
-    The main characteristics of  lightweight \manycores are the following:
+    The main characteristics of  \textit{lightweight} \manycores are the following:
     \begin{itemize}
         \item They integrate thousands of low-power cores in a single die organized in clusters;
         \item They are designed to cope with \mimd workloads;
@@ -41,8 +41,8 @@
         \item They present constrained memory systems; and
         \item They frequently feature a heterogeneous configuration.
     \end{itemize}
-    Some industry-successful examples of lightweight manycores are
-    the \mppa~\cite{DINECHIN20131654};
+    Some industry-successful examples of \textit{lightweight} \manycores are
+    the \mppa~\cite{DeDinechin2013-1};
     the \epiphany~\cite{olofsson2014}; and
     the \taihulight~\cite{zheng2015}.
 
@@ -54,7 +54,7 @@
         \item \textbf{Hybrid programming model:} due to the parallel and distributed nature of the architecture, engineers are frequently required to adopt a message-passing programming model to deal with the presence of rich \nocs~\cite{kelly2013} that interconnects clusters and a shared-memory model inside the cluster.
         \item \textbf{Missing hardware support for cache coherency:} to reduce power consumption, theses processors do not feature cache coherency, which in turn forces programmers to handle it explicitly in software level and frequently calls out for a redesign in their applications~\cite{francesquini2015};
         \item \textbf{Constrained memory system:} the frequent presence of multiple physical address spaces and small local memories require data tiling and prefetching to be handled by the software~\cite{Castro2016};
-        \item \textbf{Heterogeneous configuration:} the different programmable components on lightweight \manycores turns the actual deployment of applications in a complex task~\cite{barbalace2015}.
+        \item \textbf{Heterogeneous configuration:} the different programmable components on \textit{lightweight} \manycores turns the actual deployment of applications in a complex task~\cite{barbalace2015}.
     \end{itemize}
 
 % - Why is development on manycores difficult?
@@ -69,7 +69,7 @@
 
     Part of these challenges derives from existing \oses and runtimes.
     On the one hand, the complicated portability and scalability of traditional \oses with a monolithic kernels, which were designed to homogeneous hardwares, is leading to the development of new \oses from scratch~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
-    On the other hand, existing runtimes only partially address some of the programmability issues of lightweight \manycores, making the process of developing, porting, and maintaining applications a challenging task.
+    On the other hand, existing runtimes only partially address some of the programmability issues of \textit{lightweight} \manycores, making the process of developing, porting, and maintaining applications a challenging task.
 
 % Challenges and Problem Definition
 % - How are OSs essential in this context?
@@ -88,9 +88,9 @@
     % Em seguida, a pesquisa seguirá em desenvolver um microkernel para prover os mecanismos básicos para desenvolvimento de um OS completo sobre ele.
     % Por fim, o desenvolvimento de serviços do multikernel serão alcançados.
 
-    We believe that \oses for the next-generation of lightweight \manycores must be redesigned from scratch to cope with their tight architectural constraints. Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009} is being proposed\todo{REF Nanvix}. Nanvix features a generic and flexible \hal for \textit{lightweight} \manycores that addresses the key issues encountered in the development for these processors. This \hal is structured in two major logic layers: one that abstracts the management of a single cluster, which is named \textit{Cluster Abstraction Layer}; and another that encapsulates architectural features that spawn across multiple clusters, which is called \textit{Processor Abstraction Layer}.
+    We believe that \oses for the next-generation of \textit{lightweight} \manycores must be redesigned from scratch to cope with their tight architectural constraints. Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009} is being proposed~\cite{penna2017-1,penna2017-2,penna2019}. Nanvix features a generic and flexible \hal for \textit{lightweight} \manycores that addresses the key issues encountered in the development for these processors. This \hal is structured in two major logic layers: one that abstracts the management of a single cluster, which is named \textit{Cluster Abstraction Layer}; and another that encapsulates architectural features that spawn across multiple clusters, which is called \textit{Processor Abstraction Layer}.
 
-    In this monograph, we intend to port the Nanvix \hal to the \mppa maycore processor\todo{REF}. This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work. Then, we will analyze the performance of the proposed implementation using specific micro-benchmarks.
+    In this monograph, we intend to port the Nanvix \hal to the \mppa maycore processor~\cite{DeDinechin2013-1}. This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work. Then, we will analyze the performance of the proposed implementation using specific micro-benchmarks.
 
 %\section{Objectives}
 %    Assist to research and develop \hal for \textit{lightweight} manycores.

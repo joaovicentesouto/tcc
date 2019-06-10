@@ -13,8 +13,12 @@
 \let\theglossary\relax
 \let\endtheglossary\relax
 
+% \usepackage[brazilian,hyperpageref]{backref}   % Paginas com as citações na bibl
+% \usepackage[alf]{abntex2cite} % Citações padrão ABNT
+
 \usepackage[noredefwarn, acronyms, symbols]{glossaries}
 \usepackage[lined,boxed,ruled,commentsnumbered]{algorithm2e}
+
 
 % \usepackage{pgf}
 % \usepackage{tikz}
@@ -113,13 +117,18 @@
 % ---
 
 % {glossaries} package
-\makeglossaries
-\loadglsentries{init/acronyms}
-\loadglsentries{init/symbols}
+% \makeglossaries
+% \loadglsentries{init/acronyms}
+% \loadglsentries{init/symbols}
+\glsdisablehyper
+\input{init/acronyms}
+\input{init/symbols}
+
 %\glsaddall
 \input{init/math}
 
-\addbibresource{bib.bib} % {biblatex} package
+\addbibresource{references.bib} % {biblatex} package
+% \bibliography{references}
 
 %%these will be used in the large cover
 % \pequenoResumo{Esse é o pequeno resumo que vai aparecer na orelha orelha direita da capa.}
