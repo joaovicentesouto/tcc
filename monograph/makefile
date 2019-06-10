@@ -3,7 +3,7 @@ LATEX_FLAGS = -shell-escape -e "\$$pdflatex=q/pdflatex -synctex=1 -interaction=n
 
 all: main.tex
 	pdflatex -interaction=nonstopmode main.tex ; \
-	bibtex main; \
+	biber main.bcf; \
 	pdflatex -interaction=nonstopmode main.tex ;\
 	pdflatex -interaction=nonstopmode main.tex
 
