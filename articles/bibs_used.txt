@@ -13,6 +13,7 @@ OS {
 	Kluge2014        => os-mossca
 	nightingale2009  => os-helios
 	rhoden2011.      => os-akaros
+	wentzlaff_fleets:_2011 => os-fleets
 }
 
 Nanvix {

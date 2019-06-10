@@ -1,0 +1,42 @@
+% resumo em inglês
+\begin{resumo}[brazil]
+Resumo aqui.
+\end{resumo}
+
+\begin{resumo}[english]
+% - Where do manycores from?
+    For some years now, computer systems grew the core parallelism and improved diverse other architectural aspects to soften the impact of the frequency barrier achieved, looking for continuous scale performance.
+    However, for supercomputers to reach processing power (FLOPS) in the \exascale (10$^{18}$), computer systems must take into account their energy consumption~\cite{darpa:exascale}. Therefore, a new architecture category of processors, denominated \textit{lightweight} \manycores, emerged to provide high parallelism with low-power consumption.
+
+% - Manycores characteristics
+    These new processors
+    (i) integrate thousands of low-power cores in a single die; 
+    (ii) are designed to cope with \mimd workloads;
+    (iii) rely on a high-bandwidth \noc for fast and reliable message-passing communication;
+    (iv) present constrained memory systems; and
+    (v) frequently feature a heterogeneous configuration.
+    Some industry-successful examples of lightweight manycores are
+    the \mppa~\cite{DeDinechin2013-1};
+    the \epiphany~\cite{Olofsson2014}; and
+    the \taihulight~\cite{Zheng2015}.
+
+% Motivation
+% - Why is development on manycores difficult?
+    Jointly with further performance scalability and energy efficiency, manycores brought a new set of challenges in software development coming from their architectural particularities.
+    Precisely, these particularities force developers 
+    (i) to adopt a message-passing programming model; 
+    (ii) to deal explicitly with cache coherency;
+    (iii) to take data tiling and prefetching approach for handling the small local memory and multiple address spaces; and
+    (iv) to manage the complexity of development to commonly heterogeneous architecture.
+% - Why develop for their processors?
+    
+
+% Challenges and Problem Definition
+% - Why these problems exist? (Because the existing OSes does not handle architecture particularities)
+% - These particularities prevent common OSes that easy portated without a complex redesign. And existing OSes does not account some architectural points.
+
+% Goals and Contributions
+% - Redesign from scratch around all their tight architectural constraints.
+% - Focus on addressing first-order programmability challenges
+% - Introducing generic and flexible HAL for lightweight manycores
+\end{resumo}

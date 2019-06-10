@@ -1,0 +1,207 @@
+\documentclass[tcc, capa, capa-completa, english]{ufxc}
+
+% capa: imprime a parte da frente da capa em uma única página
+% capa-completa: imprime a versão completa da capa, com a parte da frente, verso, lombada e as orelhas
+
+% =====================================================
+% Pacotes usados no projeto
+% =====================================================
+
+\usepackage[style=abnt, noslsn]{biblatex} %, language=brazil
+\usepackage{tocloft}
+\let\printglossary\relax
+\let\theglossary\relax
+\let\endtheglossary\relax
+
+\usepackage[noredefwarn, acronyms, symbols]{glossaries}
+\usepackage[lined,boxed,ruled,commentsnumbered]{algorithm2e}
+
+% \usepackage{pgf}
+% \usepackage{tikz}
+% \usepackage{hhline}
+% \usepackage{xfrac}
+% \usepackage[export]{adjustbox} % http://tex.stackexchange.com/questions/163246/resize-a-tabular-object-to-textwidth
+% \usepackage{rotating}
+% \usepackage{pdflscape}
+% \usepackage{amsmath}
+% \usepackage{amstext}
+% \usepackage{amsfonts}
+% \usepackage{amssymb}
+% \usepackage{mathtools}
+% \usepackage{amsthm}
+% \let\openbox\relax
+% \usepackage{bm}
+
+% % \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+% \usepackage[makeroom]{cancel}
+% \usepackage{color}    % Possibilita o uso de cores no documento
+% \usepackage{colortbl}
+\usepackage{subfig} % Usado para separar figuras em sub-figuras (ambiente subfloat) 
+% \usepackage{scalefnt}
+% \usepackage{multirow}
+% \usepackage{iflang} %there is a warning which will be corrected in future texmf dist.
+% \usepackage[lined,boxed,ruled,commentsnumbered]{algorithm2e}
+% \usepackage{soul}
+
+% \usepackage{xspace} %In init/math
+
+% =====================================================
+% Local/data
+% =====================================================
+
+\local{Florianópolis}
+\data{01}{Junho}{2019}
+
+% =====================================================
+% Informações do programa
+% =====================================================
+
+\instituicao{Universidade Federal de Santa Catarina}
+\centro{Centro Tecnológico}
+\departamento{Departamento de Informática e Estatística}
+\grau{bacharel}
+\curso{Ciência da Computação}
+\coordenador{Nome do Coordenador do Curso}
+
+% =====================================================
+% Título e Informações sobre o autor
+% =====================================================
+
+\titulo{Development of a Hardware Abstraction Layer for the Kalray MPPA-256 Lightweight Manycore Processor}
+% \subtitulo{}
+
+\autor{João Vicente}{Souto}
+
+%formato para orientador e coorientador:
+%\orientador[genero]{titulação}{primeiros nomes}{sobrenome}{Universidade}
+\orientador{Dr.}{Márcio Bastos}{Castro}{Universidade Federal de Santa Catarina}
+\coorientador{Mr.}{Pedro Henrique}{Penna}{Université Grenoble Alpes}
+
+% =====================================================
+% informações da banca
+% =====================================================
+% * assume-se que o orientador é parte da banca avaliadora
+\coorientadorNaBanca{}
+
+%formato para membro da banca
+%\membroBanca{Nome}{Afiliação}
+\membroBanca{Prof$^a$. Dr$^a$. Membro A. First}{Universidade Federal de Santa Catarina}
+\membroBanca{Prof. Dr. Membro B.}{Universidade Federal de Santa Catarina}
+\membroBanca[video]{Prof. Dr. Membro C.}{Universidade Federal de Santa Catarina}
+
+
+% =====================================================
+% Informações do trabalho
+% =====================================================
+
+%as palavras-chave devem ser definidas antes do início do documento pois
+%a capa e também a lista catalográfica dependem delas...
+% \palavrasChave{{latex},{abntex},{editoração de texto}}
+%perceba a maneira como cada palavra chave é definida. Tal modo deve ser 
+%mantido para a correta geração da ficha catalográfica
+
+% por algum motivo ainda não identificado, ocorre um erro se os dois não forem definidos e as palavras não são impressas na ficha catalográfica
+\palavrasChave{{Template}, {Ufsc}, {Latex}, {BU}}
+\palavrasChave[english]{{Template}, {Ufsc}, {Latex}, {BU}}
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% {glossaries} package
+\makeglossaries
+\loadglsentries{init/acronyms}
+\loadglsentries{init/symbols}
+%\glsaddall
+\input{init/math}
+
+\addbibresource{bib.bib} % {biblatex} package
+
+%%these will be used in the large cover
+% \pequenoResumo{Esse é o pequeno resumo que vai aparecer na orelha orelha direita da capa.}
+% \bairro{Trindade}
+% \cidade{Florianópolis}
+% \estado{SC}
+
+% =====================================================
+% Comandos do usuário
+% =====================================================
+
+\newcommand{\note}[1]{\textbf{\textcolor{blue}{\hl{#1}}}} % {color, soul} package
+
+% adiciona automaticamente \centering em ambientes tipo float
+\makeatletter
+\g@addto@macro\@floatboxreset\centering
+\makeatother
+
+% Caso prefira referenciar acronimos com \ac e \acp.
+% \newcommand{\ac}[1]{\gls{#1}}
+% \newcommand{\acp}[1]{\glspl{#1}}
+
+% =====================================================
+% Início do documento
+% =====================================================
+\begin{document}
+
+% Seleciona o idioma do documento (conforme pacotes do babel)
+\selectlanguage{english}
+
+% =====================================================
+% Pré-textuais
+% =====================================================
+
+\imprimircapa
+\imprimirfolhaderosto* % (o * indica que haverá a ficha bibliográfica)
+
+\imprimirFichaCatalografica{} % pode passar pdf por parametro
+\input{pretextuais/errata}
+\inserirFolhaDeAprovacao{} % pode passar pdf por parametro
+
+\input{pretextuais/dedicatoria}
+\input{pretextuais/agradecimentos}
+\input{pretextuais/epigrafe}
+\input{pretextuais/resumos}
+
+\inserirListaDeFiguras{}
+\inserirListaDeTabelas{}
+\inserirListaDeAcronimos{}
+\inserirListaDeSimbolos{}
+\inserirListaDeAlgoritmos{}
+
+\inserirSumario{}
+
+% =====================================================
+% Corpo do trabalho
+% =====================================================
+
+\textual
+
+\input{chapters/0-intro}
+\input{chapters/1-fundamentation.tex}
+\input{chapters/2-related-works.tex}
+\input{chapters/3-development.tex}
+\input{chapters/4-experiments.tex}
+\input{chapters/basic}
+
+% =====================================================
+% Pós-textuais
+% =====================================================
+\postextual
+\printbibliography
+
+% TODO
+%\glossary
+
+\input{postextuais/apendices}
+\input{postextuais/anexos}
+
+
+%-----------------
+% INDICE REMISSIVO
+\phantompart
+%\printindex
+%-----------------
+
+\end{document}

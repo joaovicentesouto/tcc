@@ -1,0 +1,35 @@
+\usepackage{xspace}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newtheorem{theorem}{{Theorem}}
+\newtheorem{property}{Property}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}[definition]
+
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+\DeclareMathAlphabet{\mathbfcal}{OMS}{cmsy}{b}{n}
+
+
+
+
+\newcommand\qedsymbol{$\blacksquare$} %renewcommand o
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcommand{\jcost}{\gls{jcost}\xspace}
+\newcommand{\jlambda}{\gls{jlambda}\xspace}
+
+\newcommand{\naturals}{\gls{naturalnumbers}}
+\newcommand{\integers}{\gls{integernumbers}}
+\newcommand{\reals}{\gls{realnumbers}}
+
+\newcommand{\primes}{\ensuremath{\mathbb{P}}}
+\newcommand{\rationals}{\ensuremath{\mathbb{Q}}}
+\newcommand{\complex}{\ensuremath{\mathbb{C}}}
+\newcommand{\quaternions}{\ensuremath{\mathbb{H}}}

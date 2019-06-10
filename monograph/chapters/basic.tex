@@ -1,0 +1,121 @@
+\chapter{Basic Concepts}
+\label{ch.basic}
+
+\section{Figure Examples}
+
+Figure.
+
+\begin{figure}[htb]
+    \includegraphics[width=.4\textwidth]{images/ufsc_pb.pdf}
+    
+    \caption[Short Caption]{
+        Long version of caption.
+    }
+\label{fig.cu}
+\end{figure}
+
+\subsection{Sub Figures}
+Ref global Figure~\ref{fig.logo} and its subfigures~\ref{sfig.logoA}, \ref{sfig.logoB} and \ref{sfig.logoC}.
+
+\begin{figure}[th]
+    \subfloat[]{ \includegraphics[width=.2\linewidth]{images/ufsc_pb.pdf} \label{sfig.logoA} }
+    \subfloat[]{ \includegraphics[width=.2\linewidth]{images/ufsc_pb.pdf} \label{sfig.logoB} }
+    
+    \subfloat[]{ \includegraphics[width=.2\linewidth]{images/ufsc_pb.pdf} \label{sfig.logoC} }
+    
+    \caption[Short Caption 2]{
+        Long version of caption 2.
+    }
+\label{fig.logo}
+\end{figure}
+
+\section{Citations}
+\citeonline{Wiegand03} made a nice job.
+Citation \cite{Wiegand03}.
+
+\section{Acronym}
+See more in wiki\footnote{https://en.wikibooks.org/wiki/LaTeX/Glossary}.
+\begin{enumerate}
+    \item \gls{dag}.
+    \item \glspl{dag}.
+    \item \glspl{sram}.
+    \item \gls{sram}.
+    \item \acrfull{dag}
+    \item \acrfullpl{dag}
+    \item \test
+    \item \test
+    \item \tests
+\end{enumerate}
+
+\section{Table}
+
+\begin{table}[h]
+    \caption[Short Caption.]{
+        Table caption here.
+    }
+
+    \resizebox{\linewidth}{!}{
+        \begin{tabular}{@{}|c|c|c|c|c|c|c|c|c|c|@{}}
+            \hline
+              & \textbf{June}      & \textbf{July}      & \textbf{August}       & \textbf{September}     & \textbf{October}         & \textbf{November}         & \textbf{December}          & \textbf{January}         & \textbf{February}         \\ \hline
+            \textbf{P1} & X & X  &   &   &   &   &   &   &   \\ \hline
+            \textbf{P2} &   & X & X &   &   &   &   &   &   \\ \hline
+            \textbf{P3} &   &  &  & X &   &   &   &   &   \\ \hline
+            \textbf{P4} &   &  &  & X & X  & X  &   &   &   \\ \hline
+            \textbf{P5} &   &   &   &   & X & X & X  &   &   \\ \hline
+            \textbf{P6} &  &  &  &  &  &  & X & X  &   \\ \hline
+            \textbf{P7} &   &   &   &   &   &   &   & X & X \\ \hline
+            \textbf{P8} &   &   &   &   &   &   &   &   & X \\ \hline
+        \end{tabular}
+    }
+
+\label{tab.table}
+\end{table}
+
+\section{Equations}
+You can use symbols (\primes) from /init/math.
+
+\begin{equation}
+    % \displaystyle 
+    \jcost(A, B) = + \jlambda \times A \in \integers \in \primes
+\label{eq.test}
+\end{equation}
+
+
+\section{Algorithm}
+
+\begin{algorithm}
+    \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+    \KwIn{$A=[a_1, a_2, \ldots, a_n]$}
+    \KwOut{Max value}
+    $max \gets a_1$\;
+    \For{$i \gets 2$ \textbf{to} $n$} {
+      \If{$a_i > max$} {
+        $max \gets a_i$\;
+      }
+    }
+    \Return{$max$}\;
+    
+    \caption[Short]{
+        Max finds the maximum number
+    }
+    \label{alg.max}
+\end{algorithm}
+
+\begin{algorithm}
+    \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+    \KwIn{$A=[a_1, a_2, \ldots, a_n]$}
+    \KwOut{Max value}
+    $max \gets a_1$\;
+    \For{$i \gets 2$ \textbf{to} $n$} {
+      \If{$a_i > max$} {
+        $max \gets a_i$\;
+      }
+    }
+    \Return{$max$}\;
+    
+    \caption[Short]{
+        Max finds the maximum number
+    }
+    \label{alg.max2}
+\end{algorithm}
