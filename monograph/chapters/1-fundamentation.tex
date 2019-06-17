@@ -1,47 +1,74 @@
 \chapter{Theoretical Fundamentation} % Or Fundamentals?
 \label{ch.fundamentation}
 
-    In this chapter, I introduce the fundamentals concepts related to the present work.
+	In this chapter, I introduce the fundamentals concepts related to the present work.
 
 \section{Operating Systems Concepts}
-    This section may come sooner (here).
+	This section may come sooner (here).
 
 \section{Multiple Processor Systems}
+\label{sec.multiple_processor_systems}
 
-    According to Tanenbaum, exists three models of modern multiple processor architectures.
-    A shared-memory multiprocessor, a message-passing multicomputer, and a wide area distributed systems.
-    The sections below address the two first models presenting significant hardware and software concepts for the present monograph.
+	According to Tanenbaum~\cite{tanenbaum:4ed}, exists three models of
+	modern multiple processor architectures.
+	A shared-memory multiprocessor, a message-passing multicomputer, and a
+	wide area distributed systems.
+	The sections below address the two first models presenting significant
+	hardware and software concepts for the present monograph.
 
-    \subsection{Multiprocessors}
-    Hardware overview.
-    Von Neumann Model -> Main Systems Organization
-    - Maybe speak UMA and NUMA.
-    - Flynn's Organization.
-        
-    Software overview.
-    - OS
-    - Processor, thread (simiraly with Flynn Organization)
+	\subsection{Multiprocessors}
+
+		In the early days of electronic digital computing, John Von Neumann proposed
+		an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
+		As shown in Figure X, this model describes a Central Processing Unit that
+		loads the instructions and data from a Memory Unit, dealing with inputs
+		and generating outputs to I/O Devices.
+		Modern processors still follow this model, but some components and behaviors
+		are specialized or replicated to increase performance.
+		
+		In this context, a shared-memory multiprocessor is a computer system in which
+		two or more CPUs share full access to a common RAM~\cite{tanenbaum:4ed}.
+		Concurrency issues begin to appear where are many CPUs competing for shared resources.
+		For instance, many threads of a process running on different CPUs can loose
+		or overwrite values of a shared variable. So, low-level software, like
+		Operating Systems, needs to handle those issues and provide management systems
+		to user-level.
+		Below sections will first present an overview of multiprocessor hardware and
+		then move on to Operating Systems' issues.
+
+		\subsubsection{Multiprocessors Hardware}
+
+		Hardware overview.
+		Von Neumann Model -> Main Systems Organization
+		- Maybe speak UMA and NUMA.
+		- Flynn's Organization.
+
+		\subsubsection{Multiprocessors Software}
+
+		Software overview.
+		- OS
+		- Processor, thread (simiraly with Flynn Organization)
 
 
-\subsection{Multicomputers}
-    Hardware overview.
-    Software overview.
+	\subsection{Multicomputers}
+		Hardware overview.
+		Software overview.
 
-    Important: Low-level Software and User-level Software primarily for communication.
+		Important: Low-level Software and User-level Software primarily for communication.
 
-\subsection{Manycores}
-    Focus on manycores.
+	\subsection{Manycores}
+		Focus on manycores.
 
-    Use the above concepts to build the narrative on manycores.
+		Use the above concepts to build the narrative on manycores.
 
-\subsubsection{MPPA-256}
-    Focus on manycores.
+	\subsubsection{MPPA-256}
+		Focus on manycores.
 
 \section{Multikernel OS Concept}
-    In this section, I will write about the Multikernel OS concept using Nanvix has an example.
+	In this section, I will write about the Multikernel OS concept using Nanvix has an example.
 
 \section{Microkernel OS Concept}
-    Focus on microkernel.
+	Focus on microkernel.
 
 \section{Nanvix HAL}
-    Focus on HAL.
+	Focus on HAL.
