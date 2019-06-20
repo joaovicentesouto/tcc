@@ -19,56 +19,106 @@
 	\subsection{Multiprocessors}
 
 		In the early days of electronic digital computing, John Von Neumann proposed
-		an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
-		As shown in Figure X, this model describes a Central Processing Unit that
-		loads the instructions and data from a Memory Unit, dealing with inputs
-		and generating outputs to I/O Devices.
+		an architectural model for computers to be easily programmable.
+		As shown in Figure X, this model describes a Central Processing Unit, also
+		called core, that loads instructions and data from a Memory Unit, dealing
+		with inputs and generating outputs from/to I/O Devices.
 		Modern processors still follow this model, but some components and behaviors
 		are specialized or replicated to increase performance.
 		
 		In this context, a shared-memory multiprocessor is a computer system in which
-		two or more CPUs share full access to a common RAM~\cite{tanenbaum:4ed}.
+		two or more CPUs share full access to a common RAM (Tanenbaum).
 		Concurrency issues begin to appear where are many CPUs competing for shared resources.
 		For instance, many threads of a process running on different CPUs can loose
-		or overwrite values of a shared variable. So, low-level software, like
-		Operating Systems, needs to handle those issues and provide management systems
-		to user-level.
-		Below sections will first present an overview of multiprocessor hardware and
-		then move on to Operating Systems' issues.
+		or overwrite values of a shared memory address.
+		Moreover, some architectures integrate heterogeneous cores introducing
+		programmability issues too.
+		So, low-level software, like Operating Systems and runtimes, needs to handle
+		those issues and provide management systems to user-level.
+		
+		The multiprocessors can be usually classified using the memory access
+		proprieties and the workflow proprieties.
+		First, the access time to different memory addresses also split
+		multiprocessors into two groups.
+		On the one hand, the group of systems that can read a memory word as fast
+		as every other memory word are called UMA (Uniform Memory Access) multiprocessors.
+		On the other hand, NUMA (Nonuniform Memory Access) multiprocessors do not have this property.
+		
+		The firsts UMA multiprocessors were a bus-based approach where the CPU wait for
+		the bus stays free to perform a memory access, as illustrated in Figure X.
+		When the number of cores scale, the bus traffic begin to be a bottleneck of the system.
+		To solve this problem, a small but fast memory level, called cache, are added to each
+		CPU, as depicted in Figure Y.
+		The cache allowed readings to be resolved locally, reducing traffic to the main memory.
+		
+		However, many problems of inconsistency and ordering of operation on memory arose with
+		the advent of caches.
+		First, when a write operation dirties a memory address in a particular cache, this
+		change must be notified to all caches.
+		Equally important, it is necessary to ensure a specific order in the concurrent
+		operations on a given address through different caches.
+		The protocols that guarantee these properties are called cache-coherence protocols.
+		
+		Nevertheless, the numbers of cores in UMA multiprocessors are limited to a few dozens of CPUs.
+		Thus, to allow hundreds of Cores to communicate, NUMA machines provide a single address
+		space visible to all CPUs through an interconnection network, as illustrated in Figure X.
+		Therefore, distributing a virtual memory space among local physics memories, the access
+		is guaranteed via load and store instructions.
+		Although the time to access to remote memory is slower than to local ones, this granted
+		that all UMA programs will be able to run on NUMA machines but with worse performance.
+		
+		In the second place, the workflow classification proposed by Michael J. Flynn(cite Flynn),
+		split multiprocessors architecture, based on the number of concurrent instruction
+		and data streams are available, as depicted in Figure Z.
+		First, the most straightforward class, SISD describes a sequential machine which
+		exploits no parallelism in either the instruction or data streams, like older
+		uniprocessor machines.
+		Second, SIMD uses multiple functional units to replicate and operate a single instruction
+		over multiples different data streams, as illustrated in Figure X.
+		They are usually employed on massively parallelizable and repetitive works.
+		For instance, GPU processors commonly use this term to represent their functionalities.
+		
+		Third, the most uncommon class, MISD describe multiprocessors that apply multiple
+		instructions streams over one data stream.
+		They are generally used on systems that need fault tolerance where multiple operations
+		on the same data stream must result in the same conclusion, like modern flight control systems.
+		Finally, a MIMD architecture has multiple autonomous processors, simultaneously
+		executing different instruction on different data.
+		Examples of those architectures are multi-core superscalar processors, hardware
+		for simulation, modeling and communication switches, Intel Xeon Phi.
 
-		\subsubsection{Multiprocessors Hardware}
-
-		Hardware overview.
-		Von Neumann Model -> Main Systems Organization
-		- Maybe speak UMA and NUMA.
-		- Flynn's Organization.
-
-		\subsubsection{Multiprocessors Software}
-
-		Software overview.
-		- OS
-		- Processor, thread (simiraly with Flynn Organization)
-
+		//! There is a need to talk about multi-core chips, SoCs, manycores and the challenges that are emerging.
 
 	\subsection{Multicomputers}
-		Hardware overview.
-		Software overview.
 
-		Important: Low-level Software and User-level Software primarily for communication.
+		I'm writing on Grammarly.
 
-	\subsection{Manycores}
+		\subsubsection{Hardware}
+			Hardware overview.
+
+		\subsubsection{Software}
+			Low-level communication software.
+			User-level communication software.
+	
+	\subsection{Lightweight Manycores}
 		Focus on manycores.
 
 		Use the above concepts to build the narrative on manycores.
+		
+		\subsubsection{MPPA-256}
+			Focus on manycores.
+	
+\section{Operating Systems on Multiprocessors Context}
+	Presents tanembaum OS concepts examples.
 
-	\subsubsection{MPPA-256}
-		Focus on manycores.
+\section{Nanvix Research Group}
+	Presents Multikernel and Microkernel concepts.
 
-\section{Multikernel OS Concept}
-	In this section, I will write about the Multikernel OS concept using Nanvix has an example.
+	\subsection{Nanvix HAL}
+		Presents HAL
 
-\section{Microkernel OS Concept}
-	Focus on microkernel.
+\section{Communication Abstract}
+	Explains which abstract I will implements
 
-\section{Nanvix HAL}
-	Focus on HAL.
+\section{Goals}
+	...
