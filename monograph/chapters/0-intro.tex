@@ -4,31 +4,18 @@
 % Context
 % - Historical background moore:1965
 % -- Frequency barrier
-    % Há alguns anos atrás, era comum aumentar a frequência dos processadores para aumentar o seu poder de processamento.
-    % Entretanto, pelo aumento "proporcional" da temperatura, essa prática se tornou proibitiva.
-    % Por outro lado, o aperfeiçoamento constante da tecnologia de semicondutores ajudaram a amenizar o impacto dessa proibição, possibilitando construir processadores mais potentes.
-    % Desta forma, conhecendo a barreira de frequência e o iminente fim da Lei de Moore~\cite{moore:1965}, a academia e a indústria começaram a pesquisar e investir em alternativas para manter o aumento do poder de processamento dos sistemas computacionais.
     For some years now, it was common to increase the frequency of processors to improve their processing power.
     However, as a side effect, the temperature rise was much higher than the performance, making this practice prohibitive.
     Alternatively, the constant improvement of semiconductor technology helped to mitigate the impact of this problem, permitting the industry to build more powerful processors with the same frequency.
     Therefore, knowing the frequency barrier and the imminent end of Moore's Law~\cite{moore:1965}, the academy and the industry began to research and invest in alternatives to keep increasing the processing power of computer systems.
 
 % -- Improves architectural parts
-    % Essas pesquisas levaram a uma grande diversidade de compensações nas arquiteturas modernas.
-    % Desde o aperfeiçoamento em um único núcleo através de diferentes tipos de conjuntos de instruções, paralelismo de instruções, técnicas de processamento fora de ordem, técnicas de predição de desvios e diferentes hierarquias de memória.
-    % Até o aumento do número de componentes em um único chip como núcleos de processamento, aceleradores, dispositivos de IO e, como consequência, diferentes tipos de interconexões e mecanismos de coerência de operações e de memória.
-    % Onde, o principal conjunto de arquiteturas, denominada \textit{multicores}, possibilitou o aumento continuo do poder de processamento.
     Such researches have led to a wide diversity of trade-offs in modern architectures.
     For instance, different types of instruction sets, instruction parallelism, out-of-order processing techniques, detour prediction techniques, and various memory hierarchies were some of the key techniques proposed to improve the performance of a single core.
     Then, the performance of computer systems has been improved even further by increasing the number of processing cores in a single die.
     These architectures, called \textit{multicores}, allowed the continuous rise of the computing performance.
 
 % - From multicore to manycores
-    % Outro ponto que também começou a ser discutido nos últimos anos é como medimos o poder de processamento atual.
-    % Usualmente, utilizava-se a quantidade de operações de ponto-flutuante por segundo (FLOP) em \hpc.
-    % Contudo, o consumo de energia começou a ser outro limitador no aumento de desempenho.
-    % Neste ponto, com a popularização de sistemas embarcados e para supercomputadores atingirem o poder de processamento em \exascale (10$^{18}$), computer systems must take into account their energy consumption~\cite{darpa:exascale}.
-    % Therefore, a new architecture category of processors, denominated \textit{lightweight} \manycores, emerged to provide high parallelism with low-power consumption.
     However, in recent years, the energy consumption of parallel processors has become as important as their processing power, which is usually measured by the number of \textit{floating-point operations per second} (FLOPS).
     At this point, with the popularization of embedded systems as well as the aim to reach the \exascale (10$^{18}$ FLOPS), a new class of parallel processors, named \textit{lightweight} \manycores, emerged to provide high parallelism with low-power consumption.
     
@@ -58,15 +45,6 @@
     \end{itemize}
 
 % - Why is development on manycores difficult?
-    % Parte desses desafios derivam dos sistemas operacionais e runtimes existentes.
-    % Primeiramente, sistemas tradicionais, com uma visão monolítica e projetados para hardwares homogêneos, são dificilmente portados para essas novas arquiteturas.
-    % O processo de paralização das estruturas internas, mudança nos paradigmas de comunicação e no uso inadequado dos recursos do hardware formentam o desenvolvimento de novos sistemas operacionais desenvolvidos do zero\cite{OSs}.
-    % Por outro lado, os runtimes existentes não lidam, ou lidam parcialmente, com todos as particulatidades dos manycores.
-    % Desta forma, jogando a responsabilidade para as camadas superiores, torna o processo de desenvolvimento complexo e as aplicações dependentes das arquiteturas, dificeis de manter e portar.
-
-    % a concurrent internal structures, changing communication paradigms, and inefficient use of hardware 
-    % the port of the traditional \oses with a monolithic view and designed for translate in a complicated task~\cite{Baumann2009}.
-
     Part of these challenges derives from existing \oses and runtimes.
     On the one hand, the complicated portability and scalability of traditional \oses with a monolithic kernels, which were designed to homogeneous hardwares, is leading to the development of new \oses from scratch~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
     On the other hand, existing runtimes only partially address some of the programmability issues of \textit{lightweight} \manycores, making the process of developing, porting, and maintaining applications a challenging task.
