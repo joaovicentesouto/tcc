@@ -1,5 +1,6 @@
 *.ilg
 *.ind
+*.toc
 
 *.DS_Store
 *.vscode
