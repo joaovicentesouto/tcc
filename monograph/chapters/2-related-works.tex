@@ -7,46 +7,88 @@ First, some research papers describing state-of-the-art \manycores
 processors will be cited. Further, research on different operating
 systems proposed for such processors will be highlighted.
 
-\section{State-of-the-art of Manycore Processors}
+\section{Lightweight Manycore Processors}
 
-	Olofsson \etal~\cite{olofsson2014}, introduce Epiphany as a high-performance energy-efficient \manycore
-	architecture suitable for real-time embedded systems.
-	The architecture consists of nodes connected to a 2D mesh \noc with a distributed shared-memory model
-	without coherence protocol.
-	Each node has one \risc \cpu, multi-banked local memory, a \dma engine, an event monitor and a network interface.
-	The network interface consists of three networks where one is used for reading request and the other two are used
-	for write transactions destined for on-chip and off-chip.
+	In addition to MPPA, many papers exemplify the wide variety of architectural
+	possibilities of lightweight manycores.
+	For instance, Olofsson \etal~\cite{olofsson2014} introduce Epiphany as a
+	high-performance energy-efficient \manycore architecture suitable for
+	real-time embedded systems.
+	The architecture consists of nodes communicating through three 2D mesh \nocs
+	with a distributed shared-memory model without coherence protocol.
+	Each node has one \risc \cpu, multi-banked local memory, a \dma engine,
+	an event monitor and a network interface.
+	The network interface exposes the three \nocs, where one is used for reading
+	request and the other two are used for write transactions destined for on-chip
+	and off-chip.
 
 	% DFMC 2015
 	% On another hand, Zheng \etal~\cite{zheng2015} presents a heterogeneous \manycore processor
 	% named \dfmc for high performance computing systems.
 	% \dfmc integrates computing processing elements clusters, management processing elements and
 	% memory controllers which heterogeneous processor cores. Using a unified execution model,
-	% \dfmc able a share-memory with suporting to cache coherence by 
+	% \dfmc able a share-memory with suporting to cache coherence by  ......... => Is this lightweight?
 
-	On another hand, for help and facilitate on the \manycore processor design, Wallentowitz \etal~\cite{Wallentowitz2013}
-	presents the open-source framework \optimsoc which allows build \manycore \soc and simulate them on a computer
-	or synthesize them on a \fpga.
-	The \pes are \openrisc~\footnote{https://opencores.org/openrisc} processor organized in tiles.
-	The central architectural element is the LISNoC, a \textit{packet-switched \noc} that implements virtual channels
-	to avoid message-dependent deadlocks.
+	On another hand, for help and facilitate on the \manycore processor design,
+	Wallentowitz \etal~\cite{Wallentowitz2013} presents the open-source framework
+	\optimsoc which allows build \manycore \soc and simulate them on a computer or
+	synthesize them on a \fpga.
+	The \pes are \openrisc~\footnote{https://opencores.org/openrisc} processor
+	organized in tiles.
+	The central architectural element is the LISNoC, a \textit{packet-switched \noc}
+	that implements virtual channels to avoid message-dependent deadlocks.
 	The LISNoC support various network topologies depending only on the tiles organization.
-	Specifically, a \textit{network adapter} handles the memory transfers between tile and the memory and provide
-	hardware means to a message-passing communication model among tiles.
+	Specifically, a \textit{network adapter} handles the memory transfers between
+	tile and the memory and provide hardware means to a message-passing communication
+	model among tiles.
 
-	Similarly, Kurth \etal~\cite{Kurth2017} introduce the hero which unites an ARM Cortex-A host processor with a
-	fully modifiable \risc-V \manycore implemented on a \fpga.
-	The \pmca uses a multi-cluster design em relies on multi-banked, \spms.
-	The data caches had substituted to a multi-channel \dma engine that copy data between a shared L1 \spm and
-	remote \smps or shared main memory.
-	In addition, exists different designs for the shared instruction caches and top-level interconnection such as bus or \noc.
+	Similarly, Kurth \etal~\cite{Kurth2017} introduce the \hero which unites an ARM Cortex-A
+	host processor with a fully modifiable \risc-V \manycore implemented on a \fpga.
+	The \pmca uses a multi-cluster design em relies on multi-banked, called \spms.
+	The data caches had substituted to a multi-channel \dma engine that copy data between a
+	shared L1 \spm and remote \smps or shared main memory.
+	In addition, exists different designs for the shared instruction caches and top-level
+	interconnection such as bus or \noc.
 
 \section{Operating Systems for Lightweight \manycore Processors}
 
-	Popcorn 2015
-	Multikernel 2009
-	Moosca 2014
-	mOS 2014
+	Baumann \etal~\cite{Baumann2009} a new \os architecture for scalable multicore systems,
+	called Multikernel.
+	In their vision, the future of the \oses are on embracing the networked nature of the
+	machines based on distributed systems ideas.
+	Assuming the cores are independent nodes of a network, they build the tradicional \os
+	functionalities as fully-feature processes.
+	This processes communicate via message-passing and does not share the internal structures
+	of the \os.
+	The paper showed how expensive it is to maintain a state of the OS through shared memory
+	instead of exchanging messages and the subsequent increase of the complexity of
+	cache-coherence protocols.
+	The multikernel model, named Barelfish, follow three design principles.
+	First, \textit{Make all inter-core communication explicit} turns the system amenable to
+	human or automated analysis because processes communicate only through well defined interfaces.
+	Segond, \textit{Make \os structures hardware-neutral} makes the hardware-independent code easy
+	to debug and optimize, and facilitates the deploy the \os for new processor types, avoiding rework.
+	And lastly, \textit{View \os state as replicated instead of shared} improve system scalabity.
+
+	\todo{Maybe take off mOS}
+	In Wisniewski~\cite{mos} \etal, the concept of scalability was pushed to the extreme thinking on \hpc.
+	The principal motivation are the creation a \os that simultaneously support programmability
+	through support Linux API and projecting a lightweight kernel to performance, scalability and reliability.
+	The \os, named \mos, provide as much of the compute hardware resources as possible to the
+	HPC applications. On another hand, the Linux kernel component acts as a service that provides
+	Linux functionalities.
+	
+	In like manner, Kluge \etal~\cite{Kluge2014} developed the \moosca.
+	With moosca, they introduce abstractions that are easily composed, called Nodes,
+	Channels and Servers.
+	Where Nodes represent execution resources, Channels represent communication resources,
+	\ie \noc resources, and lastly, Servers are nodes that provide services to client Nodes.
+	To meet safety-critical requirements, they partition \manycore and distribute replicas
+	of Servers turning the whole system is predictable.
+	However, in order to deal with interferences in shared resources, such as \noc,
+	usage policies are introduced to make possible the prediction of system behavior.
+
+	HELIOS 2014
 
 \section{Discussion}
 	In this section, I discuss ...
