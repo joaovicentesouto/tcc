@@ -2,24 +2,51 @@
 \label{ch.related-works}
 
 The proposal of this work is related to several other research works
-on lightweight manycores.
-First, some research papers describing state-of-the-art manycores
+on lightweight \manycores.
+First, some research papers describing state-of-the-art \manycores
 processors will be cited. Further, research on different operating
 systems proposed for such processors will be highlighted.
 
-\section{State-of-the-art Lightweight Manycore Processors}
+\section{State-of-the-art of Manycore Processors}
 
-    mppa256 2013
-    optimsoc 2013
-    Epiphany 2014
-    risc-v hero 2017
+	Olofsson \etal~\cite{olofsson2014}, introduce Epiphany as a high-performance energy-efficient \manycore
+	architecture suitable for real-time embedded systems.
+	The architecture consists of nodes connected to a 2D mesh \noc with a distributed shared-memory model
+	without coherence protocol.
+	Each node has one \risc \cpu, multi-banked local memory, a \dma engine, an event monitor and a network interface.
+	The network interface consists of three networks where one is used for reading request and the other two are used
+	for write transactions destined for on-chip and off-chip.
 
-\section{Operating Systems for Lightweight Manycore Processors}
+	% DFMC 2015
+	% On another hand, Zheng \etal~\cite{zheng2015} presents a heterogeneous \manycore processor
+	% named \dfmc for high performance computing systems.
+	% \dfmc integrates computing processing elements clusters, management processing elements and
+	% memory controllers which heterogeneous processor cores. Using a unified execution model,
+	% \dfmc able a share-memory with suporting to cache coherence by 
 
-    Popcorn 2015
-    Multikernel 2009
-    Moosca 2014
-    mOS 2014
+	On another hand, for help and facilitate on the \manycore processor design, Wallentowitz \etal~\cite{Wallentowitz2013}
+	presents the open-source framework \optimsoc which allows build \manycore \soc and simulate them on a computer
+	or synthesize them on a \fpga.
+	The \pes are \openrisc~\footnote{https://opencores.org/openrisc} processor organized in tiles.
+	The central architectural element is the LISNoC, a \textit{packet-switched \noc} that implements virtual channels
+	to avoid message-dependent deadlocks.
+	The LISNoC support various network topologies depending only on the tiles organization.
+	Specifically, a \textit{network adapter} handles the memory transfers between tile and the memory and provide
+	hardware means to a message-passing communication model among tiles.
+
+	Similarly, Kurth \etal~\cite{Kurth2017} introduce the hero which unites an ARM Cortex-A host processor with a
+	fully modifiable \risc-V \manycore implemented on a \fpga.
+	The \pmca uses a multi-cluster design em relies on multi-banked, \spms.
+	The data caches had substituted to a multi-channel \dma engine that copy data between a shared L1 \spm and
+	remote \smps or shared main memory.
+	In addition, exists different designs for the shared instruction caches and top-level interconnection such as bus or \noc.
+
+\section{Operating Systems for Lightweight \manycore Processors}
+
+	Popcorn 2015
+	Multikernel 2009
+	Moosca 2014
+	mOS 2014
 
 \section{Discussion}
-    In this section, I discuss ...
+	In this section, I discuss ...

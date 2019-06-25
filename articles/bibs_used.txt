@@ -3,7 +3,7 @@ Category { bib-ref => pdf-name }
 Arch {
 	DeDinechin2013-1 => arch-mppa256
 	olofsson2014     => arch-epiphany
-	zheng2015        => ""
+	zheng2015        => arch-dfmc
 	Wallentowitz2013 => arch-optimsoc
 	Kurth2017        => arch-risc-v-hero
 }
