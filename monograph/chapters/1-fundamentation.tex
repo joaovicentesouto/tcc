@@ -1,5 +1,5 @@
 \chapter{Theoretical Fundamentation} % Or Fundamentals?
-\label{ch::fundamentation}
+\label{ch.fundamentation}
 
 	In this chapter, I introduce the fundamentals concepts related to the present work.
 
@@ -8,7 +8,7 @@
 % \section{Computer System Organization}
 
 \section{Multiple Processor Systems}
-\label{sec::multiple_processor_systems}
+\label{sec.multiple_processor_systems}
 
 	According to Tanenbaum~\cite{tanenbaum:4ed}, exists three models of modern
 	multiple processor architectures.
@@ -18,21 +18,21 @@
 	hardware and software concepts for the present monograph.
 
 	\subsection{Multiprocessors}
-	\label{sec::multiprocessors}
+	\label{sec.multiprocessors}
 
 		\begin{figure}[h]
 			\centering
 			\includegraphics[width=.6\textwidth]{images/neumann.jpg}
 
 			\caption{
-				(temporary) Neumann Machine Example
+				(temporary) Neumann Machine Example.
 			}\par
-			\label{fig::neumann}
+			\label{fig.neumann}
 		\end{figure}
 
 		In the early days of electronic digital computing, John Von Neumann
 		proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
-		As illustrated in Figure \ref{fig::neumann}, this model describes a \cpu,
+		As illustrated in Figure \ref{fig.neumann}, this model describes a \cpu,
 		also called core, that loads instructions and data from a Memory Unit,
 		dealing with inputs and generating outputs from/to I/O Devices.
 		Modern processors still follow this model, but some components and
@@ -49,7 +49,7 @@
 		issues and provide management systems to user-level.
 
 		\subsubsection{Multiprocessor Hardware}
-		\label{sec::multiprocessor_hw}
+		\label{sec.multiprocessor_hw}
 
 			The multiprocessors can be usually classified using memory access
 			and workflow properties.
@@ -66,16 +66,16 @@
 				\caption{
 					(temporary) Two Bus-Based \uma Multiprocessors: (a) Without caching. (b) With caching.
 				}\par
-				\label{fig::uma}
+				\label{fig.uma}
 			\end{figure}
 
 			The firsts \uma multiprocessors were bus-based architectures where
 			the \cpu wait for the bus channel stays free to perform a memory
-			access, as illustrated in Figure \ref{fig::uma}(a).
+			access, as illustrated in Figure \ref{fig.uma}(a).
 			When the number of cores scale, the bus traffic begin to be a
 			bottleneck of the system.
 			To solve this problem, a small but fast memory level, called cache,
-			are added to each \cpu, as depicted in Figure \ref{fig::uma}(b).
+			are added to each \cpu, as depicted in Figure \ref{fig.uma}(b).
 			The cache allowed readings to be resolved locally, reducing traffic
 			to the main memory.
 
@@ -94,14 +94,14 @@
 				\caption{
 					(temporary) A \numa multiprocessors example.
 				}\par
-				\label{fig::numa}
+				\label{fig.numa}
 			\end{figure}
 
 			Nevertheless, the numbers of cores in \uma multiprocessors are limited
 			to a few dozens of \cpus.
 			Thus, to allow hundreds of cores to communicate, \numa machines provide
 			a single address space visible to all \cpus through an interconnection
-			network,  as illustrated in Figure \ref{fig::numa}.
+			network,  as illustrated in Figure \ref{fig.numa}.
 			Therefore, distributing a virtual memory space among local physics memories,
 			the access is guaranteed via load and store instructions.
 			Although the time to access to remote memory is slower than to local ones,
@@ -119,12 +119,12 @@
 					(c) Multiple Instruction Single Data.
 					(d) Multiple Instruction Multiple Data.
 				}\par
-				\label{fig::flynn}
+				\label{fig.flynn}
 			\end{figure}
 
 			In the second place, the workflow classification proposed by Michael J. Flynn~\cite{Flynn},
 			split multiprocessors architecture based on the number of concurrent
-			instruction and data streams available, as depicted in Figure \ref{fig::flynn}.
+			instruction and data streams available, as depicted in Figure \ref{fig.flynn}.
 			First, the most straightforward class, \sisd describes a sequential
 			machine which exploits no parallelism in either the instruction or
 			data streams, like older uniprocessor machines.
@@ -148,7 +148,7 @@
 			complete computer systems on a single chip.
 
 		\subsubsection{Multiprocessor \oses}
-		\label{sec::multiprocessor_os}
+		\label{sec.multiprocessor_os}
 
 			\oses are a fundamental part of any computer system.
 			They act as an intermediary between users and hardware, with the
@@ -165,15 +165,15 @@
 				\includegraphics[width=.8\textwidth]{images/replicated-os.png}
 
 				\caption{
-					(temporary) Replicated \os Model
+					(temporary) Replicated \os Model.
 				}\par
-				\label{fig::replicated_os}
+				\label{fig.replicated_os}
 			\end{figure}
 
 			The Replicated Model is the simplest way to develop an \os for a
 			parallel architecture.
 			It only needs to replicate all the internal \os structures for each core.
-			As shown in Figure \ref{fig::replicated_os}, this model allocates fixed memory spaces
+			As shown in Figure \ref{fig.replicated_os}, this model allocates fixed memory spaces
 			between the cores, giving each of them its private \os.
 			The system calls are performed by the calling \cpu, avoiding concurrency issues.
 			Also, a producer-consumer model is sufficient for two different \cpus to communicate.
@@ -193,14 +193,14 @@
 				\includegraphics[width=.8\textwidth]{images/master-slave-os.png}
 
 				\caption{
-					(temporary) Master-Slave \os Model
+					(temporary) Master-Slave \os Model.
 				}\par
-				\label{fig::master_slave_os}
+				\label{fig.master_slave_os}
 			\end{figure}
 
 			The Master-Slave model began to attract attention with the return of
 			processors without cache coherence.
-			As Figure \ref{fig::master_slave_os} shows, there is only one copy of
+			As Figure \ref{fig.master_slave_os} shows, there is only one copy of
 			the internal \os structures, and they all belong to a single \cpu, called master.
 			In this way, all system calls performed by a worker \cpu, called slave,
 			are redirected to the master.
@@ -217,13 +217,13 @@
 				\includegraphics[width=.8\textwidth]{images/smp-os.png}
 
 				\caption{
-					(temporary) Symmetric \os Model
+					(temporary) Symmetric \os Model.
 				}\par
-				\label{fig::smp_os}
+				\label{fig.smp_os}
 			\end{figure}
 
 			Finally, the Symmetric model, called \smp, eliminates the centralization
-			problem of the foregoing model, as illustrated in Figure \ref{fig::smp_os}.
+			problem of the foregoing model, as illustrated in Figure \ref{fig.smp_os}.
 			So, there is still only one copy of the \os structures but shared in memory.
 			When a \cpu makes a system call, it loads the structures and operates on them.
 			Consequently, processes and memory pages also continue to be dynamically balanced.
@@ -241,7 +241,7 @@
 			necessary to redesign the whole process from scratch.
 
 	\subsection{Multicomputers}
-	\label{sec::multicomputers}
+	\label{sec.multicomputers}
 
 		Increase the number of cores and still providing a shared memory in a
 		single die is very expensive and challenging.
@@ -255,7 +255,7 @@
 		making things simpler~\cite{tanenbaum:4ed}.
 
 			\subsubsection{Multicomputer Hardware Overview}
-			\label{sec::multicomputers_hw}
+			\label{sec.multicomputers_hw}
 
 				A multicomputer node summarizes on an elementary computer, with one or
 				more multiprocessors, local \ram, and other components.
@@ -269,14 +269,14 @@
 					\includegraphics[width=.8\textwidth]{images/net-topologies.png}
 
 					\caption{
-						(temporary) Network topologies
+						(temporary) Network topologies.
 					}\par
-					\label{fig::net_topologies}
+					\label{fig.net_topologies}
 				\end{figure}
 				
 				A switch set is organized into different topologies to interconnect
 				the nodes of a multicomputer.
-				As illustrated in Figure \ref{fig::net_topologies}, there are a
+				As illustrated in Figure \ref{fig.net_topologies}, there are a
 				variety of topologies with their own characteristics.
 				For instance, commercial multicomputer usually uses bi-dimensional
 				topologies such as \textit{grid} or \textit{mesh} because they present
@@ -300,7 +300,7 @@
 				slow start and possible sub-utilization of the resources.
 
 			\subsubsection{Low-Level Communication Software}
-			\label{sec::multicomputers_low_sw}
+			\label{sec.multicomputers_low_sw}
 
 				Because these boards are built and connected to \cpus and \ram,
 				they have substantial impacts on system performance and \os design.
@@ -336,7 +336,7 @@
 				\cpus and existing \dma channels.
 
 			\subsubsection{User-Level Communication Software}
-			\label{sec::multicomputers_user_sw}
+			\label{sec.multicomputers_user_sw}
 
 				The low-level mechanisms discussed above allow \cpus on different
 				computers to communicate through the messages exchange by
@@ -352,13 +352,13 @@
 					\includegraphics[width=.8\textwidth]{images/calls-types.png}
 
 					\caption{
-						(temporary) Calls types
+						(temporary) Calls types.
 					}\par
-					\label{fig::calls_types}
+					\label{fig.calls_types}
 				\end{figure}
 
 				There are two approaches to implementing these primitives, either
-				through blocking or non-blocking calls, as illustrated in Figure \ref{fig::calls_types}.
+				through blocking or non-blocking calls, as illustrated in Figure \ref{fig.calls_types}.
 				Blocking calls, called synchronous calls, block the requesting \cpu
 				until complete the procedure.
 				Non-blocking calls, called asynchronous calls, return control to the
@@ -402,7 +402,7 @@
 				use a messaging strategy regardless of what the hardware has to offer.
 	
 	\subsection{Manycore Processors}
-	\label{sec::manycores}
+	\label{sec.manycores}
 
 		With the enhancement of technologies and the reduction of transistors,
 		the number of cores inside a multiprocessor began to scale.
@@ -413,7 +413,7 @@
 		In this way, \manycores are as multi-cores with tens, hundreds, or even
 		thousands of cores, presenting the most diverse architectural properties.
 		For example, there are \uma/\numa multiprocessors with \simd present on
-		\gpus, and \numa multiprocessors with \mimd as \mppa presented in Section \ref{sec::multiprocessor_hw}.
+		\gpus, and \numa multiprocessors with \mimd as \mppa presented in Section \ref{sec.multiprocessor_hw}.
 
 		A promising class of \manycores began to emerge, aiming the energy barrier
 		that we will face in the future.
@@ -422,17 +422,17 @@
 		However, due to its particular characteristics, several problems of
 		programmability, portability, and performance are still open.
 
-		\subsubsection{Kalray \mppa Lightweight Manycore Processor}
-		\label{sec::mppa}
+		\subsubsection{\mppa Lightweight Manycore Processor}
+		\label{sec.mppa}
 
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=.7\textwidth]{images/arch-mppa.png}
 
 				\caption{
-					(temporary) \mppa Arch
+					(temporary) \mppa Arch.
 				}\par
-				\label{fig::mppa_arch}
+				\label{fig.mppa_arch}
 			\end{figure}
 
 			The \mppa is a high-performance, low-power multi-core processor
@@ -443,7 +443,7 @@
 			to coordinate the cores and the local resource balancing, and
 			follows a multicomputer model in inter-cluster communication.
 
-			As illustrated by Figure \ref{fig::mppa_arch}, the used version of
+			As illustrated by Figure \ref{fig.mppa_arch}, the used version of
 			the architecture, called Bostan, has 256 general-purpose cores and
 			32 cores for system use, called \pes and \rmans, respectively.
 			The processor use 28~mm CMOS technology and all cores run at 500~MHz.
@@ -464,7 +464,7 @@
 			Additionally, all clusters have available \dmas associated with each
 			\noc interfaces to handle communication issues.
 
-			As discussed in Section \ref{sec::multicomputers_user_sw}, the \noc interfaces
+			As discussed in Section \ref{sec.multicomputers_user_sw}, the \noc interfaces
 			expose communication resource to perform send and receive primitives
 			like network interfaces.
 			Accurately, they summarize the following resources:
@@ -483,16 +483,16 @@
 			that virtualizes the \mppa hardware.	
 	
 \section{A Hardware Abstract Layer for Lightweight Manycores}
-\label{sec::hal}
+\label{sec.hal}
 
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=.9\textwidth]{images/hal-struct.png}
 
 		\caption{
-			(temporary) \hal structure proposed
+			(temporary) \hal structure proposed.
 		}\par
-		\label{fig::hal_struct}
+		\label{fig.hal_struct}
 	\end{figure}
 	
 	Despite the benefits of scalability and energy efficiency gained with the
@@ -511,7 +511,7 @@
 	the \hal belongs in one level below.
 	It is the first layer on top of the hardware and should provide a standard
 	view of these emerging processors for a client applications, \ie \os.
-	As shown in Figure \ref{fig::hal_struct}, the \hal split into two logical layers,
+	As shown in Figure \ref{fig.hal_struct}, the \hal split into two logical layers,
 	\textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
 
 	The \textit{Cluster Abstraction Layer} encapsulates aspects from within a cluster.
@@ -533,7 +533,7 @@
 	The \textit{Inter-Cluster Communication Module}, the focus of
 	this monograph, exports three main abstractions to allow the
 	cluster to exchange data between them.
-	These abstractions will be presented in Section \ref{sec::intercluster_comm}.
+	These abstractions will be presented in Section \ref{sec.intercluster_comm}.
 	Lastly, the \textit{Monitoring and Debugging Module}, as the
 	name shows, exports routines to aid debugging and extraction
 	of diagnostics about hardware metrics, such as the number of
@@ -550,13 +550,13 @@
 	in each cluster independently.
 
 \section{Inter-Cluster Communication Module}
-\label{sec::intercluster_comm}
+\label{sec.intercluster_comm}
 
 	The following sections conceptually presented the three abstractions
 	that will be proposed for \hal and implemented over \mppa.
 	They are the \sync, \mailbox, and \portal abstraction.
 	The purpose of developing more specific abstractions than
-	send and receive primitives, described in Section \ref{sec::multicomputers_user_sw},
+	send and receive primitives, described in Section \ref{sec.multicomputers_user_sw},
 	is to provide more precise and easy-to-use mechanisms for
 	\os and client applications.
 	On top of them, it is possible to create all kinds of essential
@@ -566,7 +566,7 @@
 	A related point to consider is that mechanisms described below refer
 	to interactions between distinct clusters only.
 	The implementation can follow synchronously or asynchronously models,
-	as described in Section \ref{sec::multicomputers}, depending only on hardware support.
+	as described in Section \ref{sec.multicomputers}, depending only on hardware support.
 	In the same way, it is worth be noted that the small messaging exchange
 	is decoupled from abstraction to intense data transfer.
 	The motivation for this, as other details, is to exhibit better control
@@ -574,16 +574,16 @@
 	For instance, the use of distinct \nocs for each service.
 
 		\subsection{Sync Abstraction}
-		\label{sec::sync_abs}
+		\label{sec.sync_abs}
 
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
 
 				\caption{
-					(temporary) ONLY SYNC
+					(temporary) ONLY SYNC.
 				}\par
-				\label{fig::conpt_sync}
+				\label{fig.conpt_sync}
 			\end{figure}
 
 			The \textit{Synchronization Abstraction}, called \sync, proves bare bones
@@ -592,21 +592,21 @@
 			specific cluster.
 			The behavior is analogous to the \posix signal abstraction, but the \sync
 			provides only the case of notification.
-			Specifically, as can be seen in Figure \ref{fig::conpt_sync}, the
+			Specifically, as can be seen in Figure \ref{fig.conpt_sync}, the
 			cardinality of the operation is N:1, where N clusters wait for 1 Cluster
 			to send a notification.
 
 		\subsection{Mailbox Abstraction}
-		\label{sec::mailbox_abs}
+		\label{sec.mailbox_abs}
 
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
 
 				\caption{
-					(temporary) ONLY MAILBOX
+					(temporary) ONLY MAILBOX.
 				}\par
-				\label{fig::conpt_mailbox}
+				\label{fig.conpt_mailbox}
 			\end{figure}
 
 			The \textit{\mailbox Abstraction} allows clusters to exchange fixed-size
@@ -615,26 +615,26 @@
 			Similarly, the operation of the \mailbox follows \posix message queue behavior.
 			For example, the message can be used to encode small operations and system
 			control signals.
-			As shown in Figure \ref{fig::conpt_mailbox}, the cardinality of the operation
+			As shown in Figure \ref{fig.conpt_mailbox}, the cardinality of the operation
 			is N:1, where N senders can send messages to 1 receiver buffer.
 
 		\subsection{Portal Abstraction}
-		\label{sec::portal_abs}
+		\label{sec.portal_abs}
 
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
 
 				\caption{
-					(temporary) ONLY PORTAL
+					(temporary) ONLY PORTAL.
 				}\par
-				\label{fig::conpt_portal}
+				\label{fig.conpt_portal}
 			\end{figure}
 
 			Lastly, the \portal Abstraction enables two clusters to exchange arbitrary
 			amounts of data.
 			The conceptual idea of ​​the \portal is similar to that implemented in \posix pipes.
-			Figure \ref{fig::conpt_portal} shows the \portal operation, with cardinality
+			Figure \ref{fig.conpt_portal} shows the \portal operation, with cardinality
 			1:1, a cluster pair opens a channel to transfer data.
 			However, the operation is only allowed in one sense, that is, one
 			cluster must assume the role of the sender and the other of the receiver.
