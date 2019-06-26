@@ -26,24 +26,60 @@
 	These architectures, called \textit{multicores}, allowed the continuous
 	rise of the computing performance.
 
+	In some point, with reduction of transistors and the number of cores inside
+	a multiprocessor began to scale, these architectures must be called \manycores.
+	Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
+	Some researchers stipulate that the difference lies when losing a core
+	does not impact the rest of the system.
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=.85\textwidth]{images/42-years-processor-trend.pdf}
+
+		\caption{
+			42 years of Multiprocessor Trend Data~\cite{url:microprocessor-trend-data}.
+		}\par
+		\label{fig.microprocessor-data}
+	\end{figure}
+
 % - From multicore to manycores
-	However, in recent years, the energy consumption of parallel processors
-	has become as important as their processing power, which is usually measured
-	by the number of \flops.
+
+	However, Figure \ref{fig.microprocessor-data} shows that, in recent years,
+	the energy consumption of parallel processors has become as crucial as their
+	processing power, which is usually measured by the number of \flops.
 	At this point, with the popularization of embedded systems as well as the aim
 	to reach the \exascale (10$^{18}$ \flops), a new class of parallel processors,
 	named \textit{lightweight} \manycores, emerged to provide high parallelism
 	with low-power consumption.
 
+% FROM FUNDAMENTATION
+% {
+	% With the enhancement of technologies and the reduction of transistors,
+	% the number of cores inside a multiprocessor began to scale.
+	% Until at some point, these architectures must be called \manycores.
+	% However, the line between multi-cores and \manycores is very tenuous.
+	% Some researchers stipulate that the difference lies when losing a core
+	% does not impact the rest of the system.
+	% In this way, \manycores are as multi-cores with tens, hundreds, or even
+	% thousands of cores, presenting the most diverse architectural properties.
+	% For example, there are \uma/\numa multiprocessors with \simd present on
+	% \gpus, and \numa multiprocessors with \mimd as \mppa presented in Section \ref{sec.multiprocessor-hw}.
+
+	% A promising class of \manycores began to emerge, aiming the energy barrier
+	% that we will face in the future.
+	% \textit{Lightweight Manycores} stand out for their performance compared
+	% to their energy consumption.
+	% However, due to its particular characteristics, several problems of
+	% programmability, portability, and performance are still open.
+% }
+
 % - Manycores characteristics
-	The main characteristics of  \textit{lightweight} \manycores are the following:
-	\begin{itemize}
-		\item They integrate thousands of low-power cores in a single die organized in clusters;
-		\item They are designed to cope with \mimd workloads;
-		\item They rely on a high-bandwidth \noc for fast and reliable message-passing communication;
-		\item They present constrained memory systems; and
-		\item They frequently feature a heterogeneous configuration.
-	\end{itemize}
+	The \textit{lightweight} \manycores
+		(i) integrate thousands of low-power cores in a single die organized in clusters;
+		(ii) are designed to cope with \mimd workloads;
+		(iii) rely on a high-bandwidth \noc for fast and reliable message-passing communication;
+		(iv) present constrained memory systems; and
+		(v) frequently feature a heterogeneous configuration.
 	Some industry-successful examples of \textit{lightweight} \manycores are
 	the \mppa~\cite{DeDinechin2013-1};
 	the \epiphany~\cite{olofsson2014}; and
@@ -80,27 +116,6 @@
 	of \textit{lightweight} \manycores, making the process of developing, porting, and maintaining
 	applications a challenging task.
 
-% FROM FUNDAMENTATION
-% {
-	% With the enhancement of technologies and the reduction of transistors,
-	% the number of cores inside a multiprocessor began to scale.
-	% Until at some point, these architectures must be called \manycores.
-	% However, the line between multi-cores and \manycores is very tenuous.
-	% Some researchers stipulate that the difference lies when losing a core
-	% does not impact the rest of the system.
-	% In this way, \manycores are as multi-cores with tens, hundreds, or even
-	% thousands of cores, presenting the most diverse architectural properties.
-	% For example, there are \uma/\numa multiprocessors with \simd present on
-	% \gpus, and \numa multiprocessors with \mimd as \mppa presented in Section \ref{sec.multiprocessor-hw}.
-
-	% A promising class of \manycores began to emerge, aiming the energy barrier
-	% that we will face in the future.
-	% \textit{Lightweight Manycores} stand out for their performance compared
-	% to their energy consumption.
-	% However, due to its particular characteristics, several problems of
-	% programmability, portability, and performance are still open.
-% }
-
 % Challenges and Problem Definition
 % - How are OSs essential in this context?
 
@@ -124,29 +139,35 @@
 	is being proposed~\cite{penna2017-1,penna2017-2,penna2019}.
 	Nanvix features a generic and flexible \hal for \textit{lightweight} \manycores that
 	addresses the key issues encountered in the development for these processors.
-	This \hal is structured in two major logic layers: one that abstracts the management
-	of a single cluster, which is named \textit{Cluster Abstraction Layer}; and another
-	that encapsulates architectural features that spawn across multiple clusters, which
-	is called \textit{Processor Abstraction Layer}.
+	On top of the Nanvix \hal, we are simultaneously designing and implementing a \microkernel
+	that provides bare bones system abstractions for each cluster.
 
-	In this monograph, we intend to port the Nanvix \hal to the \mppa maycore processor~\cite{DeDinechin2013-1}.
+	In this monograph, we intend to propose a Inter-Cluster Communication Module to the Nanvix \hal
+	and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
+	Using this module, we also pretend design Inter-Cluster Communication Services to the Nanvix \microkernel.
 	This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the
 	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
 	Then, we will analyze the performance of the proposed implementation using specific micro-benchmarks.
 
-%\section{Objectives}
-%    Assist to research and develop \hal for \textit{lightweight} manycores.
-%
-%\subsection{General Objective}
-%    On the basis of the foregoing, the following general objective and the specific objectives of this project.
-%
-%\subsection{Specific Objectives}
-%    \begin{itemize}
-%        \item Present and discuss hal \textit{lightweight} manycores.
-%        \item Design and develop the Inter-cluster communication module.
-%        \item Assist in the development and improvement of other modules.
-%        \item Perform a performance analysis of the proposed \hal for the \mppa.
-%    \end{itemize}
+\section{Objectives}
 
-% \section{Organization Of The Work}
-%     This section is under development.
+	This will be written last.
+%    Assist to research and develop \hal for \textit{lightweight} manycores.
+
+\subsection{General Objective}
+
+	This will be written last.
+%    On the basis of the foregoing, the following general objective and the specific objectives of this project.
+
+\subsection{Specific Objectives}
+   \begin{itemize}
+		\item This will be written last.
+    %    \item Present and discuss hal \textit{lightweight} manycores.
+    %    \item Design and develop the Inter-cluster communication module.
+    %    \item Assist in the development and improvement of other modules.
+    %    \item Perform a performance analysis of the proposed \hal for the \mppa.
+   \end{itemize}
+
+\section{Organization Of The Work}
+
+	This will be written last.

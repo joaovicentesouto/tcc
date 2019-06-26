@@ -509,10 +509,10 @@
 	the \hal belongs in one level below.
 	It is the first layer on top of the hardware and should provide a standard
 	view of these emerging processors for a client applications, \eg \os.
-	Figure \ref{fig.hal-struct} shows how the \hal are splited into two logical layers,
-	\textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
+	As illustrated in Figure \ref{fig.hal-struct}, this \hal is structured in
+	two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
 
-	The \textit{Cluster Abstraction Layer} encapsulates aspects from within a cluster.
+	The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
 	It provides two modules, \textit{Core Management}, and \textit{Memory Management}.
 	The \textit{Core Management Module} aims to provide to a client \os a complete
 	thread synchronization and management system, rich support of handling
@@ -527,7 +527,7 @@
 	to write code in assembly, hurting the conceptual idea of the \hal.
 
 	The \textit{Processor Abstraction Layer}, in particular, embraces
-	functionalities related to multiple clusters.
+	architectural features related to multiple clusters.
 	The \textit{Inter-Cluster Communication Module}, the focus of
 	this monograph, exports three main abstractions to allow the
 	cluster to exchange data between them.
@@ -536,16 +536,6 @@
 	name shows, exports routines to aid debugging and extraction
 	of diagnostics about hardware metrics, such as the number of
 	page-fault or detour taken.
-
-	The \hal project is part of a broader search context that
-	attempts to give enhanced programmability and portability
-	for \textit{lightweight \manycores} through the development
-	of a fully-featured \posix-compliant \os.
-	This system will follow the concepts of a \textit{Multikernel}~\cite{Baumann2009}.
-	As proof of concept and aiming at this long-term goal,
-	a \textit{microkernel}, that follows the Master-Slave model,
-	is also being developed, which will execute on top of the \hal
-	in each cluster independently.
 
 \section{Inter-Cluster Communication Module}
 \label{sec.inter-cluster-communication}
