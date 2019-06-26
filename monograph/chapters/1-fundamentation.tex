@@ -70,7 +70,7 @@
 				\includegraphics[width=.9\textwidth]{images/uma.png}
 
 				\caption{
-					Two Bus-Based \uma Multiprocessors: (a) Without caching. (b) With caching.
+					Two Bus-Based \uma Multiprocessor Examples: (a) Without caching. (b) With caching.
 				}\par
 				\label{fig.uma}
 			\end{figure}
@@ -98,7 +98,7 @@
 				\includegraphics[width=.8\textwidth]{images/numa.png}
 
 				\caption{
-					A \numa multiprocessors example.
+					\numa Multiprocessor Example.
 				}\par
 				\label{fig.numa}
 			\end{figure}
@@ -120,10 +120,10 @@
 
 				\caption{
 					Flynn's taxonomy:
-					(a) Single Instruction Single Data.
-					(b) Single Instruction Multiple Data.
-					(c) Multiple Instruction Single Data.
-					(d) Multiple Instruction Multiple Data.
+					(a) \sisd.
+					(b) \simd.
+					(c) \misd.
+					(d) \mimd.
 				}\par
 				\label{fig.flynn}
 			\end{figure}
@@ -275,7 +275,7 @@
 					\includegraphics[width=.8\textwidth]{images/net-topologies.png}
 
 					\caption{
-						Network topologies.
+						Network Topologies Examples.
 					}\par
 					\label{fig.net-topologies}
 				\end{figure}
@@ -313,7 +313,7 @@
 					\includegraphics[width=.8\textwidth]{images/multicomputer.png}
 
 					\caption{
-						Simple Example of a Multicomputer.
+						Simple Multicomputer Example.
 					}\par
 					\label{fig.multicomputer}
 				\end{figure}
@@ -368,7 +368,9 @@
 					\includegraphics[width=.8\textwidth]{images/calls-types.png}
 
 					\caption{
-						Calls types.
+						Calls Types:
+						(a) synchronous call.
+						(b) asynchronous call.
 					}\par
 					\label{fig.calls-types}
 				\end{figure}
@@ -425,7 +427,7 @@
 			\includegraphics[width=.7\textwidth]{images/arch-mppa.png}
 
 			\caption{
-				\mppa Arch.
+				Architectural overview of the \mppa processor~\cite{Penna2018}.
 			}\par
 			\label{fig.mppa-arch}
 		\end{figure}
@@ -485,7 +487,7 @@
 		\includegraphics[width=.9\textwidth]{images/hal-struct.png}
 
 		\caption{
-			\hal structure proposed.
+			Structural overview of the proposed \hal~\cite{penna:compas2019}.
 		}\par
 		\label{fig.hal-struct}
 	\end{figure}
@@ -496,17 +498,17 @@
 	Several current research is focusing on the challenges that have arisen with
 	these processors~\cite{christgau2017, gamell2012, serres2011}.
 	For instance, the study and development of full \oses running on them.
-	However, Pedro H. Penna \etal. believe that significant barriers will still
+	However, Pedro H. Penna \etal believe that significant barriers will still
 	arise in this scenario, and the solution is to rethink \os design from scratch.
 	For this, we propose a generic and flexible \hal around the intrinsic
 	architectural characteristics of the \textit{lightweight \manycores}.
 	Currently, \hal is being developed for \mppa~\cite{DeDinechin2013-1} and
 	\optimsoc~\cite{Wallentowitz2013}.
 
-	Unlike other research that aims to design a fully-featured \os~\cite{},
+	Unlike other research that aims to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 	the \hal belongs in one level below.
 	It is the first layer on top of the hardware and should provide a standard
-	view of these emerging processors for a client applications, \ie \os.
+	view of these emerging processors for a client applications, \eg \os.
 	Figure \ref{fig.hal-struct} shows how the \hal are splited into two logical layers,
 	\textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
 
@@ -521,7 +523,7 @@
 	Therefore, some design decisions are made to create interfaces that are not
 	dependent on the underlying hardware.
 	For example, a context switch mechanism was not provided in the
-	\textit{Core Management} module because this would force the client \os
+	Core Management module because this would force the client \os
 	to write code in assembly, hurting the conceptual idea of the \hal.
 
 	The \textit{Processor Abstraction Layer}, in particular, embraces
@@ -539,7 +541,7 @@
 	attempts to give enhanced programmability and portability
 	for \textit{lightweight \manycores} through the development
 	of a fully-featured \posix-compliant \os.
-	This system will follow the concepts of a \textit{Multikernel}~\cite{}.
+	This system will follow the concepts of a \textit{Multikernel}~\cite{Baumann2009}.
 	As proof of concept and aiming at this long-term goal,
 	a \textit{microkernel}, that follows the Master-Slave model,
 	is also being developed, which will execute on top of the \hal
@@ -548,7 +550,7 @@
 \section{Inter-Cluster Communication Module}
 \label{sec.inter-cluster-communication}
 
-	The following sections conceptually presented the three abstractions
+	The following sections conceptually present the three abstractions
 	that will be proposed for \hal and implemented over \mppa.
 	They are the \sync, \mailbox, and \portal abstraction.
 	The purpose of developing more specific abstractions than
@@ -557,7 +559,7 @@
 	\os and client applications.
 	On top of them, it is possible to create all kinds of essential
 	services such as message passing and synchronization,
-	to more elaborate services such as shared memory regions~\cite{rem}.
+	to more elaborate services such as shared memory regions~\cite{penna:rmen}.
 
 	A related point to consider is that mechanisms described below refer
 	to interactions between distinct clusters only.
@@ -577,7 +579,7 @@
 				\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
 
 				\caption{
-					ONLY SYNC.
+					Synchronization Abstraction Concept.
 				}\par
 				\label{fig.conpt_sync}
 			\end{figure}
@@ -600,19 +602,19 @@
 				\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
 
 				\caption{
-					ONLY MAILBOX.
+					Mailbox Abstraction Concept.
 				}\par
 				\label{fig.conpt_mailbox}
 			\end{figure}
 
-			The \textit{\mailbox Abstraction} allows clusters to exchange fixed-size
+			The \textit{Mailbox Abstraction} allows clusters to exchange fixed-size
 			messages with each other.
 			The message was thought to be a relatively small size, usually a few hundred bytes.
 			Similarly, the operation of the \mailbox follows \posix message queue behavior.
 			For example, the message can be used to encode small operations and system
 			control signals.
 			As illustrated in Figure \ref{fig.conpt_mailbox}, the cardinality of the operation
-			is N:1, where N senders can send messages to 1 receiver buffer.
+			is N:1, where N senders can send messages to 1 receiver queue.
 
 		\subsection{Portal Abstraction}
 		\label{sec.portal-abs}
@@ -622,12 +624,12 @@
 				\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
 
 				\caption{
-					ONLY PORTAL.
+					Portal Abstraction Concept.
 				}\par
 				\label{fig.conpt_portal}
 			\end{figure}
 
-			Lastly, the \portal Abstraction enables two clusters to exchange arbitrary
+			Lastly, the \textit{Portal Abstraction} enables two clusters to exchange arbitrary
 			amounts of data.
 			The conceptual idea of ​​the \portal is similar to that implemented in \posix pipes.
 			Figure \ref{fig.conpt_portal} shows the \portal operation, with cardinality
