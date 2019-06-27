@@ -102,4 +102,23 @@ proposed for such processors will be highlighted.
 
 \section{Discussion}
 
-	This will be written after checking previous chapters.
+	Section \ref{sec.works.manycores} exemplifies how \manycore architectures can be
+	grouped over a common logic vision.
+	They all have one or more logical units distributed and incorporated on clusters.
+	The clusters, interconnected through a network, communicate by message-exchange.
+	However, due to the domain for which these processors were designed, they end up
+	presenting several discrepancies among them at the hardware level.
+
+	On the other hand, Section \ref{sec.works.os} presents studies of \oses that focus on
+	mitigating these discrepancies in order to provide greater programmability and portability.
+	Nevertheless, they span the entire development spectrum, delivering to end-users
+	high-level abstractions for increase productivity.
+	In this way, it is possible to notice the extensive rework that all of them had in
+	dealing with the closest layer of hardware that, as observed, can be abstracted to
+	a common vision.
+
+	In this context, the proposed \hal deal with the lowest level possible with a focus
+	on the aspects that make it challenging to work with \manycores.
+	Thus, different \oses and services can be developed and disseminated by several
+	architectures that implement such the vision.
+	So consequently, the applications that run on top of them.

@@ -514,12 +514,11 @@
 
 	The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
 	It provides two modules, \textit{Core Management}, and \textit{Memory Management}.
-	The \textit{Core Management Module} aims to provide to a client \os a complete
+	The \textit{Core Management Module} aims to provide to a client application a complete
 	thread synchronization and management system, rich support of handling
 	interrupts/exceptions, and an adequate system call interface.
 	The \textit{Memory Management Module} provides a uniform view of the \tlbs
-	and paging systems.
-	Moreover, its exports maintenance routines for them and the cache.
+	and paging systems with maintenance routines for them and the cache.
 	Therefore, some design decisions are made to create interfaces that are not
 	dependent on the underlying hardware.
 	For example, a context switch mechanism was not provided in the
@@ -530,7 +529,8 @@
 	architectural features related to multiple clusters.
 	The \textit{Inter-Cluster Communication Module}, the focus of
 	this monograph, exports three main abstractions to allow the
-	cluster to exchange data between them.
+	cluster to exchange data between them, based on ideas proposed along with the
+	\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
 	These abstractions will be presented in Section \ref{sec.inter-cluster-communication}.
 	Lastly, the \textit{Monitoring and Debugging Module}, as the
 	name shows, exports routines to aid debugging and extraction
