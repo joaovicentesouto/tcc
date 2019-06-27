@@ -43,8 +43,7 @@
 	\end{figure}
 
 % - From multicore to manycores
-
-	However, Figure \ref{fig.microprocessor-data} shows that, in recent years,
+	However, Figure \ref{fig.microprocessor-data} illustrates that, in recent years,
 	the energy consumption of parallel processors has become as crucial as their
 	processing power, which is usually measured by the number of \flops.
 	At this point, with the popularization of embedded systems as well as the aim
@@ -52,34 +51,15 @@
 	named \textit{lightweight} \manycores, emerged to provide high parallelism
 	with low-power consumption.
 
-% FROM FUNDAMENTATION
-% {
-	% With the enhancement of technologies and the reduction of transistors,
-	% the number of cores inside a multiprocessor began to scale.
-	% Until at some point, these architectures must be called \manycores.
-	% However, the line between multi-cores and \manycores is very tenuous.
-	% Some researchers stipulate that the difference lies when losing a core
-	% does not impact the rest of the system.
-	% In this way, \manycores are as multi-cores with tens, hundreds, or even
-	% thousands of cores, presenting the most diverse architectural properties.
-	% For example, there are \uma/\numa multiprocessors with \simd present on
-	% \gpus, and \numa multiprocessors with \mimd as \mppa presented in Section \ref{sec.multiprocessor-hw}.
-
-	% A promising class of \manycores began to emerge, aiming the energy barrier
-	% that we will face in the future.
-	% \textit{Lightweight Manycores} stand out for their performance compared
-	% to their energy consumption.
-	% However, due to its particular characteristics, several problems of
-	% programmability, portability, and performance are still open.
-% }
-
 % - Manycores characteristics
-	The \textit{lightweight} \manycores
-		(i) integrate thousands of low-power cores in a single die organized in clusters;
-		(ii) are designed to cope with \mimd workloads;
-		(iii) rely on a high-bandwidth \noc for fast and reliable message-passing communication;
-		(iv) present constrained memory systems; and
-		(v) frequently feature a heterogeneous configuration.
+	The main characteristics of \textit{lightweight} \manycores are the following:
+	\begin{itemize}
+		\item They integrate thousands of low-power cores in a single die organized in clusters;
+		\item They are designed to cope with \mimd workloads;
+		\item They rely on a high-bandwidth \noc for fast and reliable message-passing communication;
+		\item They present constrained memory systems; and
+		\item They frequently feature a heterogeneous configuration.
+	\end{itemize}
 	Some industry-successful examples of \textit{lightweight} \manycores are
 	the \mppa~\cite{DeDinechin2013-1};
 	the \epiphany~\cite{olofsson2014}; and
@@ -126,12 +106,6 @@
 % - Redesign from scratch around all their tight architectural constraints.
 % - Focus on addressing first-order programmability challenges
 % - Introducing generic and flexible HAL for lightweight manycores
-	% Nexte contexto, o doutorando e coorientador deste trabalho, Pedro H. Penna, mirando a maior programabilidade e portabilidade para lightweight manycores, propoe que sistemas operacionais para essa nova geração de processadores deve ser reprojetada do zero baseando-se em todas as suas restrições arquiteturais.
-	% Sua proposta envolve um sistema operacional completo distribuido baseado em uma arquitetura multikernel~\cite{multikernel}.
-	% Para isso, baseados em resultados de serviços experimentais desenvolvidos encimado do mppa256~\cite{rmem}, a pesquisa começou buscando resolver os primeiros desafios que surgiram.
-	% Especificamente, foi introduzido uma \hal genérica e flexivel para lightweight manycores que lidam com os problemas chaves encontrados no desenvolvimento para esses processadores.
-	% Em seguida, a pesquisa seguirá em desenvolver um microkernel para prover os mecanismos básicos para desenvolvimento de um OS completo sobre ele.
-	% Por fim, o desenvolvimento de serviços do multikernel serão alcançados.
 
 	We believe that \oses for the next-generation of \textit{lightweight} \manycores must be
 	redesigned from scratch to cope with their tight architectural constraints.
