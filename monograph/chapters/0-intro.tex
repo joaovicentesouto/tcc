@@ -2,8 +2,8 @@
 \label{ch.intro}
 
 % Context
-% - Historical background moore:1965
-% -- Frequency barrier
+% Historical background
+% Frequency barrier
 	For some years now, it was common to increase the frequency of processors
 	to improve their processing power.
 	However, as a side effect, the temperature rise was much higher than the
@@ -15,7 +15,7 @@
 	the academy and the industry began to research and invest in alternatives
 	to keep increasing the processing power of computer systems.
 
-% -- Improves architectural parts
+% Improves architectural parts
 	Such researches have led to a wide diversity of trade-offs in modern architectures.
 	For instance, different types of instruction sets, instruction parallelism,
 	out-of-order processing techniques, detour prediction techniques, and various
@@ -42,7 +42,7 @@
 		\label{fig.microprocessor-data}
 	\end{figure}
 
-% - From multicore to manycores
+% From multicore to manycores
 	However, Figure \ref{fig.microprocessor-data} illustrates that, in recent years,
 	the energy consumption of parallel processors has become as crucial as their
 	processing power, which is usually measured by the number of \flops.
@@ -51,7 +51,7 @@
 	named \textit{lightweight} \manycores, emerged to provide high parallelism
 	with low-power consumption.
 
-% - Manycores characteristics
+% Manycores characteristics
 	The main characteristics of \textit{lightweight} \manycores are the following:
 	\begin{itemize}
 		\item They integrate thousands of low-power cores in a single die organized in clusters;
@@ -66,7 +66,6 @@
 	the \taihulight~\cite{zheng2015}.
 
 % Motivation
-% - Difficults from Manycores
 	Jointly with further performance scalability and energy efficiency, manycores brought a new
 	set of challenges in software development coming from their architectural particularities.
 	Precisely, these particularities introduce the following difficulties:
@@ -87,7 +86,7 @@
 			complex task~\cite{barbalace2015}.
 	\end{itemize}
 
-% - Why is development on manycores difficult?
+% Challenges and Problem Definition
 	Part of these challenges derives from existing \oses and runtimes.
 	On the one hand, the complicated portability and scalability of traditional \oses with a
 	monolithic kernels, which were designed to homogeneous hardwares, is leading to the development
@@ -96,17 +95,7 @@
 	of \textit{lightweight} \manycores, making the process of developing, porting, and maintaining
 	applications a challenging task.
 
-% Challenges and Problem Definition
-% - How are OSs essential in this context?
-
-% - Why these problems exist? (Because the existing OSes does not handle architecture particularities)
-% - These particularities prevent common OSes that easy portated without a complex redesign. And existing OSes does not account some architectural points.
-
 % Goals and Contributions
-% - Redesign from scratch around all their tight architectural constraints.
-% - Focus on addressing first-order programmability challenges
-% - Introducing generic and flexible HAL for lightweight manycores
-
 	We believe that \oses for the next-generation of \textit{lightweight} \manycores must be
 	redesigned from scratch to cope with their tight architectural constraints.
 	Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009}
@@ -116,32 +105,37 @@
 	On top of the Nanvix \hal, we are simultaneously designing and implementing a \microkernel
 	that provides bare bones system abstractions for each cluster.
 
-	In this monograph, we intend to propose a Inter-Cluster Communication Module to the Nanvix \hal
-	and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
-	Using this module, we also pretend design Inter-Cluster Communication Services to the Nanvix \microkernel.
-	This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the
-	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
-	Then, we will analyze the performance of the proposed implementation using specific micro-benchmarks.
-
 \section{Objectives}
+\label{sec.objectives}
 
-	This will be written last.
-%    Assist to research and develop \hal for \textit{lightweight} manycores.
+	On the basis of the foregoing, the general objective and the specific objectives of the
+	present project are presented below.
 
 \subsection{General Objective}
+\label{sec.objectives.general}
 
-	This will be written last.
-%    On the basis of the foregoing, the following general objective and the specific objectives of this project.
+	The foremost objective of this monograph is to propose a \textit{Inter-Cluster Communication Module}
+	to the \nanvix \hal and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
+	This module will expose the essential abstractions that permit upper layers to create more
+	sophisticated communication services.
+	Using this module, we also pretend design Inter-Cluster Communication Services to the \nanvix \microkernel.
+	This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the
+	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
 
 \subsection{Specific Objectives}
-   \begin{itemize}
-		\item This will be written last.
-    %    \item Present and discuss hal \textit{lightweight} manycores.
-    %    \item Design and develop the Inter-cluster communication module.
-    %    \item Assist in the development and improvement of other modules.
-    %    \item Perform a performance analysis of the proposed \hal for the \mppa.
-   \end{itemize}
+\label{sec.objectives.specific}
+
+	\begin{itemize}
+		\item Propose interfaces to the Inter-Cluster Communication Module aiming
+			the class of \textit{lightweight} \manycore processors.
+		\item Implement the interfaces for the \textit{\mppa manycore processor}.
+		\item Define Communication Services and their strategies in the use of the Inter-Cluster
+			Communication Module in the context of a microkernel-based \os.
+		\item Implement the Communication Services for the \nanvix Microkernel.
+		\item Analyze the performance of the proposed implemen using specific micro-benchmarks.
+	\end{itemize}
 
 \section{Organization Of The Work}
+\label{sec.organization}
 
 	This will be written last.
