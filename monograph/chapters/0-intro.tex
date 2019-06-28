@@ -4,15 +4,15 @@
 % Context
 % Historical background
 % Frequency barrier
-	For some years now, it was common to increase the frequency of processors
+	For some years, it was common to increase the frequency of processors
 	to improve their processing power.
 	However, as a side effect, the temperature rise was much higher than the
 	performance, making this practice prohibitive.
 	Alternatively, the constant improvement of semiconductor technology helped
-	to mitigate the impact of this problem, permitting the industry to build
+	to mitigate the impact of this problem, allowing the industry to build
 	more powerful processors with the same frequency.
 	Therefore, knowing the frequency barrier and the imminent end of Moore's Law~\cite{moore:1965},
-	the academy and the industry began to research and invest in alternatives
+	the academy and industry began to research and invest in alternatives
 	to keep increasing the processing power of computer systems.
 
 % Improves architectural parts
@@ -26,11 +26,19 @@
 	These architectures, called \textit{multicores}, allowed the continuous
 	rise of the computing performance.
 
+% - Original {
 	In some point, with reduction of transistors and the number of cores inside
 	a multiprocessor began to scale, these architectures must be called \manycores.
 	Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
 	Some researchers stipulate that the difference lies when losing a core
 	does not impact the rest of the system.
+% + Rephrasing by Pedro {
+	% The ever-increasing number of transistors and cores in a chip quickly lead
+	% to the advent of \manycores.
+	% Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
+	% Some researchers argue that the in latter architectures, having a core go to down
+	% it will not significantly impact the performance of the platform.
+% + }
 
 	\begin{figure}[h]
 		\centering
@@ -89,8 +97,8 @@
 % Challenges and Problem Definition
 	Part of these challenges derives from existing \oses and runtimes.
 	On the one hand, the complicated portability and scalability of traditional \oses with a
-	monolithic kernels, which were designed to homogeneous hardwares, is leading to the development
-	of new \oses from scratch~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
+	monolithic kernels, which were designed to homogeneous hardwares, is leading to alternative
+	\os designs~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
 	On the other hand, existing runtimes only partially address some of the programmability issues
 	of \textit{lightweight} \manycores, making the process of developing, porting, and maintaining
 	applications a challenging task.
@@ -100,30 +108,29 @@
 	redesigned from scratch to cope with their tight architectural constraints.
 	Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009}
 	is being proposed~\cite{penna2017-1,penna2017-2,penna2019}.
-	Nanvix features a generic and flexible \hal for \textit{lightweight} \manycores that
+	The \nanvix \microkernel features a generic and flexible \hal for \textit{lightweight} \manycores that
 	addresses the key issues encountered in the development for these processors.
-	On top of the Nanvix \hal, we are simultaneously designing and implementing a \microkernel
+	On top of the \nanvix \hal, we are simultaneously designing and implementing a \microkernel
 	that provides bare bones system abstractions for each cluster.
 
-\section{Objectives}
-\label{sec.objectives}
+\section{Goals}
+\label{sec.goals}
 
-	On the basis of the foregoing, the general objective and the specific objectives of the
-	present project are presented below.
+	Based on the aforementioned motivations, the primary and specific goals of this work are detailed next.
 
-\subsection{General Objective}
-\label{sec.objectives.general}
+\subsection{General Goals}
+\label{sec.goals.general}
 
-	The foremost objective of this monograph is to propose a \textit{Inter-Cluster Communication Module}
+	The foremost goal of this undergraduate dissertation is to propose a \textit{Inter-Cluster Communication Module}
 	to the \nanvix \hal and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
 	This module will expose the essential abstractions that permit upper layers to create more
 	sophisticated communication services.
-	Using this module, we also pretend design Inter-Cluster Communication Services to the \nanvix \microkernel.
+	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix \microkernel.
 	This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the
 	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
 
 \subsection{Specific Objectives}
-\label{sec.objectives.specific}
+\label{sec.goals.specific}
 
 	\begin{itemize}
 		\item Propose interfaces to the Inter-Cluster Communication Module aiming

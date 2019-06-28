@@ -1,7 +1,7 @@
 \chapter{Background}
 \label{ch.fundamentation}
 
-	This chapter presents the theoretical background of multiple processor
+	This chapter presents the background of multiple processor
 	systems from a hardware and software perspective.
 	Specifically, Section \ref{sec.multiprocessors} and Section \ref{sec.multicomputers}
 	will address details about multiprocessors and multicomputers, respectively.
@@ -16,12 +16,12 @@
 \section{Multiple Processor Systems}
 \label{sec.multiple-processor-systems}
 
-	According to Tanenbaum~\cite{tanenbaum:4ed}, exists three models of modern
-	multiple processor architectures.
+	According to Tanenbaum~\cite{tanenbaum:4ed}, there are three models of
+	modern multiple processor architectures.
 	A shared-memory multiprocessor, a message-passing multicomputer, and a wide
 	area distributed systems.
 	The sections below address the two first models presenting significant
-	hardware and software concepts for the present monograph.
+	hardware and software concepts for the present undergraduate dissertation.
 
 	\subsection{Multiprocessors}
 	\label{sec.multiprocessors}
@@ -51,7 +51,7 @@
 		For instance, when many threads of a process competing to read and write a global variable.
 		Moreover, some architectures integrate heterogeneous cores introducing portability
 		and programmability problems too.
-		So, low-level software, like \oses and runtimes, needs to handle those
+		So, low-level software, like \oses kernels and runtimes, needs to handle those
 		issues and provide management systems to user-level.
 
 		\subsubsection{Multiprocessor Hardware}
@@ -442,7 +442,7 @@
 
 		As illustrated by Figure \ref{fig.mppa-arch}, the used version of
 		the architecture, called Bostan, has 256 general-purpose cores and
-		32 cores for system use, called \pes and \rmans, respectively.
+		32 firmware cores, called \pes and \rmans, respectively.
 		The processor use 28~mm CMOS technology and all cores run at 500~MHz.
 		Besides, all cores have caches and \mmus with software-managed \tlbs.
 		Finally, the 288 cores are grouped into 16 \cclusters, dedicated to
@@ -478,9 +478,16 @@
 		The configuration of these features is accomplished by a mix between
 		writing on \dma registers and performing syscalls to a hypervisor
 		that virtualizes the \mppa hardware.	
-	
+
 \section{Hardware Abstract Layer for Lightweight Manycores}
 \label{sec.hal}
+
+	\note{
+		Mover essa seção da HAL e abstrações para desenvolvimento?
+		Comentário do Pedro:
+		IMO voce deveria tratar isso num capitulo a parte, pois faz parte da sua proposta.
+		Background é algo que está "consolidado"
+	}
 
 	\begin{figure}[h]
 		\centering
@@ -495,10 +502,10 @@
 	Despite the benefits of scalability and energy efficiency gained with the
 	emergence of the \textit{lightweight \manycores}, they sin in programmability
 	and portability.
-	Several current research is focusing on the challenges that have arisen with
+	Current research efforts are focusing on the challenges that have arisen with
 	these processors~\cite{christgau2017, gamell2012, serres2011}.
 	For instance, the study and development of full \oses running on them.
-	However, Pedro H. Penna \etal believe that significant barriers will still
+	However, Pedro H. Penna \etal~\cite{penna:compas19, penna2019} believe that significant barriers will still
 	arise in this scenario, and the solution is to rethink \os design from scratch.
 	For this, we propose a generic and flexible \hal around the intrinsic
 	architectural characteristics of the \textit{lightweight \manycores}.
@@ -528,7 +535,7 @@
 	The \textit{Processor Abstraction Layer}, in particular, embraces
 	architectural features related to multiple clusters.
 	The \textit{Inter-Cluster Communication Module}, the focus of
-	this monograph, exports three main abstractions to allow the
+	this undergraduate dissertation, exports three main abstractions to allow the
 	cluster to exchange data between them, based on ideas proposed along with the
 	\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
 	These abstractions will be presented in Section \ref{sec.inter-cluster-communication}.
