@@ -1,7 +1,66 @@
 \chapter{Schedule}
 \label{ch.schedule}
 
-Gantt Graph ...
+% \begin{tabularx}{\linewidth}{|X|*{6}{c|}}
+% 	\hline
+% 	\multicolumn{1}{|c|}{\multirow{2}{*}{Etapas}} & \multicolumn{6}{|c|}{Meses}\\ \cline{2-7}
+% 	& jan & fev & mar & abr & maio & jun \\ \hline
+
+% 	Estudar conceitos de Sistemas Operacionais
+% 	&  x  &  x  &     &     &     &     \\ \hline
+
+% 	Estudar Componentes e Serviços existentes
+% 	&     &  x  &  x  &     &     &     \\ \hline
+
+% 	Projetar os Componentes e Serviços para o microkernel
+% 	&     &     &  x  &  x  &  x  &  x  \\ \hline
+
+% 	Desenvolver implementação
+% 	&     &     &     &  x  &  x  &  x  \\ \hline
+
+% 	Testar e validar a implementação
+% 	&     &     &     &     &  x  &  x  \\ \hline
+
+% 	Documentar o aprendizado
+% 	&  x  &  x  &  x  &  x  &  x  &  x  \\ \hline
+
+% \end{tabularx}
+
+%%%% Modelo com barras %%%%
+
+Exemplo:
+
+\begin{figure}[!h]
+	\begin{center}
+
+		\begin{ganttchart}[
+			x unit=0.7cm,
+			y unit title=0.7cm,
+			y unit chart=0.7cm,
+			hgrid,
+			vgrid={{dotted, dotted, dotted, dotted, dotted, dotted}},
+			% title label font=\3scriptsize,
+			title/.append style={fill=gray!30},
+			title height=1,
+			bar/.append style={fill=gray!30,rounded corners=2pt},
+			bar label font=\scriptsize,
+			group label font=\scriptsize,
+		]{1}{6}
+
+		\gantttitle{\textbf{Meses}}{6} \\
+		\gantttitle{\textbf{2019}}{6} \\
+		\gantttitlelist{1,2,3,4,5,6}{1} \\
+		\ganttbar{1. Estudar conceitos de Sistemas Operacionais}{1}{2} \\
+		\ganttbar{2. Estudar Componentes e Serviços existentes}{2}{3} \\
+		\ganttbar{2. Projetar os Componentes e Serviços para o microkernel}{3}{6} \\
+		\ganttbar{3. Desenvolver implementação}{4}{6} \\
+		\ganttbar{3. Testar e validar a implementação}{5}{6} \\
+		\ganttbar{4. Documentar o aprendido}{1}{6} \\
+
+		\end{ganttchart}
+	\end{center}
+	\label{tab:cronograma}
+\end{figure}
 
 % \chapter{Conclusions}
 % \label{ch.conclusions}
