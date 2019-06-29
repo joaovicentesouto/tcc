@@ -50,7 +50,7 @@
 	and power consumption (\watts) of a manycore, as shown in Figure \ref{fig.microprocessor-data}.
 	For instance, to achieve \exascale (10$^{18}$ \flops), the US Department of Defense
 	issued a report stipulating the energy efficiency of a supercomputer should be
-	around 50 G~\flop/\watts~\cite{darpa:exascale}.
+	around 50 GFLOPS/W~\cite{darpa:exascale}.
 	Recently, a new class of parallel processors, called \textit{lightweight} \manycores,
 	has emerged to provide high parallelism with low power consumption.
 	These processors own the following characteristics:
@@ -62,6 +62,7 @@
 		\item They present constrained memory systems; and
 		\item They frequently feature a heterogeneous configuration.
 	\end{itemize}
+
 	Some industry-successful examples of \textit{lightweight} \manycores are
 	the \mppa~\cite{DeDinechin2013-1};
 	the \epiphany~\cite{olofsson2014}; and
@@ -107,7 +108,7 @@
 	redesigned from scratch to cope with their tight architectural constraints.
 	Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009}
 	is being proposed~\cite{penna2017-1,penna2017-2,penna2019}.
-	The \nanvix \microkernel features a generic and flexible \hal for \textit{lightweight} \manycores that
+	The \nanvix \multikernel features a generic and flexible \hal for \textit{lightweight} \manycores that
 	addresses the key issues encountered in the development for these processors.
 	On top of the \nanvix \hal, we are simultaneously designing and implementing a \microkernel
 	that provides bare bones system abstractions for each cluster.
@@ -124,7 +125,7 @@
 	to the \nanvix \hal and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
 	This module will expose the essential abstractions that permit upper layers to create more
 	sophisticated communication services.
-	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix \microkernel.
+	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix Microkernel.
 	This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the
 	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
 

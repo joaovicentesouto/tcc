@@ -10,10 +10,6 @@ proposed for such processors will be highlighted.
 \section{Lightweight Manycore Processors}
 \label{sec.works.manycores}
 
-	\note{
-		Explain: In each architecture, how communication is handled?
-	}
-
 	In addition to \mppa, many papers exemplify the wide variety of architectural
 	possibilities of \textit{lightweight} \manycores.
 	For instance, Olofsson \etal~\cite{olofsson2014} introduce \epiphany as a
@@ -23,15 +19,18 @@ proposed for such processors will be highlighted.
 	with a distributed shared-memory model without coherence protocol.
 	Each node has one \risc \cpu, multi-banked local memory, a \dma engine,
 	an event monitor and a network interface.
-	The network interface exposes the three \nocs, where one is used for reading
-	request, and the other two are used for write transactions destined for on-chip
-	and off-chip.
+	The three \nocs, named rMesh, cMesh, and xMesh, are independent and scalable.
+	They implements a packet-switched model with four duplex links at every node.
+	When a node want read a remote data, first, it sends a read request over the rMesh
+	and wait a signal to arrive on cMesh.
+	On the another hand, the write operation allows the node to continue running
+	while data is tranfered through over xMesh.
 
 	On the other hand, for help and facilitate on the \manycore processor design,
 	Wallentowitz \etal~\cite{Wallentowitz2013} presents the open-source framework
 	\optimsoc which allows build \manycore \soc and simulate them on a computer or
 	synthesize them on a \fpga.
-	The processing elements are \openrisc~\footnote{https://opencores.org/openrisc}
+	The \pe are \openrisc~\footnote{https://opencores.org/openrisc}
 	processor organized in tiles.
 	The central architectural element is the LISNoC, a \textit{packet-switched \noc}
 	that implements virtual channels to avoid message-dependent deadlocks.
@@ -39,12 +38,24 @@ proposed for such processors will be highlighted.
 	Precisely, a \textit{network adapter} handles the memory transfers between
 	tile and the memory and provide hardware means to a message-passing communication
 	model among tiles.
+	The tiles organization and the network topology also allows handle communication
+	in three different ways.
+	First, when using distributed memory, communication is performed through the
+	message-exchange between the tiles.
+	Second, by using a partitioned global address space scattered through the
+	tiles' local memories, the network adapter can perform \mpu-like memory
+	address translation hiding the exchange of messages but without providing cache coherence.
+	Finally, Wallentowitz \etal study policy of write-through snooping to provide
+	a global memory shared among tiles with cache coherence.
 
 	Similarly, Kurth \etal~\cite{Kurth2017} introduce the \hero, which unites an \arm
 	host processor with a fully modifiable \riscv \manycore implemented on a \fpga.
 	The \pmca uses a multi-cluster design and also relies on multi-banked memory, called \spm.
 	The data caches had substituted to a multi-channel \dma engine that copy data
 	between a shared L1 \spm and remote \spms or shared main memory.
+	Communication to main memory passes through software-managed lightweight \rab.
+	The \rab performs the translation of the virtual-to-physical address similar to an \mmu.
+	In this way, clusters can share virtual address pointers.
 	Besides, exists different designs for the shared instruction caches and
 	top-level interconnection such as bus or \noc.
 
