@@ -26,18 +26,13 @@
 	These architectures, called \textit{multicores}, allowed the continuous
 	rise of the computing performance.
 
-% - Original {
-	In some point, with reduction of transistors and the number of cores inside
-	a multiprocessor began to scale, these architectures must be called \manycores.
-	Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
-	Some researchers stipulate that the difference lies when losing a core
-	does not impact the rest of the system.
 % + Rephrasing by Pedro {
-	% The ever-increasing number of transistors and cores in a chip quickly lead
-	% to the advent of \manycores.
-	% Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
-	% Some researchers argue that the in latter architectures, having a core go to down
-	% it will not significantly impact the performance of the platform.
+	The ever-increasing number of transistors and cores in a chip quickly lead
+	to the advent of \manycores.
+	Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
+	Some researchers argue that the in latter architectures, having a core go to down
+	it will not significantly impact the performance of the platform.
+	A system is classified as \manycore when there is a need for distributed memory and on-chip networking.
 % + }
 
 	\begin{figure}[h]
@@ -50,17 +45,16 @@
 		\label{fig.microprocessor-data}
 	\end{figure}
 
-% From multicore to manycores
-	However, Figure \ref{fig.microprocessor-data} illustrates that, in recent years,
-	the energy consumption of parallel processors has become as crucial as their
-	processing power, which is usually measured by the number of \flops.
-	At this point, with the popularization of embedded systems as well as the aim
-	to reach the \exascale (10$^{18}$ \flops), a new class of parallel processors,
-	named \textit{lightweight} \manycores, emerged to provide high parallelism
-	with low-power consumption.
+% From multicore to manycores and Manycores characteristics
+	Yet another classification is based on the ratio between processing power (\flops)
+	and power consumption (\watts) of a manycore, as shown in Figure \ref{fig.microprocessor-data}.
+	For instance, to achieve \exascale (10$^{18}$ \flops), the US Department of Defense
+	issued a report stipulating the energy efficiency of a supercomputer should be
+	around 50 G~\flop/\watts~\cite{darpa:exascale}.
+	Recently, a new class of parallel processors, called \textit{lightweight} \manycores,
+	has emerged to provide high parallelism with low power consumption.
+	These processors own the following characteristics:
 
-% Manycores characteristics
-	The main characteristics of \textit{lightweight} \manycores are the following:
 	\begin{itemize}
 		\item They integrate thousands of low-power cores in a single die organized in clusters;
 		\item They are designed to cope with \mimd workloads;
@@ -95,13 +89,18 @@
 	\end{itemize}
 
 % Challenges and Problem Definition
-	Part of these challenges derives from existing \oses and runtimes.
+	Part of these challenges derives from existing runtimes and \oses.
+% Primeiro as dificuldades que não são superadas apenas com um runtime.
+	On the one hand, runtimes do not hide the characteristics of hardware making
+	software development more challenging and nonportable, \eg do not allow
+	direct access to non-local data, nor the manipulation of them in a transparent way.
+% Concluir com a idea de que runtimes não proporcionam resource sharing and multiplexing.
+	Thus, fundamental \os mechanisms, such as core multiplexing, core partitioning,
+	and process and data migration, may not be addressed.
+% E, então, mencionar esforços em designs alternativos.
 	On the one hand, the complicated portability and scalability of traditional \oses with a
 	monolithic kernels, which were designed to homogeneous hardwares, is leading to alternative
 	\os designs~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
-	On the other hand, existing runtimes only partially address some of the programmability issues
-	of \textit{lightweight} \manycores, making the process of developing, porting, and maintaining
-	applications a challenging task.
 
 % Goals and Contributions
 	We believe that \oses for the next-generation of \textit{lightweight} \manycores must be

@@ -51,7 +51,7 @@
 		For instance, when many threads of a process competing to read and write a global variable.
 		Moreover, some architectures integrate heterogeneous cores introducing portability
 		and programmability problems too.
-		So, low-level software, like \oses kernels and runtimes, needs to handle those
+		So, low-level software, like \os kernels and runtimes, needs to handle those
 		issues and provide management systems to user-level.
 
 		\subsubsection{Multiprocessor Hardware}
@@ -610,8 +610,10 @@
 			Similarly, the operation of the \mailbox follows \posix message queue behavior.
 			For example, the message can be used to encode small operations and system
 			control signals.
-			As illustrated in Figure \ref{fig.conpt_mailbox}, the cardinality of the operation
-			is N:1, where N senders can send messages to 1 receiver queue.
+			As illustrated in Figure \ref{fig.conpt_mailbox}, the operation cardinality is N:1,
+			where N senders can transfer one message at a time to a receiver queue.
+			When the receiver consumes a message, it notifies the sender to ensure
+			control of the flow.
 
 		\subsection{Portal Abstraction}
 		\label{sec.portal-abs}
@@ -631,5 +633,5 @@
 			The conceptual idea of ​​the \portal is similar to that implemented in \posix pipes.
 			Figure \ref{fig.conpt_portal} shows the \portal operation, with cardinality
 			1:1, a cluster pair opens a channel to transfer data.
-			However, the operation is only allowed in one sense, that is, one
-			cluster must assume the role of the sender and the other of the receiver.
+			However, the operation is only allowed in one direction with a flow control mechanism,
+			where the receiver cluster warns the sender cluster when it is ready to receive.
