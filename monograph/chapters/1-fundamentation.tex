@@ -28,11 +28,11 @@
 
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=.6\textwidth]{images/neumann.jpg}
+			\caption{Von Neumann Architecture Model.}
+			\includegraphics[width=.8\textwidth]{images/neumann.pdf}
+			\\ \vspace{0.3cm}
+			Source: Developed by the Author.
 
-			\caption{
-				Von Neumann Architecture Model.
-			}\par
 			\label{fig.neumann}
 		\end{figure}
 
@@ -67,12 +67,16 @@
 
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=.9\textwidth]{images/uma.png}
+				\caption{Two Bus-Based \uma Multiprocessor Examples.}
 
-				\caption{
-					Two Bus-Based \uma Multiprocessor Examples: (a) Without caching. (b) With caching.
-				}\par
-				\label{fig.uma}
+				\subfloat[Without caching.]{{\includegraphics[width=.4\linewidth]{images/uma_a.pdf} }}%
+				\qquad
+				\subfloat[With caching.]{{\includegraphics[width=.4\linewidth]{images/uma_b.pdf} }}%
+				
+				% \\ \vspace{0.3cm}
+				Source: Developed by the Author.
+
+				\label{fig:uma}%
 			\end{figure}
 
 			The firsts \uma multiprocessors were bus-based architectures where
@@ -95,11 +99,13 @@
 
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=.8\textwidth]{images/numa.png}
+				\caption{\numa Multiprocessor Example.}
 
-				\caption{
-					\numa Multiprocessor Example.
-				}\par
+				\includegraphics[width=.8\textwidth]{images/numa.pdf}
+
+				\\ \vspace{0.3cm}
+				Source: Developed by the Author.
+
 				\label{fig.numa}
 			\end{figure}
 
@@ -116,16 +122,20 @@
 
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=.6\textwidth]{images/flynn.png}
+				\caption{Flynn's taxonomy.}%
 
-				\caption{
-					Flynn's taxonomy:
-					(a) \sisd.
-					(b) \simd.
-					(c) \misd.
-					(d) \mimd.
-				}\par
-				\label{fig.flynn}
+				\subfloat[\sisd.]{{\includegraphics[width=.3\linewidth]{images/sisd.pdf} }}%
+				\qquad
+				\subfloat[\simd.]{{\includegraphics[width=.3\linewidth]{images/simd.pdf} }}%
+
+				\subfloat[\misd.]{{\includegraphics[width=.3\linewidth]{images/misd.pdf} }}%
+				\qquad
+				\subfloat[\mimd.]{{\includegraphics[width=.3\linewidth]{images/mimd.pdf} }}%
+				
+				% \\ \vspace{0.3cm}
+				Source: Developed by the Author.
+
+				\label{fig.flynn}%
 			\end{figure}
 
 			In the second place, the workflow classification proposed by Michael J. Flynn~\cite{flynn:1972},
@@ -168,11 +178,13 @@
 
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=.8\textwidth]{images/replicated-os.png}
+				\caption{Replicated \os Model.}
 
-				\caption{
-					Replicated \os Model.
-				}\par
+				\includegraphics[width=.7\textwidth]{images/replicated-os.pdf}
+
+				% \\ \vspace{0.3cm}
+				Source: Developed by the Author.
+
 				\label{fig.replicated-os}
 			\end{figure}
 
@@ -196,11 +208,13 @@
 
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=.8\textwidth]{images/master-slave-os.png}
+				\caption{Master-Slave \os Model.}
+				
+				\includegraphics[width=.7\textwidth]{images/master-slave-os.pdf}
+				
+				% \\ \vspace{0.3cm}
+				Source: Developed by the Author.
 
-				\caption{
-					Master-Slave \os Model.
-				}\par
 				\label{fig.master-slave-os}
 			\end{figure}
 
@@ -220,11 +234,13 @@
 
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=.8\textwidth]{images/smp-os.png}
+				\caption{Symmetric \os Model.}
 
-				\caption{
-					Symmetric \os Model.
-				}\par
+				\includegraphics[width=.7\textwidth]{images/symmetric-os.pdf}
+
+				% \\ \vspace{0.3cm}
+				Source: Developed by the Author.
+
 				\label{fig.smp-os}
 			\end{figure}
 
@@ -272,11 +288,21 @@
 
 				\begin{figure}[h]
 					\centering
-					\includegraphics[width=.8\textwidth]{images/net-topologies.png}
+					\caption{Network Topologies Examples.}
+					
+					\subfloat[Star.]{{\includegraphics[width=.25\linewidth]{images/net-star.pdf} }}%
+					\qquad
+					\subfloat[Ring.]{{\includegraphics[width=.25\linewidth]{images/net-ring.pdf} }}%
+					\qquad
+					\subfloat[Grid.]{{\includegraphics[width=.25\linewidth]{images/net-grid.pdf} }}%
 
-					\caption{
-						Network Topologies Examples.
-					}\par
+					\subfloat[Torus.]{{\includegraphics[width=.25\linewidth]{images/net-torus.pdf} }}%
+					\qquad
+					\subfloat[Grid 3D.]{{\includegraphics[width=.25\linewidth]{images/net-3d.pdf} }}%
+
+					% \\ \vspace{0.3cm}
+					Source: Developed by the Author.
+
 					\label{fig.net-topologies}
 				\end{figure}
 				
