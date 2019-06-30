@@ -72,7 +72,7 @@
 				\subfloat[Without caching.]{{\includegraphics[width=.4\linewidth]{images/uma_a.pdf} }}%
 				\qquad
 				\subfloat[With caching.]{{\includegraphics[width=.4\linewidth]{images/uma_b.pdf} }}%
-				
+
 				% \\ \vspace{0.3cm}
 				Source: Developed by the Author.
 
@@ -131,7 +131,7 @@
 				\subfloat[\misd.]{{\includegraphics[width=.3\linewidth]{images/misd.pdf} }}%
 				\qquad
 				\subfloat[\mimd.]{{\includegraphics[width=.3\linewidth]{images/mimd.pdf} }}%
-				
+
 				% \\ \vspace{0.3cm}
 				Source: Developed by the Author.
 
@@ -209,9 +209,9 @@
 			\begin{figure}[h]
 				\centering
 				\caption{Master-Slave \os Model.}
-				
+
 				\includegraphics[width=.7\textwidth]{images/master-slave-os.pdf}
-				
+
 				% \\ \vspace{0.3cm}
 				Source: Developed by the Author.
 
@@ -289,7 +289,7 @@
 				\begin{figure}[h]
 					\centering
 					\caption{Network Topologies Examples.}
-					
+
 					\subfloat[Star.]{{\includegraphics[width=.25\linewidth]{images/net-star.pdf} }}%
 					\qquad
 					\subfloat[Ring.]{{\includegraphics[width=.25\linewidth]{images/net-ring.pdf} }}%
@@ -305,7 +305,7 @@
 
 					\label{fig.net-topologies}
 				\end{figure}
-				
+
 				A switch set is organized into different topologies to interconnect
 				the nodes of a multicomputer.
 				As illustrated in Figure \ref{fig.net-topologies}, there are a
@@ -336,11 +336,13 @@
 
 				\begin{figure}[h]
 					\centering
-					\includegraphics[width=.8\textwidth]{images/multicomputer.png}
+					\caption{Simple Multicomputer Example.}%
 
-					\caption{
-						Simple Multicomputer Example.
-					}\par
+					\includegraphics[width=.9\textwidth]{images/multicomputer.pdf}
+
+					% \\ \vspace{0.3cm}
+					Source: Developed by the Author.
+
 					\label{fig.multicomputer}
 				\end{figure}
 
@@ -391,13 +393,15 @@
 
 				\begin{figure}[h]
 					\centering
-					\includegraphics[width=.8\textwidth]{images/calls-types.png}
+					\caption{Calls Types.}%
 
-					\caption{
-						Calls Types:
-						(a) synchronous call.
-						(b) asynchronous call.
-					}\par
+					\subfloat[Synchronous Call on Sender Node.]{{\includegraphics[width=.95\linewidth]{images/call-sync.pdf} }}%
+
+					\subfloat[Asynchronous Call on Sender Node.]{{\includegraphics[width=.95\linewidth]{images/call-async.pdf} }}%
+
+					% \\ \vspace{0.3cm}
+					Source: Developed by the Author.
+
 					\label{fig.calls-types}
 				\end{figure}
 
@@ -444,7 +448,7 @@
 				However, choosing the ideal approach is still the responsibility of the \os designer.
 				Even so, the distributed nature of multicomputers forces developers to
 				use a messaging strategy regardless of what the hardware has to offer.
-	
+
 	\section{Kalray MPPA-256 Lightweight Manycore Processor}
 	\label{sec.mppa}
 
@@ -503,7 +507,7 @@
 
 		The configuration of these features is accomplished by a mix between
 		writing on \dma registers and performing syscalls to a hypervisor
-		that virtualizes the \mppa hardware.	
+		that virtualizes the \mppa hardware.
 
 \section{Hardware Abstract Layer for Lightweight Manycores}
 \label{sec.hal}
@@ -524,7 +528,7 @@
 		}\par
 		\label{fig.hal-struct}
 	\end{figure}
-	
+
 	Despite the benefits of scalability and energy efficiency gained with the
 	emergence of the \textit{lightweight \manycores}, they sin in programmability
 	and portability.
