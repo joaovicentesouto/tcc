@@ -151,19 +151,19 @@
 			Finally, a \mimd architecture has multiple processors simultaneously
 			executing different instruction on different data, like \xeonphi.
 
-			Currently, two categories of multiprocessors attract attention, the \cmp and \todo{MPSoCs?}{\soc}.
+			Currently, two categories of multiprocessors attract attention, the \cmp and \mpsoc.
 			\cmps are multicore commercials, which follow a symmetric architecture,
 			integrating two or more identical cores into a single die.
 			They can have private or shared cache levels, and always share access
 			to the RAM.
-			Alternatively, \socs are designed with an asymmetric architecture,
+			Alternatively, \mpsocs are designed with an asymmetric architecture,
 			have in addition to the main cores, specialized \cpus in particular
 			functions, \eg audio and video encoders, encryption, becoming truly
 			complete computer systems on a single chip.
-			
-			\todo[inline]{Faltou adicionar um parágrafo para dizer que essas redes de
-			interconexão nos MPSoCs são as NoCs. Adicionar duas ou três frases para
-			falar de NoCs.}
+			All these cores are linked to each other by an on-chip network-based
+			communications subsystem, called \noc.
+			The \noc improve scalability and power consumption compared to other
+			communication subsystem designs.
 
 		\subsubsection{Multiprocessor \oses}
 		\label{sec.multiprocessor-os}
@@ -418,7 +418,8 @@
 				synchronous ones, they introduce some disadvantages where the sender/receiver
 				cannot use the message buffer before the operation is complete.
 
-				According to Tanenbaum~\cite{tanenbaum:4ed}, there are four ways to implement a send primitive:
+				According to Tanenbaum~\cite{tanenbaum:4ed}, there are four ways to implement
+				a send primitive:
 				\begin{itemize}
 					\item \textbf{Blocking sending:} \cpu hibernates or schedules another
 						process, while the message is transmitted;
@@ -505,8 +506,8 @@
 		\item 256 slots for receiving data;
 		\item 4 channels for sending commands;
 		\item 8 channels for sending data, and;
-		\item 8 $\mu$threads for sending asynchronous data (each of which must to be associated 
-		with a transfer channel).
+		\item 8 $\mu$threads for sending asynchronous data (each of which must
+			to be associated with a transfer channel).
 	\end{itemize}
 
 	The configuration of these features is accomplished by a mix between
@@ -516,18 +517,38 @@
 \section{Nanvix OS: An Operating System for Lightweight Manycores}
 \label{sec.nanvix}
 
-	\todo[inline]{Adicionar alguns parágrafos para falar do Nanvix OS de modo geral (visão geral, microkernel, multikernel, etc..).}
+	Current research efforts on Nanvix \os focus on the programmability and portability
+	challenges that have arisen with \textit{lightweight \manycores}~\cite{christgau2017, gamell2012, serres2011}.
+	We believe that significant barriers will still arise in this scenario, and the
+	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019}. 
+	In this context, the Nanvix \os aims improving programmability and
+	software portability in lightweight manycores by means of a fully-featured
+	\posix-compliant \os~\cite{penna:compas19}.
+	It follows a multi-kernel design where OS services are scattered across cores and
+	interacting with user processes through a Client-Server approach.
+	
+	Nanvix \os can be divided into three distinct kernels, \multikernel,
+	\microkernel, and \hal.
+	The \multikernel is made up of high-level OS services, \eg shared memory
+	regions and name resolution.
+	It exports both the client and server interfaces, both developed above
+	the \microkernel services.
+	On top of the \hal, The \microkernel follows the Master-Slave \o model
+	to avoid the problem of the lack of coherence of many manycores.
+	It shall run in each cluster and provide bare bones system abstractions,
+	such as thread management, thread synchronization,
+	virtual memory support and communication services.
+	And finally, the next section will introduce \hal.
 
 	\subsection{Hardware Abstract Layer (HAL)}
 	\label{sec.hal}
 
-		Current research efforts on Nanvix focus on the programmability and portability
-		challenges that have arisen with \textit{lightweight \manycores}~\cite{christgau2017, gamell2012, serres2011}.
-		We believe that significant barriers will still arise in this scenario, and the solution is to rethink \os design from
-		scratch~\cite{penna:compas19, penna2019}. For this, Nanvix proposes a generic and flexible \hal around the
-		intrinsic architectural characteristics of the \textit{lightweight \manycores}. In this undergraduate dissertation, we 
-		focus on the development of \hal to \mppa~\cite{DeDinechin2013-1}. However, other efforts have also been
-		done for other platforms such as~\optimsoc~\cite{Wallentowitz2013}.
+		Nanvix \os proposes a generic and flexible \hal around the
+		intrinsic architectural characteristics of the \textit{lightweight \manycores}.
+		In this undergraduate dissertation, we  focus on the development of \hal
+		to \mppa~\cite{DeDinechin2013-1}.
+		However, other efforts have also been done for other platforms such
+		as~\optimsoc~\cite{Wallentowitz2013}.
 
 		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 		the \hal belongs to one level below.
@@ -659,6 +680,32 @@
 		
 	\subsection{Communication Services for the Nanvix Microkernel}
 	
-	\todo[inline]{Assim como no HAL, colocar uma descrição geral dos serviços de comunicação que o
-	Nanvix vai oferecer. A descrição de como isso será implementado no MPPA vai estar no capítulo de
-	proposta.}
+		The inter-cluster communication module, described in Section \ref{sec.inter-cluster-communication},
+		is designed to export a standard and straightforward vision of
+		the communication means to different lightweight manycores.
+		This vision can be used by various types of operating systems
+		and applications.
+		Thus, the module is flexible enough not to impact the performance
+		of the upper layers negatively.
+		For this, it does not provide rich management of the exposed resources.
+
+		In this scenario, the communication services of Nanvix Microkernel seek
+		to provide communication between the distinct cluster processes, managing
+		the resources of the communication module of \hal.
+		Due to the Master-Slave model, the responsibility of protecting,
+		manipulating, and configuring HAL features is of the master core.
+		The slave core will request operations through a meta-interface,
+		passing the necessary information to the master.
+
+		Considering that the abstractions make up the fundamental elements of
+		the construction of more complex services, the Microkernel services
+		were responsible for the management and multiplexing of the finite
+		resources for the many cores of a cluster.
+		In total, we will design three services, each associated with an
+		abstraction of the communication module, analogously named \sync,
+		\mailbox, and \portal services.
+
+		\todo[inline]{
+			Precisa deixar mais explicito que os serviços exportam as mesmas
+			abstrações mas proveem controle e gerêncimanto?
+		}
