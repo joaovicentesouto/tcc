@@ -1,9 +1,9 @@
 LATEX = latexmk
 LATEX_FLAGS = -shell-escape -e "\$$pdflatex=q/pdflatex -synctex=1 -interaction=nonstopmode/" -pdf
 
-all: main.tex
+all: main.tex clean
 	pdflatex -interaction=nonstopmode main.tex ; \
-	biber main.bcf; \
+	biber main; \
 	pdflatex -interaction=nonstopmode main.tex ;\
 	pdflatex -interaction=nonstopmode main.tex
 

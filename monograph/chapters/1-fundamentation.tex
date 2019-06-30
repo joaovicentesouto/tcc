@@ -6,7 +6,7 @@
 	Specifically, Section \ref{sec.multiprocessors} and Section \ref{sec.multicomputers}
 	will address details about multiprocessors and multicomputers, respectively.
 	Subsequently, Section \ref{sec.mppa} will present the \mppa processor.
-	Next, Section \ref{sec.hal} will show an overview of the HAL.
+	Next, Section \ref{sec.nanvix} will show an overview of the Nanvix OS.
 	So finally, Section \ref{sec.inter-cluster-communication} will cover the abstraction
 	concepts in the Inter-Cluster Communication Module.
 
@@ -26,19 +26,15 @@
 	\subsection{Multiprocessors}
 	\label{sec.multiprocessors}
 
-		\begin{figure}[h]
+		\begin{figure}[t]
 			\centering
 			\caption{Von Neumann Architecture Model.}
 			\includegraphics[width=.8\textwidth]{images/neumann.pdf}
 			\\ \vspace{0.3cm}
-			Source: Developed by the Author.
+			Source: Adapted from \cite{tanenbaum:4ed}.
 
 			\label{fig.neumann}
 		\end{figure}
-
-		\todo[inline]{Eu acho que as figuras são adaptações das figuras do livro do tannenbaum ou de outra fonte. Portanto, não podes dizer ``developed by the author'' no caption. O mais correto é dizer ``Adapted from [REF]''. Vale para essa e para todas as outras figuras do texto.}
-		
-		\todo[inline]{Em textos, normalmente as figuras são colocadas no topo ([t]) ou em baixo ([b]). Evite de usar [h] ou [H]. Reposicione as figuras somente após o texto estar finalizado.}
 
 		In the early days of electronic digital computing, John Von Neumann
 		proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
@@ -69,7 +65,7 @@
 			as fast as every other memory word are called \uma multiprocessors.
 			On the other hand, \numa multiprocessors do not have this property.
 
-			\begin{figure}[h]
+			\begin{figure}[t]
 				\centering
 				\caption{Two Bus-Based \uma Multiprocessor Examples.}
 
@@ -78,7 +74,7 @@
 				\subfloat[With caching.]{{\includegraphics[width=.4\linewidth]{images/uma_b.pdf} }}%
 
 				% \\ \vspace{0.3cm}
-				Source: Developed by the Author.
+				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig:uma}%
 			\end{figure}
@@ -101,12 +97,12 @@
 			the concurrent operations on a given address through different caches.
 			The protocols that guarantee these properties are called cache-coherence protocols.
 
-			\begin{figure}[h]
+			\begin{figure}[t]
 				\centering
 				\caption{\numa Multiprocessor Example.}
 
 				\includegraphics[width=.8\textwidth]{images/numa.pdf} \\ \vspace{0.3cm}
-				Source: Developed by the Author.
+				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig.numa}
 			\end{figure}
@@ -122,7 +118,7 @@
 			this granted that all \uma programs will be able to run on \numa machines
 			but with worse performance.
 
-			\begin{figure}[h]
+			\begin{figure}[t]
 				\centering
 				\caption{Flynn's taxonomy.}%
 
@@ -135,7 +131,7 @@
 				\subfloat[\mimd.]{{\includegraphics[width=.3\linewidth]{images/mimd.pdf} }}%
 
 				% \\ \vspace{0.3cm}
-				Source: Developed by the Author.
+				Source: Adapted from \cite{url:flynn}.
 
 				\label{fig.flynn}%
 			\end{figure}
@@ -182,14 +178,14 @@
 			such systems.
 			Those models are called Replicated, Master-Slave, and Symmetric \os.
 
-			\begin{figure}[h]
+			\begin{figure}[t]
 				\centering
 				\caption{Replicated \os Model.}
 
 				\includegraphics[width=.7\textwidth]{images/replicated-os.pdf}
 
 				% \\ \vspace{0.3cm}
-				Source: Developed by the Author.
+				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig.replicated-os}
 			\end{figure}
@@ -212,14 +208,14 @@
 			Finally, replication of the internal \os structures makes this model
 			impractical for systems with memory constraints.
 
-			\begin{figure}[h]
+			\begin{figure}[t]
 				\centering
 				\caption{Master-Slave \os Model.}
 
 				\includegraphics[width=.7\textwidth]{images/master-slave-os.pdf}
 
 				% \\ \vspace{0.3cm}
-				Source: Developed by the Author.
+				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig.master-slave-os}
 			\end{figure}
@@ -238,14 +234,14 @@
 			the bottleneck of the system if it can not handle the number of the
 			incoming requisition.
 
-			\begin{figure}[h]
+			\begin{figure}[t]
 				\centering
 				\caption{Symmetric \os Model.}
 
 				\includegraphics[width=.7\textwidth]{images/symmetric-os.pdf}
 
 				% \\ \vspace{0.3cm}
-				Source: Developed by the Author.
+				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig.smp-os}
 			\end{figure}
@@ -292,7 +288,7 @@
 				In this way, it is possible to integrate hundreds or even thousands
 				of nodes providing the vision of a single computer.
 
-				\begin{figure}[h]
+				\begin{figure}[t]
 					\centering
 					\caption{Network Topologies Examples.}
 
@@ -307,7 +303,7 @@
 					\subfloat[Grid 3D.]{{\includegraphics[width=.25\linewidth]{images/net-3d.pdf} }}%
 
 					% \\ \vspace{0.3cm}
-					Source: Developed by the Author.
+					Source: Adapted from \cite{tanenbaum:4ed}.
 
 					\label{fig.net-topologies}
 				\end{figure}
@@ -340,14 +336,14 @@
 			\subsubsection{Low-Level Communication Software}
 			\label{sec.multicomputers-low-sw}
 
-				\begin{figure}[h]
+				\begin{figure}[t]
 					\centering
 					\caption{Simple Multicomputer Example.}%
 
 					\includegraphics[width=.9\textwidth]{images/multicomputer.pdf}
 
 					% \\ \vspace{0.3cm}
-					Source: Developed by the Author.
+					Source: Adapted from \cite{tanenbaum:4ed}.
 
 					\label{fig.multicomputer}
 				\end{figure}
@@ -398,7 +394,7 @@
 				the network interfaces it should configure and where to write the
 				incoming data.
 
-				\begin{figure}[h]
+				\begin{figure}[t]
 					\centering
 					\caption{Calls Types.}%
 
@@ -407,7 +403,7 @@
 					\subfloat[Asynchronous Call on Sender Node.]{{\includegraphics[width=.95\linewidth]{images/call-async.pdf} }}%
 
 					% \\ \vspace{0.3cm}
-					Source: Developed by the Author.
+					Source: Adapted from \cite{tanenbaum:4ed}.
 
 					\label{fig.calls-types}
 				\end{figure}
@@ -422,7 +418,7 @@
 				synchronous ones, they introduce some disadvantages where the sender/receiver
 				cannot use the message buffer before the operation is complete.
 
-				According to \todo{citação aqui}{Tanenbaum}, there are four ways to implement a send primitive:
+				According to Tanenbaum~\cite{tanenbaum:4ed}, there are four ways to implement a send primitive:
 				\begin{itemize}
 					\item \textbf{Blocking sending:} \cpu hibernates or schedules another
 						process, while the message is transmitted;
@@ -459,13 +455,14 @@
 \section{The MPPA-256 Lightweight Manycore Processor}
 \label{sec.mppa}
 
-	\begin{figure}[h]
+	\begin{figure}[t]
 		\centering
-		\includegraphics[width=.7\textwidth]{images/arch-mppa.png}
+		\caption{Architectural overview of the \mppa processor.}
 
-		\caption{
-		Architectural overview of the \mppa processor~\cite{Penna2018}.
-		}\par
+		\includegraphics[width=.7\textwidth]{images/arch-mppa.pdf}
+
+		Source: \cite{Penna2018}.
+
 		\label{fig.mppa-arch}
 	\end{figure}
 
@@ -522,6 +519,7 @@
 	\todo[inline]{Adicionar alguns parágrafos para falar do Nanvix OS de modo geral (visão geral, microkernel, multikernel, etc..).}
 
 	\subsection{Hardware Abstract Layer (HAL)}
+	\label{sec.hal}
 
 		Current research efforts on Nanvix focus on the programmability and portability
 		challenges that have arisen with \textit{lightweight \manycores}~\cite{christgau2017, gamell2012, serres2011}.
@@ -531,82 +529,80 @@
 		focus on the development of \hal to \mppa~\cite{DeDinechin2013-1}. However, other efforts have also been
 		done for other platforms such as~\optimsoc~\cite{Wallentowitz2013}.
 
-	        	Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
-	        	the \hal belongs to one level below.
-	        	It is the first layer on top of the hardware and should provide a standard
-	        	view of these emerging processors for a client applications, \eg \os.
-	        	As illustrated in Figure \ref{fig.hal-struct}, this \hal is structured in
-	        	two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
+		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
+		the \hal belongs to one level below.
+		It is the first layer on top of the hardware and should provide a standard
+		view of these emerging processors for a client applications, \eg \os.
+		As illustrated in Figure \ref{fig.hal-struct}, this \hal is structured in
+		two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
 
-	        	\begin{figure}[h]
-	        	\centering
-	        	\includegraphics[width=.9\textwidth]{images/hal-struct.png}
+		\begin{figure}[t]
+			\centering
+			\caption{Structural overview of the proposed \hal.}
 
-		        	\caption{
-		        	Structural overview of the proposed \hal~\cite{penna:compas2019}.
-		}\par
+			\includegraphics[width=.9\textwidth]{images/hal-struct.pdf}
+
+			Source: \cite{penna:compas19}.
+
 		\label{fig.hal-struct}
 		\end{figure}
 
-	        	\todo[inline]{Colocar a versão em formato vetorial (PDF) da figura. REF COMPASS 2019 está faltando.}
+		The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
+		It provides two modules, \textit{Core Management}, and \textit{Memory Management}.
+		The \textit{Core Management Module} aims to provide to a client application a complete
+		thread synchronization and management system, rich support of handling
+		interrupts/exceptions, and an adequate system call interface.
+		The \textit{Memory Management Module} provides a uniform view of the \tlbs
+		and paging systems with maintenance routines for them and the cache.
+		Therefore, some design decisions are made to create interfaces that are not
+		dependent on the underlying hardware.
+		For example, a context switch mechanism was not provided in the
+		Core Management module because this would force the client \os
+		to write code in assembly, hurting the conceptual idea of the \hal.
 
-	        The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
-	        It provides two modules, \textit{Core Management}, and \textit{Memory Management}.
-	        The \textit{Core Management Module} aims to provide to a client application a complete
-	        thread synchronization and management system, rich support of handling
-	        interrupts/exceptions, and an adequate system call interface.
-	        The \textit{Memory Management Module} provides a uniform view of the \tlbs
-	        and paging systems with maintenance routines for them and the cache.
-	        Therefore, some design decisions are made to create interfaces that are not
-	        dependent on the underlying hardware.
-	        For example, a context switch mechanism was not provided in the
-	        Core Management module because this would force the client \os
-	        to write code in assembly, hurting the conceptual idea of the \hal.
+		The \textit{Processor Abstraction Layer}, in particular, embraces
+		architectural features related to multiple clusters.
+		The \textit{Inter-Cluster Communication Module}, the focus of
+		this undergraduate dissertation, exports three main abstractions to allow the
+		cluster to exchange data between them, based on ideas proposed along with the
+		\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
+		Lastly, the \textit{Monitoring and Debugging Module}, as the
+		name shows, exports routines to aid debugging and extraction
+		of diagnostics about hardware metrics, such as the number of
+		page-fault or detour taken.
 
-	        The \textit{Processor Abstraction Layer}, in particular, embraces
-	        architectural features related to multiple clusters.
-	        The \textit{Inter-Cluster Communication Module}, the focus of
-	        this undergraduate dissertation, exports three main abstractions to allow the
-	        cluster to exchange data between them, based on ideas proposed along with the
-	        \nodeos distributed runtime system~\cite{DeDinechin2013-1}.
-	        Lastly, the \textit{Monitoring and Debugging Module}, as the
-	        name shows, exports routines to aid debugging and extraction
-	        of diagnostics about hardware metrics, such as the number of
-	        page-fault or detour taken.
-
-	        \subsubsection{Inter-Cluster Communication Module}
+		\subsubsection{Inter-Cluster Communication Module}
 		\label{sec.inter-cluster-communication}
 
 			The following sections conceptually present the three abstractions
 			that will be proposed for \hal and implemented over \mppa.
-		        	They are the \sync, \mailbox, and \portal abstraction.
-		        	The purpose of developing more specific abstractions than
-	        		send and receive primitives, described in Section \ref{sec.multicomputers-user-sw},
-		        	is to provide more precise and easy-to-use mechanisms for
-	        		\os and client applications.
-        			On top of them, it is possible to create all kinds of essential
-		        	services such as message passing and synchronization,
-        			to more elaborate services such as shared memory regions~\cite{penna:rmen}.
-        
-	        		A related point to consider is that mechanisms described below refer
-	        		to interactions between distinct clusters only.
-		        	The implementation can follow synchronously or asynchronously models,
-		        	as described in Section \ref{sec.multicomputers}, depending only on hardware support.
-		        	In the same way, it is worth be noted that the small messaging exchange
-		        	is decoupled from abstraction to intense data transfer.
-		        	The motivation for this, as other details, is to exhibit better control
-		        	over the \qos to the higher layers.
-		        	For instance, the use of distinct \nocs for each service.
+			They are the \sync, \mailbox, and \portal abstraction.
+			The purpose of developing more specific abstractions than
+			send and receive primitives, described in Section \ref{sec.multicomputers-user-sw},
+			is to provide more precise and easy-to-use mechanisms for
+			\os and client applications.
+			On top of them, it is possible to create all kinds of essential
+			services such as message passing and synchronization,
+			to more elaborate services such as shared memory regions~\cite{penna:rmen}.
+
+			A related point to consider is that mechanisms described below refer
+			to interactions between distinct clusters only.
+			The implementation can follow synchronously or asynchronously models,
+			as described in Section \ref{sec.multicomputers}, depending only on hardware support.
+			In the same way, it is worth be noted that the small messaging exchange
+			is decoupled from abstraction to intense data transfer.
+			The motivation for this, as other details, is to exhibit better control
+			over the \qos to the higher layers.
+			For instance, the use of distinct \nocs for each service.
 
 			\subsubsubsection*{Sync Abstraction}
 			\label{sec.sync-abs}
 
-				\begin{figure}[h]
+				\begin{figure}[t]
 					\centering
+					\caption{Synchronization Abstraction Concept.}
 					\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
-					\caption{
-						Synchronization Abstraction Concept.
-					}\par
+					Source: Developed by the Author.
 					\label{fig.conpt_sync}
 				\end{figure}
 
@@ -623,12 +619,11 @@
 			\subsubsubsection*{Mailbox Abstraction}
 			\label{sec.mailbox-abs}
 
-				\begin{figure}[h]
+				\begin{figure}[t]
 					\centering
+					\caption{Mailbox Abstraction Concept.}
 					\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
-					\caption{
-						Mailbox Abstraction Concept.
-					}\par
+					Source: Developed by the Author.
 					\label{fig.conpt_mailbox}
 				\end{figure}
 
@@ -646,12 +641,11 @@
 			\subsubsubsection*{Portal Abstraction}
 			\label{sec.portal-abs}
 
-				\begin{figure}[h]
+				\begin{figure}[t]
 					\centering
+					\caption{Portal Abstraction Concept.}
 					\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
-					\caption{
-						Portal Abstraction Concept.
-					}\par
+					Source: Developed by the Author.
 					\label{fig.conpt_portal}
 				\end{figure}
 
@@ -662,9 +656,9 @@
 				1:1, a cluster pair opens a channel to transfer data.
 				However, the operation is only allowed in one direction with a flow control mechanism,
 				where the receiver cluster warns the sender cluster when it is ready to receive.
-			
-		\subsection{Communication Services for the Nanvix Microkernel}
 		
-		\todo[inline]{Assim como no HAL, colocar uma descrição geral dos serviços de comunicação que o
-		Nanvix vai oferecer. A descrição de como isso será implementado no MPPA vai estar no capítulo de
-		proposta.}
+	\subsection{Communication Services for the Nanvix Microkernel}
+	
+	\todo[inline]{Assim como no HAL, colocar uma descrição geral dos serviços de comunicação que o
+	Nanvix vai oferecer. A descrição de como isso será implementado no MPPA vai estar no capítulo de
+	proposta.}
