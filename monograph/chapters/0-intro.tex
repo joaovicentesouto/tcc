@@ -30,9 +30,9 @@
 	The ever-increasing number of transistors and cores in a chip quickly lead
 	to the advent of \manycores.
 	Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
-	Some researchers argue that the in latter architectures, having a core go to down
-	it will not significantly impact the performance of the platform.
-	A system is classified as \manycore when there is a need for distributed memory and on-chip networking.
+	Some researchers argue that the in latter architectures, \todo{não entendi}{having a core go to down
+	it will not significantly impact the performance of the platform}.
+	\todo{estranho... qual fonte da classificação?}{A system is classified as \manycore when there is a need for distributed memory and on-chip networking}.
 % + }
 
 	\begin{figure}[h]
@@ -129,16 +129,16 @@
 	This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the
 	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
 
-\subsection{Specific Objectives}
+\subsection{Specific Goals}
 \label{sec.goals.specific}
 
 	\begin{itemize}
 		\item Propose interfaces to the Inter-Cluster Communication Module aiming
-			the class of \textit{lightweight} \manycore processors.
-		\item Implement the interfaces for the \textit{\mppa manycore processor}.
+			the class of \textit{lightweight} \manycore processors;
+		\item Implement the interfaces for the \textit{\mppa manycore processor};
 		\item Define Communication Services and their strategies in the use of the Inter-Cluster
-			Communication Module in the context of a microkernel-based \os.
-		\item Implement the Communication Services for the \nanvix Microkernel.
+			Communication Module in the context of a microkernel-based \os;
+		\item Implement the Communication Services for the \nanvix Microkernel;
 		\item Analyze the performance of the proposed implementation using specific micro-benchmarks.
 	\end{itemize}
 
