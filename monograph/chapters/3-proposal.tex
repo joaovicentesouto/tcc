@@ -1,22 +1,23 @@
 \chapter{Proposal}
 \label{ch.proposal}
 
-A proposta desta dissertação é composta por duas contribuições principais.
-A primeira contribuição será o porte do modulo de comunicação entre clusters
-descrito na Seção \ref{sec.inter-cluster-communication} para o processador manycore MPPA.
-A segunda contribuição será o projeto e implementação de serviços de comunicação de
-um sistema operacional mestre-escravo encima desse módulo de comunicação.
+The proposal for this dissertation is made up of two main contributions.
+The first contribution will be the port of the \textit{Inter-Cluster Communication Module},
+described in Section \ref{sec.inter-cluster-communication}, for the \mppa manycore processor.
+The second contribution will be the design and implementation of communication services
+of a master-slave \os, described in Section \ref{sec.communication-services}, on top of
+the communication module.
 
 \section{Inter-Cluster Communication Module}
 
-	Idealmente, a implementação da HAL não deveria utilizar nenhuma outra camada
-	de software para conversar com o hardware.
-	Porém, a implementação da HAL no MPPA utiliza-se de camadas indispensáveis
-	da pilha de software disponibilizada pela Kalray.
-	Para substituí-las seria necessário um grande esforço, fugindo da proposta
-	deste trabalho e do escopo do doutorado do Pedro H. Penna.
-	Os principais motivos para essa decisão foram devido a documentação pobre
-	e a impossibilidade de executar código em modo kernel livremente.
+	Ideally, the \hal implementation should not use any other layer of software to
+	deal with the hardware. However, the implementation of \hal in \mppa utilizes
+	indispensable layers of the software stack made available by Kalray.
+	In order to replace them, a great effort would be necessary, fleeing the proposal
+	of this work and the scope of Pedro H. Penna's Ph.D.
+	The main reasons for this decision were due to poor documentation and the
+	inability to execute kernel mode code freely.
+
 
 	\begin{figure}[t]
 		\centering
@@ -26,22 +27,22 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 
 		Source: \mppa Processor Documentation.
 
-		\label{fig.conpt_sync}
+		\label{fig.software-stack}
 	\end{figure}
 
-	A Figure X mostra a pilha de software presente para o MPPA.
-	A partir dela, serão utilizados apenas o hypervisor e a biblioteca vbsp.
-	O hypervisor é utilizado para virtualizar o hardware separando-o em partes lógicas,
-	e.g., virtualização do núcleo, da interface cnoc e da interface dnoc.
-	Ele também exporta rotinas para gerenciar, configurar e permitir acesso aos recursos virtuais.
-	A biblioteca vbsp, por sua vez, prove primitivas para configuração de interrupções.
+	Figure \ref{fig.software-stack} shows the software stack present for the \mppa.
+	From it, only the \textit{hypervisor} and the \textit{vbsp} library will be used.
+	The hypervisor is used to virtualize the hardware by separating it into logical
+	parts, e.g., core virtualization, \cnoc virtualization, and \dnoc virtualization.
+	It also exports routines to manage, configure, and allow access to virtual resources.
+	The vbsp library, in turn, provides primitives for setting interrupts.
 
-	O módulo de comunicação entre clusters utilizará interfaces da própria HAL
-	e as virtualizações das interfaces cnoc e dnoc diretamente.
-	As interfaces virtuais exportam chamadas assíncronas para adquirir permissão de leitura e escrita
-	direta de registradores que configuram o hardware para determinada tarefa.
-	Por exemplo, a configuração da DMA para envio assíncrono é abstraido por
-	micro-threads que são configuradas através de estruturas globais providas pelo hypervisor.
+	The inter-cluster communication module will use \hal's interfaces and the
+	virtualizations of the \cnoc and \dnoc interfaces directly.
+	Virtual \noc interfaces export asynchronous calls to acquire read and write
+	permission from registers that configure the hardware for a given task.
+	For instance, the \dma configuration for asynchronous sending is abstracted by
+	$\mu$threads that are configured through global structures provided by the hypervisor.
 
 	\begin{table}[t]
 		\caption{Cluster Identification.}
@@ -57,14 +58,16 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 		\label{tab.cluster-id}
 	\end{table}
 
-	Os clusters possuem dois identificadores, um físico e outro lógico.
-	Os identificadores físicos são os números em hardware que identica-los
-	durante o processo de roteamento dos dados através da \noc.
-	Os identificadores lógicos são números associados aos identificadores
-	lógicos para que seja possível identificar os clusters fora da \hal.
-	Os identificadores lógicos servem principalmente para desassociar
-	a identificação de um cluster da arquitetura no qual a \hal está implementada,
-	como ilustrado na Tabela X.
+	Clusters have two identifiers, one physical (physical ID) and the
+	other logical (logical ID).
+	The physical ID's are the numbers in hardware that identically them
+	during the process of routing the data through \noc.
+	The logical ID's are numbers associated with the physical ID's so
+	that it is possible to identify the clusters outside the \hal.
+	Logical ID's primarily serve to disassociate the cluster
+	identification from the architecture in which \hal is implemented.
+	Table \ref{tab.cluster-id} shows the physical and logical
+	identification performed for \mppa.
 
 	\begin{table}[]
 		\caption{Partitions of \noc resources by abstraction.}
@@ -78,17 +81,18 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 			\multicolumn{1}{|l|}{\sync}    & 48-71   & 3          & -       & -          \\ \hline
 		\end{tabular}
 
-		\label{tab.cluster-id}
+		\label{tab.noc-resources}
 	\end{table}
 
-	Para realizar a comunicação entre dois cluster é necessário saber
-	que o emissor conheça qual o recurso que o receptor vai utilizar.
-	Por este motivo, o intervalo de slot de recebimento da cnoc e dnoc
-	são repartidos por abstração, como pode ser visto na Tabela A.
-	Dentro de uma partição, um slot é associado a cada identificador lógico dos cluster.
-	Por outro lado, os emissores utilizam canais de envio que precisam
-	ser reservados durante toda a operação, para isso, a Tabela A também mostra
-	a partição dos canais para cada abstração.
+	To perform the communication between two clusters, it is necessary that the
+	sender knows which resource the receiver will use.
+	For this reason, the receive slot range of \cnoc and \dnoc are partitioned
+	by abstraction, as can be seen in Table \ref{tab.noc-resources}.
+	Within a partition, each slot is associated with a cluster's logical ID.
+	On the other hand, the transmitters use sending channels that need to
+	be reserved during the entire operation.
+	Thus, Table \ref{tab.noc-resources} also shows the partition of the
+	sending channels for each abstraction.
 
 	\subsection{Sync}
 
@@ -126,13 +130,14 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 \end{lstlisting}
 \end{figure}
 
-		A abstração \sync pode ser decomposta em dois conjuntos de funções, um para
-		os clusters que irão receber sinais e outro para os que irão enviar.
-		Cada conjunto aloca tipos diferentes de recursos.
-		Espeficicamente, o receptor deverá alocar um slot de recebimento da cnoc
-		e o emissor alocará um canal de emissão da cnoc.
-		Devido a isso, poderão ser criados 24 pontos de sincronização (\texttt{sync\_create()})
-		e aberto apenar 1 por (\texttt{sync\_open()}) cluster.
+		The \sync abstraction can be decomposed into two sets of functions,
+		one for the clusters that will receive signals and another for the
+		ones that will send.
+		Each set allocates different types of resources.
+		Accurately, the receiver must allocate a receive slot of the frame,
+		and the transmitter will allocate a transmitter channel of the frame.
+		Because of this, 24 synchronization points can be created (\texttt{sync\_create()}),
+		and only 1 can be opened (\texttt{sync\_open()}) per cluster.
 
 		As funções implementam dois tipos diferentes dependendo de quem
 		deve ser o mestre da operação de sincronização.
@@ -143,11 +148,20 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 		As subseções abaixo descreveram o comportamento e detalhes de implementação
 		de cada um dos tipos de sincronização.
 
+		Sync Functions implement two different types, depending on who cluster
+		should be the master of the synchronization operation.
+		Specifically, every synchronization operation is separated into a
+		master cluster and one or more slave clusters defined by the
+		\texttt{ONE\_TO\_ALL} and \texttt{ALL\_TO\_ONE} constants.
+		The master always takes the role "ONE" and the slaves the "ALL" paper.
+		The following subsections describe the behavior and implementation
+		details of each type of synchronization.
+
 			\subsubsection*{\texttt{ONE\_TO\_ALL} Synchronization Type}
 
 				Os clusters escravos envolvidos neste tipo de sincronização esperam
 				um sinal enviado do mestre.
-				Para isso, cada escravo executará a função \texttt{sync\_create()}
+				Para isso, cada escravo executará a função 
 				alocando o recurso associado ao identificador lógico do mestre.
 				Após alocar e configurar o recurso, o cluster pode continuar
 				executando sem se preocupar se o sinal foi recebido.
@@ -155,6 +169,17 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 				escutar a função \texttt{sync\_wait()}.
 				Ao receber o sinal, o sync autoreconfigurará o recurso e liberará o cluster,
 				caso ele esteja esperando.
+
+				The slave clusters involved in this type of synchronization expect
+				a signal sent from the master.
+				To do this, each slave will perform the function \texttt{sync\_create()}
+				by allocating the resource associated with the master's logical ID.
+				After allocating and configuring the resource, the cluster can
+				continue to run without worrying about whether the signal was received.
+				When the time comes to perform the synchronization, it is enough for
+				the slave to run the function.
+				Upon receiving the signal, the sync will auto reconfigure the resource
+				and free the cluster.
 
 				O mestre, por sua vez, deverá executar as funções complementares.
 				Isto é, primeiramente, o mestre alocará um recurso de envio
@@ -165,15 +190,25 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 				de sincronização, \texttt{sync\_unlink()} para o escravo e
 				\texttt{sync\_close()} para o mestre.
 
+				The cluster master, in turn, must perform the complementary functions.
+				That is, first, the master will allocate a sending resource by calling
+				the \texttt{sync\_open()} function.
+				After that, it should inform the set of clusters that will receive the
+				signal on its logical ID.
+				Finally, both can release sync resources by calling release functions,
+				\texttt{sync\_unlink()} for the slave and \texttt{sync\_close()} to
+				the master.
+
 			\subsubsection*{\texttt{ALL\_TO\_ONE} Synchronization Type}
 
-				Analogamente ao tipo anterior, apenas os papeis se invertem.
-				O mestre deverá executar as funções de criação, configuração dos
-				recursos e espera dos inúmeros sinais.
-				O recurso alocado pelo mestre deverá ser o recurso associado ao
-				seu próprio identificador lógico.
-				Por outro lado, os escravos executarão as funções de abertura
-				e envio de um sinal para o indentificador lógico do mestre.
+				Analogously to the previous type, the only changes are just on
+				the roles in which they are reversed.
+				The master must perform the functions of creation, configuration
+				of the resources, and waiting for the numerous signals.
+				The resource allocated by the master must be the resource
+				associated with its logical ID.
+				On the other hand, the slaves will perform the functions of
+				opening and sending a signal on the master's logical ID.
 
 	\subsection{Mailbox}
 
@@ -209,19 +244,17 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 \end{lstlisting}
 \end{figure}
 
-		A abstração Mailbox é mais complexa que a abstração anterior utilizando
-		tanto recursos da dnoc como da cnoc.
-		Ao executar a função \texttt{mailbox\_create()}, o receptor utilizará
-		apenas um slot de recebimento da dnoc alocando estaticamente uma
-		quantidade suficiente para receber 24 mensagens dentro do espaço
-		de memória do kernel.
-		As mensagens são compostas por cabeçalho identificando o emissor
-		e um corpo contendo a mensagem útil.
-		Ao consumir uma mensagem (\texttt{mailbox\_read()}), o receptor copiará
-		a mensagem para o buffer do usuário e enviará um sinal para o emissor
-		informando-o que ele poderá enviar outra mensagem.
-		Caso não exista nenhuma mensagem no buffer, o receptor é bloqueado
-		até receber uma mensagem.
+		The Mailbox abstraction is more complicated than the previous abstraction.
+		It uses both \dnoc and \cnoc resources. When executing the function \texttt{mailbox\_create()},
+		the receiver will only use one \dnoc receive slot and configures it
+		with a kernel memory space, sufficient to receive 24 messages.
+		The messages are composed of the header identifying the sender
+		and a body containing the useful message.
+		When consuming a message (\texttt{mailbox\_read()}), the receiver
+		will copy the message to the user's buffer and send a signal
+		to the sender informing him that it can send another message.
+		If there is no message in the buffer, the receiver is blocked
+		until a message is received.
 
 		Do outro lado, o emissor alocará um slot de recebimento de sinais
 		(\texttt{mailbox\_open()} antes de enviar de enviar sua primeira mensagem ao receptor.
@@ -235,10 +268,26 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 		buffer do kernel que contenha o cabeçalho.
 		Assim, o emissor nunca ficará bloqueado esperando a mensagem ser enviada.
 
-		Nesta configuração, a quantidade de criações (\texttt{mailbox\_create()}) de
-		mailbox dentro de um cluster é limitada a 1 por causa do canal de envio da cnoc.
-		Por outro lado, a quantidade de aberturas (\texttt{mailbox\_open()}) é 4 por
-		causa da limitação de canais de envio da dnoc disponíveis.
+		On the other side, the sender will allocate a receive signal slot (\texttt{mailbox\_open()})
+		before sending its first message to the receiver.
+		If the sender attempts to send a message before the receiver has consumed
+		the previous message, the sender will be blocked waiting for the sender's notification.
+		In this way, flow control is guaranteed, and the sender will not overwrite
+		messages unread by the receiver.
+		Sending the message will always be executed asynchronously
+		because it will always be necessary to copy the message to
+		a kernel buffer that contains the header.
+		Thus, the sender will never be blocked waiting for the message to be sent.
+
+		Nesta configuração, a quantidade de criações  de
+		mailbox dentro de um cluster é limitada a 1 por causa do canal de envio da \cnoc.
+		Por outro lado, a quantidade de aberturas  é 4 por
+		causa da limitação de canais de envio da \dnoc disponíveis.
+
+		In this configuration, the number of mailbox creations (\texttt{mailbox\_create()})
+		within a cluster is limited to 1 because of the \cnoc sending channel.
+		On the other hand, the maximum number of opens (\texttt{mailbox\_open()}) is
+		4 because of the limitation of the available \dnoc sending channels.
 
 	\subsection{Portal}
 
@@ -288,58 +337,60 @@ um sistema operacional mestre-escravo encima desse módulo de comunicação.
 \end{lstlisting}
 \end{figure}
 
-		A abstração \portal segue analogamente as ideias implementadas
-		no \mailbox com a diferença da opção de escrever de forma
-		síncrona ou assíncrona.
-		O total de operações de recebimento de dados (\texttt{portal\_create()})
-		é limitada a 2 por causa da quantidade de canais de envio de sinais disponiveis.
-		Por outro lado, é possível realizar até 4 operações de envio (\texttt{portal\_open()})
-		simultaneamente porque existem 4 canais de envio de dados disponíveis para o \portal.
+		The \portal abstraction analogously follows the ideas implemented
+		in the \mailbox with the difference of the option to write,
+		that can be synchronously or asynchronously.
+		The total number of receive data operations (\texttt{portal\_create()})
+		is limited to 2 because of the number of available signal sending channels.
+		On the other hand, up to 4 send operations (\texttt{portal\_open()})
+		can be performed simultaneously because there are 4 available send
+		channels for the \portal.
 
-		A função \texttt{portal\_open()} inicia a operação de envio de dados.
-		Nele será alocado um canal de envio de dados associado uma micro-thread.
-		Também será alocado um slot de recebimento de sinal para receber o sinal que
-		liberará o envio de dados ao receptor.
-		A operação de envio pode ser síncrona (\texttt{portal\_write()}) ou assíncrona (\texttt{portal\_awrite()}).
-		Em uma operação assíncrona, o cluster não poderá modificar ou liberar o buffer até
-		que a operação seja completada.
-		Para garantir que poderá utilizar o buffer o cluster chamar a função \texttt{portal\_wait()} .
+		Function \texttt{portal\_open()} starts the data send operation.
+		In it will be allocated a channel of data sending associated with
+		a $\mu$thread.
+		Also, a signal receiving slot will be allocated to receive the
+		signal that will release the sender to transfer data to the receiver.
+		In asynchronous send operation (\texttt{portal\_awrite()}), the cluster
+		cannot modify or release the buffer until the operation is completed.
+		To ensure that the buffer can use, the cluster must call function \texttt{portal\_wait()}.
 
-		Para receber dados de outro cluster, o receptor alocará um slot de recebimento da dnoc
-		e um canal de envio da cnoc através da função \texttt{portal\_create()}.
-		Após configurar os recursos (\texttt{portal\_read()}), o receptor poderá
-		notificar um emissor (\texttt{portal\_allow()}, habilitando-o a transferir dados.
-		Por este motivo, a operação de leitura é sempre realizada de forma assíncrona.
-		Após receber a quantidade de dados configurada, o receptor poderá utilizar o buffer de forma segura.
+		The receiver will allocate a receive slot of the \dnoc and a send
+		channel (\texttt{portal\_create()}) to receive data from another cluster.
+		After setting up the resources (\texttt{portal\_read()}), the receiver
+		can notify a sender (\texttt{portal\_allow()), enabling it to transfer data.
+		For this reason, the read operation is always performed asynchronously.
+		After receiving the set amount of data, the receiver can use the buffer securely.
 
 	\section{Communication Services}
 
-		Como descrito na Seção X, serão desenvolvidos três serviços de comunicação
-		para o Nanvix Microkernel, nomeado serviços sync, mailbox e portal.
-		Cada serviço será responsável por proteger, gerenciar, manipular e multiplexar
-		os recursos expostos pelo módulo de comunicação da HAL.
-		Esses serviços devem levar em consideração as restrições de memória
-		e o modelo mestre-escravo escolhido para o Microkernel.
+		As described in Section \ref{sec.communication-services}, three communication
+		services will be developed for the Nanvix Microkernel, named \sync, \mailbox,
+		and \portal services.
+		Each service will be responsible for protecting, managing, manipulating,
+		and multiplexing the resources exposed by the \hal communication module.
+		These services must take into account the memory constraints and the
+		master-slave model chosen for the Microkernel.
 
-		As operações de gerenciamento e manipulação são similares a todos
-		os serviços.
-		Elas serão providas por meio de interfaces que funcionaram
-		como wrappers para as funções das abstração da HAL.
-		Na implementação dessas interfaces existirá um mapeamento
-		entre identificadores de baixo nível, associados aos recursos
-		da HAL, e indentificadores de alto nível, associados as estruturas
-		de proteção dos recursos.
+		Management and manipulation operations are similar to all services.
+		They will be provided through interfaces that function as wrappers
+		for the \hal abstraction functions.
+		In the implementation of these interfaces, there will be a mapping
+		between low-level identifiers, associated with \hal resources,
+		and high-level identifiers, associated with resource protection structures.
 
-		As operações de proteção são em sua maioria similares.
-		Como por exemplo, uso de recursos não alocados, a sanitização das entradas,
-		a verificação de identificadores válidos, ponteiros não nulos,
-		verificação de operações conflitantes (leitura em recursos de escrita) etc.
-		Entre tanto, existem casos especiais nos serviços que devem ser cuidados.
-		Por exemplo, no serviço de sincronização, não será possível realizar
-		a sincronização consigo próprio, ou existir repetição de identificadores
-		no conjunto de clusters estipulado.
+		The protection operations are mostly similar.
+		For instance, the use of unallocated resources, sanitizing entries,
+		checking valid identifiers, non-null pointers, and checking
+		for conflicting operations (reading in write-only resources).
+		In the meantime, there are exceptional cases in some services
+		that must be taken.
+		For instance, in the \sync service, a cluster cannot synchronize
+		with itself, or there is a repetition of identifiers in the
+		stipulated set of clusters.
 
-		Por fim, ainda alguns aspectos serviços e da implementação ainda precisam ser
-		analizados e serão melhor detalhados em outra versão da dissertação.
-		Por exemplo, quais métodos de multiplexação dos recursos serão utilizados
-		e seus impactos nos serviços do Nanvix Microkernel.
+		Finally, some aspects of services and implementation still need
+		to be analyzed and will be better detailed in another version
+		of the dissertation.
+		For example, what resource multiplexing methods will be used
+		and their impacts on the Nanvix Microkernel services.
