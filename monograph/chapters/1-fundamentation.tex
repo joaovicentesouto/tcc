@@ -39,7 +39,7 @@
 		In the early days of electronic digital computing, John Von Neumann
 		proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
 		As illustrated in Figure \ref{fig.neumann}, this model describes a \cpu,
-		also called core, that loads instructions and data from a Memory Unit,
+		also called core, that loads instructions and data from a \mmu,
 		dealing with inputs and generating outputs from/to I/O Devices.
 		Modern processors still follow this model, but some components and
 		behaviors are specialized or replicated to increase performance.
@@ -51,7 +51,7 @@
 		For instance, when many threads of a process competing to read and write a global variable.
 		Moreover, some architectures integrate heterogeneous cores introducing portability
 		and programmability problems too.
-		So, low-level software, like \os kernels and runtimes, needs to handle those
+		So, low-level software, such as \os kernels and runtimes, needs to handle those
 		issues and provide management systems to user-level.
 
 		\subsubsection{Multiprocessor Hardware}
@@ -88,7 +88,6 @@
 			is added to each \cpu, as depicted in Figure \ref{fig:uma}(b).
 			The cache allowed readings to be resolved locally, reducing traffic
 			to the main memory.
-
 			However, many problems of inconsistency and ordering of operations
 			on memory arose with the advent of caches.
 			For instance, when a write operation dirties a memory address in
@@ -109,9 +108,9 @@
 
 			Nevertheless, the number of cores in \uma multiprocessors are limited
 			to a few dozens of \cpus.
-			Thus, to allow hundreds of cores to communicate, \numa machines provide
-			a single address space visible to all \cpus through an interconnection
-			network,  as illustrated in Figure \ref{fig.numa}.
+			Thus, to allow hundreds of cores to communicate, Figure \ref{fig.numa} illustrated
+			as that \numa machines provide a single address space visible to all \cpus
+			through an interconnection network.
 			Therefore, distributing a virtual memory space among local physics memories,
 			the access is guaranteed via load and store instructions.
 			Although the time to access to remote memory is slower than to local ones,
@@ -122,13 +121,13 @@
 				\centering
 				\caption{Flynn's taxonomy.}%
 
-				\subfloat[\sisd.]{{\includegraphics[width=.3\linewidth]{images/sisd.pdf} }}%
+				\subfloat[Single Instruction Single Data.]{{\includegraphics[width=.3\linewidth]{images/sisd.pdf} }}%
 				\qquad
-				\subfloat[\simd.]{{\includegraphics[width=.3\linewidth]{images/simd.pdf} }}%
+				\subfloat[Single Instruction Multiple Data.]{{\includegraphics[width=.3\linewidth]{images/simd.pdf} }}%
 
-				\subfloat[\misd.]{{\includegraphics[width=.3\linewidth]{images/misd.pdf} }}%
+				\subfloat[Multiple Instruction Single Data.]{{\includegraphics[width=.3\linewidth]{images/misd.pdf} }}%
 				\qquad
-				\subfloat[\mimd.]{{\includegraphics[width=.3\linewidth]{images/mimd.pdf} }}%
+				\subfloat[Multiple Instruction Multiple Data.]{{\includegraphics[width=.3\linewidth]{images/mimd.pdf} }}%
 
 				% \\ \vspace{0.3cm}
 				Source: Adapted from \cite{url:flynn}.
@@ -417,32 +416,31 @@
 				Although asynchronous calls provide better performance than
 				synchronous ones, they introduce some disadvantages where the sender/receiver
 				cannot use the message buffer before the operation is complete.
-
 				According to Tanenbaum~\cite{tanenbaum:4ed}, there are four ways to implement
 				a send primitive:
 				\begin{itemize}
-					\item \textbf{Blocking sending:} \cpu hibernates or schedules another
+					\item \textit{Blocking sending:} \cpu hibernates or schedules another
 						process, while the message is transmitted;
-					\item \textbf{Non-blocking sending with copying:} realizes an extra copy of
+					\item \textit{Non-blocking sending with copying:} realizes an extra copy of
 						the message to a kernel buffer, degrading performance;
-					\item \textbf{Non-blocking sending with interrupt:} notifies the \cpu
+					\item \textit{Non-blocking sending with interrupt:} notifies the \cpu
 						when the send finishes, where the buffer must remain untouchable,
 						difficulting the programmability;
-					\item \textbf{\cow:} management of buffers to make an extra copy only
+					\item \textit{\cow:} management of buffers to make an extra copy only
 						when needed, but can copy unnecessarily.
 				\end{itemize}
 
 				Analogously, there are other four forms to implement a receive primitive:
 				\begin{itemize}
-					\item \textbf{Blocking receive:} \cpu hibernates or schedules another
+					\item \textit{Blocking receive:} \cpu hibernates or schedules another
 						process until a message is received;
-					\item \textbf{Non-Blocking receive with messages pool:} \cpu creates
+					\item \textit{Non-Blocking receive with messages pool:} \cpu creates
 						a buffer to store incoming messages, then consumes from it when
 						there is some message available, requiring synchronization;
-					\item \textbf{Non-Blocking receive with Pop-up Threads:} creates a specific
+					\item \textit{Non-Blocking receive with Pop-up Threads:} creates a specific
 						thread upon receiving a message to perform the necessary operations,
 						but consumes resource for creating and destroying the thread;
-					\item \textbf{Non-Blocking receive with interrupt handlers:} the receiver
+					\item \textit{Non-Blocking receive with interrupt handlers:} the receiver
 						is interrupted to execute a handler when receiving a message, resulting
 						in a better performance than creating a thread but difficults
 						the programmability.
@@ -487,7 +485,6 @@
 	The hardware does not support cache coherence to improve energy consumption.
 	On the other hand, \ioclusters have only 4 \rmans with cache coherence support,
 	4 \noc interfaces, and 4~MB of local \sram added to 4~GB of \dram.
-
 	The address space on each cluster is private, forcing exchange messages
 	by one of two different interleaved 2-D Torus \nocs.
 	On the one hand, the \cnoc is exclusive to 64-bit control messages,
@@ -514,7 +511,7 @@
 	writing on \dma registers and performing syscalls to a hypervisor
 	that virtualizes the \mppa hardware.
 
-\section{Nanvix OS: An Operating System for Lightweight Manycores}
+\section{Nanvix: An Operating System for Lightweight Manycores}
 \label{sec.nanvix}
 
 	Current research efforts on Nanvix \os focus on the programmability and portability
@@ -533,7 +530,7 @@
 	regions and name resolution.
 	It exports both the client and server interfaces, both developed above
 	the \microkernel services.
-	On top of the \hal, The \microkernel follows the Master-Slave \o model
+	On top of the \hal, The \microkernel follows the Master-Slave \os model
 	to avoid the problem of the lack of coherence of many manycores.
 	It shall run in each cluster and provide bare bones system abstractions,
 	such as thread management, thread synchronization,

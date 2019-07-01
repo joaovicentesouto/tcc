@@ -16,7 +16,7 @@
 	to keep increasing the processing power of computer systems.
 
 % Improves architectural parts
-	Such researches have led to a wide diversity of trade-offs in modern architectures.
+	Such researches led to a wide diversity of trade-offs in modern architectures.
 	For instance, different types of instruction sets, instruction parallelism,
 	out-of-order processing techniques, detour prediction techniques, and various
 	memory hierarchies were some of the key techniques proposed to improve the
@@ -31,9 +31,8 @@
 	Notwithstanding, the line between \textit{multicores} and \manycores is very tenuous.
 	Some researchers argue that the in latter architectures, losing a core it will not
 	significantly impact the performance of the platform.
-	\todo{estranho... qual fonte da classificação?}{
-		A system is classified as \manycore when there is a need for distributed memory and on-chip networking
-	}.
+	A system is classified as \manycore when there is a need for distributed
+	memory and on-chip networking~\cite{freitas:thesis}.
 
 	\begin{figure}[t]
 		\centering
@@ -57,35 +56,33 @@
 	These processors own the following characteristics:
 
 	\begin{itemize}
-		\item They integrate thousands of low-power cores in a single die organized in clusters;
-		\item They are designed to cope with \mimd workloads;
-		\item They rely on a high-bandwidth \noc for fast and reliable message-passing communication;
-		\item They present constrained memory systems; and
-		\item They frequently feature a heterogeneous configuration.
+		\item Integrate thousands of low-power cores in a single die organized in clusters;
+		\item Are designed to cope with Multiple Instruction Multiple Data (MIMD) workloads;
+		\item Rely on a high-bandwidth \noc for fast and reliable message-passing communication;
+		\item Present constrained memory systems; and
+		\item Frequently feature a heterogeneous configuration.
 	\end{itemize}
 
 	Some industry-successful examples of \textit{lightweight} \manycores are
 	the \mppa~\cite{DeDinechin2013-1};
 	the \epiphany~\cite{olofsson2014}; and
 	the \taihulight~\cite{zheng2015}.
-
-% Motivation
 	Jointly with further performance scalability and energy efficiency, lightweight manycores brought
 	a new set of challenges in software development coming from their architectural particularities.
 	Precisely, these particularities introduce the following difficulties:
 	\begin{itemize}
-		\item \textbf{Hybrid programming model:} due to the parallel and distributed nature of
+		\item \textit{Hybrid programming model:} due to the parallel and distributed nature of
 			the architecture, engineers are frequently required to adopt a message-passing
 			programming model to deal with the presence of rich \nocs~\cite{kelly2013} that
 			interconnects clusters and a shared-memory model inside the cluster.
-		\item \textbf{Missing hardware support for cache coherency:} to reduce power consumption,
+		\item \textit{Missing hardware support for cache coherency:} to reduce power consumption,
 			theses processors do not feature cache coherency, which in turn forces programmers to
 			handle it explicitly in software level and frequently calls out for a redesign in their
 			applications~\cite{francesquini2015};
-		\item \textbf{Constrained memory system:} the frequent presence of multiple physical
+		\item \textit{Constrained memory system:} the frequent presence of multiple physical
 			address spaces and small local memories require data tiling and prefetching to be
 			handled by the software~\cite{Castro2016};
-		\item \textbf{Heterogeneous configuration:} the different programmable components on
+		\item \textit{Heterogeneous configuration:} the different programmable components on
 			\textit{lightweight} \manycores turns the actual deployment of applications in a
 			complex task~\cite{barbalace2015}.
 	\end{itemize}
@@ -108,7 +105,7 @@
 	We believe that \oses for the next-generation of \textit{lightweight} \manycores must be
 	redesigned from scratch to cope with their tight architectural constraints.
 	Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009}
-	is being proposed~\cite{penna2017-1,penna2017-2,penna2019}.
+	is under investigations~\cite{penna2017-1,penna2017-2,penna2019}.
 	The \nanvix \multikernel features a generic and flexible \hal for \textit{lightweight} \manycores that
 	addresses the key issues encountered in the development for these processors.
 	On top of the \nanvix \hal, we are simultaneously designing and implementing a \microkernel
@@ -127,7 +124,7 @@
 	This module will expose the essential abstractions that permit upper layers to create more
 	sophisticated communication services.
 	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix Microkernel.
-	This work will be done in collaboration with Pedro H. Penna, who is a Ph.D. student at the
+	This work will be done in collaboration with Pedro Henrique Penna, who is a Ph.D. student at the
 	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
 
 \subsection{Specific Goals}

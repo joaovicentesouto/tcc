@@ -1,8 +1,7 @@
 \chapter{Related Work}
 \label{ch.related-works}
 
-The proposal of this work is related to several other research works
-on \textit{lightweight} \manycores.
+The proposal of this work is related to several other research works.
 First, some research papers describing state-of-the-art \textit{lightweight} \manycores
 processors will be cited. Further, research on different \oses
 proposed for such processors will be highlighted.
@@ -59,18 +58,18 @@ proposed for such processors will be highlighted.
 	Besides, exists different designs for the shared instruction caches and
 	top-level interconnection such as bus or \noc.
 
-\section{Operating Systems for Lightweight Manycore Processors}
+\section{Operating Systems for Lightweight Manycores}
 \label{sec.works.os}
 
 	Baumann \etal~\cite{Baumann2009} proposed a new \os architecture for scalable multicore
 	systems, called \multikernel.
-	In their vision, the future of the \oses is on embracing the networked nature
+	In their perspective, the future of the \oses is on embracing the networked nature
 	of the machines based on distributed systems ideas.
 	Assuming the cores are independent nodes of a network, they build the tradicional
 	\os functionalities as fully-featured processes.
 	This processes communicate via message-passing and does not share the internal
 	structures of the \os.
-	The paper showed how expensive it is to maintain a state of the \os through
+	The work showed how expensive it is to maintain a state of the \os through
 	shared-memory instead of exchanging messages and the subsequent increase of
 	the complexity of cache-coherence protocols.
 	The \multikernel implementation, named Barelfish, follow three design principles.
@@ -118,22 +117,22 @@ proposed for such processors will be highlighted.
 \section{Discussion}
 
 	Section \ref{sec.works.manycores} exemplifies how \manycore architectures can be
-	grouped over a common logic vision.
+	grouped over a common logic perspective.
 	They all have one or more logical units distributed and incorporated on clusters.
 	The clusters, interconnected through a network, communicate by message-exchange.
 	However, due to the domain for which these processors were designed, they end up
-	presenting several discrepancies among them at the hardware level.
+	presenting several differences among them at the hardware level.
 
 	On the other hand, Section \ref{sec.works.os} presents studies of \oses that focus on
-	mitigating these discrepancies in order to provide greater programmability and portability.
+	mitigating these differences in order to provide greater programmability and portability.
 	Nevertheless, they span the entire development spectrum, delivering to end-users
 	high-level abstractions for increase productivity.
 	In this way, it is possible to notice the extensive rework that all of them had in
 	dealing with the closest layer of hardware that, as observed, can be abstracted to
-	a common vision.
+	a common perspective.
 
 	In this context, the proposed \hal deal with the lowest level possible with a focus
 	on the aspects that make it challenging to work with \manycores.
 	Thus, different \oses and services can be developed and disseminated by several
-	architectures that implement such the vision.
+	architectures that implement such the perspective.
 	So consequently, the applications that run on top of them.

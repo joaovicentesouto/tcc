@@ -1,7 +1,7 @@
 \chapter{Proposal}
 \label{ch.proposal}
 
-The proposal for this dissertation is made up of two main contributions.
+The proposal for this undergraduate dissertation is made up of two main contributions.
 The first contribution will be the port of the \textit{Inter-Cluster Communication Module},
 described in Section \ref{sec.inter-cluster-communication}, for the \mppa manycore processor.
 The second contribution will be the design and implementation of communication services
@@ -11,8 +11,8 @@ the communication module.
 \section{Inter-Cluster Communication Module}
 
 	Ideally, the \hal implementation should not use any other layer of software to
-	deal with the hardware. However, the implementation of \hal in \mppa utilizes
-	indispensable layers of the software stack made available by Kalray.
+	deal with the hardware. However, the implementation of \hal in \mppa uses the
+	software stack made available by Kalray.
 	In order to replace them, a great effort would be necessary, fleeing the proposal
 	of this work and the scope of Pedro H. Penna's Ph.D.
 	The main reasons for this decision were due to poor documentation and the
@@ -144,7 +144,7 @@ the communication module.
 		Specifically, every synchronization operation is separated into a
 		master cluster and one or more slave clusters defined by the
 		\texttt{ONE\_TO\_ALL} and \texttt{ALL\_TO\_ONE} constants.
-		The master always takes the role "ONE" and the slaves the "ALL" paper.
+		The master always takes the role "ONE" and the slaves the "ALL" role.
 		The following subsections describe the behavior and implementation
 		details of each type of synchronization.
 
@@ -215,10 +215,11 @@ the communication module.
 \end{lstlisting}
 \end{figure}
 
-		The Mailbox abstraction is more complicated than the previous abstraction.
-		It uses both \dnoc and \cnoc resources. When executing the function \texttt{mailbox\_create()},
-		the receiver will only use one \dnoc receive slot and configures it
-		with a kernel memory space, sufficient to receive 24 messages.
+		The Mailbox abstraction is more complex than the previous abstraction
+		because it uses both \dnoc and \cnoc resources.
+		When executing the function \texttt{mailbox\_create()}, the receiver
+		will only use one \dnoc receive slot and configures it with a kernel
+		memory space, sufficient to receive 24 messages.
 		The messages are composed of the header identifying the sender
 		and a body containing the useful message.
 		When consuming a message (\texttt{mailbox\_read()}), the receiver
@@ -237,7 +238,6 @@ the communication module.
 		because it will always be necessary to copy the message to
 		a kernel buffer that contains the header.
 		Thus, the sender will never be blocked waiting for the message to be sent.
-
 		In this configuration, the number of mailbox creations (\texttt{mailbox\_create()})
 		within a cluster is limited to 1 because of the \cnoc sending channel.
 		On the other hand, the maximum number of opens (\texttt{mailbox\_open()}) is
