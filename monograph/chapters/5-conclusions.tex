@@ -1,44 +1,20 @@
 \chapter{Schedule}
 \label{ch.schedule}
 
-\todo[inline]{Descrever textualmente as atividades}
+This chapter presents the schedule for the next activities
+planned for the development of the undergraduate dissertation.
 
-% \begin{tabularx}{\linewidth}{|X|*{6}{c|}}
-% 	\hline
-% 	\multicolumn{1}{|c|}{\multirow{2}{*}{Etapas}} & \multicolumn{6}{|c|}{Meses}\\ \cline{2-7}
-% 	& jan & fev & mar & abr & maio & jun \\ \hline
-
-% 	Estudar conceitos de Sistemas Operacionais
-% 	&  x  &  x  &     &     &     &     \\ \hline
-
-% 	Estudar Componentes e Serviços existentes
-% 	&     &  x  &  x  &     &     &     \\ \hline
-
-% 	Projetar os Componentes e Serviços para o microkernel
-% 	&     &     &  x  &  x  &  x  &  x  \\ \hline
-
-% 	Desenvolver implementação
-% 	&     &     &     &  x  &  x  &  x  \\ \hline
-
-% 	Testar e validar a implementação
-% 	&     &     &     &     &  x  &  x  \\ \hline
-
-% 	Documentar o aprendizado
-% 	&  x  &  x  &  x  &  x  &  x  &  x  \\ \hline
-
-% \end{tabularx}
-
-%%%% Modelo com barras %%%%
-
-Exemplo:
+\section{Activities}
+\label{sec:gantt}
 
 \begin{figure}[!h]
-	\begin{center}
+	\caption{Chart Gantt of the Schedule.}
 
+	\begin{center}
 		\begin{ganttchart}[
-			x unit=0.7cm,
-			y unit title=0.7cm,
-			y unit chart=0.7cm,
+			x unit=0.6cm,
+			y unit title=0.6cm,
+			y unit chart=0.6cm,
 			hgrid,
 			vgrid={{dotted, dotted, dotted, dotted, dotted, dotted}},
 			% title label font=\3scriptsize,
@@ -47,22 +23,50 @@ Exemplo:
 			bar/.append style={fill=gray!30,rounded corners=2pt},
 			bar label font=\scriptsize,
 			group label font=\scriptsize,
-		]{1}{6}
+		]{7}{12}
 
 		\gantttitle{\textbf{Meses}}{6} \\
 		\gantttitle{\textbf{2019}}{6} \\
-		\gantttitlelist{1,2,3,4,5,6}{1} \\
-		\ganttbar{1. Estudar conceitos de Sistemas Operacionais}{1}{2} \\
-		\ganttbar{2. Estudar Componentes e Serviços existentes}{2}{3} \\
-		\ganttbar{2. Projetar os Componentes e Serviços para o microkernel}{3}{6} \\
-		\ganttbar{3. Desenvolver implementação}{4}{6} \\
-		\ganttbar{3. Testar e validar a implementação}{5}{6} \\
-		\ganttbar{4. Documentar o aprendido}{1}{6} \\
+		\gantttitlelist{7,8,9,10,11,12}{1} \\
+		\ganttbar{1. Writing the Implementation and Experiments.}{7}{9} \\
+		\ganttbar{2. In-depth Writing of the Proposal.}{9}{10} \\
+		\ganttbar{3. Presentation of the Undergraduate Dissertation.}{11}{11} \\
+		\ganttbar{4. Review and Final Submission of the Undergraduate Dissertation.}{12}{12} \\
 
 		\end{ganttchart}
 	\end{center}
-	\label{tab:cronograma}
+
+	\label{chart.gantt}
 \end{figure}
+
+	Figure \ref{chart.gantt} shows the planned activities and their durations visually.
+	Beginning in July 2019, the final submission is planned for December 2019.
+	In detail, the activities are described below:
+
+	\begin{itemize}
+		\item \textbf{Writing the Implementation and Experiments:}
+			Currently, the inter-cluster communication module has the \sync abstraction
+			completed and part of the \mailbox abstraction.
+			Since the \portal abstraction uses the same low-level mechanisms of the others
+			abstractions, its implementation will be facilitated.
+			The communication services already have prototypes developed by the author
+			for a symmetric \os.
+			In this way, the prototypes will need to be modified to use the \hal and
+			modified for a master-slave model.
+			Finally, micro-benchmarks will be developed to perform an analysis of the
+			performance of the implemented services.
+		\item \textbf{In-depth Writing of the Proposal:}
+			During September and October, this activity will be committed to improving
+			this draft and detailing the project decisions chose and implementations produced.
+			We will also describe the experiments performed and discuss the results obtained.
+		\item \textbf{Presentation of the Undergraduate Dissertation:}
+			November will be dedicated to the development and preparation of the presentation
+			of the work and the results achieved.
+			So finally, to present the dissertation to the evaluators.
+		\item \textbf{Review and Final Submission of the Undergraduate Dissertation:}
+			Finally, December will be dedicated to the correction of the issues indicated
+			by the evaluators and finalized with the final submission of the dissertation.
+	\end{itemize}
 
  \chapter{Conclusions}
 \label{ch.conclusions}

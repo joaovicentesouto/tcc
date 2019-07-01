@@ -359,9 +359,9 @@
 
 				However, excessive packet copying can degrade the performance of the system.
 				In an ideal scenario, four end-to-end copies would be needed:
-				(i) from the sender's \ram to the interface memory; (ii) from the interface
+				(i) from the \ram of the sender to the interface memory; (ii) from the interface
 				to the network; (iii) from the network to the memory of the target interface, and,
-				finally,  (iv) to the recipient's \ram.
+				finally, (iv) to the \ram of the recipient.
 				Although, depending on how the \os provides access to communication
 				resources, that number can grow a lot.
 				For instance, mapping the interface into the kernel address space

@@ -98,7 +98,7 @@ the communication module.
 \begin{figure}[t]
 \begin{lstlisting}[
 	caption=HAL Sync Interface for Receiver Cluster,
-	label=cod:sync-receiver,
+	label=code:sync-receiver,
 ]
 	/* @brief Allocates and configures the receiving side of
 	 *        the synchronization point.                     */
@@ -115,7 +115,7 @@ the communication module.
 \begin{figure}[t]
 \begin{lstlisting}[
 	caption=HAL Sync Interface for Sender Cluster,
-	label=cod:sync-sender,
+	label=code:sync-sender,
 ]
 	/*  @brief Allocates and configures the sending side of
 	 *  the synchronization point.                          */
@@ -131,7 +131,8 @@ the communication module.
 
 		The \sync abstraction can be decomposed into two sets of functions,
 		one for the clusters that will receive signals and another for the
-		ones that will send.
+		ones that will send, As illustrated by Code \ref{code:sync-receiver}
+		and Code \ref{code:sync-sender}.
 		Each set allocates different types of resources.
 		Accurately, the receiver must allocate a receive slot of the frame,
 		and the transmitter will allocate a transmitter channel of the frame.
@@ -185,7 +186,7 @@ the communication module.
 \begin{figure}[t]
 \begin{lstlisting}[
 	caption=HAL Mailbox Interface for Receiver Cluster,
-	label=cod:mailbox-receiver,
+	label=code:mailbox-receiver,
 ]
 	/* @brief Creates a mailbox. */
 	int mailbox_create(int nodenum);
@@ -201,7 +202,7 @@ the communication module.
 \begin{figure}[t]
 \begin{lstlisting}[
 	caption=HAL Mailbox Interface for Sender Cluster,
-	label=cod:mailbox-sender,
+	label=code:mailbox-sender,
 ]
 	/* @brief Opens a mailbox. */
 	int mailbox_open(int nodenum);
@@ -226,7 +227,7 @@ the communication module.
 		If there is no message in the buffer, the receiver is blocked
 		until a message is received.
 
-		On the other side, the sender will allocate a receive signal slot (\texttt{mailbox\_open()})
+		On the other hand, the sender will allocate a receive signal slot (\texttt{mailbox\_open()})
 		before sending its first message to the receiver.
 		If the sender attempts to send a message before the receiver has consumed
 		the previous message, the sender will be blocked waiting for the sender's notification.
@@ -247,7 +248,7 @@ the communication module.
 \begin{figure}[t]
 \begin{lstlisting}[
 	caption=HAL Portal Interface for Receiver Cluster,
-	label=cod:portal-receiver,
+	label=code:portal-receiver,
 ]
 	/* @brief Creates a portal. */
 	int portal_create(int local);
@@ -270,7 +271,7 @@ the communication module.
 \begin{figure}[t]
 \begin{lstlisting}[
 	caption=HAL Portal Interface for Sender Cluster,
-	label=cod:portal-sender,
+	label=code:portal-sender,
 ]
 	/* @brief Opens a portal. */
 	int portal_open(int remote);
@@ -311,7 +312,7 @@ the communication module.
 		The receiver will allocate a receive slot of the \dnoc and a send
 		channel (\texttt{portal\_create()}) to receive data from another cluster.
 		After setting up the resources (\texttt{portal\_read()}), the receiver
-		can notify a sender (\texttt{portal\_allow()), enabling it to transfer data.
+		can notify a sender (\texttt{portal\_allow()}), enabling it to transfer data.
 		For this reason, the read operation is always performed asynchronously.
 		After receiving the set amount of data, the receiver can use the buffer securely.
 
