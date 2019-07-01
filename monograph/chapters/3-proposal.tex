@@ -18,7 +18,6 @@ the communication module.
 	The main reasons for this decision were due to poor documentation and the
 	inability to execute kernel mode code freely.
 
-
 	\begin{figure}[t]
 		\centering
 		\caption{Software Stack of the \mppa.}
@@ -49,10 +48,10 @@ the communication module.
 
 		\begin{tabular}{|l|l|l|}
 			\hline
-						& Physical ID & Logical ID \\ \hline
-			\ccluster   & 0-15        & 0-15       \\ \hline
-			\iocluster0 & 128-131     & 16-19      \\ \hline
-			\iocluster1 & 192-195     & 20-23      \\ \hline
+						         & \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
+			\textbf{\ccluster}   & 0-15                 & 0-15                \\ \hline
+			\textbf{\iocluster0} & 128-131              & 16-19               \\ \hline
+			\textbf{\iocluster1} & 192-195              & 20-23               \\ \hline
 		\end{tabular}
 
 		\label{tab.cluster-id}
@@ -74,11 +73,11 @@ the communication module.
 
 		\begin{tabular}{l|l|l|l|l|}
 			\cline{2-5}
-										   & \multicolumn{2}{c|}{\cnoc} & \multicolumn{2}{c|}{\dnoc} \\ \cline{2-5}
-										   & RX Slot & TX Channel & RX Slot & TX Channel \\ \hline
-			\multicolumn{1}{|l|}{\mailbox} & 0-23    & 0          & 0-23    & 1-3        \\ \hline
-			\multicolumn{1}{|l|}{\portal}  & 24-47   & 1-2        & 24-47   & 4-7        \\ \hline
-			\multicolumn{1}{|l|}{\sync}    & 48-71   & 3          & -       & -          \\ \hline
+										   & \multicolumn{2}{c|}{\textbf{\cnoc}} & \multicolumn{2}{c|}{\textbf{\dnoc}} \\ \cline{2-5}
+										            & \textbf{RX Slot} & \textbf{TX Channel} & \textbf{RX Slot} & \textbf{TX Channel} \\ \hline
+			\multicolumn{1}{|l|}{\textbf{\mailbox}} & 0-23             & 0                   & 0-23             & 1-3                 \\ \hline
+			\multicolumn{1}{|l|}{\textbf{\portal}}  & 24-47            & 1-2                 & 24-47            & 4-7                 \\ \hline
+			\multicolumn{1}{|l|}{\textbf{\sync}}    & 48-71            & 3                   & -                & -                   \\ \hline
 		\end{tabular}
 
 		\label{tab.noc-resources}
@@ -139,15 +138,6 @@ the communication module.
 		Because of this, 24 synchronization points can be created (\texttt{sync\_create()}),
 		and only 1 can be opened (\texttt{sync\_open()}) per cluster.
 
-		As funções implementam dois tipos diferentes dependendo de quem
-		deve ser o mestre da operação de sincronização.
-		Isto é, toda operação de sincronização é separada em um cluster mestre
-		e um ou mais clusters escravos, definidas pelas constantes
-		\texttt{ONE\_TO\_ALL} e \texttt{ALL\_TO\_ONE}.
-		O mestre sempre assume o papel "ONE" e os escravos o papel "ALL".
-		As subseções abaixo descreveram o comportamento e detalhes de implementação
-		de cada um dos tipos de sincronização.
-
 		Sync Functions implement two different types, depending on who cluster
 		should be the master of the synchronization operation.
 		Specifically, every synchronization operation is separated into a
@@ -159,17 +149,6 @@ the communication module.
 
 			\subsubsection*{\texttt{ONE\_TO\_ALL} Synchronization Type}
 
-				Os clusters escravos envolvidos neste tipo de sincronização esperam
-				um sinal enviado do mestre.
-				Para isso, cada escravo executará a função 
-				alocando o recurso associado ao identificador lógico do mestre.
-				Após alocar e configurar o recurso, o cluster pode continuar
-				executando sem se preocupar se o sinal foi recebido.
-				Quando chegar a hora de realizar a sincronização, basta o escravo
-				escutar a função \texttt{sync\_wait()}.
-				Ao receber o sinal, o sync autoreconfigurará o recurso e liberará o cluster,
-				caso ele esteja esperando.
-
 				The slave clusters involved in this type of synchronization expect
 				a signal sent from the master.
 				To do this, each slave will perform the function \texttt{sync\_create()}
@@ -180,15 +159,6 @@ the communication module.
 				the slave to run the function.
 				Upon receiving the signal, the sync will auto reconfigure the resource
 				and free the cluster.
-
-				O mestre, por sua vez, deverá executar as funções complementares.
-				Isto é, primeiramente, o mestre alocará um recurso de envio
-				ao chamar a função \texttt{sync\_open()}.
-				Após isso, ele deverá informar o conjunto de clusters que
-				receberão o sinal para o seu identificador lógico.
-				Por fim, ambos podem chamar as funções de liberação dos recursos
-				de sincronização, \texttt{sync\_unlink()} para o escravo e
-				\texttt{sync\_close()} para o mestre.
 
 				The cluster master, in turn, must perform the complementary functions.
 				That is, first, the master will allocate a sending resource by calling
@@ -256,18 +226,6 @@ the communication module.
 		If there is no message in the buffer, the receiver is blocked
 		until a message is received.
 
-		Do outro lado, o emissor alocará um slot de recebimento de sinais
-		(\texttt{mailbox\_open()} antes de enviar de enviar sua primeira mensagem ao receptor.
-		Se o emissor tentar enviar uma mensagem antes do receptor ter consumido
-		a mensagem anterior, o emissor ficará bloqueado esperando a notificação
-		do emissor.
-		Deste modo, o controle de fluxo é garantido e o emissor não
-		sobreescreverá mensagens não-lidas pelo receptor.
-		O envio da mensagem será sempre executado asincronamente porque
-		sempre será necessário realizar a cópia da mensagem para um
-		buffer do kernel que contenha o cabeçalho.
-		Assim, o emissor nunca ficará bloqueado esperando a mensagem ser enviada.
-
 		On the other side, the sender will allocate a receive signal slot (\texttt{mailbox\_open()})
 		before sending its first message to the receiver.
 		If the sender attempts to send a message before the receiver has consumed
@@ -278,11 +236,6 @@ the communication module.
 		because it will always be necessary to copy the message to
 		a kernel buffer that contains the header.
 		Thus, the sender will never be blocked waiting for the message to be sent.
-
-		Nesta configuração, a quantidade de criações  de
-		mailbox dentro de um cluster é limitada a 1 por causa do canal de envio da \cnoc.
-		Por outro lado, a quantidade de aberturas  é 4 por
-		causa da limitação de canais de envio da \dnoc disponíveis.
 
 		In this configuration, the number of mailbox creations (\texttt{mailbox\_create()})
 		within a cluster is limited to 1 because of the \cnoc sending channel.
