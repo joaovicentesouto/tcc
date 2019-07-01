@@ -42,7 +42,7 @@
 % \usepackage{colortbl}
 \usepackage{subfig} % Usado para separar figuras em sub-figuras (ambiente subfloat) 
 % \usepackage{scalefnt}
-% \usepackage{multirow}
+\usepackage{multirow}
 % \usepackage{iflang} %there is a warning which will be corrected in future texmf dist.
 % \usepackage[lined,boxed,ruled,commentsnumbered]{algorithm2e}
 % \usepackage{soul}
@@ -50,7 +50,40 @@
 % \usepackage{xspace} %In init/math
 
 \usepackage{todonotes}
+\usepackage{tabularx}
 \usepackage{pgfgantt}
+
+% Code Snippets
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Código}
+\lstset{
+    basicstyle=\scriptsize\ttfamily,
+	numbers=left,
+	stepnumber=1,
+	numbersep=-0.5em,
+	keywordstyle=\color{blue},
+	commentstyle=\color{black},
+	stringstyle=\color{black},
+    numberstyle=\scriptsize\ttfamily\color{black},
+	frame=single,
+	tabsize=2,
+	float,
+	language=C++,
+	captionpos=t,
+	showstringspaces=false,
+	backgroundcolor=\color{white},
+	morekeywords = {Array2D, __parallel__, Mask2D, Stencil2D},
+	emph={
+		pragma,
+		omp,
+		parallel,
+		reduction,
+		schedule,
+		private,
+		shared
+	},
+	emphstyle={\color{blue}}%
+}
 
 % =====================================================
 % Local/data
