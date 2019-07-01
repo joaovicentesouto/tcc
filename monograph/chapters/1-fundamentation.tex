@@ -687,13 +687,13 @@
 		and applications.
 		Thus, the module is flexible enough not to impact the performance
 		of the upper layers negatively.
-		For this, it does not provide rich management of the exposed resources.
+		For this, it does not provide rich management of the exposed abstractions.
 
 		In this scenario, the communication services of Nanvix Microkernel seek
 		to provide communication between the distinct cluster processes, managing
 		the resources of the communication module of \hal.
 		Due to the Master-Slave model, the responsibility of protecting,
-		manipulating, and configuring HAL features is of the master core.
+		manipulating, and configuring \hal features is of the master core.
 		The slave core will request operations through a meta-interface,
 		passing the necessary information to the master.
 
@@ -701,9 +701,9 @@
 		the construction of more complex services, the Microkernel services
 		were responsible for the management and multiplexing of the finite
 		resources for the many cores of a cluster.
-		In total, we will design three services, each associated with an
-		abstraction of the communication module, analogously named \sync,
-		\mailbox, and \portal services.
+		In total, there are three communication services in the Nanvix Microkernel,
+		each associated with an abstraction of the communication module,
+		analogously named \sync, \mailbox, and \portal services.
 
 		\todo[inline]{
 			Precisa deixar mais explicito que os serviços exportam as mesmas
