@@ -4,26 +4,26 @@ Em conjunto com a maior escalabilidade de desempenho e eficiência energética,
 os \textit{lightweight manycores} trouxeram um novo conjunto de desafios no
 desenvolvimento de software, provenientes de suas particularidades arquitetônicas.
 Nesse contexto, os sistemas operacionais são essenciais porque permitem abstrair
-as características do hardware sob uma perspectiva simplificada e produtiva.
-Assim, os sistemas operacionais tornam o desenvolvimento de aplicativos
-menos dispendioso e mais eficiente.
+as características do hardware sob uma perspectiva simplificada e eficaz.
+Assim, os sistemas operacionais tornam o desenvolvimento de aplicações
+menos oneroso e mais eficiente.
 No entanto, parte dos desafios encontrados em \textit{lightweight manycores}
-deriva dos runtimes existentes e dos sistemas operacionais que não lidam
-completamente com as complexidades existentes.
+deriva dos runtimes e dos sistemas operacionais existentes que não lidam
+completamente com as complexidades desses processadores.
 Assim, acreditamos que os sistemas operacionais para a próxima geração de
 \textit{lightweight manycores} devem ser reprojetados do zero para lidar
 com suas severas restrições arquitetônicas.
 Em particular, devido à natureza distribuída dos \textit{manycores}, as
 abstrações de comunicação desempenham um papel crucial na escalabilidade
-e desempenho desses processadores.
+e desempenho das aplicações.
 Neste cenário, o objetivo deste trabalho é desenvolver um módulo de comunicação
 entre clusters para o processador \textit{manycore} emergente MPPA-256.
-Este módulo faz parte de um HAL genérico e flexível para \textit{lightweight manycores}
-que lida com os principais problemas encontrados no projeto de um sistema operacional
-para esses processadores.
+Este módulo faz parte de um Camada de Abstração de Hardwarre genérico e
+flexível para \textit{lightweight manycores} que lida com os principais
+problemas encontrados no projeto de um sistema operacional para esses processadores.
 Encima desse módulo, serviços de comunicação também serão propostos para
 um sistema operacional baseado no modelo \textit{microkernel}, que busca
-fornecer um esqueleto básico para as abstrações do sistema.
+fornecer um esqueleto básico para as abstrações de sistema.
 Essas contribuições estão inseridas em um contexto de pesquisa mais amplo
 que procura investigar um sistema operacional distribuído completo baseado
 em uma abordagem multikernel para esses processadores.

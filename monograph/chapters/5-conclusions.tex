@@ -71,48 +71,48 @@ planned for the development of the undergraduate dissertation.
  \chapter{Conclusions}
 \label{ch.conclusions}
 
-Iniciamente, este trabalho apresentou um contexto histórico
-dos processadores multicores até os tempos atuais.
-Ao demonstrar a relação entre o aumento de núcleos e o consumo
-de energia, foi discutido como a academia e a industria
-começaram a desenvolver alternativas para amenizar as
-barreiras tecnológicas que surgiram.
-Contudo, mesmo os novos processadores que surgiram
-se destacarem por causa do seu desempenho e consumo energético,
-eles pecam em programabilidade e portabilidade proveniente
-das suas características arquiteturais, tais como, modelo de
-programação híbrido, subsistemas de memória restritivos,
-falta de coerência de cache e configurações heterogênicas.
-Parte das dificuldades deriva da incompletudo dos sistemas operacionais
-e runtimes existentes em lidar com as severas restrições arquitetônicas.
+Initially, this work presented a historical context of multicore
+processors to the nowadays.
+By demonstrating the relationship between the growth of the number
+of core and energy consumption, it was discussed how academia and
+industry began to develop alternatives to alleviate the technological
+barriers that have emerged.
+However, even new processors that emerge and stand out because of
+their performance and power consumption,
+they sin in programmability and portability because of their architectural
+features, such as hybrid programming model, restrictive memory subsystems,
+lack of cache coherence, and heterogeneous configurations.
+Part of the difficulty stems from the incompleteness of existing \oses and
+runtimes in dealing with severe architectural constraints.
 
-Neste trabalho será desenvolvido um módulo de comunicação entre cluster
-projetado em torno dos principais pontos no desenvolvimento de um
-sistema operacional.
-Como base, foi discutido aspectos de hardware e softwares
-de arquiteturas paralelas e distribuidas.
-Foram apresentadas modelos distintos de abordagens de sistemas operacionais
-que podem a vir utilizar o módulo de comunicação.
-Deste modo, para fornecer o esqueleto básico para tais sistemas operacionais,
-três abstrações de comunicação foram propostas para a HAL com a preocupação
-de prover qualidade de serviço.
-Entre elas estão a abstração sync para criar barreiras distibuidas.
-A abstração mailbox fornece a troca de mensagens pequenas com controle 
-de fluxo.
-E por fim, a abstração portal possibilita a troca de quantidade arbitrárias
-de dados entre dois clusters.
+In this work, we present a communication module between the cluster
+designed around the main points in the development of an \os for \textit{lightweight manycores}.
+As a basis, we discussed hardware and software aspects of parallel
+and distributed architectures.
+Different models of \os approaches have been presented that can
+use the communication module.
+Thus, to provide the basic framework for such \oses, three
+communication abstractions have been proposed for \hal with the
+concern of providing quality of service.
+Among them is the \sync abstraction to create distributed barriers.
+The \mailbox abstraction provides the exchange of small messages
+with flow control.
+So finally, the \portal abstraction allows the exchange of
+arbitrary amounts of data between two clusters.
 
-Outra contribuição deste trabalho apresentada foram os 
-serviços de comunicação para um sistema operacional baseado na abordagem microkernel.
-Esses serviços providenciam a multiplexação dos recursos expostos pela HAL
-e a verificação dos parâmetros necessários para cada abstração.
-De forma geral, esses serviços exportam uma forma segura ao usuário
-se beneficiando da não concorrência das estruturas internas do SO 
-por causa da separação de responsabilidades de mestre e escravo.
-Por fim, a proposta detalhou, de forma geral, vários aspectos
-das implementações.
-Devido ao fato dos serviços dependerem do módulo de comunicação da HAL
-para serem desenvolvido, os tópicos associados ao módulo acabaram sendo
-mais detalhados e melhor explorados.
-Entretanto, a próxima versão da dissertação especificará com maior clareza
-e objetividade ambas as contribuições deste trabalho.
+Another contribution of this work was the communication services
+for an operating system based on the microkernel approach.
+These services provide for the multiplexing of the resources
+exposed by \hal and the verification of the parameters required
+for each abstraction.
+In general, these services securely export the communication
+abstractions to the user, benefiting from the non-competition
+of \os internal structures because of the separation of master
+and slave responsibilities.
+Lastly, the proposal detailed, in general, several aspects of
+the implementations.
+Because the communication services depend on the \hal communication
+module to be developed, the topics associated with
+the module have become more detailed and better explored.
+However, the next version of the undergraduate dissertation
+will clearly and objectively specify both contributions of this work.
