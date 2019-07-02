@@ -85,15 +85,15 @@ lack of cache coherence, and heterogeneous configurations.
 Part of the difficulty stems from the incompleteness of existing \oses and
 runtimes in dealing with severe architectural constraints.
 
-In this work, we present a communication module between the cluster
+In this work, we present a inter-cluster communication module
 designed around the main points in the development of an \os for \textit{lightweight manycores}.
 As a basis, we discussed hardware and software aspects of parallel
 and distributed architectures.
 Different models of \os approaches have been presented that can
 use the communication module.
-Thus, to provide the basic framework for such \oses, three
+Thus, to provide the basic functionalities for such \oses, three
 communication abstractions have been proposed for \hal with the
-concern of providing quality of service.
+concern of providing \qos.
 Among them is the \sync abstraction to create distributed barriers.
 The \mailbox abstraction provides the exchange of small messages
 with flow control.

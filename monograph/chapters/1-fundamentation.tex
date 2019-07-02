@@ -181,9 +181,9 @@
 				\centering
 				\caption{Replicated \os Model.}
 
-				\includegraphics[width=.7\textwidth]{images/replicated-os.pdf}
+				\includegraphics[width=.6\textwidth]{images/replicated-os.pdf}
 
-				% \\ \vspace{0.3cm}
+				\\ \vspace{0.2cm}
 				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig.replicated-os}
@@ -211,9 +211,9 @@
 				\centering
 				\caption{Master-Slave \os Model.}
 
-				\includegraphics[width=.7\textwidth]{images/master-slave-os.pdf}
+				\includegraphics[width=.6\textwidth]{images/master-slave-os.pdf}
 
-				% \\ \vspace{0.3cm}
+				\\ \vspace{0.2cm}
 				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig.master-slave-os}
@@ -237,9 +237,9 @@
 				\centering
 				\caption{Symmetric \os Model.}
 
-				\includegraphics[width=.7\textwidth]{images/symmetric-os.pdf}
+				\includegraphics[width=.6\textwidth]{images/symmetric-os.pdf}
 
-				% \\ \vspace{0.3cm}
+				\\ \vspace{0.2cm}
 				Source: Adapted from \cite{tanenbaum:4ed}.
 
 				\label{fig.smp-os}
@@ -341,7 +341,7 @@
 
 					\includegraphics[width=.9\textwidth]{images/multicomputer.pdf}
 
-					% \\ \vspace{0.3cm}
+					\\ \vspace{0.2cm}
 					Source: Adapted from \cite{tanenbaum:4ed}.
 
 					\label{fig.multicomputer}
@@ -648,19 +648,15 @@
 			\label{sec.mailbox-abs}
 
 				\begin{figure}[t]
-					\centering
-					\caption{Mailbox Abstraction Concept.}
+					\centering%
+					\caption{Mailbox Abstraction Concept.}%
 
-					\subfloat[Conceptual Overview.]{
-						{\includegraphics[width=.6\linewidth]{images/mailbox-logical.pdf} }
-					}%
+					\subfloat[Conceptual Overview.]{{\includegraphics[width=.6\linewidth]{images/mailbox-logical.pdf} }}%
 
-					\subfloat[Flow of execution: Slave sends a message, Master reads and notifies the sender.]{
-						{\includegraphics[width=.8\linewidth]{images/mailbox-flow.pdf} }
-					}%
+					\subfloat[Flow of execution: Slave sends a message, Master reads and notifies the sender.]{{\includegraphics[width=.8\linewidth]{images/mailbox-flow.pdf} }}%
 
-					Source: Developed by the Author.
-					\label{fig.conpt_mailbox}
+					Source: Developed by the Author.%
+					\label{fig.conpt_mailbox}%
 				\end{figure}
 
 				The \textit{Mailbox Abstraction} allows clusters to exchange fixed-size
@@ -678,13 +674,13 @@
 			\label{sec.portal-abs}
 
 				\begin{figure}[t]
-					\centering
-					\caption{Portal Abstraction Concept: Node 1 create a portal and notify Node 2 to transfer the data.}
+					\centering%
+					\caption{Portal Abstraction Concept: Node 1 create a portal and notify Node 2 to transfer the data.}%
 
 					\includegraphics[width=.7\textwidth]{images/portal.pdf}%
 
-					Source: Developed by the Author.
-					\label{fig.conpt_portal}
+					Source: Developed by the Author.%
+					\label{fig.conpt_portal}%
 				\end{figure}
 
 				Lastly, the \textit{Portal Abstraction} enables two clusters to exchange arbitrary
