@@ -71,4 +71,48 @@ planned for the development of the undergraduate dissertation.
  \chapter{Conclusions}
 \label{ch.conclusions}
 
-\todo[inline]{4 ou 5 parágrafos para sumarizar o que foi apresentado.}
+Iniciamente, este trabalho apresentou um contexto histórico
+dos processadores multicores até os tempos atuais.
+Ao demonstrar a relação entre o aumento de núcleos e o consumo
+de energia, foi discutido como a academia e a industria
+começaram a desenvolver alternativas para amenizar as
+barreiras tecnológicas que surgiram.
+Contudo, mesmo os novos processadores que surgiram
+se destacarem por causa do seu desempenho e consumo energético,
+eles pecam em programabilidade e portabilidade proveniente
+das suas características arquiteturais, tais como, modelo de
+programação híbrido, subsistemas de memória restritivos,
+falta de coerência de cache e configurações heterogênicas.
+Parte das dificuldades deriva da incompletudo dos sistemas operacionais
+e runtimes existentes em lidar com as severas restrições arquitetônicas.
+
+Neste trabalho será desenvolvido um módulo de comunicação entre cluster
+projetado em torno dos principais pontos no desenvolvimento de um
+sistema operacional.
+Como base, foi discutido aspectos de hardware e softwares
+de arquiteturas paralelas e distribuidas.
+Foram apresentadas modelos distintos de abordagens de sistemas operacionais
+que podem a vir utilizar o módulo de comunicação.
+Deste modo, para fornecer o esqueleto básico para tais sistemas operacionais,
+três abstrações de comunicação foram propostas para a HAL com a preocupação
+de prover qualidade de serviço.
+Entre elas estão a abstração sync para criar barreiras distibuidas.
+A abstração mailbox fornece a troca de mensagens pequenas com controle 
+de fluxo.
+E por fim, a abstração portal possibilita a troca de quantidade arbitrárias
+de dados entre dois clusters.
+
+Outra contribuição deste trabalho apresentada foram os 
+serviços de comunicação para um sistema operacional baseado na abordagem microkernel.
+Esses serviços providenciam a multiplexação dos recursos expostos pela HAL
+e a verificação dos parâmetros necessários para cada abstração.
+De forma geral, esses serviços exportam uma forma segura ao usuário
+se beneficiando da não concorrência das estruturas internas do SO 
+por causa da separação de responsabilidades de mestre e escravo.
+Por fim, a proposta detalhou, de forma geral, vários aspectos
+das implementações.
+Devido ao fato dos serviços dependerem do módulo de comunicação da HAL
+para serem desenvolvido, os tópicos associados ao módulo acabaram sendo
+mais detalhados e melhor explorados.
+Entretanto, a próxima versão da dissertação especificará com maior clareza
+e objetividade ambas as contribuições deste trabalho.

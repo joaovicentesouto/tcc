@@ -407,11 +407,11 @@
 					\label{fig.calls-types}
 				\end{figure}
 
-				There are two approaches to implement these primitives, either
-				through blocking or non-blocking calls, as illustrated in Figure \ref{fig.calls-types}.
-				Blocking calls, called synchronous calls, block the requesting \cpu
+				Figure \ref{fig.calls-types} illustrates the two approaches to implement
+				these primitives, either through blocking or non-blocking calls.
+				Blocking calls, called \textit{synchronous calls}, block the requesting \cpu
 				until complete the procedure.
-				Non-blocking calls, called asynchronous calls, return control to the
+				Non-blocking calls, called \textit{asynchronous calls}, return control to the
 				\cpu while the procedure is still in progress.
 				Although asynchronous calls provide better performance than
 				synchronous ones, they introduce some disadvantages where the sender/receiver
@@ -593,7 +593,7 @@
 		\label{sec.inter-cluster-communication}
 
 			The following sections conceptually present the three abstractions
-			that will be proposed for \hal and implemented over \mppa.
+			exported by \hal and which will be implemented on the \mppa.
 			They are the \sync, \mailbox, and \portal abstraction.
 			The purpose of developing more specific abstractions than
 			send and receive primitives, described in Section \ref{sec.multicomputers-user-sw},
@@ -605,8 +605,11 @@
 
 			A related point to consider is that mechanisms described below refer
 			to interactions between distinct clusters only.
-			The implementation can follow synchronously or asynchronously models,
-			as described in Section \ref{sec.multicomputers}, depending only on hardware support.
+			As described in Section \ref{}, these system abstractions can use the
+			communication primitives, \ie send and receive primitives, to export
+			more elaborate services.
+			The behavior expected can be simulated both through synchronous calls
+			and asynchronous calls, depending only on hardware support.
 			In the same way, it is worth be noted that the small messaging exchange
 			is decoupled from abstraction to intense data transfer.
 			The motivation for this, as other details, is to exhibit better control
@@ -619,15 +622,20 @@
 				\begin{figure}[t]
 					\centering
 					\caption{Synchronization Abstraction Concept.}
-					\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
+
+					\subfloat[N Slaves notify the Master.]{{\includegraphics[width=.8\linewidth]{images/sync-create.pdf} }}%
+
+					\subfloat[The Master notify N Slaves.]{{\includegraphics[width=.8\linewidth]{images/sync-open.pdf} }}%
+
 					Source: Developed by the Author.
 					\label{fig.conpt_sync}
 				\end{figure}
 
 				The \textit{Synchronization Abstraction}, called \sync, proves bare bones
 				for cluster synchronization.
-				It enables a set of clusters to wait for a notification coming from a
-				specific cluster.
+				From this, it is possible to create distributed barriers.
+				For instance, a set of clusters can wait for a notification coming
+				from a specific cluster.
 				The behavior is analogous to the \posix signal abstraction, but the \sync
 				provides only the case of notification.
 				Specifically, as can be seen in Figure \ref{fig.conpt_sync}, the
@@ -640,7 +648,15 @@
 				\begin{figure}[t]
 					\centering
 					\caption{Mailbox Abstraction Concept.}
-					\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
+
+					\subfloat[Conceptual Overview.]{
+						{\includegraphics[width=.6\linewidth]{images/mailbox-logical.pdf} }
+					}%
+
+					\subfloat[Flow of execution: Slave sends a message, Master reads and notifies the sender.]{
+						{\includegraphics[width=.8\linewidth]{images/mailbox-flow.pdf} }
+					}%
+
 					Source: Developed by the Author.
 					\label{fig.conpt_mailbox}
 				\end{figure}
@@ -661,8 +677,10 @@
 
 				\begin{figure}[t]
 					\centering
-					\caption{Portal Abstraction Concept.}
-					\includegraphics[width=.7\textwidth]{images/conceptual-sync.png}
+					\caption{Portal Abstraction: Node 1 create a portal and notify Node 2 to transfer the data.}
+
+					\includegraphics[width=.7\textwidth]{images/portal.pdf}%
+
 					Source: Developed by the Author.
 					\label{fig.conpt_portal}
 				\end{figure}
@@ -679,19 +697,21 @@
 	\label{sec.communication-services}
 	
 		The inter-cluster communication module, described in Section \ref{sec.inter-cluster-communication},
-		is designed to export a standard and straightforward vision of
-		the communication means to different lightweight manycores.
-		This vision can be used by various types of operating systems
+		is designed to export a standard and straightforward communication
+		primitives to different lightweight manycores.
+		These primitives can be used by various types of operating systems
 		and applications.
 		Thus, the module is flexible enough not to impact the performance
 		of the upper layers negatively.
 		For this, it does not provide rich management of the exposed abstractions.
 
 		In this scenario, the communication services of Nanvix Microkernel seek
-		to provide communication between the distinct cluster processes, managing
-		the resources of the communication module of \hal.
+		to provide \ipc between distinct clusters.
+		Specifically, these services perform the multiplexing of the hardware
+		resources and the verification of the parameters that will be passed
+		on the communication primitives.
 		Due to the Master-Slave model, the responsibility of protecting,
-		manipulating, and configuring \hal features is of the master core.
+		manipulating, and configuring \hal resources is of the master core.
 		The slave core will request operations through a meta-interface,
 		passing the necessary information to the master.
 
@@ -702,8 +722,3 @@
 		In total, there are three communication services in the Nanvix Microkernel,
 		each associated with an abstraction of the communication module,
 		analogously named \sync, \mailbox, and \portal services.
-
-		\todo[inline]{
-			Precisa deixar mais explicito que os serviços exportam as mesmas
-			abstrações mas proveem controle e gerêncimanto?
-		}
