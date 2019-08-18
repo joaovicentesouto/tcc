@@ -1,0 +1,98 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathptmx}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{pgfgantt}
+\usepackage{graphics}
+\usepackage{graphicx}
+
+\begin{document}
+
+	\pagestyle{empty}
+
+	\begin{centering}
+
+		\textbf{DEPARTAMENTO DE INFORMÁTICA E ESTATÍSTICA -- CTC -- UFSC}
+
+		\textbf{RATIFICAÇÃO DE PLANO DE TRABALHO DO SEMESTRE \\ PARA DESENVOLVIMENTO DE TCC}
+
+	\end{centering}
+
+	\vspace{1em}
+	\setlength\extrarowheight{5pt}
+	\begin{tabular}{l l l}
+		\textbf{Disciplina:} & ( ) TCC 1          & ( \textbf{X} ) TCC 2 \\
+		\textbf{Curso:}      & ( \textbf{X} ) CCO & ( ) SIN              \\
+		\textbf{Autor:}      & João Vicente Souto &                      \\
+	\end{tabular}
+	\vspace{0.5cm}
+	\\
+	\begin{tabular}{l l}
+	\vspace{0.5cm}
+		\textbf{Título:} & \makecell{An Inter-Cluster Communication Module of a\\Hardware Abstraction Layer for Lightweight Manycore Processors}\\
+		\textbf{Professor responsável:} & Prof. Dr. Márcio Bastos Castro\\
+	\end{tabular}
+
+
+	\vspace{1em}
+	{\large \textbf{Objetivos}}
+	\\
+
+	\textbf{Objetivo geral:}
+	O objetivo do TCC é pesquisar e desenvolver um Módulo de Comunicação entre \textit{Clusters}
+	para uma Camada de Abstração de Hardware (HAL) que está sendo projetada para processadores \textit{manycore}.
+	Juntamente, serão desenvolvidos Serviços de Comunicação para um Sistema Operacional
+	baseado no modelo \textit{Microkernel} que utilizará a infraestrutura exportada pela HAL.
+	O Módulo e os Serviços buscarão fornecer a melhor relação entre desempenho, escalabilidade e 
+	portabilidade, reduzindo assim as dificuldades encontradas no desenvolvimento
+	de aplicações para essa classe de processadores.
+
+	\vspace{1em}
+	{\large \textbf{Cronograma}}
+
+	\begin{figure}[!h]
+		\begin{center}
+
+			\begin{ganttchart}[
+					x unit=1.6cm,
+					y unit title=1cm,
+					y unit chart=1cm,
+					hgrid,
+					vgrid={{dotted, dotted, dotted, dotted, dotted, dotted}},
+					% title label font=\3scriptsize,
+					title/.append style={fill=gray!30},
+					title height=1,
+					bar/.append style={fill=gray!30,rounded corners=2pt},
+					bar label font=\scriptsize,
+					group label font=\scriptsize,
+				]{8}{12}
+				\gantttitle{\textbf{Meses}}{5}                                      \\
+				\gantttitle{\textbf{2018}}{5}                                       \\
+				\gantttitlelist{8,9,10,11,12}{1}                                    \\
+				\ganttbar{1. Escrita aprofundada da implementação}{8}{8}            \\
+				\ganttbar{1. Escrita aprofundada da proposta e experimentos}{9}{10} \\
+				\ganttbar{3. Apresentação do TCC}{11}{11}                           \\
+				\ganttbar{4. Revisão e entrega final do TCC}{12}{12}                \\
+			\end{ganttchart}
+
+		\end{center}
+		\label{tab:cronograma}
+	\end{figure}
+
+	\begin{centering}
+		\fbox{\begin{minipage}[c][6em][c]{0.7\textwidth}
+			{\center \textbf{Preenchimento pelo Professor responsável pelo TCC}\\[1em]}
+
+			\qquad $(\quad)$ \ Ciente e de acordo.
+
+			\qquad Data: \_\_ / \_\_ / \_\_
+		\end{minipage}}
+	\end{centering}
+
+\end{document}
