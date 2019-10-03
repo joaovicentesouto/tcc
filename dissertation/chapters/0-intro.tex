@@ -37,17 +37,14 @@
 	\begin{figure}[t]
 		\centering
 		\caption{42 years of Multiprocessor Trend Data.}
-		
-		\includegraphics[width=.85\textwidth]{images/42-years-processor-trend.pdf}
-
-		Source: \cite{url:microprocessor-trend-data}.
-
-		\label{fig.microprocessor-data}
+		\label{fig:microprocessor-data}
+		\includegraphics[width=.85\textwidth]{42-years-processor-trend.pdf}
+		\fonte{\citeonline{url:microprocessor-trend-data}.}
 	\end{figure}
 
 % From multicore to manycores and Manycores characteristics
 	Yet another classification is based on the ratio between processing power (\flops)
-	and power consumption (\watts) of a manycore, as shown in Figure \ref{fig.microprocessor-data}.
+	and power consumption (\watts) of a manycore, as shown in \autoref{fig:microprocessor-data}.
 	For instance, to achieve \exascale (10$^{18}$ \flops), the US Department of Defense
 	issued a report stipulating the energy efficiency of a supercomputer should be
 	around 50 GFLOPS/W~\cite{darpa:exascale}.
@@ -88,7 +85,7 @@
 	\end{itemize}
 
 % Challenges and Problem Definition
-	Part of these challenges derives from existing runtimes and \oses.
+	Part of these challenges derives from existing runtimes and \oss.
 % Primeiro as dificuldades que não são superadas apenas com um runtime.
 	On the one hand, runtimes do not hide the characteristics of hardware making
 	software development more challenging and nonportable, \eg do not allow
@@ -97,12 +94,12 @@
 	Thus, fundamental \os mechanisms, such as core multiplexing, core partitioning,
 	and process and data migration, may not be addressed.
 % E, então, mencionar esforços em designs alternativos.
-	On the another hand, the complicated portability and scalability of traditional \oses with a
+	On the another hand, the complicated portability and scalability of traditional \oss with a
 	monolithic kernels, which were designed to homogeneous hardwares, is leading to alternative
 	\os designs~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
 
 % Goals and Contributions
-	We believe that \oses for the next-generation of \textit{lightweight} \manycores must be
+	We believe that \oss for the next-generation of \textit{lightweight} \manycores must be
 	redesigned from scratch to cope with their tight architectural constraints.
 	Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009}
 	is under investigations~\cite{penna2017-1,penna2017-2,penna2019}.
@@ -143,9 +140,9 @@
 \label{sec.organization}
 	
 	The remainder of this work is organized as follows.
-	Chapter \ref{ch.fundamentation} describes the background needed to accomplish this work.
-	Chapter \ref{ch.related-works} discusses the principal related works.
-	Chapter \ref{ch.proposal} presents the proposal for this work.
-	Chapter \ref{ch.schedule} shows the schedule for the second phase of the
+	\autoref{ch.fundamentation} describes the background needed to accomplish this work.
+	\autoref{ch.related-works} discusses the principal related works.
+	\autoref{ch.proposal} presents the proposal for this work.
+	\autoref{ch.schedule} shows the schedule for the second phase of the
 	development of the undergraduate dissertation.
-	Finally, Chapter \ref{ch.conclusions} concludes this work.
+	Finally, \autoref{ch.conclusions} concludes this work.

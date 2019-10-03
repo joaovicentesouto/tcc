@@ -3,9 +3,9 @@
 
 The proposal for this undergraduate dissertation is made up of two main contributions.
 The first contribution will be the port of the \textit{Inter-Cluster Communication Module},
-described in Section \ref{sec.inter-cluster-communication}, for the \mppa manycore processor.
+described in \autoref{sec.inter-cluster-communication}, for the \mppa manycore processor.
 The second contribution will be the design and implementation of communication services
-of a master-slave \os, described in Section \ref{sec.communication-services}, on top of
+of a master-slave \os, described in \autoref{sec.communication-services}, on top of
 the communication module.
 
 \section{Inter-Cluster Communication Module}
@@ -21,16 +21,12 @@ the communication module.
 	\begin{figure}[t]
 		\centering
 		\caption{Software Stack of the \mppa.}
-
-		\includegraphics[width=.8\textwidth]{images/software-stack.png}
-
-		\\ \vspace{0.2cm}
-		Source: \mppa Processor Documentation.
-
-		\label{fig.software-stack}
+		\label{fig:software-stack}
+		\includegraphics[width=.8\textwidth]{software-stack.png}
+		\fonte{\mppa Processor Documentation.}
 	\end{figure}
 
-	Figure \ref{fig.software-stack} shows the software stack present for the \mppa.
+	\autoref{fig:software-stack} shows the software stack present for the \mppa.
 	From it, only the \textit{hypervisor} and the \textit{vbsp} library will be used.
 	The hypervisor is used to virtualize the hardware by separating it into logical
 	parts, e.g., core virtualization, \cnoc virtualization, and \dnoc virtualization.
@@ -45,7 +41,9 @@ the communication module.
 	$\mu$threads that are configured through global structures provided by the hypervisor.
 
 	\begin{table}[t]
-		\caption{Cluster Identification.}
+		\centering%
+		\caption{Cluster Identification.}%
+		\label{tab.cluster-id}%
 
 		\begin{tabular}{|l|l|l|}
 			\hline
@@ -55,7 +53,7 @@ the communication module.
 			\textbf{\iocluster1} & 192-195              & 20-23               \\ \hline
 		\end{tabular}
 
-		\label{tab.cluster-id}
+		\fonte{Developed by the Author.}%
 	\end{table}
 
 	Clusters have two identifiers, one physical (physical ID) and the
@@ -69,19 +67,21 @@ the communication module.
 	Table \ref{tab.cluster-id} shows the physical and logical
 	identification performed for \mppa.
 
-	\begin{table}[]
-		\caption{Partitions of \noc resources by abstraction.}
+	\begin{table}[t]
+		\centering%
+		\caption{Partitions of \noc resources by abstraction.}%
+		\label{tab.noc-resources}%
 
 		\begin{tabular}{l|l|l|l|l|}
 			\cline{2-5}
-										   & \multicolumn{2}{c|}{\textbf{\cnoc}} & \multicolumn{2}{c|}{\textbf{\dnoc}} \\ \cline{2-5}
+										            & \multicolumn{2}{c|}{\textbf{\cnoc}}    & \multicolumn{2}{c|}{\textbf{\dnoc}}    \\ \cline{2-5}
 										            & \textbf{RX Slot} & \textbf{TX Channel} & \textbf{RX Slot} & \textbf{TX Channel} \\ \hline
 			\multicolumn{1}{|l|}{\textbf{\mailbox}} & 0-23             & 0                   & 0-23             & 1-3                 \\ \hline
 			\multicolumn{1}{|l|}{\textbf{\portal}}  & 24-47            & 1-2                 & 24-47            & 4-7                 \\ \hline
 			\multicolumn{1}{|l|}{\textbf{\sync}}    & 48-71            & 3                   & -                & -                   \\ \hline
 		\end{tabular}
 
-		\label{tab.noc-resources}
+		\fonte{Developed by the Author.}%
 	\end{table}
 
 	To perform the communication between two clusters, it is necessary that the
@@ -96,45 +96,49 @@ the communication module.
 
 	\subsection{Sync}
 
-\begin{figure}[t]
-\begin{lstlisting}[
-	caption=HAL Sync Interface for Receiver Cluster,
-	label=code:sync-receiver,
-]
-	/* @brief Allocates and configures the receiving side of
-	 *        the synchronization point.                     */
-	int sync_create(const int *nodes, int nnodes, int type);
+\begin{listing}[t]
+\caption{HAL Sync Interface for Receiver Cluster.}
+\label{code:sync-receiver}
+\begin{minted}{c}
+/**
+ * @brief Allocates and configures the receiving side of
+ * the synchronization point.
+ */
+int sync_create(const int *nodes, int nnodes, int type);
 
-	/* @brief Releases and cleans receiver buffer. */
-	int sync_unlink(int syncid);
+/* @brief Releases and cleans receiver buffer. */
+int sync_unlink(int syncid);
 
-	/* @brief Wait signal on a specific synchronization point. */
-	int sync_wait(int syncid);
-\end{lstlisting}
-\end{figure}
+/* @brief Wait signal on a specific synchronization point. */
+int sync_wait(int syncid);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
 
-\begin{figure}[t]
-\begin{lstlisting}[
-	caption=HAL Sync Interface for Sender Cluster,
-	label=code:sync-sender,
-]
-	/*  @brief Allocates and configures the sending side of
-	 *  the synchronization point.                          */
-	int sync_open(void);
+\begin{listing}[t]
+\caption{HAL Sync Interface for Sender Cluster.}
+\label{code:sync-sender}
+\begin{minted}{c}
+/**
+ * @brief Allocates and configures the sending side of
+ * the synchronization point.
+ */
+int sync_open(void);
 
-	/* @brief Releases the sender resources on a specific DMA channel. */
-	int sync_close(int syncid);
+/* @brief Releases the sender resources on a specific DMA channel. */
+int sync_close(int syncid);
 
-	/* @brief Send signal on a specific synchronization point. */
-	int sync_signal(int syncid, const int *nodes, int nnodes, int type);
-\end{lstlisting}
-\end{figure}
+/* @brief Send signal on a specific synchronization point. */
+int sync_signal(int syncid, const int *nodes, int nnodes, int type);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
 
-		As described in Section \ref{sec.sync-abs}, the \sync abstraction allows the
+		As described in \autoref{sec.sync-abs}, the \sync abstraction allows the
 		creation of distributed barriers.
 		The \sync can be decomposed into two sets of functions, where the
-		Code \ref{code:sync-receiver} shows the functions to one clusters
-		that will receive signals, and Code \ref{code:sync-sender} shows the
+		\autoref{code:sync-receiver} shows the functions to one clusters
+		that will receive signals, and \autoref{code:sync-sender} shows the
 		ones that will send.
 		Each set allocates different types of resources.
 		Accurately, the receiver must allocate a receive slot of the frame,
@@ -186,41 +190,41 @@ the communication module.
 
 	\subsection{Mailbox}
 
-\begin{figure}[t]
-\begin{lstlisting}[
-	caption=HAL Mailbox Interface for Receiver Cluster,
-	label=code:mailbox-receiver,
-]
-	/* @brief Creates a mailbox. */
-	int mailbox_create(int nodenum);
+\begin{listing}[t]
+\caption{HAL Mailbox Interface for Receiver Cluster.}
+\label{code:mailbox-receiver}
+\begin{minted}{c}
+/* @brief Creates a mailbox. */
+int mailbox_create(int nodenum);
 
-	/* @brief Destroys a mailbox. */
-	int mailbox_unlink(int mbxid);
+/* @brief Destroys a mailbox. */
+int mailbox_unlink(int mbxid);
 
-	/* @brief Reads data from a mailbox. */
-	ssize_t mailbox_read(int mbxid, void * buffer, size_t size);
-\end{lstlisting}
-\end{figure}
+/* @brief Reads data from a mailbox. */
+ssize_t mailbox_read(int mbxid, void * buffer, size_t size);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
 
-\begin{figure}[t]
-\begin{lstlisting}[
-	caption=HAL Mailbox Interface for Sender Cluster,
-	label=code:mailbox-sender,
-]
-	/* @brief Opens a mailbox. */
-	int mailbox_open(int nodenum);
+\begin{listing}[t]
+\caption{HAL Mailbox Interface for Sender Cluster.}
+\label{code:mailbox-sender}
+\begin{minted}{c}
+/* @brief Opens a mailbox. */
+int mailbox_open(int nodenum);
 
-	/* @brief Closes a mailbox. */
-	int mailbox_close(int mbxid);
+/* @brief Closes a mailbox. */
+int mailbox_close(int mbxid);
 
-	/* @brief Writes data to a mailbox. */
-	ssize_t mailbox_write(int mbxid, const void * buffer, size_t size);
-\end{lstlisting}
-\end{figure}
+/* @brief Writes data to a mailbox. */
+ssize_t mailbox_write(int mbxid, const void * buffer, size_t size);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
 
-		As explained in Section \ref{sec.mailbox-abs}, the \mailbox abstraction
+		As explained in \autoref{sec.mailbox-abs}, the \mailbox abstraction
 		allows the exchange of small messages of sizes between clusters similar
-		to a \posis message queue.
+		to a \posix message queue.
 		The \mailbox is more complex than the previous abstraction because it
 		uses both \dnoc and \cnoc resources.
 		When executing the function \texttt{mailbox\_create()}, the receiver
@@ -251,53 +255,57 @@ the communication module.
 
 	\subsection{Portal}
 
-\begin{figure}[t]
-\begin{lstlisting}[
-	caption=HAL Portal Interface for Receiver Cluster,
-	label=code:portal-receiver,
-]
-	/* @brief Creates a portal. */
-	int portal_create(int local);
+\begin{listing}[t]
+\caption{HAL Portal Interface for Receiver Cluster.}
+\label{code:portal-receiver}
+\begin{minted}{c}
+/* @brief Creates a portal. */
+int portal_create(int local);
 
-	/* @brief Destroys a portal. */
-	int portal_unlink(int portalid);
+/* @brief Destroys a portal. */
+int portal_unlink(int portalid);
 
-	/* @brief Allow sender to transfer data. */
-	int portal_allow(int portalid, int remote);
+/* @brief Allow sender to transfer data. */
+int portal_allow(int portalid, int remote);
 
-	/* @brief Reads data asynchronously from a portal. */
-	ssize_t portal_read(int portalid, void * buffer, size_t size);
+/* @brief Reads data asynchronously from a portal. */
+ssize_t portal_read(int portalid, void * buffer, size_t size);
 
-	/* @brief Waits for an asynchronous operation on a
-	 *        portal to complete.                      */
-	int portal_wait(int portalid);
-\end{lstlisting}
-\end{figure}
+/**
+ * @brief Waits for an asynchronous operation on a
+ * portal to complete.
+ */
+int portal_wait(int portalid);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
 
-\begin{figure}[t]
-\begin{lstlisting}[
-	caption=HAL Portal Interface for Sender Cluster,
-	label=code:portal-sender,
-]
-	/* @brief Opens a portal. */
-	int portal_open(int remote);
+\begin{listing}[t]
+\caption{HAL Portal Interface for Sender Cluster.}
+\label{code:portal-sender}
+\begin{minted}{c}
+/* @brief Opens a portal. */
+int portal_open(int remote);
 
-	/* @brief Closes a portal. */
-	int portal_close(int portalid);
+/* @brief Closes a portal. */
+int portal_close(int portalid);
 
-	/* @brief Writes data to a portal. */
-	ssize_t portal_write(int portalid, const void * buffer, size_t size);
+/* @brief Writes data to a portal. */
+ssize_t portal_write(int portalid, const void * buffer, size_t size);
 
-	/* @brief Writes data asynchronously to a portal. */
-	int portal_awrite(int portalid, const void * buffer, size_t size);
+/* @brief Writes data asynchronously to a portal. */
+int portal_awrite(int portalid, const void * buffer, size_t size);
 
-	/* @brief Waits for an asynchronous operation on a
-	 *        portal to complete.                      */
-	int portal_wait(int portalid);
-\end{lstlisting}
-\end{figure}
+/**
+ * @brief Waits for an asynchronous operation on a
+ * portal to complete.
+ */
+int portal_wait(int portalid);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
 
-		Section \ref{sec.portal-abs} showed that the portal abstraction is similar to
+		\autoref{sec.portal-abs} showed that the portal abstraction is similar to
 		a \posix pipe with flow control.
 		So, the \portal analogously follows the ideas implemented
 		in the \mailbox with the difference of the option to write,
@@ -326,7 +334,7 @@ the communication module.
 
 	\section{Communication Services}
 
-		As described in Section \ref{sec.communication-services}, three communication
+		As described in \autoref{sec.communication-services}, three communication
 		services will be developed for the Nanvix Microkernel, named \sync, \mailbox,
 		and \portal services.
 		Each service will be responsible for protecting, managing, manipulating,

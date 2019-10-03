@@ -1,253 +1,59 @@
-\documentclass[tcc, capa, capa-completa, english]{ufxc}
+\documentclass[english]{lapesd-thesis}
 
-% capa: imprime a parte da frente da capa em uma única página
-% capa-completa: imprime a versão completa da capa, com a parte da frente, verso, lombada e as orelhas
+% Outros \usepackage{}
 
-% =====================================================
-% Pacotes usados no projeto
-% =====================================================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Configurações da classe (dados do trabalho)                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage[style=abnt, noslsn]{biblatex} %, language=brazil
-\usepackage{tocloft}
-\let\printglossary\relax
-\let\theglossary\relax
-\let\endtheglossary\relax
-
-% \usepackage[brazilian,hyperpageref]{backref}   % Paginas com as citações na bibl
-% \usepackage[alf]{abntex2cite} % Citações padrão ABNT
-
-\usepackage[noredefwarn, acronyms, symbols]{glossaries}
-\usepackage[lined,boxed,ruled,commentsnumbered]{algorithm2e}
-
-
-% \usepackage{pgf}
-% \usepackage{tikz}
-% \usepackage{hhline}
-% \usepackage{xfrac}
-% \usepackage[export]{adjustbox} % http://tex.stackexchange.com/questions/163246/resize-a-tabular-object-to-textwidth
-% \usepackage{rotating}
-% \usepackage{pdflscape}
-% \usepackage{amsmath}
-% \usepackage{amstext}
-% \usepackage{amsfonts}
-% \usepackage{amssymb}
-% \usepackage{mathtools}
-% \usepackage{amsthm}
-% \let\openbox\relax
-% \usepackage{bm}
-
-% % \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
-% \usepackage[makeroom]{cancel}
-% \usepackage{color}    % Possibilita o uso de cores no documento
-% \usepackage{colortbl}
-\usepackage{subfig} % Usado para separar figuras em sub-figuras (ambiente subfloat) 
-% \usepackage{scalefnt}
-\usepackage{multirow}
-% \usepackage{iflang} %there is a warning which will be corrected in future texmf dist.
-% \usepackage[lined,boxed,ruled,commentsnumbered]{algorithm2e}
-% \usepackage{soul}
-
-% \usepackage{xspace} %In init/math
-
-\usepackage{todonotes}
-\usepackage{tabularx}
-\usepackage{pgfgantt}
-
-% Code Snippets
-\usepackage{listings}
-\renewcommand{\lstlistingname}{Code}
-\lstset{
-    basicstyle=\scriptsize\ttfamily,
-	numbers=left,
-	stepnumber=1,
-	numbersep=-0.5em,
-	keywordstyle=\color{blue},
-	commentstyle=\color{black},
-	stringstyle=\color{black},
-    numberstyle=\scriptsize\ttfamily\color{black},
-	frame=single,
-	tabsize=2,
-	float,
-	language=C++,
-	captionpos=t,
-	showstringspaces=false,
-	backgroundcolor=\color{white},
-	emphstyle={\color{blue}}%
-}
-	% morekeywords = {Array2D, __parallel__, Mask2D, Stencil2D},
-	% emph={
-	% 	pragma,
-	% 	omp,
-	% 	parallel,
-	% 	reduction,
-	% 	schedule,
-	% 	private,
-	% 	shared
-	% },
-
-% =====================================================
-% Local/data
-% =====================================================
-
-\local{Florianópolis}
-\data{01}{Julho}{2019}
-
-% =====================================================
-% Informações do programa
-% =====================================================
-
-\instituicao{Universidade Federal de Santa Catarina}
-\centro{Centro Tecnológico}
-\departamento{Departamento de Informática e Estatística}
-\grau{bacharel}
-\curso{Ciência da Computação}
-\coordenador{José Francisco D. de G. C. Fletes}
-
-% =====================================================
-% Título e Informações sobre o autor
-% =====================================================
-
+% Informações para capa e folha de rosto/certificacao
 \titulo{An Inter-Cluster Communication Module of a Hardware Abstraction Layer for Lightweight Manycore Processors}
-% \subtitulo{}
+\autor{João Vicente Souto}
+\data{1 de agosto de 2019} % ou \today
+\dissertacao % ou \tese
+\titulode{Bacharel em Ciência da Computação}
+\orientador{Prof. Dr. Márcio Bastos Castro}
+\coorientador{Prof. Me. Pedro Henrique Penna}
 
-\autor{João Vicente}{Souto}
-
-%formato para orientador e coorientador:
-%\orientador[genero]{titulação}{primeiros nomes}{sobrenome}{Universidade}
-\orientador{Dr.}{Márcio Bastos}{Castro}{Universidade Federal de Santa Catarina}
-\coorientador{Me.}{Pedro Henrique}{Penna}{Université Grenoble Alpes}
-
-% =====================================================
-% informações da banca
-% =====================================================
-% * assume-se que o orientador é parte da banca avaliadora
-\coorientadorNaBanca{}
-
-%formato para membro da banca
-%\membroBanca{Nome}{Afiliação}
-\membroBanca{Prof. Dr. Rômulo Silva de Oliveira}{Universidade Federal de Santa Catarina}
-\membroBanca{Prof. Dr. Odorico Machado Mendizabal}{Universidade Federal de Santa Catarina}
-% \membroBanca[video]{Prof. Dr. Membro C.}{Universidade Federal de Santa Catarina}
+% Membros da banca e coordenador
+% As regras da BU agora exigem que Dr. apareça depois do nome
+\membrobanca{Prof. Rômulo Silva de Oliveira, Dr.}{Universidade Federal de Santa Catarina}
+\membrobanca{Prof. Odorico Machado Mendizabal, Dr.}{Universidade Federal de Santa Catarina}
+\membrobanca{Prof. Huifen Chan, Dr.}{Universidade Federal de Santa Catarina}
+% Atenção! o template da BU e o documento que apresenta as regras continua
+% usando Dr antes do nome para Orientador e Coordenador!
+\coordenador{Prof. Dr. Renato Cislaghi}
 
 
-% =====================================================
-% Informações do trabalho
-% =====================================================
-
-%as palavras-chave devem ser definidas antes do início do documento pois
-%a capa e também a lista catalográfica dependem delas...
-% \palavrasChave{{latex},{abntex},{editoração de texto}}
-%perceba a maneira como cada palavra chave é definida. Tal modo deve ser 
-%mantido para a correta geração da ficha catalográfica
-
-% por algum motivo ainda não identificado, ocorre um erro se os dois não forem definidos e as palavras não são impressas na ficha catalográfica
-\palavrasChave{{HAL}, {Sistema Operacional}, {\textit{Lightweight Manycore}}, {Kalray MPPA-256}}
-\palavrasChave[english]{{HAL}, {Operating System}, {Lightweight Manycore}, {Kalray MPPA-256}}
-
-% ---
-% compila o indice
-% ---
+% Ativa indíce remissivo. Precisa estar aqui, não funciona no .cls nem no
+% \BeforeBeginDocument{}
 \makeindex
-% ---
+% Carrega definições dos acrônimos e do glossário. Isso precisa ser feito antes
+% do \begin{document}
+\input{init/acronyms.tex}
+\input{init/glossary.tex}
+\input{init/commands.tex}
 
-% {glossaries} package
-\makeglossaries
-% \loadglsentries{init/acronyms}
-% \loadglsentries{init/symbols}
-\glsdisablehyper
-\input{init/acronyms}
-\input{init/symbols}
-
-%\glsaddall
-\input{init/math}
-
-\addbibresource{references.bib} % {biblatex} package
-% \bibliography{references}
-
-%%these will be used in the large cover
-% \pequenoResumo{Esse é o pequeno resumo que vai aparecer na orelha orelha direita da capa.}
-% \bairro{Trindade}
-% \cidade{Florianópolis}
-% \estado{SC}
-
-% =====================================================
-% Comandos do usuário
-% =====================================================
-
-\newcommand{\note}[1]{\textbf{\textcolor{blue}{\hl{#1}}}} % {color, soul} package
-
-% adiciona automaticamente \centering em ambientes tipo float
-\makeatletter
-\g@addto@macro\@floatboxreset\centering
-\makeatother
-
-% Caso prefira referenciar acronimos com \ac e \acp.
-% \newcommand{\ac}[1]{\gls{#1}}
-% \newcommand{\acp}[1]{\glspl{#1}}
-
-% =====================================================
-% Início do documento
-% =====================================================
 \begin{document}
 
-% Seleciona o idioma do documento (conforme pacotes do babel)
-\selectlanguage{english}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Conteúdo                                                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% =====================================================
-% Pré-textuais
-% =====================================================
+\pretextual%
+\input{pre-textual/prolog.tex}
 
-% \imprimircapa
-\imprimirfolhaderosto % \imprimirfolhaderosto* (o * indica que haverá a ficha bibliográfica)
-
-% \imprimirFichaCatalografica{} % pode passar pdf por parametro
-% \input{pretextuais/errata}
-\inserirFolhaDeAprovacao{} % pode passar pdf por parametro
-
-% \input{pretextuais/dedicatoria}
-% \input{pretextuais/agradecimentos}
-% \input{pretextuais/epigrafe}
-\input{pretextuais/resumos}
-
-\inserirListaDeFiguras{}
-\inserirListaDeTabelas{}
-% \inserirListaDeAcronimos{}
-% \inserirListaDeSimbolos{}
-% \inserirListaDeAlgoritmos{}
-
-\inserirSumario{}
-
-% =====================================================
-% Corpo do trabalho
-% =====================================================
-
-\textual
-
-\input{chapters/0-intro}
+\textual%
+\input{chapters/0-intro.tex}
 \input{chapters/1-fundamentation.tex}
 \input{chapters/2-related-works.tex}
- \input{chapters/3-proposal.tex}
+\input{chapters/3-proposal.tex}
 % \input{chapters/4-experiments.tex}
 \input{chapters/5-conclusions.tex}
-% \input{chapters/basic}
 
-% =====================================================
-% Pós-textuais
-% =====================================================
-\postextual
-\printbibliography
+\postextual%
+\input{pos-textual/epilog.tex}
 
-% TODO
-%\glossary
-
-% \input{postextuais/apendices}
-% \input{postextuais/anexos}
-
-
-%-----------------
-% INDICE REMISSIVO
-\phantompart
-%\printindex
-%-----------------
+\bibliography{references}
 
 \end{document}

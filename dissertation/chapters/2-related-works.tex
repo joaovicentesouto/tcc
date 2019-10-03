@@ -3,7 +3,7 @@
 
 The proposal of this work is related to several other research works.
 First, some research papers describing state-of-the-art \textit{lightweight} \manycores
-processors will be cited. Further, research on different \oses
+processors will be cited. Further, research on different \oss
 proposed for such processors will be highlighted.
 
 \section{Lightweight Manycore Processors}
@@ -63,7 +63,7 @@ proposed for such processors will be highlighted.
 
 	Baumann \etal~\cite{Baumann2009} proposed a new \os architecture for scalable multicore
 	systems, called \multikernel.
-	In their perspective, the future of the \oses is on embracing the networked nature
+	In their perspective, the future of the \oss is on embracing the networked nature
 	of the machines based on distributed systems ideas.
 	Assuming the cores are independent nodes of a network, they build the tradicional
 	\os functionalities as fully-featured processes.
@@ -116,14 +116,14 @@ proposed for such processors will be highlighted.
 
 \section{Discussion}
 
-	Section \ref{sec.works.manycores} exemplifies how \manycore architectures can be
+	\autoref{sec.works.manycores} exemplifies how \manycore architectures can be
 	grouped over a common logic perspective.
 	They all have one or more logical units distributed and incorporated on clusters.
 	The clusters, interconnected through a network, communicate by message-exchange.
 	However, due to the domain for which these processors were designed, they end up
 	presenting several differences among them at the hardware level.
 
-	On the other hand, Section \ref{sec.works.os} presents studies of \oses that focus on
+	On the other hand, \autoref{sec.works.os} presents studies of \oss that focus on
 	mitigating these differences in order to provide greater programmability and portability.
 	Nevertheless, they span the entire development spectrum, delivering to end-users
 	high-level abstractions for increase productivity.
@@ -133,6 +133,6 @@ proposed for such processors will be highlighted.
 
 	In this context, the proposed \hal deal with the lowest level possible with a focus
 	on the aspects that make it challenging to work with \manycores.
-	Thus, different \oses and services can be developed and disseminated by several
+	Thus, different \oss and services can be developed and disseminated by several
 	architectures that implement such the perspective.
 	So consequently, the applications that run on top of them.

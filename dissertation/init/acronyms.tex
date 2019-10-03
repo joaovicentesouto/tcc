@@ -1,282 +1,115 @@
-\renewcommand*\glspostdescription{\dotfill}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Acronyms list                                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Importante:                                      
+%%% - A lista PRECISA SER MANTIDA ORDENADA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %A
+\xnewacronym[amp]{AMP}{Asymmetric Multi-Processing}
+\xnewacronym[anova]{ANOVA}{Analysis of Variance}
+\xnewacronym[api]{API}{Application Programming Interface}
 
 %B
 
 %C
+\xnewacronym[cmp]{CMP}{Chip Multiprocessor}
+\xnewacronym[cnoc]{C-NoC}{Control Network-on-Chip}
+\xnewacronym[cow]{COW}{Copy-On-Write}
+\xnewacronym[cpu]{CPU}{Central Processing Unit}
 
 %D
+\xnewacronym[dma][longplural={Direct Memory Accesses}]{DMA}{Direct Memory Access}
+\xnewacronym[dnoc]{D-NoC}{Data Network-on-Chip}
+\xnewacronym[dram][longplural={Dynamic Random Access Memories}]{DRAM}{Dynamic Random Access Memory}
+\xnewacronym[dtlb]{DTLB}{Data Translation Lookaside Buffer}
 
 %E
 
 %F
+\xnewacronym[flops]{FLOPS}{\textit{Floating-point Operations per Second}}
+\xnewacronym[fos]{FOS}{Factored Operating System}
+\xnewacronym[fpga]{FPGA}{Field Programmable Gate Array}
 
 %G
+\xnewacronym[gpu]{GPU}{Graphics Processing Unit}
 
 %H
+\xnewacronym[hal]{HAL}{Hardware Abstraction Layer}
+\xnewacronym[hpc]{HPC}{High-Performance Computing}
 
 %I
+\xnewacronym[iid]{i.i.d}{Independent and Identically Distributed}
+\xnewacronym[ipc]{IPC}{Inter-Process Communication}
+\xnewacronym[isa]{ISA}{Distributed Hash Table}
+\xnewacronym[itlb]{ITLB}{Instruction Translation Lookaside Buffer}
 
 %J
+\xnewacronym[jtlb]{JTLB}{Join Translation Lookaside Buffer}
 
 %K
 
 %L
+\xnewacronym[lfour]{L4}{L4 Microkernel}
+\xnewacronym[ltlb]{LTLB}{Locked Translation Lookaside Buffer}
 
 %M
+\xnewacronym[mimd]{MIMD}{Multiple Instruction Multiple Data}
+\xnewacronym[misd]{MISD}{Multiple Instruction Single Data}
+\xnewacronym[mmu]{MMU}{Memory Management Unit}
+\xnewacronym[moosca]{MOOSCA}{Manycore Operating System for Safety-Critical Application}
+\xnewacronym[mos]{mOS}{multi Operating System}
+\xnewacronym[mpsoc]{MPSoC}{Multiprocessor System-on-Chip}
+\xnewacronym[mpu]{MPU}{Memory Protection Unit}
 
 %N
+\xnewacronym[noc]{NoC}{Network-on-Chip}
+\xnewacronym[norma]{NoRMA}{No Remote Memory Access}
+\xnewacronym[nos]{nOS}{Nano-Sized Operating System}
+\xnewacronym[numa]{NUMA}{Non-Uniform Memory Access}
 
 %O
+\xnewacronym[os]{OS}{Operating System}
 
 %P
+\xnewacronym[pe]{PE}{Processing Element}
+\xnewacronym[pgas]{PGAS}{Partitioned Global Address Space}
+\xnewacronym[pmca]{PMCA}{Programmable Manycore Accelerator}
+\xnewacronym[posix]{POSIX}{Portable Operating System Interface}
 
 %Q
+\xnewacronym[qos]{QoS}{Quality of Service}
 
 %R
+\xnewacronym[rab]{RAB}{Remapping Address Block}
+\xnewacronym[ram][longplural={Random Access Memories}]{RAM}{Random Access Memory}
+\xnewacronym[risc]{RISC}{Reduced Instruction Set Computer}
+\xnewacronym[rm]{RM}{Resource Manager}
+\xnewacronym[rma][longplural={Remote Memory Accesses}]{RMA}{Remote Memory Access}
+\xnewacronym[rmem][longplural={Remote Memories}]{RMem}{Remote Memory}
 
 %S
+\xnewacronym[simd]{SIMD}{Single Instruction Multiple Data}
+\xnewacronym[sisd]{SISD}{Single Instruction Single Data}
+\xnewacronym[smp]{SMP}{Symmetric Multi-Processing}
+\xnewacronym[soc]{SoC}{System-on-a-Chip}
+\xnewacronym[spm][longplural={Software-managed Scratchpad Memories}]{SPM}{Software-managed Scratchpad Memory}
+\xnewacronym[sram][longplural={Static Random Access Memories}]{SRAM}{Static Random Access Memory}
 	
 %T
+\xnewacronym[tlb]{TLB}{Translation Lookaside Buffer}
 
 %U
+\xnewacronym[uma][longplural={Uniform Memory Accesses}]{UMA}{Uniform Memory Access}
 
 %V
+\xnewacronym[vliw]{VLIW}{Very Long Instruction Word}
 
 %W
+\xnewacronym[watts]{W}{\textit{Watts}}
 
-%==============================================================================
-% Computer Architecture
-%=============================================================================
-
-\newcommand{\exascale}{\textit{exascale}\xspace}
-\newcommand{\manycore}{\textit{manycore}\xspace}
-\newcommand{\manycores}{\textit{manycores}\xspace}
-
-% Manycores
-\newcommand{\scc}{Intel Single-Cloud Computer\xspace}
-\newcommand{\xeonphi}{Intel Xeon Phi\xspace}
-\newcommand{\tilegx}{Tilera TILE-Gx100\xspace}
-\newcommand{\tilepro}{Tilera TILE64\xspace}
-\newcommand{\mppa}{Kalray MPPA-256\xspace}
-\newcommand{\taihulight}{Sunway SW26010\xspace}
-\newcommand{\epiphany}{Adapteva Epiphany\xspace}
-\newcommand{\optimsoc}{OpTiMSoC\xspace}
-\newcommand{\hero}{HERO\xspace}
-\newcommand{\arm}{ARM Cortex-A\xspace}
-\newcommand{\riscv}{RISC-V\xspace}
-
-% Architectures
-\newcommand{\intel}{x86\xspace}
-\newcommand{\openrisc}{OpenRISC\xspace}
-\newcommand{\bostan}{Bostan\xspace}
-
-% Instruction Set Architectures
-\newacronym{isa}{ISA}{Instruction Set Architecture}
-	\newcommand{\isa}{\gls{isa}\xspace}
-\newacronym{risc}{RISC}{Reduced Instruction Set Computer}
-	\newcommand{\risc}{\gls{risc}\xspace}
-\newacronym{vliw}{VLIW}{Very Long Instruction Word}
-	\newcommand{\vliw}{\gls{vliw}\xspace}
-
-% Taxonomy
-\newacronym{sisd}{SISD}{Single Instruction Single Data}
-	\newcommand{\sisd}{\gls{sisd}\xspace}
-\newacronym{simd}{SIMD}{Single Instruction Multiple Data}
-	\newcommand{\simd}{\gls{simd}\xspace}
-\newacronym{misd}{MISD}{Multiple Instruction Single Data}
-	\newcommand{\misd}{\gls{misd}\xspace}
-\newacronym{mimd}{MIMD}{Multiple Instruction Multiple Data}
-	\newcommand{\mimd}{\gls{mimd}\xspace}
-\newacronym{uma}{UMA}{Uniform Memory Access}
-	\newcommand{\uma}{\gls{uma}\xspace}
-\newacronym{numa}{NUMA}{Non-Uniform Memory Access}
-	\newcommand{\numa}{\gls{numa}\xspace}
-\newacronym{norma}{NoRMA}{No Remote Memory Access}
-	\newcommand{\norma}{\gls{norma}\xspace}
-\newacronym{amp}{AMP}{Asymmetric Multi-Processing}
-	\newcommand{\amp}{\gls{amp}\xspace}
-\newacronym{cpu}{CPU}{Central Processing Unit}
-	\newcommand{\cpu}{\gls{cpu}\xspace}
-	\newcommand{\cpus}{\glspl{cpu}\xspace}
-\newacronym{gpu}{GPU}{Graphics Processing Unit}
-	\newcommand{\gpu}{\gls{gpu}\xspace}
-	\newcommand{\gpus}{\glspl{gpu}\xspace}
-\newacronym{fpga}{FPGA}{Field Programmable Gate Array}
-	\newcommand{\fpga}{\gls{fpga}\xspace}
-	\newcommand{\fpgas}{\glspl{fpga}\xspace}
-\newacronym{soc}{SoC}{System-on-a-Chip}
-	\newcommand{\soc}{\gls{soc}\xspace}
-	\newcommand{\socs}{\glspl{soc}\xspace}
-\newacronym{mpsoc}{MPSoC}{Multiprocessor System-on-Chip}
-	\newcommand{\mpsoc}{\gls{mpsoc}\xspace}
-	\newcommand{\mpsocs}{\glspl{mpsoc}\xspace}
-\newacronym{cmp}{CMP}{Chip Multiprocessor}
-	\newcommand{\cmp}{\gls{cmp}\xspace}
-	\newcommand{\cmps}{\glspl{cmp}\xspace}
-\newacronym{spm}{SPM}{Software-managed Scratchpad Memories}
-	\newcommand{\spm}{\gls{spm}\xspace}
-	\newcommand{\spms}{\glspl{spm}\xspace}
-\newacronym{pmca}{PMCA}{Programmable Manycore Accelerator}
-	\newcommand{\pmca}{\gls{pmca}\xspace}
-
-% Core
-\newacronym{pe}{PE}{Processing Element}
-	\newcommand{\pe}{\gls{pe}\xspace}
-	\newcommand{\pes}{\glspl{pe}\xspace}
-\newacronym{rm}{RM}{Resource Manager}
-	\newcommand{\rman}{\gls{rm}\xspace}
-	\newcommand{\rmans}{\glspl{rm}\xspace}
-
-\newcommand{\iocluster}{I/O Cluster\xspace}
-\newcommand{\ioclusters}{I/O Clusters\xspace}
-\newcommand{\ccluster}{Compute Cluster\xspace}
-\newcommand{\cclusters}{Compute Clusters\xspace}
-
-% Memory
-\newacronym{mmu}{MMU}{Memory Management Unit}
-	\newcommand{\mmu}{\gls{mmu}\xspace}
-	\newcommand{\mmus}{\glspl{mmu}\xspace}
-
-\newacronym{mpu}{MPU}{Memory Protection Unit}
-	\newcommand{\mpu}{\gls{mpu}\xspace}
-
-\newacronym{rab}{RAB}{Remapping Address Block}
-	\newcommand{\rab}{\gls{rab}\xspace}
-
-\newacronym{tlb}{TLB}{Translation Lookaside Buffer}
-	\newcommand{\tlb}{\gls{tlb}\xspace}
-	\newcommand{\tlbs}{\glspl{tlb}\xspace}
-
-\newacronym{jtlb}{JTLB}{Join TLB}
-	\newcommand{\jtlb}{\gls{jtlb}\xspace}
-	\newcommand{\jtlbs}{\gls{jtlb}\xspace}
-
-\newacronym{ltlb}{LTLB}{Locked TLB}
-	\newcommand{\ltlb}{\gls{ltlb}\xspace}
-	\newcommand{\ltlbs}{\glspl{ltlb}\xspace}
-
-\newacronym{itlb}{ITLB}{Instruction TLB}
-	\newcommand{\itlb}{\gls{itlb}\xspace}
-
-\newacronym{dtlb}{DTLB}{Data TLB}
-	\newcommand{\dtlb}{\gls{dtlb}\xspace}
-
-\newacronym{ram}{RAM}{Random Access Memory}
-	\newcommand{\ram}{\gls{ram}\xspace}
-
-\newacronym{sram}{SRAM}{Static Random Access Memory}
-	\newcommand{\sram}{\gls{sram}\xspace}
-
-\newacronym{dram}{DRAM}{Dynamic Random Access Memory}
-	\newcommand{\dram}{\gls{dram}\xspace}
-
-\newacronym{spd}{SPM}{Scratchpad Memory}
-	\newcommand{\spd}{\gls{spd}\xspace}
-\newacronym{dma}{DMA}{Direct Memory Access}
-	\newcommand{\dma}{\gls{dma}\xspace}
-	\newcommand{\dmas}{\glspl{dma}\xspace}
-
-\newacronym{rma}{RMA}{Remote Memory Access}
-	\newcommand{\rma}{\gls{rma}\xspace}
-
-% Interconnects
-\newacronym{noc}{NoC}{Network-on-Chip}
-	\newcommand{\noc}{\gls{noc}\xspace}
-	\newcommand{\nocs}{\glspl{noc}\xspace}
-\newacronym{cnoc}{C-NoC}{Control NoC}
-    \newcommand{\cnoc}{\gls{cnoc}\xspace}
-\newacronym{dnoc}{D-NoC}{Data NoC}
-	\newcommand{\dnoc}{\gls{dnoc}\xspace}
-
-%==============================================================================
-% Operating Systems
-%=============================================================================
-\newcommand{\multikernel}{\textit{Multikernel}\xspace}
-\newcommand{\microkernel}{\textit{Microkernel}\xspace}
-
-\newacronym{os}{OS}{Operating System}
-	\newcommand{\os}{\gls{os}\xspace}
-	\newcommand{\oses}{\glspl{os}\xspace}
-\newacronym{smp}{SMP}{Symmetric Multi-Processing}
-	\newcommand{\smp}{\gls{smp}\xspace}
-
-% HAL
-\newacronym{hal}{HAL}{Hardware Abstraction Layer}
-	\newcommand{\hal}{\gls{hal}\xspace}
-	\newcommand{\hals}{\glspl{hal}\xspace}
-
-\newacronym{posix}{POSIX}{Portable Operating System Interface}
-	\newcommand{\posix}{\gls{posix}\xspace}
-
-\newacronym{moosca}{MOOSCA}{Manycore Operating System for Safety-Critical Application}
-	\newcommand{\moosca}{\gls{moosca}\xspace}
-
-\newacronym{api}{API}{Application Programming Interface}
-	\newcommand{\api}{\gls{api}\xspace}
-	\newcommand{\apis}{\glspl{api}\xspace}
-
-% Kernels
-\newcommand{\barrelfish}{Barrelfish\xspace}
-\newcommand{\linux}{GNU/Linux\xspace}
-\newcommand{\unix}{Unix\xspace}
-\newcommand{\rtems}{RTEMS\xspace}
-\newcommand{\bsd}{BSD\xspace}
-\newcommand{\nodeos}{NodeOS\xspace}
-\newcommand{\nanvix}{Nanvix\xspace}
-\newacronym{fos}{FOS}{Factored Operating System}
-	\newcommand{\fos}{\gls{fos}\xspace}
-\newacronym{lfour}{L4}{L4 Microkernel}
-	\newcommand{\lfour}{\gls{lfour}\xspace}
-\newacronym{nos}{nOS}{Nano-Sized Operating System}
-	\newcommand{\nos}{\gls{nos}\xspace}
-\newacronym{mos}{mOS}{multi Operating System}
-	\newcommand{\mos}{\gls{mos}\xspace}
-
-\newacronym{ipc}{IPC}{Inter-Process Communication}
-	\newcommand{\ipc}{\gls{ipc}\xspace}
-
-\newacronym{qos}{QoS}{Quality of Service}
-	\newcommand{\qos}{\gls{qos}\xspace}
-
-%==============================================================================
-% High Performance Computing
-%=============================================================================
-
-\newacronym{hpc}{HPC}{High-Performance Computing}
-	\newcommand{\hpc}{\gls{hpc}\xspace}
-
-% Runtimes
-\newcommand{\openmp}{OpenMP}
-\newacronym{pgas}{PGAS}{Partitioned Global Address Space}
-	\newcommand{\pgas}{\gls{pgas}\xspace}
-
-%==============================================================================
-% Other
-%=============================================================================
-
-\newacronym{rmem}{RMem}{Remote Memory}
-	\newcommand{\rmem}{\gls{rmem}\xspace}
-
-\newcommand{\ie}{i.e.,\xspace}
-\newcommand{\eg}{e.g.,\xspace}
-\newcommand{\etal}{\textit{et al.}\xspace}
-
-\newcommand{\sync}{\textit{Sync}\xspace}
-\newcommand{\mailbox}{\textit{Mailbox}\xspace}
-\newcommand{\portal}{\textit{Portal}\xspace}
-
-\newacronym{iid}{i.i.d}{Independent and Identically Distributed}
-	\newcommand{\iid}{\gls{iid}\xspace}
-
-\newacronym{anova}{ANOVA}{Analysis of Variance}
-	\newcommand{\anova}{\gls{anova}\xspace}
-
-\newacronym{cow}{COW}{Copy-On-Write}
-	\newcommand{\cow}{\gls{cow}\xspace}
-
-\newacronym{flops}{FLOPS}{\textit{Floating-point Operations per Second}}
-	\newcommand{\flops}{\gls{flops}\xspace}
-\newacronym{watts}{W}{\textit{Watts}}
-	\newcommand{\watts}{\gls{watts}\xspace}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
