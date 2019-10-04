@@ -10,17 +10,20 @@ PODOFOBOX=podofobox
 GNUPLOT=gnuplot
 
 srcs=$(wildcard *.tex) $(wildcard init/*.tex) $(wildcard pre-textual/*.tex) $(wildcard chapter/*.tex) $(wildcard pos-textual/*.tex) $(wildcard *.bib)
-svgs=$(wildcard imgs/*.svg)
+svgs=$(wildcard imgs/svgs/*.svg)
 pdfs=$(svgs:.svg=.pdf)
+others=$(wildcard imgs/others/*.pdf) $(wildcard imgs/others/*.jpg) $(wildcard imgs/others/*.png)
 
 all: imgs main.robust.pdf
 
 imgs: $(pdfs)
+	mv $(pdfs) imgs
+	cp $(others) imgs
 
 .PHONY: all imgs clean
 
 clean: 
-	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log main.pdf main.robust.pdf *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *.prv _region*  *~ auto imgs/*.tmp.pdf {imgs,plots}/*-eps-converted-to.pdf; 
+	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log main.pdf main.robust.pdf *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *.prv _region*  *~ auto imgs/svgs/*.pdf imgs/*.{pdf,jpg,png} {imgs,plots}/*-eps-converted-to.pdf; 
 
 
 # directly convert a SVG to PDF. The SVG's contents will be cropped to the page

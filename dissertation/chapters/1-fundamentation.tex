@@ -31,10 +31,6 @@
 			\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 		\end{figure}
 
-			% See if figure has sufficient spaces between the image and the source text.
-			% \\ \vspace{0.3cm}
-			% \fonte{Adapted from \cite{tanenbaum:4ed}.}
-
 		In the early days of electronic digital computing, John Von Neumann
 		proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
 		As illustrated in \autoref{fig:neumann}, this model describes a \cpu,
@@ -106,7 +102,6 @@
 				\includegraphics[width=.7\textwidth]{numa.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
-				% \\ \vspace{0.3cm}
 
 			Nevertheless, the number of cores in \uma multiprocessors are limited
 			to a few dozens of \cpus.
@@ -133,8 +128,6 @@
 					{.4\linewidth}%
 					{Single Instruction Multiple Data.}%
 					{\includegraphics[width=.8\linewidth]{simd.pdf}}%
-
-				% \\ \vspace{1cm}%
 
 				\subcaptionminipage[fig:flynn-misd]%
 					{.4\linewidth}%
@@ -198,7 +191,6 @@
 				\includegraphics[width=.55\textwidth]{replicated-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
-				% \\ \vspace{0.2cm}
 
 			The Replicated Model is the simplest way to develop an \os for a
 			parallel architecture.
@@ -225,7 +217,6 @@
 				\includegraphics[width=.55\textwidth]{master-slave-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
-				% \\ \vspace{0.2cm}
 
 			The Master-Slave model began to attract attention with the return of
 			processors with no cache coherence.
@@ -248,7 +239,6 @@
 				\includegraphics[width=.55\textwidth]{symmetric-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
-				% \\ \vspace{0.2cm}
 
 			Finally, the Symmetric model, called \smp, eliminates the centralization
 			problem of the foregoing model, as illustrated in \autoref{fig:smp-os}.
@@ -312,8 +302,6 @@
 						{Grid.}%
 						{\includegraphics[width=\linewidth]{net-grid.pdf}}%
 
-					% \\ \vspace{1cm}%
-
 					\subcaptionminipage[fig:net-torus]%
 						{.25\linewidth}%
 						{Torus.}%
@@ -362,7 +350,6 @@
 					\includegraphics[width=.8\textwidth]{multicomputer.pdf}%
 					\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 				\end{figure}
-					% \\ \vspace{0.2cm}
 
 				Multicomputer nodes are interconnected to each other through network interfaces.
 				Because these boards are built and connected to \cpus and \ram,
@@ -421,7 +408,7 @@
 						{Synchronous Call on Sender Node.}%
 						{\includegraphics[width=\linewidth]{call-sync.pdf}}%
 
-					\hfill % \\ \hspace{1cm}%
+					\hfill
 
 					\subcaptionminipage[fig:call-async]%
 						{.9\linewidth}%
@@ -485,7 +472,6 @@
 		\includegraphics[width=.7\textwidth]{arch-mppa.pdf}%
 		\fonte{\citeonline{Penna2018}.}%
 	\end{figure}
-		% \\ \vspace{0.2cm}
 
 	The \mppa is a high-performance, lightweight multicore processor
 	developed by the French company Kalray.
@@ -581,9 +567,8 @@
 			\caption{Structural overview of the proposed \hal.}%
 			\label{fig:hal-struct}%
 			\includegraphics[width=.8\textwidth]{hal-struct.pdf}%
-			\fonte{\cite{penna:compas19}.}%
+			\fonte{\citeonline{penna:compas19}.}%
 		\end{figure}
-			% \\ \vspace{0.2cm}
 
 		The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
 		It provides two modules, \textit{Core Management}, and \textit{Memory Management}.
@@ -649,7 +634,7 @@
 						{N Slaves notify the Master.}%
 						{\includegraphics[width=\linewidth]{sync-create.pdf}}%
 
-					\hfill % \\ \hspace{1cm}%
+					\hfill
 
 					\subcaptionminipage[fig:conpt_sync-open]%
 						{.7\linewidth}%
@@ -683,10 +668,10 @@
 						{Conceptual Overview.}%
 						{\includegraphics[width=\linewidth]{mailbox-logical.pdf}}%
 
-					\hfill % \\ \hspace{1cm}%
+					\hfill
 
 					\subcaptionminipage[fig:conpt_mailbox-flow]%
-						{.7\linewidth}%
+						{.6\linewidth}%
 						{Flow of execution: Slave sends a message, Master reads and notifies the sender.}%
 						{\includegraphics[width=\linewidth]{mailbox-flow.pdf}}%
 
