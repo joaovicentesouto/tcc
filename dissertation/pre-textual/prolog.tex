@@ -1,0 +1,26 @@
+% Assume-se que \pretextual já foi feito
+
+\imprimircapa%
+\imprimirfolhaderosto*
+% Atenção! esse \protect é importante
+\protect\incluirfichacatalografica{pre-textual/ficha.pdf}
+\imprimirfolhadecertificacao
+
+\input{pre-textual/dedication.tex}
+\input{pre-textual/acknowledgment.tex}
+\input{pre-textual/epigraph.tex}
+\input{pre-textual/summaries.tex}
+
+\listoffigures*  % O * evita que apareça no sumário
+\listoftables*
+\listoflistings*  
+\listofalgorithms*
+
+\listadesiglas*
+
+\tableofcontents*%
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,0 +1,59 @@
+\documentclass[english]{lapesd-thesis}
+
+% Outros \usepackage{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Configurações da classe (dados do trabalho)                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Informações para capa e folha de rosto/certificacao
+\titulo{An Inter-Cluster Communication Module of a Hardware Abstraction Layer for Lightweight Manycore Processors}
+\autor{João Vicente Souto}
+\data{1 de agosto de 2019} % ou \today
+\dissertacao % ou \tese
+\titulode{Bacharel em Ciência da Computação}
+\orientador{Prof. Dr. Márcio Bastos Castro}
+\coorientador{Prof. Me. Pedro Henrique Penna}
+
+% Membros da banca e coordenador
+% As regras da BU agora exigem que Dr. apareça depois do nome
+\membrobanca{Prof. Rômulo Silva de Oliveira, Dr.}{Universidade Federal de Santa Catarina}
+\membrobanca{Prof. Odorico Machado Mendizabal, Dr.}{Universidade Federal de Santa Catarina}
+\membrobanca{Prof. Huifen Chan, Dr.}{Universidade Federal de Santa Catarina}
+% Atenção! o template da BU e o documento que apresenta as regras continua
+% usando Dr antes do nome para Orientador e Coordenador!
+\coordenador{Prof. Dr. Renato Cislaghi}
+
+
+% Ativa indíce remissivo. Precisa estar aqui, não funciona no .cls nem no
+% \BeforeBeginDocument{}
+\makeindex
+% Carrega definições dos acrônimos e do glossário. Isso precisa ser feito antes
+% do \begin{document}
+\input{init/acronyms.tex}
+\input{init/glossary.tex}
+\input{init/commands.tex}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Conteúdo                                                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pretextual%
+\input{pre-textual/prolog.tex}
+
+\textual%
+\input{chapters/0-intro.tex}
+\input{chapters/1-fundamentation.tex}
+\input{chapters/2-related-works.tex}
+\input{chapters/3-proposal.tex}
+% \input{chapters/4-experiments.tex}
+\input{chapters/5-conclusions.tex}
+
+\postextual%
+\input{pos-textual/epilog.tex}
+
+\bibliography{references}
+
+\end{document}

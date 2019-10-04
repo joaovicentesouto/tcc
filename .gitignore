@@ -1,8 +1,38 @@
-*.ilg
-*.ind
-*.toc
+# LaTeX
+*.acn
+*.aux
+*.bbl
+*.bcf
+*.blg
+*-blx.bib
 *.fdb_latexmk
 *.fls
+*.glo
+*.gz
+*.out
+*.ist
+*.log
+*.nav
+*.snm
+*.toc
+*.vrb
+*.xml
+*.ilg
+*.ind
+*.64
+*.idx
+*.loalgorithm
+*.lof
+*.lol
+*.lot
 
+# Temporary PDFs
+dissertation/*.pdf
+dissertation/imgs/*.pdf
+dissertation/imgs/*.jpg
+dissertation/imgs/*.png
+
+# Folders
+dissertation/_minted-main/
 *.DS_Store
 *.vscode
