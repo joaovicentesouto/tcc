@@ -19,9 +19,9 @@ proposed for such processors will be highlighted.
 	Each node has one \risc \cpu, multi-banked local memory, a \dma engine,
 	an event monitor and a network interface.
 	The three \nocs, named rMesh, cMesh, and xMesh, are independent and scalable.
-	They implements a packet-switched model with four duplex links at every node.
-	When a node want read a remote data, first, it sends a read request over the rMesh
-	and wait a signal to arrive on cMesh.
+	They implement a packet-switched model with four duplex links at every node.
+	When a node wants to read a remote data, first, it sends a read request over
+	the rMesh and wait for a signal to arrive on cMesh.
 	On the another hand, the write operation allows the node to continue running
 	while data is tranfered through over xMesh.
 
@@ -37,7 +37,7 @@ proposed for such processors will be highlighted.
 	Precisely, a \textit{network adapter} handles the memory transfers between
 	tile and the memory and provide hardware means to a message-passing communication
 	model among tiles.
-	The tiles organization and the network topology also allows handle communication
+	The tiles organization and the network topology also allows handling communication
 	in three different ways.
 	First, when using distributed memory, communication is performed through the
 	message-exchange between the tiles.
@@ -87,7 +87,7 @@ proposed for such processors will be highlighted.
 	The principal motivation is the creation of an \os that simultaneously supports
 	programmability, through support \linux \api, and provides a lightweight kernel
 	to performance, scalability, and reliability.
-	The \os, named \mos, provide as much of the compute hardware resources as
+	The \os, named \mos, provide as much of the hardware resources as
 	possible to the \hpc applications. On the other hand, the Linux kernel
 	component acts as a service that provides Linux functionalities.
 
@@ -133,6 +133,6 @@ proposed for such processors will be highlighted.
 
 	In this context, the proposed \hal deal with the lowest level possible with a focus
 	on the aspects that make it challenging to work with \manycores.
-	Thus, different \oss and services can be developed and disseminated by several
-	architectures that implement such the perspective.
+	Thus, different \oss and services can be developed and disseminated by various
+	architectures that implement this perspective.
 	So consequently, the applications that run on top of them.
