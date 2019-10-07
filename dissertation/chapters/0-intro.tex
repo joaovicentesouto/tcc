@@ -6,8 +6,8 @@
 % Frequency barrier
 	For some years, it was common to increase the frequency of processors
 	to improve their processing power.
-	However, as a side effect, the temperature rise was much higher than the
-	performance, making this practice prohibitive.
+	However, as a side effect, the temperature rise very high, limiting the
+	adoption of this practice.
 	Alternatively, the constant improvement of semiconductor technology helped
 	to mitigate the impact of this problem, allowing the industry to build
 	more powerful processors with the same frequency.
@@ -38,6 +38,9 @@
 		\centering
 		\caption{42 years of Multiprocessor Trend Data.}
 		\label{fig:microprocessor-data}
+
+		\todo[inline]{It is missing vertical scale subtitles.}
+
 		\includegraphics[width=.85\textwidth]{42-years-processor-trend.pdf}
 		\fonte{\citeonline{url:microprocessor-trend-data}.}
 	\end{figure}
@@ -122,7 +125,7 @@
 	sophisticated communication services.
 	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix Microkernel.
 	This work will be done in collaboration with Pedro Henrique Penna, who is a Ph.D. student at the
-	University of Grenoble Alpes, the main developer of Nanvix and the co-advisor of this work.
+	University of Grenoble Alpes, developer of Nanvix and co-advisor of this work.
 
 \subsection{Specific Goals}
 \label{sec.goals.specific}
@@ -134,6 +137,8 @@
 			Communication Module in the context of a microkernel-based \os;
 		\item Implement the Communication Services for the \nanvix Microkernel;
 		\item Analyze the performance of the proposed implementation using specific micro-benchmarks.
+			
+			\todo{Write about the experiments.}
 	\end{itemize}
 
 \section{Organization Of The Work}
@@ -141,7 +146,7 @@
 	
 	The remainder of this work is organized as follows.
 	\autoref{ch.fundamentation} describes the background needed to accomplish this work.
-	\autoref{ch.related-works} discusses the principal related works.
+	\autoref{ch.related-work} discusses the principal related work.
 	\autoref{ch.proposal} presents the proposal for this work.
 	\autoref{ch.schedule} shows the schedule for the second phase of the
 	development of the undergraduate dissertation.

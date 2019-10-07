@@ -1,23 +1,23 @@
 % Assume-se que \pretextual já foi feito
 
 \begin{resumo}[Resumo]
-	Em conjunto com a maior escalabilidade de desempenho e eficiência energética,
+	Em conjunto com a maior escalabilidade e eficiência energética,
 	os \lightweight \manycores trouxeram um novo conjunto de desafios no
-	desenvolvimento de software, provenientes de suas particularidades arquitetônicas.
+	desenvolvimento de software, provenientes de suas particularidades arquiteturais.
 	Nesse contexto, os sistemas operacionais são essenciais porque permitem abstrair
 	as características do hardware sob uma perspectiva simplificada e eficaz.
 	Assim, os sistemas operacionais tornam o desenvolvimento de aplicações
 	menos oneroso e mais eficiente.
 	No entanto, parte dos desafios encontrados em \lightweight \manycores
-	deriva dos runtimes e dos sistemas operacionais existentes que não lidam
-	completamente com as complexidades desses processadores.
+	deriva dos \textit{runtimes} e dos sistemas operacionais existentes que não
+	lidam completamente com as complexidades desses processadores.
 	Assim, acreditamos que os sistemas operacionais para a próxima geração de
-	\lightweight \manycores devem ser reprojetados do zero para lidar
-	com suas severas restrições arquitetônicas.
+	\lightweight \manycores necessitam ser repensados a partir de seus conceitos
+	básicos levando em consideração as severas restrições arquiteturais.
 	Em particular, devido à natureza distribuída dos \manycores, as
 	abstrações de comunicação desempenham um papel crucial na escalabilidade
 	e desempenho das aplicações.
-	Neste cenário, o objetivo deste trabalho é desenvolver um módulo de comunicação
+	O objetivo deste trabalho é desenvolver um módulo de comunicação
 	entre clusters para o processador \manycore emergente MPPA-256.
 	Este módulo faz parte de um Camada de Abstração de Hardware genérico e
 	flexível para \lightweight \manycores que lida com os principais
@@ -25,7 +25,7 @@
 	Sobre esse módulo, serviços de comunicação também serão propostos para
 	um sistema operacional baseado no modelo \textit{microkernel}, que busca
 	fornecer um esqueleto básico para as abstrações de sistema.
-	Essas contribuições estão inseridas em um contexto de pesquisa mais amplo
+	Essas contribuições estão inseridas em um contexto de pesquisa mais amplo,
 	que procura investigar um sistema operacional distribuído completo baseado
 	em uma abordagem multikernel para esses processadores.
 
@@ -61,7 +61,7 @@
 \end{resumo}
 
 \begin{abstract}
-	Jointly with further performance scalability and energy efficiency,
+	Jointly with further scalability and energy efficiency,
 	lightweight manycores brought a new set of challenges in software
 	development coming from their architectural particularities.
 	In this context, \oss are essential because they allow to abstract
@@ -77,7 +77,7 @@
 	In particular, due to the distributed nature of the manycores,
 	communication abstractions play a crucial role in the scalability
 	and performance of these processors.
-	In this scenario, the goal of this work is to develop an inter-cluster
+	The goal of this work is to develop an inter-cluster
 	communication module for the emergent \mppa Lightweight Manycore Processor.
 	This module is part of a generic and flexible \hal for lightweight
 	manycores that cope with the key issues encountered in designing

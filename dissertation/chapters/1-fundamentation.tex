@@ -1,17 +1,35 @@
 \chapter{Background}
 \label{ch.fundamentation}
 
+	\todo[inline]{
+		I simply moved the paragraphs as Odorico suggested.
+		So I need to rethink these first 3 paragraphs.
+	}
+
 	This chapter presents the background of multiple processor
 	systems from a hardware and software perspective.
 	Specifically, \autoref{sec.multiprocessors} and \autoref{sec.multicomputers}
-	will address details about multiprocessors and multicomputers, respectively.
-	Subsequently, \autoref{sec.mppa} will present the \mppa processor.
-	Next, \autoref{sec.nanvix} will show an overview of the Nanvix OS.
-	So finally, \autoref{sec.inter-cluster-communication} will cover the abstraction
+	addresses details about multiprocessors and multicomputers, respectively.
+	Subsequently, \autoref{sec.mppa} presents the \mppa processor.
+	Next, \autoref{sec.nanvix} shows an overview of the Nanvix OS.
+	Finally, \autoref{sec.inter-cluster-communication} covers the abstraction
 	concepts in the Inter-Cluster Communication Module.
 
-\section{Multiple Processor Systems}
-\label{sec.multiple-processor-systems}
+	\begin{figure}[t]
+		\centering%
+		\caption{Von Neumann Architecture Model.}%
+		\label{fig:neumann}%
+		\includegraphics[width=.7\textwidth]{neumann.pdf}%
+		\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+	\end{figure}
+
+	In the early days of electronic digital computing, John Von Neumann
+	proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
+	As illustrated in \autoref{fig:neumann}, this model describes a \cpu,
+	also called core, that loads instructions and data from a \mmu,
+	dealing with inputs and generating outputs from/to I/O Devices.
+	Modern processors still follow this model, but some components and
+	behaviors are specialized or replicated to increase performance.
 
 	According to Tanenbaum~\cite{tanenbaum:4ed}, there are three models of
 	modern multiple processor architectures.
@@ -20,24 +38,13 @@
 	The sections below address the two first models presenting significant
 	hardware and software concepts for the present undergraduate dissertation.
 
-	\subsection{Multiprocessors}
+	\section{Multiprocessors}
 	\label{sec.multiprocessors}
 
-		\begin{figure}[t]
-			\centering%
-			\caption{Von Neumann Architecture Model.}%
-			\label{fig:neumann}%
-			\includegraphics[width=.7\textwidth]{neumann.pdf}%
-			\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-		\end{figure}
-
-		In the early days of electronic digital computing, John Von Neumann
-		proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
-		As illustrated in \autoref{fig:neumann}, this model describes a \cpu,
-		also called core, that loads instructions and data from a \mmu,
-		dealing with inputs and generating outputs from/to I/O Devices.
-		Modern processors still follow this model, but some components and
-		behaviors are specialized or replicated to increase performance.
+		\todo[inline]{
+			The explanation of concurrency issues in this paragraph is confusing.
+			LOOKS IN THE PDF (Odorico's revision).
+		}
 
 		In this context, a shared-memory multiprocessor is a computer system
 		in which two or more \cpus share full access to a common \ram~\cite{tanenbaum:4ed}.
@@ -81,12 +88,12 @@
 			The firsts \uma multiprocessors were bus-based architectures where
 			the \cpu wait for the bus channel stays free to perform a memory
 			access, as illustrated in \autoref{fig:uma}(a).
-			When the number of cores scale, the bus traffic begin to be a
+			When the number of cores scale, the bus traffic becomes a
 			bottleneck of the system.
 			To solve this problem, a small but fast memory level, called cache,
 			is added to each \cpu, as depicted in \autoref{fig:uma}(b).
-			The cache allowed readings to be resolved locally, reducing traffic
-			to the main memory.
+			The cache allowed successive readings to be resolved locally,
+			reducing traffic to the main memory.
 			However, many problems of inconsistency and ordering of operations
 			on memory arose with the advent of caches.
 			For instance, when a write operation dirties a memory address in
@@ -94,6 +101,10 @@
 			Equally important, it is necessary to ensure a specific order in
 			the concurrent operations on a given address through different caches.
 			The protocols that guarantee these properties are called cache-coherence protocols.
+
+			\todo{
+				It needs a proper citation about the paragraph's theme here.
+			}
 
 			\begin{figure}[t]
 				\centering%
@@ -105,12 +116,12 @@
 
 			Nevertheless, the number of cores in \uma multiprocessors are limited
 			to a few dozens of \cpus.
-			Thus, to allow hundreds of cores to communicate, \autoref{fig:numa} illustrated
+			Thus, to allow hundreds of cores to communicate, \autoref{fig:numa} illustrates
 			as that \numa machines provide a single address space visible to all \cpus
 			through an interconnection network.
 			Therefore, distributing a virtual memory space among local physics memories,
 			the access is guaranteed via load and store instructions.
-			Although the time to access to remote memory is slower than to local ones,
+			Although the time to access the remote memory is slower than to local ones,
 			this granted that all \uma programs will be able to run on \numa machines
 			but with worse performance.
 
@@ -168,7 +179,7 @@
 			complete computer systems on a single chip.
 			All these cores are linked to each other by an on-chip network-based
 			communications subsystem, called \noc.
-			The \noc improve scalability and power consumption compared to other
+			The \noc improves scalability and power consumption compared to other
 			communication subsystem designs.
 
 		\subsubsection{Multiprocessor \oss}
@@ -230,7 +241,7 @@
 			distributed dynamically to any \cpus.
 			However, when adopting a centralized approach, the master can become
 			the bottleneck of the system if it can not handle the number of the
-			incoming requisition.
+			incoming requisitions.
 
 			\begin{figure}[t]
 				\centering%
@@ -258,7 +269,7 @@
 			In some cases, in order to extract the maximum performance from a system, it will be
 			necessary to redesign the whole process from scratch.
 
-	\subsection{Multicomputers}
+	\section{Multicomputers}
 	\label{sec.multicomputers}
 
 		Increasing the number of cores and still providing a shared memory in a
@@ -392,6 +403,7 @@
 				The low-level mechanisms discussed above allow \cpus on different
 				computers to communicate through the messages exchange by
 				send/receive primitives.
+				\todo{Confusing phrase (vvvvvvv).}
 				The basic configuration needed for send primitive is knowing the
 				recipient identifier and the message.
 				Moreover, the receive primitive needs to identify which of
@@ -400,7 +412,7 @@
 
 				\begin{figure}[t]
 					\centering%
-					\caption{Calls Types.}%
+					\caption{Synchronous and Asynchronous Calls.}%
 					\label{fig:calls-types}%
 
 					\subcaptionminipage[fig:call-sync]%
@@ -523,10 +535,10 @@
 \label{sec.nanvix}
 
 	Current research efforts on Nanvix \os focus on the programmability and portability
-	challenges that have arisen with \textit{lightweight \manycores}~\cite{christgau2017, gamell2012, serres2011}.
+	challenges that have arisen with \lightweight \manycores~\cite{christgau2017, gamell2012, serres2011}.
 	We believe that significant barriers will still arise in this scenario, and the
 	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019}. 
-	In this context, the Nanvix \os aims improving programmability and
+	In this context, the Nanvix \os aims to improve programmability and
 	software portability in lightweight manycores by means of a fully-featured
 	\posix-compliant \os~\cite{penna:compas19}.
 	It follows a multi-kernel design where OS services are scattered across cores and
@@ -538,18 +550,23 @@
 	regions and name resolution.
 	It exports both the client and server interfaces, both developed above
 	the \microkernel services.
-	On top of the \hal, The \microkernel follows the Master-Slave \os model
+	On top of the \hal, the \microkernel follows the Master-Slave \os model
 	to avoid the problem of the lack of coherence of many manycores.
 	It shall run in each cluster and provide bare bones system abstractions,
 	such as thread management, thread synchronization,
 	virtual memory support and communication services.
 	And finally, the next section will introduce \hal.
 
-	\subsection{Hardware Abstract Layer (HAL)}
+	\section{Hardware Abstract Layer (HAL)}
 	\label{sec.hal}
 
+		\todo[inline]{
+			This section should focus on showing what is already available.
+			Leave the contribution of the work to the development section.
+		}
+
 		Nanvix \os proposes a generic and flexible \hal around the
-		intrinsic architectural characteristics of the \textit{lightweight \manycores}.
+		intrinsic architectural characteristics of the \lightweight \manycores.
 		In this undergraduate dissertation, we  focus on the development of \hal
 		to \mppa~\cite{DeDinechin2013-1}.
 		However, other efforts have also been done for other platforms such
@@ -558,7 +575,7 @@
 		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 		the \hal belongs to one level below.
 		It is the first layer on top of the hardware and should provide a standard
-		view of these emerging processors for a client applications, \eg \os.
+		view of these emerging processors for a client application, \eg \os.
 		As illustrated in \autoref{fig:hal-struct}, this \hal is structured in
 		two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
 
@@ -586,11 +603,11 @@
 		The \textit{Processor Abstraction Layer}, in particular, embraces
 		architectural features related to multiple clusters.
 		The \textit{Inter-Cluster Communication Module}, the focus of
-		this undergraduate dissertation, exports three main abstractions to allow the
-		cluster to exchange data between them, based on ideas proposed along with the
-		\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
+		this undergraduate dissertation, exports three main abstractions
+		to allow data exchange among clusters, based on ideas proposed
+		along with the \nodeos distributed runtime system~\cite{DeDinechin2013-1}.
 		Lastly, the \textit{Monitoring and Debugging Module}, as the
-		name shows, exports routines to aid debugging and extraction
+		name suggests, exports routines to aid debugging and extraction
 		of diagnostics about hardware metrics, such as the number of
 		page-fault or detour taken.
 
@@ -601,13 +618,13 @@
 			exported by \hal and which will be implemented on the \mppa.
 			They are the \sync, \mailbox, and \portal abstraction.
 			The purpose of developing more specific abstractions than
-			send and receive primitives, described in \autoref{sec.multicomputers-user-sw},
-			is to provide more precise and easy-to-use mechanisms for
-			\os and client applications.
+			send and receive primitives, is to provide more precise and easy-to-use
+			mechanisms for \os and client applications.
 			On top of them, it is possible to create all kinds of essential
 			services such as message passing and synchronization,
 			to more elaborate services such as shared memory regions~\cite{penna:rmen}.
 
+			\todo[inline]{The following paragraph is confusing. Refactor.}
 			A related point to consider is that mechanisms described below refer
 			to interactions between distinct clusters only.
 			As described in \autoref{sec.multicomputers-user-sw}, these system
@@ -708,7 +725,7 @@
 				However, the operation is only allowed in one direction with a flow control mechanism,
 				where the receiver cluster warns the sender cluster when it is ready to receive.
 		
-	\subsection{Communication Services for the Nanvix Microkernel}
+	\section{Communication Services for the Nanvix Microkernel}
 	\label{sec.communication-services}
 	
 		The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication},

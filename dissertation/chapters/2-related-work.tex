@@ -1,7 +1,7 @@
 \chapter{Related Work}
-\label{ch.related-works}
+\label{ch.related-work}
 
-The proposal of this work is related to several other research works.
+The proposal of this work is related to several other research work.
 First, some research papers describing state-of-the-art \textit{lightweight} \manycores
 processors will be cited. Further, research on different \oss
 proposed for such processors will be highlighted.
@@ -9,8 +9,8 @@ proposed for such processors will be highlighted.
 \section{Lightweight Manycore Processors}
 \label{sec.works.manycores}
 
-	In addition to \mppa, many works exemplify the wide variety of architectural
-	possibilities of \textit{lightweight} \manycores.
+	In addition to \mppa, many research studies exemplify the wide variety of
+	architectural possibilities of \textit{lightweight} \manycores.
 	For instance, Olofsson \etal~\cite{olofsson2014} introduce \epiphany as a
 	high-performance energy-efficient \manycore architecture suitable for
 	real-time embedded systems.
@@ -21,21 +21,26 @@ proposed for such processors will be highlighted.
 	The three \nocs, named rMesh, cMesh, and xMesh, are independent and scalable.
 	They implement a packet-switched model with four duplex links at every node.
 	When a node wants to read a remote data, first, it sends a read request over
-	the rMesh and wait for a signal to arrive on cMesh.
+	the rMesh and waits for a signal to arrive on cMesh.
+		\todo{"On the another hand" does not make sense.}
 	On the another hand, the write operation allows the node to continue running
 	while data is tranfered through over xMesh.
 
+		\todo{"On the another hand" does not make sense AGAIN.}
 	On the other hand, for help and facilitate on the \manycore processor design,
-	Wallentowitz \etal~\cite{Wallentowitz2013} presents the open-source framework
-	\optimsoc which allows build \manycore \soc and simulate them on a computer or
-	synthesize them on a \fpga.
+	Wallentowitz \etal~\cite{Wallentowitz2013} presents the open-source \optimsoc
+	framework, which allows build a
+		\manycore \soc \todo[inline]{Maybe this is not correct, reread the paper.}
+	and simulate it on a computer or
+	synthesize it on an \fpga.
 	The \pe are \openrisc~\footnote{https://opencores.org/openrisc}
+		\todo[inline]{The number is with extra space.}
 	processor organized in tiles.
 	The central architectural element is the LISNoC, a \textit{packet-switched \noc}
 	that implements virtual channels to avoid message-dependent deadlocks.
 	The LISNoC support various network topologies, depending only on the tiles organization.
 	Precisely, a \textit{network adapter} handles the memory transfers between
-	tile and the memory and provide hardware means to a message-passing communication
+	tile and the memory and provides hardware means to a message-passing communication
 	model among tiles.
 	The tiles organization and the network topology also allows handling communication
 	in three different ways.
@@ -43,17 +48,17 @@ proposed for such processors will be highlighted.
 	message-exchange between the tiles.
 	Second, by using a partitioned global address space scattered through the
 	local memories of the tiles, the network adapter can perform \mpu-like memory
-	address translation hiding the exchange of messages but without providing cache coherence.
+	address translation hiding the exchange of messages without providing cache coherence.
 	Finally, Wallentowitz \etal study policy of write-through snooping to provide
 	a global memory shared among tiles with cache coherence.
 
 	Similarly, Kurth \etal~\cite{Kurth2017} introduce the \hero, which unites an \arm
-	host processor with a fully modifiable \riscv \manycore implemented on a \fpga.
+	host processor with a fully modifiable \riscv \manycore implemented on an \fpga.
 	The \pmca uses a multi-cluster design and also relies on multi-banked memory, called \spm.
-	The data caches had substituted to a multi-channel \dma engine that copy data
-	between a shared L1 \spm and remote \spms or shared main memory.
+	Multi-channel \dma engines had substituted the data caches, transferring data between
+	a shared L1 \spm and all remote \spms or a shared main memory.
 	Communication to main memory passes through software-managed lightweight \rab.
-	The \rab performs the translation of the virtual-to-physical address similar to an \mmu.
+	The \rab performs the translation of the virtual-to-physical address, likes an \mmu.
 	In this way, clusters can share virtual address pointers.
 	Besides, exists different designs for the shared instruction caches and
 	top-level interconnection such as bus or \noc.
@@ -67,19 +72,19 @@ proposed for such processors will be highlighted.
 	of the machines based on distributed systems ideas.
 	Assuming the cores are independent nodes of a network, they build the tradicional
 	\os functionalities as fully-featured processes.
-	This processes communicate via message-passing and does not share the internal
+	These processes communicate via message-passing and do not share the internal
 	structures of the \os.
 	The work showed how expensive it is to maintain a state of the \os through
 	shared-memory instead of exchanging messages and the subsequent increase of
 	the complexity of cache-coherence protocols.
-	The \multikernel implementation, named Barelfish, follow three design principles.
+	The \multikernel implementation, named Barelfish, follows three design principles.
 	First, \textit{Make all inter-core communication explicit} turns the system
 	amenable to human or automated analysis because processes communicate only
 	through well-defined interfaces.
 	Second, \textit{Make \os structures hardware-neutral} makes the hardware-independent
-	code easy to debug, optimize, and facilitates the deploy the \os for new
+	code easy to debug, optimize, and facilitates the deployment of \os for new
 	processor types, avoiding rework.
-	And lastly, \textit{View \os state as replicated instead of shared} improve system
+	And lastly, \textit{View \os state as replicated instead of shared} improves system
 	scalability.
 
 	In Wisniewski~\cite{Wisniewski2014} \etal, the concept of scalability was pushed
@@ -87,11 +92,13 @@ proposed for such processors will be highlighted.
 	The principal motivation is the creation of an \os that simultaneously supports
 	programmability, through support \linux \api, and provides a lightweight kernel
 	to performance, scalability, and reliability.
-	The \os, named \mos, provide as much of the hardware resources as
-	possible to the \hpc applications. On the other hand, the Linux kernel
+	The \os, named \mos, provides as much of the hardware resources as
+	possible to the \hpc applications.
+		\todo{"On the another hand" does not make sense AGAIN.}
+	On the other hand, the Linux kernel
 	component acts as a service that provides Linux functionalities.
 
-	In like manner, Kluge \etal~\cite{kluge2014} developed the \moosca.
+	Similarly, Kluge \etal~\cite{kluge2014} developed the \moosca.
 	With \moosca, they introduce abstractions that are easily composed, called Nodes,
 	Channels and, Servers.
 	Where Nodes represent execution resources, Channels represent communication
@@ -123,6 +130,7 @@ proposed for such processors will be highlighted.
 	However, due to the domain for which these processors were designed, they end up
 	presenting several differences among them at the hardware level.
 
+		\todo{"On the another hand" does not make sense AGAIN.}
 	On the other hand, \autoref{sec.works.os} presents studies of \oss that focus on
 	mitigating these differences in order to provide greater programmability and portability.
 	Nevertheless, they span the entire development spectrum, delivering to end-users
@@ -135,4 +143,5 @@ proposed for such processors will be highlighted.
 	on the aspects that make it challenging to work with \manycores.
 	Thus, different \oss and services can be developed and disseminated by various
 	architectures that implement this perspective.
+		\todo[inline]{Weird phrase, "So consequently?".}
 	So consequently, the applications that run on top of them.
