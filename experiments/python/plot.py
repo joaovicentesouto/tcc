@@ -1,27 +1,79 @@
-import sys
-import pandas as pd
-import matplotlib.pyplot as plt
+# import sys
+# import pandas as pd
+# import matplotlib.pyplot as plt
 
-filename = sys.argv[1]
+# CPU_FREQ = 400000000
+# KB = 1024
+# MB = 1024 * KB
 
-df = pd.read_csv(filename, sep=';')
+# def plot_latency(df):
 
-# df['nslaves']= df.iloc[:, 2:4].sum(axis=1)
-# df['ms']= df['latency'] / 1000
+#     if df['kernel'][0] == 'pingpong':
+#         pass
+#     else:
 
-pieces = df.shape[0] / 50
-buffersizes = ['4096', '8192', '16384', '32768', '65536']
-data = {'4096':[], '8192':[], '16384':[], '32768':[], '65536':[]}
+#         without_io = int(df.shape[0] / 2)
+#         pieces     = int(without_io / 40)
 
-for i in range(0, int(pieces)):
-    slaves = df['nioclusters'][i * 50] + df['ncclusters'][i * 50]
-    ms = df['latency'][i*50 : (i+1)*50].mean() / 1000
+#         data = []
+#         for i in range(0, pieces):
+#             slaves = df['ncclusters'][i * 40]
+#             ms = (df['latency'][i * 40 : (i + 1) * 40].mean() / slaves) * 1000000
 
-    data[str(df['buffersize'][i * 50])].append([slaves, ms])
+#             data.append([slaves, ms])
 
-for size in buffersizes:
-    df_mean = pd.DataFrame(data[size], columns=['nslaves', 'ms'])
+#         df_mean = pd.DataFrame(data, columns=['nslaves', 'ms'])
+#         titlename = df['abstraction'][0] + " " + df['kernel'][0] + " Without IO1 (slave)"
+#         ax = df_mean.plot.bar(x='nslaves', y='ms', rot=0, title=titlename)
+#         plt.show()
 
-    titlename = df['abstraction'][0] + " " + df['kernel'][0] + " " + size
-    ax = df_mean.plot.bar(x='nslaves', y='ms', rot=0, title=titlename)
-    plt.show()
+#         data = []
+#         for i in range(0, pieces):
+#             slaves = df['ncclusters'][without_io + i * 40] + 1
+#             ms = (df['latency'][without_io + i * 40 : without_io + (i + 1) * 40].mean() / slaves) * 1000000
+
+#             data.append([slaves, ms])
+
+#         df_mean = pd.DataFrame(data, columns=['nslaves', 'ms'])
+#         titlename = df['abstraction'][0] + " " + df['kernel'][0] + " With IO1 (slave)"
+#         ax = df_mean.plot.bar(x='nslaves', y='ms', rot=0, title=titlename)
+#         plt.show()
+
+# def plot_throughput(df):
+
+#     if df['kernel'][0] == 'pingpong':
+#         pass
+#     elif df['kernel'][0] == 'broadcast' or df['kernel'][0] == 'sather':
+
+#         # # Transform
+#         df['latency']    = df['latency'] / CPU_FREQ
+#         # df['buffersize'] = df['buffersize'] / KB
+#         df['buffersize'] = df['buffersize'].apply(lambda x: int(x / KB))
+#         df['throughput'] = (df['volume'] / df['latency']) / MB
+
+#         print(df[-10:-1])
+#         return
+
+#         offset = 14 * 40 * 5 + 1
+#         data = []
+#         for i in range(0, 5):
+#             if df['ncclusters'][offset + i * 40] != 16:
+#                 print("ERRRRRO")
+#                 # continue
+
+#             buffersize = df['buffersize'][offset + i * 40]
+#             throughput = df['throughput'][offset + i * 5 : offset + (i + 1) * 5].mean()
+
+#             data.append([buffersize, throughput])
+
+#         df_mean = pd.DataFrame(data, columns=['buffersize', 'throughput'])
+#         titlename = df['abstraction'][0] + " " + df['kernel'][0]
+#         ax = df_mean.plot.bar(x='buffersize', y='throughput', rot=0, title=titlename)
+#         plt.show()
+
+# df = pd.read_csv(sys.argv[1], sep=';')
+
+# if df['abstraction'][0] == 'mailbox':
+#     plot_latency(df)
+# else:
+#     plot_throughput(df)

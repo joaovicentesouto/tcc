@@ -9,13 +9,19 @@ data = []
 
 if df['kernel'][0] == 'pingpong':
     for index, row in df.iterrows():
+
+        if index < 10:
+            continue
+
         data.append([row['abstraction'], row['kernel'], 1, 1, row['volume'], row['latency'], row['volume']])
 
 elif df['kernel'][0] == 'allgather':
     limit = df.shape[0] / 2
 
     for index, row in df.iterrows():
-        if index < limit:
+        if (index % 50) < 10:
+            continue
+        elif index < limit:
             data.append([row['abstraction'], row['kernel'], 1, (row['slaves'] - 1), int(row['volume'] / (row['slaves'] - 1)), row['latency'], row['volume']])
         else:
             data.append([row['abstraction'], row['kernel'], 2, (row['slaves'] - 2), int(row['volume'] / (row['slaves'] - 1)), row['latency'], row['volume']])
@@ -29,6 +35,8 @@ else:
         if row['kernel'] == 'gather':
             buffersize = int(row['volume'] / row['slaves'])
 
+        if (index % 50) < 10:
+            continue
         if index < limit:
             data.append([row['abstraction'], row['kernel'], 0, (row['slaves']), buffersize, row['latency'], row['volume']])
         else:
