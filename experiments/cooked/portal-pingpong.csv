@@ -1,14 +1,4 @@
 abstraction;kernel;nioclusters;ncclusters;buffersize;latency;volume
-portal;pingpong;1;1;4096;915633;4096
-portal;pingpong;1;1;4096;914449;4096
-portal;pingpong;1;1;4096;911535;4096
-portal;pingpong;1;1;4096;913301;4096
-portal;pingpong;1;1;4096;913781;4096
-portal;pingpong;1;1;4096;914274;4096
-portal;pingpong;1;1;4096;913721;4096
-portal;pingpong;1;1;4096;913152;4096
-portal;pingpong;1;1;4096;912598;4096
-portal;pingpong;1;1;4096;913296;4096
 portal;pingpong;1;1;4096;913643;4096
 portal;pingpong;1;1;4096;913705;4096
 portal;pingpong;1;1;4096;912887;4096

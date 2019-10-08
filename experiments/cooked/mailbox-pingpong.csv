@@ -1,14 +1,4 @@
 abstraction;kernel;nioclusters;ncclusters;buffersize;latency;volume
-mailbox;pingpong;1;1;120;91927;120
-mailbox;pingpong;1;1;120;91473;120
-mailbox;pingpong;1;1;120;91919;120
-mailbox;pingpong;1;1;120;93280;120
-mailbox;pingpong;1;1;120;91726;120
-mailbox;pingpong;1;1;120;93159;120
-mailbox;pingpong;1;1;120;93269;120
-mailbox;pingpong;1;1;120;93309;120
-mailbox;pingpong;1;1;120;91639;120
-mailbox;pingpong;1;1;120;93117;120
 mailbox;pingpong;1;1;120;91981;120
 mailbox;pingpong;1;1;120;93356;120
 mailbox;pingpong;1;1;120;93288;120
