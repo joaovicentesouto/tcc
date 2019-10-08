@@ -557,7 +557,7 @@
 	virtual memory support and communication services.
 	And finally, the next section will introduce \hal.
 
-	\section{Hardware Abstract Layer (HAL)}
+	\subsection{Hardware Abstract Layer (HAL)}
 	\label{sec.hal}
 
 		\todo[inline]{
@@ -567,8 +567,9 @@
 
 		Nanvix \os proposes a generic and flexible \hal around the
 		intrinsic architectural characteristics of the \lightweight \manycores.
-		In this undergraduate dissertation, we  focus on the development of \hal
+		\underline{In this undergraduate dissertation}, we focus on the development of \hal
 		to \mppa~\cite{DeDinechin2013-1}.
+			\todo[inline]{It is more about a specific part of the HAL.}
 		However, other efforts have also been done for other platforms such
 		as~\optimsoc~\cite{Wallentowitz2013}.
 
@@ -725,7 +726,7 @@
 				However, the operation is only allowed in one direction with a flow control mechanism,
 				where the receiver cluster warns the sender cluster when it is ready to receive.
 		
-	\section{Communication Services for the Nanvix Microkernel}
+	\subsection{Communication Services for the Nanvix Microkernel}
 	\label{sec.communication-services}
 	
 		The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication},
