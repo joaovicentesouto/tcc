@@ -1,3 +1,4 @@
+abstraction;kernel;slaves;latency;volume
 portal;allgather;2;41558;4096
 portal;allgather;2;8516;4096
 portal;allgather;2;70023;4096
