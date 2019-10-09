@@ -493,7 +493,9 @@
 	to coordinate the cores and the local resource balancing, and
 	follows a multicomputer model in inter-cluster communication.
 
-	As illustrated by \autoref{fig:mppa-arch}, the used version of
+	As illustrated by \autoref{fig:mppa-arch},
+		\todo{Passive voice}
+	the used version of
 	the architecture, called Bostan, has 256 general-purpose cores and
 	32 firmware cores, called \pes and \rms, respectively.
 	The processor use 28~mm CMOS technology and all cores run at 500~MHz.
@@ -503,6 +505,7 @@
 
 	Each \ccluster features 16 \pes, an \rm, an \noc interface and 2~MB of \sram.
 	The hardware does not support cache coherence to improve energy consumption.
+		\todo{Unnecessary On the other hand}
 	On the other hand, \ioclusters have only 4 \rms with cache coherence support,
 	4 \noc interfaces, and 4~MB of local \sram added to 4~GB of \dram.
 	The address space on each cluster is private, forcing exchange messages
@@ -513,7 +516,7 @@
 	Additionally, all clusters have available \dmas associated with each
 	\noc interfaces to handle communication issues.
 
-	As discussed in \autoref{sec.multicomputers-user-sw}, the \noc interfaces
+	As discussed in \autoref{sec.multicomputers-user-sw}, \noc interfaces
 	expose communication resource to perform send and receive primitives
 	like network interfaces.
 	Accurately, they summarize the following resources:
@@ -537,27 +540,50 @@
 	Current research efforts on Nanvix \os focus on the programmability and portability
 	challenges that have arisen with \lightweight \manycores~\cite{christgau2017, gamell2012, serres2011}.
 	We believe that significant barriers will still arise in this scenario, and the
-	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019}. 
+	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019}.
 	In this context, the Nanvix \os aims to improve programmability and
 	software portability in lightweight manycores by means of a fully-featured
 	\posix-compliant \os~\cite{penna:compas19}.
-	It follows a multi-kernel design where OS services are scattered across cores and
+		\todo{Search if -compliant it's correct.}
+	It follows a multikernel design where \os services are scattered across cores and
 	interacting with user processes through a Client-Server approach.
-	
-	Nanvix \os can be divided into three distinct kernels, \multikernel,
-	\microkernel, and \hal.
-	The \multikernel is made up of high-level OS services, \eg shared memory
-	regions and name resolution.
-	It exports both the client and server interfaces, both developed above
-	the \microkernel services.
-	On top of the \hal, the \microkernel follows the Master-Slave \os model
-	to avoid the problem of the lack of coherence of many manycores.
-	It shall run in each cluster and provide bare bones system abstractions,
-	such as thread management, thread synchronization,
-	virtual memory support and communication services.
-	And finally, the next section will introduce \hal.
+	Consequently, using concepts familiar to \os users benefits the focus of the research,
+	even if the implementation in practice is directed to manycores processors.
 
-	\subsection{Hardware Abstract Layer (HAL)}
+		\todo[inline]{
+			Insert here a paragraph describing the types of applications aims to support by Nanvix
+		}
+	
+	There are three distinct layers of kernels that make up the Nanvix \os, namely \multikernel,
+	\microkernel, and \hal.
+	The next sections will introduce the concepts and problems addressed by each layers.
+
+
+	% The \multikernel is made up of high-level OS services, \eg shared memory
+	% regions and name resolution.
+	% It exports both the client and server interfaces developed atop	the \microkernel services.
+	% The \microkernel, above the \hal, follows the Master-Slave \os model to avoid
+	% cache coherence problems present in many manycores.
+	% It shall run in each cluster and provide bare bones system abstractions,
+	% such as thread management, thread synchronization,
+	% virtual memory support and communication services.
+	% And finally, the next section will introduce \hal.
+
+	\subsection{Nanvix Multikernel}
+	\label{sec.multikernel}
+
+	\subsection{Nanvix Microkernel}
+	\label{sec.microkernel}
+
+		\begin{figure}[t]
+			\centering%
+			\caption{Structural overview of the \microkernel.}%
+			\label{fig:microkernel-struct}%
+			\includegraphics[width=.8\textwidth]{microkernel-struct.png}%
+			\fonte{\citeonline{url:nanvix-microkernel}.}%
+		\end{figure}
+
+	\subsection{Nanvix Hardware Abstract Layer (HAL)}
 	\label{sec.hal}
 
 		\todo[inline]{
@@ -582,7 +608,7 @@
 
 		\begin{figure}[t]
 			\centering%
-			\caption{Structural overview of the proposed \hal.}%
+			\caption{Structural overview of the \hal.}%
 			\label{fig:hal-struct}%
 			\includegraphics[width=.8\textwidth]{hal-struct.pdf}%
 			\fonte{\citeonline{penna:compas19}.}%
