@@ -182,7 +182,7 @@
 			The \noc improves scalability and power consumption compared to other
 			communication subsystem designs.
 
-		\subsubsection{Multiprocessor \oss}
+		\subsubsection{Multiprocessor Operating Systems}
 		\label{sec.multiprocessor-os}
 
 			\oss are a fundamental part of any computer system.
@@ -403,7 +403,7 @@
 				The low-level mechanisms discussed above allow \cpus on different
 				computers to communicate through the messages exchange by
 				send/receive primitives.
-				\todo{Confusing phrase (vvvvvvv).}
+					\todo{Confusing phrase (vvvvvvv).}
 				The basic configuration needed for send primitive is knowing the
 				recipient identifier and the message.
 				Moreover, the receive primitive needs to identify which of
@@ -551,37 +551,13 @@
 	even if the implementation in practice is directed to manycores processors.
 
 		\todo[inline]{
-			Insert here a paragraph describing the types of applications aims to support by Nanvix
+			Insert here a paragraph describing the types of applications aim to support by Nanvix
 		}
 	
-	There are three distinct layers of kernels that make up the Nanvix \os, namely \multikernel,
-	\microkernel, and \hal.
+	There are three distinct layers of kernels that make up the Nanvix \os.
+	In a bottom-up approach of abstraction level, they are namely Nanvix \hal,
+	Nanvix \microkernel, and Nanvix \multikernel.
 	The next sections will introduce the concepts and problems addressed by each layers.
-
-
-	% The \multikernel is made up of high-level OS services, \eg shared memory
-	% regions and name resolution.
-	% It exports both the client and server interfaces developed atop	the \microkernel services.
-	% The \microkernel, above the \hal, follows the Master-Slave \os model to avoid
-	% cache coherence problems present in many manycores.
-	% It shall run in each cluster and provide bare bones system abstractions,
-	% such as thread management, thread synchronization,
-	% virtual memory support and communication services.
-	% And finally, the next section will introduce \hal.
-
-	\subsection{Nanvix Multikernel}
-	\label{sec.multikernel}
-
-	\subsection{Nanvix Microkernel}
-	\label{sec.microkernel}
-
-		\begin{figure}[t]
-			\centering%
-			\caption{Structural overview of the \microkernel.}%
-			\label{fig:microkernel-struct}%
-			\includegraphics[width=.8\textwidth]{microkernel-struct.png}%
-			\fonte{\citeonline{url:nanvix-microkernel}.}%
-		\end{figure}
 
 	\subsection{Nanvix Hardware Abstract Layer (HAL)}
 	\label{sec.hal}
@@ -593,11 +569,12 @@
 
 		Nanvix \os proposes a generic and flexible \hal around the
 		intrinsic architectural characteristics of the \lightweight \manycores.
-		\underline{In this undergraduate dissertation}, we focus on the development of \hal
-		to \mppa~\cite{DeDinechin2013-1}.
-			\todo[inline]{It is more about a specific part of the HAL.}
-		However, other efforts have also been done for other platforms such
-		as~\optimsoc~\cite{Wallentowitz2013}.
+		Currently, \hal has available all the essential modules to run standalone
+		processes for the \mppa~\cite{DeDinechin2013-1}, \optimsoc~~\cite{Wallentowitz2013},
+		and \hero~\cite{Kurth2017} platforms.
+			\todo{Insert others platforms? x86, OpenRISC, etc.}
+		Hence, in this undergraduate dissertation, we will focus on developing
+		inter-cluster communication abstractions for the \mppa processor.
 
 		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 		the \hal belongs to one level below.
@@ -638,146 +615,46 @@
 		of diagnostics about hardware metrics, such as the number of
 		page-fault or detour taken.
 
-		\subsubsection{Inter-Cluster Communication Module}
-		\label{sec.inter-cluster-communication}
+	\subsection{Nanvix Microkernel}
+	\label{sec.microkernel}
 
-			The following sections conceptually present the three abstractions
-			exported by \hal and which will be implemented on the \mppa.
-			They are the \sync, \mailbox, and \portal abstraction.
-			The purpose of developing more specific abstractions than
-			send and receive primitives, is to provide more precise and easy-to-use
-			mechanisms for \os and client applications.
-			On top of them, it is possible to create all kinds of essential
-			services such as message passing and synchronization,
-			to more elaborate services such as shared memory regions~\cite{penna:rmen}.
+		The Nanvix \microkernel proposed, running above the \hal, provide
+		bare bones system abstractions to the client applications.
+		Through a rich system call interface, it follows a Master-Slave \os model
+		to avoid cache coherence issues present in manycores.
+		The management scope of the \microkernel is within a single cluster.
+		The management scope of the microkernel is within a single cluster.
+		System calls and internal subsystems manage local and shared resources
+		available to all cores to maintain the coherence of the \os.
 
-			\todo[inline]{The following paragraph is confusing. Refactor.}
-			A related point to consider is that mechanisms described below refer
-			to interactions between distinct clusters only.
-			As described in \autoref{sec.multicomputers-user-sw}, these system
-			abstractions can use the communication primitives, \ie send and receive
-			primitives, to export more elaborate services.
-			The behavior expected can be simulated both through synchronous calls
-			and asynchronous calls, depending only on hardware support.
-			In the same way, it is worth be noted that the small messaging exchange
-			is decoupled from abstraction to intense data transfer.
-			The motivation for this, as other details, is to exhibit better control
-			over the \qos to the higher layers.
-			For instance, the use of distinct \nocs for each service.
+		There are four subsystems in the \microkernel.
+		\textit{Memory Management} provides a rich memory management and virtual
+		memory support.
+		\textit{Processor Management} implements a rich mechanism to criation,
+		management and protection of threads and its interaction with the memory system.
+		\textit{Device Management} subsystem controls the access to the I/O devices.
+		Lastly, \textit{Communication Facility} provides rich mechanisms and protection of the
+		communication services available.
 
-			\subsubsubsection*{Sync Abstraction}
-			\label{sec.sync-abs}
-
-				\begin{figure}[t]
-					\centering%
-					\caption{Synchronization Abstraction Concept.}%
-					\label{fig:conpt_sync}%
-
-					\subcaptionminipage[fig:conpt_sync-create]%
-						{.7\linewidth}%
-						{N Slaves notify the Master.}%
-						{\includegraphics[width=\linewidth]{sync-create.pdf}}%
-
-					\hfill
-
-					\subcaptionminipage[fig:conpt_sync-open]%
-						{.7\linewidth}%
-						{The Master notify N Slaves.}%
-						{\includegraphics[width=\linewidth]{sync-open.pdf}}%
-
-					\fonte{Developed by the Author.}%
-				\end{figure}
-
-				The \textit{Synchronization Abstraction}, called \sync, proves bare bones
-				for cluster synchronization.
-				From this, it is possible to create distributed barriers.
-				For instance, a set of clusters can wait for a notification coming
-				from a specific cluster.
-				The behavior is analogous to the \posix signal abstraction, but the \sync
-				provides only the case of notification.
-				Specifically, as can be seen in \autoref{fig:conpt_sync}, the
-				cardinality of the operation is N:1, where N clusters wait for 1 Cluster
-				to send a notification.
-
-			\subsubsubsection*{Mailbox Abstraction}
-			\label{sec.mailbox-abs}
-
-				\begin{figure}[t]
-					\centering%
-					\caption{Mailbox Abstraction Concept.}%
-					\label{fig:conpt_mailbox}%
-
-					\subcaptionminipage[fig:conpt_mailbox-logical]%
-						{.5\linewidth}%
-						{Conceptual Overview.}%
-						{\includegraphics[width=\linewidth]{mailbox-logical.pdf}}%
-
-					\hfill
-
-					\subcaptionminipage[fig:conpt_mailbox-flow]%
-						{.6\linewidth}%
-						{Flow of execution: Slave sends a message, Master reads and notifies the sender.}%
-						{\includegraphics[width=\linewidth]{mailbox-flow.pdf}}%
-
-					\fonte{Developed by the Author.}%
-				\end{figure}
-
-				The \textit{Mailbox Abstraction} allows clusters to exchange fixed-size
-				messages with each other.
-				The message was thought to be a relatively small size, usually a few hundred bytes.
-				Similarly, the operation of the \mailbox follows \posix message queue behavior.
-				For example, the message can be used to encode small operations and system
-				control signals.
-				As illustrated in \autoref{fig:conpt_mailbox}, the operation cardinality is N:1,
-				where N senders can transfer one message at a time to a receiver queue.
-				When the receiver consumes a message, it notifies the sender to ensure
-				control of the flow.
-
-			\subsubsubsection*{Portal Abstraction}
-			\label{sec.portal-abs}
-
-				\begin{figure}[t]
-					\centering%
-					\caption{Portal Abstraction Concept: Node 1 create a portal and notify Node 2 to transfer the data.}%
-					\label{fig:conpt_portal}%
-					\includegraphics[width=.65\textwidth]{portal.pdf}%
-					\fonte{Developed by the Author.}%
-				\end{figure}
-
-				Lastly, the \textit{Portal Abstraction} enables two clusters to exchange arbitrary
-				amounts of data.
-				The conceptual idea of the \portal is similar to that implemented in \posix pipes.
-				\autoref{fig:conpt_portal} shows the \portal operation, with cardinality
-				1:1, a cluster pair opens a channel to transfer data.
-				However, the operation is only allowed in one direction with a flow control mechanism,
-				where the receiver cluster warns the sender cluster when it is ready to receive.
-		
-	\subsection{Communication Services for the Nanvix Microkernel}
-	\label{sec.communication-services}
+		\begin{figure}[t]
+			\centering%
+			\caption{Concept Structural overview of the \microkernel.}%
+			\label{fig:microkernel-struct}%
+			\includegraphics[width=.85\textwidth]{microkernel-struct.png}%
+			\fonte{\citeonline{url:nanvix-microkernel}.}%
+		\end{figure}
 	
-		The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication},
-		is designed to export a standard and straightforward communication
-		primitives to different lightweight manycores.
-		These primitives can be used by various types of operating systems
-		and applications.
-		Thus, the module is flexible enough not to impact the performance
-		of the upper layers negatively.
-		For this, it does not provide rich management of the exposed abstractions.
+	\subsection{Nanvix Multikernel}
+	\label{sec.multikernel}
 
-		In this scenario, the communication services of Nanvix Microkernel seek
-		to provide \ipc between distinct clusters.
-		Specifically, these services perform the multiplexing of the hardware
-		resources and the verification of the parameters that will be passed
-		on the communication primitives.
-		Due to the Master-Slave model, the responsibility of protecting,
-		manipulating, and configuring \hal resources is of the master core.
-		The slave core will request operations through a meta-interface,
-		passing the necessary information to the master.
+		\begin{figure}[t]
+			\centering%
+			\caption{Structural overview of the \multikernel.}%
+			\label{fig:microkernel-struct}%
+			\includegraphics[width=.8\textwidth]{multikernel-struct.png}%
+			\fonte{Adapted from \citeonline{Baumann2009}.}%
+		\end{figure}
 
-		Considering that the abstractions make up the fundamental elements of
-		the construction of more complex services, the Microkernel services
-		were responsible for the management and multiplexing of the finite
-		resources for the many cores of a cluster.
-		In total, there are three communication services in the Nanvix Microkernel,
-		each associated with an abstraction of the communication module,
-		analogously named \sync, \mailbox, and \portal services.
+		The \multikernel is made up of high-level OS services, \eg shared memory
+		regions and name resolution.
+		It exports both the client and server interfaces developed atop	the \microkernel services.
