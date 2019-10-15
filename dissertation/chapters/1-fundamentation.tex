@@ -15,7 +15,7 @@
 	Finally, \autoref{sec.inter-cluster-communication} covers the abstraction
 	concepts in the Inter-Cluster Communication Module.
 
-	\begin{figure}[t]
+	\begin{figure}[!tb]
 		\centering%
 		\caption{Von Neumann Architecture Model.}%
 		\label{fig:neumann}%
@@ -67,7 +67,7 @@
 			as fast as every other memory word are called \uma multiprocessors.
 			On the other hand, \numa multiprocessors do not have this property.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Two Bus-Based \uma Multiprocessor Examples.}%
 				\label{fig:uma}%
@@ -106,7 +106,7 @@
 				It needs a proper citation about the paragraph's theme here.
 			}
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{\numa Multiprocessor Example.}%
 				\label{fig:numa}%
@@ -125,7 +125,7 @@
 			this granted that all \uma programs will be able to run on \numa machines
 			but with worse performance.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Flynn's taxonomy.}%
 				\label{fig:flynn}%
@@ -195,7 +195,7 @@
 			such systems.
 			Those models are called Replicated, Master-Slave, and Symmetric \os.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Replicated \os Model.}%
 				\label{fig:replicated-os}%
@@ -221,7 +221,7 @@
 			Finally, replication of the internal \os structures makes this model
 			impractical for systems with memory constraints.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Master-Slave \os Model.}%
 				\label{fig:master-slave-os}%
@@ -243,7 +243,7 @@
 			the bottleneck of the system if it can not handle the number of the
 			incoming requisitions.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Symmetric \os Model.}%
 				\label{fig:smp-os}%
@@ -293,7 +293,7 @@
 				In this way, it is possible to integrate hundreds or even thousands
 				of nodes providing the vision of a single computer.
 
-				\begin{figure}[t]
+				\begin{figure}[!tb]
 					\centering%
 					\caption{Network Topologies Examples.}%
 					\label{fig:net-topologies}%
@@ -354,7 +354,7 @@
 			\subsubsection{Low-Level Communication Software}
 			\label{sec.multicomputers-low-sw}
 
-				\begin{figure}[t]
+				\begin{figure}[!tb]
 					\centering%
 					\caption{Simple Multicomputer Example.}%
 					\label{fig:multicomputer}%
@@ -410,7 +410,7 @@
 				the network interfaces it should configure and where to write the
 				incoming data.
 
-				\begin{figure}[t]
+				\begin{figure}[!tb]
 					\centering%
 					\caption{Synchronous and Asynchronous Calls.}%
 					\label{fig:calls-types}%
@@ -477,7 +477,7 @@
 \section{MPPA-256 Lightweight Manycore Processor}
 \label{sec.mppa}
 
-	\begin{figure}[t]
+	\begin{figure}[!tb]
 		\centering%
 		\caption{Architectural overview of the \mppa processor.}%
 		\label{fig:mppa-arch}%
@@ -541,23 +541,33 @@
 	challenges that have arisen with \lightweight \manycores~\cite{christgau2017, gamell2012, serres2011}.
 	We believe that significant barriers will still arise in this scenario, and the
 	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019}.
-	In this context, the Nanvix \os aims to improve programmability and
-	software portability in lightweight manycores by means of a fully-featured
-	\posix-compliant \os~\cite{penna:compas19}.
 		\todo{Search if -compliant it's correct.}
-	It follows a multikernel design where \os services are scattered across cores and
-	interacting with user processes through a Client-Server approach.
-	Consequently, using concepts familiar to \os users benefits the focus of the research,
-	even if the implementation in practice is directed to manycores processors.
+
+	\begin{figure}[!tb]
+		\centering%
+		\caption{Conceptual Goals of the Nanvix \os.}%
+		\label{fig:hal-struct}%
+		\includegraphics[width=.8\textwidth]{three-p.pdf}%
+		\fonte{Developed by the Author.}%
+	\end{figure}
 
 		\todo[inline]{
 			Insert here a paragraph describing the types of applications aim to support by Nanvix
 		}
-	
+
+	In this context, the Nanvix \os aims to improve programmability and
+	software portability in lightweight manycores by means of a fully-featured
+	\posix-compliant \os~\cite{penna:compas19}.
+
+	The Nanvix \os follows a multikernel design where \os services are scattered across cores and
+	interacting with user processes through a Client-Server approach.
+	Consequently, using concepts familiar to \os users benefits the focus of the research,
+	even if the implementation in practice is directed to manycores processors.
+
 	There are three distinct layers of kernels that make up the Nanvix \os.
 	In a bottom-up approach of abstraction level, they are namely Nanvix \hal,
 	Nanvix \microkernel, and Nanvix \multikernel.
-	The next sections will introduce the concepts and problems addressed by each layers.
+	The next sections will introduce the concepts and problems addressed by each layer.
 
 	\subsection{Nanvix Hardware Abstract Layer}
 	\label{sec.hal}
@@ -583,7 +593,7 @@
 		As illustrated in \autoref{fig:hal-struct}, this \hal is structured in
 		two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
 
-		\begin{figure}[t]
+		\begin{figure}[!tb]
 			\centering%
 			\caption{Structural overview of the \hal.}%
 			\label{fig:hal-struct}%
@@ -636,7 +646,7 @@
 		Lastly, \textit{Communication Facility} provides rich mechanisms and protection of the
 		communication services available.
 
-		\begin{figure}[t]
+		\begin{figure}[!tb]
 			\centering%
 			\caption{Concept Structural overview of the \microkernel.}%
 			\label{fig:microkernel-struct}%
@@ -647,7 +657,7 @@
 	\subsection{Nanvix Multikernel}
 	\label{sec.multikernel}
 
-		\begin{figure}[t]
+		\begin{figure}[!tb]
 			\centering%
 			\caption{Structural overview of the \multikernel.}%
 			\label{fig:microkernel-struct}%
