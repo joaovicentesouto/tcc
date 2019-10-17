@@ -546,9 +546,9 @@
 	\begin{figure}[!tb]
 		\centering%
 		\caption{Conceptual Goals of the Nanvix \os.}%
-		\label{fig:hal-struct}%
-		\includegraphics[width=.8\textwidth]{three-p.pdf}%
-		\fonte{Developed by the Author.}%
+		\label{fig:nanvix-goal}%
+		\includegraphics[width=.8\textwidth]{nanvix-goal.pdf}%
+		\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 	\end{figure}
 
 		\todo[inline]{
@@ -590,15 +590,19 @@
 		the \hal belongs to one level below.
 		It is the first layer on top of the hardware and should provide a standard
 		view of these emerging processors for a client application, \eg \os.
+		
 		As illustrated in \autoref{fig:hal-struct}, this \hal is structured in
 		two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
+
+		\autoref{fig:hal-overview} pictures the three logic layers of the \hal:
+		\textit{Core Abstraction Layer}, \textit{Cluster Abstraction Layer}, and \textit{Processor Abstraction Layer}.
 
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Structural overview of the \hal.}%
-			\label{fig:hal-struct}%
-			\includegraphics[width=.8\textwidth]{hal-struct.pdf}%
-			\fonte{\citeonline{penna:compas19}.}%
+			\label{fig:hal-overview}%
+			\includegraphics[width=.8\textwidth]{nanvix-hal-detailed.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 		\end{figure}
 
 		The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
@@ -649,9 +653,9 @@
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Concept Structural overview of the \microkernel.}%
-			\label{fig:microkernel-struct}%
-			\includegraphics[width=.85\textwidth]{microkernel-struct.png}%
-			\fonte{\citeonline{url:nanvix-microkernel}.}%
+			\label{fig:microkernel-overview}%
+			\includegraphics[width=.85\textwidth]{nanvix-microkernel-overview.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 		\end{figure}
 	
 	\subsection{Nanvix Multikernel}
@@ -660,9 +664,27 @@
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Structural overview of the \multikernel.}%
-			\label{fig:microkernel-struct}%
-			\includegraphics[width=.8\textwidth]{multikernel-struct.png}%
-			\fonte{Adapted from \citeonline{Baumann2009}.}%
+			\label{fig:multikernel-overview}%
+			\includegraphics[width=.8\textwidth]{nanvix-multikernel-overview.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
+		\end{figure}
+
+		\begin{figure}[!tb]
+			\centering%
+			\caption{Possible configurations of a cluster on \multikernel.}%
+			\label{fig:uma}%
+
+			\subcaptionminipage[fig:uma_a]%
+				{.4\linewidth}%
+				{Server cluster.}%
+				{\includegraphics[width=\linewidth]{nanvix-multikernel-service.pdf}}%
+			\hspace{1.5cm}%
+			\subcaptionminipage[fig:uma_b]%
+				{.4\linewidth}%
+				{Application Cluster.}%
+				{\includegraphics[width=\linewidth]{nanvix-multikernel-application.pdf}}%
+
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 		\end{figure}
 
 		The \multikernel is made up of high-level OS services, \eg shared memory
