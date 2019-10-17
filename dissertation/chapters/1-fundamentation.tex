@@ -129,7 +129,7 @@
 				\centering%
 				\caption{Flynn's taxonomy.}%
 				\label{fig:flynn}%
-				
+
 				\subcaptionminipage[fig:flynn-sisd]%
 					{.4\linewidth}%
 					{Single Instruction Single Data.}%
@@ -391,7 +391,7 @@
 				Processors may also have one or more \cpus specialized in
 				communication procedures, called \dma.
 				\dmas can make copies between system memories, send/receive packets
-				without the main \cpus intervention. This reduces considerably wasted cycles due to 
+				without the main \cpus intervention. This reduces considerably wasted cycles due to
 				network interfaces communication and/or main memory access bottlenecks.
 				However, such intermediate copies lead to overhead on system structures,
 				such as cache, \tlb, or page management.
@@ -541,11 +541,11 @@
 	During the 1970s and 1980s, several \os initiatives began to emerge.
 	To prevent \oss from being incompatible with each other, the \ieee creates
 	the \posix standardization.
-	\posix defines interfaces and behaviors expected from an \os, e.g., creation
+	\posix defines interfaces and behaviors expected from an \os, \eg creation
 	and control of processes.
 	Many of these systems ceased to exist, and new ones emerged, but \posix has
 	consolidated and continues to extend to new concepts are born.
-	
+
 	The vast majority of current \oss are designed to work with a small number of cores.
 	As the number of cores increases, certain parts of the \os require redesign.
 	At some point, this rework will be unfeasible.
@@ -570,7 +570,7 @@
 		\centering%
 		\caption{Conceptual Goals of the Nanvix \os.}%
 		\label{fig:nanvix-goal}%
-		\includegraphics[width=.6\textwidth]{nanvix-goal.pdf}%
+		\includegraphics[width=.55\textwidth]{nanvix-goal.pdf}%
 		\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 	\end{figure}
 
@@ -583,92 +583,98 @@
 	\subsection{Nanvix Hardware Abstract Layer}
 	\label{sec.hal}
 
-		\todo[inline]{
-			This section should focus on showing what is already available.
-			Leave the contribution of the work to the development section.
-		}
-
 		Nanvix \os proposes a generic and flexible \hal around the
 		intrinsic architectural characteristics of the \lightweight \manycores.
 		Currently, \hal has available all the essential modules to run standalone
 		processes for the \mppa~\cite{DeDinechin2013-1}, \optimsoc~~\cite{Wallentowitz2013},
 		and \hero~\cite{Kurth2017} platforms.
-			\todo{Insert others platforms? x86, OpenRISC, etc.}
 		Hence, in this undergraduate dissertation, we will focus on developing
-		inter-cluster communication abstractions for the \mppa processor.
+		inter-cluster communication module for the \mppa processor.
 
 		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 		the \hal belongs to one level below.
 		It is the first layer on top of the hardware and should provide a standard
 		view of these emerging processors for a client application, \eg \os.
-		
-		As illustrated in \autoref{fig:hal-struct}, this \hal is structured in
-		two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
-
 		\autoref{fig:hal-overview} pictures the three logic layers of the \hal:
-		\textit{Core Abstraction Layer}, \textit{Cluster Abstraction Layer}, and \textit{Processor Abstraction Layer}.
 
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Structural overview of the \hal.}%
 			\label{fig:hal-overview}%
-			\includegraphics[width=.8\textwidth]{nanvix-hal-detailed.pdf}%
+			\includegraphics[width=.6\textwidth]{nanvix-hal-overview.pdf}%
 			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 		\end{figure}
 
-		The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
-		It provides two modules, \textit{Core Management}, and \textit{Memory Management}.
-		The \textit{Core Management Module} aims to provide to a client application a complete
-		thread synchronization and management system, rich support of handling
-		interrupts/exceptions, and an adequate system call interface.
-		The \textit{Memory Management Module} provides a uniform view of the \tlbs
-		and paging systems with maintenance routines for them and the cache.
-		Therefore, some design decisions are made to create interfaces that are not
-		dependent on the underlying hardware.
-		For example, a context switch mechanism was not provided in the
-		Core Management module because this would force the client \os
-		to write code in assembly, hurting the conceptual idea of the \hal.
+		\begin{description}
 
-		The \textit{Processor Abstraction Layer}, in particular, embraces
-		architectural features related to multiple clusters.
-		The \textit{Inter-Cluster Communication Module}, the focus of
-		this undergraduate dissertation, exports three main abstractions
-		to allow data exchange among clusters, based on ideas proposed
-		along with the \nodeos distributed runtime system~\cite{DeDinechin2013-1}.
-		Lastly, the \textit{Monitoring and Debugging Module}, as the
-		name suggests, exports routines to aid debugging and extraction
-		of diagnostics about hardware metrics, such as the number of
-		page-fault or detour taken.
+			\item[Core Abstraction Layer]
+				encapsulates the management of a single core.
+				It provides a uniform view and maintenance routines for \tlbs, \mmu and cache,
+				a rich support of handling exceptions/traps/interrupts, and
+				access to \pmio.
+				Therefore, some design decisions are made to create interfaces that are not
+				dependent on the underlying hardware.
+				For example, a context switch mechanism was not provided in the
+				\textit{Core Package} because this would force the client \os
+				to write code in assembly, hurting the conceptual idea of the \hal.
+
+			\item[Cluster Abstraction Layer]
+				encapsulates the management of characteristics that affect all cores in a cluster.
+				It provides support for virtual memory, cross-core notification through events,
+				clock counter fetching, and access to I/O resources such as \mmio and \dma.
+
+			\item[Processor Abstraction Layer]
+				embraces architectural features related to multiple clusters.
+				The \textit{Inter-Cluster Communication Module}, the focus of
+				this undergraduate dissertation, provide \noc identification routines and
+				exports three main abstractions to allow synchronizaton and data
+				exchange among clusters, based on ideas proposed along with the
+				\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
+
+		\end{description}
 
 	\subsection{Nanvix Microkernel}
 	\label{sec.microkernel}
 
-		The Nanvix \microkernel proposed, running above the \hal, provide
+		The Nanvix \microkernel, running above the \hal, provide
 		bare bones system abstractions to the client applications.
 		Through a rich system call interface, it follows a Master-Slave \os model
 		to avoid cache coherence issues present in manycores.
-		The management scope of the \microkernel is within a single cluster.
-		The management scope of the microkernel is within a single cluster.
+		The scope of the \microkernel is within a single cluster.
 		System calls and internal subsystems manage local and shared resources
 		available to all cores to maintain the coherence of the \os.
-
-		There are four subsystems in the \microkernel.
-		\textit{Memory Management} provides a rich memory management and virtual
-		memory support.
-		\textit{Processor Management} implements a rich mechanism to criation,
-		management and protection of threads and its interaction with the memory system.
-		\textit{Device Management} subsystem controls the access to the I/O devices.
-		Lastly, \textit{Communication Facility} provides rich mechanisms and protection of the
-		communication services available.
+		\autoref{fig:microkernel-overview} pictures the five logic layers of the \microkernel:
 
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Concept Structural overview of the \microkernel.}%
 			\label{fig:microkernel-overview}%
-			\includegraphics[width=.85\textwidth]{nanvix-microkernel-overview.pdf}%
+			\includegraphics[width=.6\textwidth]{nanvix-microkernel-overview.pdf}%
 			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 		\end{figure}
-	
+
+		\begin{description}
+
+			\item[IPC Facility]
+				encapsulates the rest of this undergraduate dissertation, providing
+				manipulation and protection of the communication services.
+				
+			\item[Thread System]
+				implements a rich mechanism to criation, management and protection of threads
+				and its interaction with the memory system.
+				
+			\item[Memory System] provides a rich memory management and virtual memory support.
+
+			\item[Device System]
+				controls the access to the I/O devices.
+
+			\item[Kernel Call Interface]
+				isolates the \microkernel internal structures through a rich system call interface.
+				The slave cores running a user application send requests through these
+				kernel calls and the master processes them.
+
+		\end{description}
+
 	\subsection{Nanvix Multikernel}
 	\label{sec.multikernel}
 
