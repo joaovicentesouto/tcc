@@ -537,11 +537,23 @@
 \section{Nanvix: An Operating System for Lightweight Manycores}
 \label{sec.nanvix}
 
+	Durante as décadas de 70 e 80, começaram a surgiu várias iniciativas de sistemas operacionais.
+	Para evitar que os sistemas operacionais fossem incompatíveis entre si, a padronização POSIX foi criada.
+	A POSIX define interfaces e características esperadas de um sistema operacional.
+	Por exemplo, o comportamento da criação e controle de processos e threads.
+	Muitos desses sistemas deixaram de existir e novos surgiram, porém, a POSIX conseguiu se consolidar e se modernizar com o tempo até os dias de hoje. 
+	
+	A grande maioria dos sistemas operacionais atuais é projetado para trabalhar com uma quantidade pequenas de núcleos.
+	Conforme a quantidade de núcleos aumenta, certas partes do sistema operacional requerem que sejam reprojetadas.
+	Chegará a hora que esse retrabalho será inviável.
+	Essa constatação levou pesquisadores a estudar alternativas de design para essa nova era de processadores~\cite{FOS, MOS}.
+		\todo[inline]{Repensar a frase a baixo, "Entretanto, ..."}
+	Entretanto, o foco desses sistemas operacionais são direcionados ao melhor desempenho, deixando que aspectos do hardware e decisões de design interfiram em suas interfaces ou em seu comportamento.
+
 	Current research efforts on Nanvix \os focus on the programmability and portability
 	challenges that have arisen with \lightweight \manycores~\cite{christgau2017, gamell2012, serres2011}.
 	We believe that significant barriers will still arise in this scenario, and the
-	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019}.
-		\todo{Search if -compliant it's correct.}
+	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019} SEM PERDER A COMPATIBILIDADE COM OUTROS SISTEMAS.
 
 	\begin{figure}[!tb]
 		\centering%
@@ -550,10 +562,6 @@
 		\includegraphics[width=.8\textwidth]{nanvix-goal.pdf}%
 		\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 	\end{figure}
-
-		\todo[inline]{
-			Insert here a paragraph describing the types of applications aim to support by Nanvix
-		}
 
 	In this context, the Nanvix \os aims to improve programmability and
 	software portability in lightweight manycores by means of a fully-featured
