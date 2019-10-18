@@ -575,8 +575,8 @@
 	\end{figure}
 
 	There are three distinct layers of kernels that make up the Nanvix \os.
-	In a bottom-up approach of abstraction level, they are namely Nanvix \hal,
-	Nanvix \microkernel, and Nanvix \multikernel.
+	In a bottom-up approach of abstraction level, they are namely \textit{Nanvix \hal},
+	\textit{Nanvix \microkernel}, and textit{Nanvix \multikernel}.
 	The next sections will introduce the concepts and problems addressed by
 	each layer.
 
@@ -674,6 +674,26 @@
 				kernel calls and the master processes them.
 
 		\end{description}
+
+		\autoref{fig:microkernel-overview} exemplifies a thread creation on Nanvix \microkernel.
+		When a user thread makes a kernel call, a set of sanity checks are performed
+		to ensure the integrity of the operation.
+		After verifying the correctness of the parameters, the user thread notifies
+		the kernel thread and waits locked.
+		The kernel thread implements a producer/consumer policy and executes requests
+		one at a time.
+		When consuming a request, the master identifies it and performs the necessary operations.
+		In the end, the kernel thread releases the requesting slave.
+		Note that the master core always performs all operations that change internal
+		\os structures.
+
+		\begin{figure}[!tb]
+			\centering%
+			\caption{Execution example of the Nanvix \microkernel.}%
+			\label{fig:microkernel-overview}%
+			\includegraphics[width=.8\textwidth]{nanvix-microkernel-execution.pdf}%
+			\fonte{Developed by the Author.}%
+		\end{figure}
 
 	\subsection{Nanvix Multikernel}
 	\label{sec.multikernel}
