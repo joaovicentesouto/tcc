@@ -550,7 +550,7 @@
 	As the number of cores increases, certain parts of the \os require redesign.
 	At some point, this rework will be unfeasible.
 	This assertion led researchers to study design alternatives for the new era
-	of processors~\cite{wentzlaff_factored_2009, Wisniewski2014}.
+	of processors~\cite{wentzlaff_factored_2009, baumann_multikernel:_2009, Wisniewski2014}.
 	However, the focus of these \oss is on better performance, allowing aspects
 	of hardware and design to interfere with their interfaces and behavior.
 	From the user, it will require considerable development and debugging effort.
@@ -595,6 +595,12 @@
 		the \hal belongs to one level below.
 		It is the first layer on top of the hardware and should provide a standard
 		view of these emerging processors for a client application, \eg \os.
+		At this level, we do not protect internal structures with locks.
+		Thus, the upper-level decides how to protect and multiplex HAL access.
+		On the one hand, a traditional monolithic OS that implements a time-sharing
+		behavior to access internal structures will need to apply locks manually.
+		On the other hand, a master-slave OS not require such strict control,
+		improving its performance.
 		\autoref{fig:hal-overview} pictures the three logic layers of the \hal:
 
 		\begin{figure}[!tb]
@@ -637,7 +643,7 @@
 	\label{sec.microkernel}
 
 		The Nanvix \microkernel, running above the \hal, provide
-		bare bones system abstractions to the client applications.
+		bare bones system abstractions to the client applications\cite{penna:sbesc19}.
 		Through a rich system call interface, it follows a Master-Slave \os model
 		to avoid cache coherence issues present in manycores.
 		The scope of the \microkernel is within a single cluster.
@@ -657,25 +663,28 @@
 
 			\item[IPC Facility]
 				encapsulates the rest of this undergraduate dissertation, providing
-				manipulation and protection of the communication services.
+				manipulation and protection of the inter-cluster communication primitives.
 				
 			\item[Thread System]
-				implements a rich mechanism to criation, management and protection of threads
-				and its interaction with the memory system.
+				implements a rich mechanism to criation, management and protection of threads.
+				This system features schedules, sleep, and wakeup routines of the user threads.
 				
-			\item[Memory System] provides a rich memory management and virtual memory support.
+			\item[Memory System]
+				provides a rich memory management and virtual memory support at cluster-level.
+				It is based in a two-level paging scheme, supports pages of heterogeneous sizes and uses a
+				capabilities system.
 
 			\item[Device System]
-				controls the access to the I/O devices.
+				controls the access to memory and port mapped devices, and provides
+				mechanisms to forward the implementation of rich device drivers to user space.
 
 			\item[Kernel Call Interface]
 				isolates the \microkernel internal structures through a rich system call interface.
-				The slave cores running a user application send requests through these
-				kernel calls and the master processes them.
+				This interface is what really separates user execution from kernel execution.
 
 		\end{description}
 
-		\autoref{fig:microkernel-overview} exemplifies a thread creation on Nanvix \microkernel.
+		\autoref{fig:microkernel-execution} exemplifies a thread creation on Nanvix \microkernel.
 		When a user thread makes a kernel call, a set of sanity checks are performed
 		to ensure the integrity of the operation.
 		After verifying the correctness of the parameters, the user thread notifies
@@ -690,7 +699,7 @@
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Execution example of the Nanvix \microkernel.}%
-			\label{fig:microkernel-overview}%
+			\label{fig:microkernel-execution}%
 			\includegraphics[width=.8\textwidth]{nanvix-microkernel-execution.pdf}%
 			\fonte{Developed by the Author.}%
 		\end{figure}
@@ -698,38 +707,71 @@
 	\subsection{Nanvix Multikernel}
 	\label{sec.multikernel}
 
-		\begin{figure}[!tb]
-			\centering%
-			\caption{Structural overview of the \multikernel.}%
-			\label{fig:multikernel-overview}%
-			\includegraphics[width=.8\textwidth]{nanvix-multikernel-overview.pdf}%
-			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
-		\end{figure}
-
-		\begin{figure}[!tb]
-			\centering%
-			\caption{Possible configurations of a cluster on \multikernel.}%
-			\label{fig:uma}%
-
-			\subcaptionminipage[fig:uma_a]%
-				{.4\linewidth}%
-				{Server cluster.}%
-				{\includegraphics[width=\linewidth]{nanvix-multikernel-service.pdf}}%
-			\hspace{1.5cm}%
-			\subcaptionminipage[fig:uma_b]%
-				{.4\linewidth}%
-				{Application Cluster.}%
-				{\includegraphics[width=\linewidth]{nanvix-multikernel-application.pdf}}%
-
-			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
-		\end{figure}
-
 		% FROM SECTION INTRO
 		% The Nanvix \os follows a multikernel design where \os services are scattered across cores and
 		% interacting with user processes through a Client-Server approach.
 		% Consequently, using concepts familiar to \os users benefits the focus of the research,
 		% even if the implementation in practice is directed to manycores processors.
 
-		The \multikernel is made up of high-level OS services, \eg shared memory
-		regions and name resolution.
-		It exports both the client and server interfaces developed atop	the \microkernel services.
+		% The \multikernel is made up of high-level OS services, \eg shared memory
+		% regions and name resolution.
+		% It exports both the client and server interfaces developed atop	the \microkernel services.
+
+		Nanvix \multikernel is inspired by research that explores the parallel and distributed nature
+		of multicore and manycore processors~\cite{wentzlaff_factored_2009, baumann_multikernel:_2009, Wisniewski2014}.
+		By treating the processor as a network of independent cores, it is possible to cover concepts
+		of modern distributed systems by implementing a client-server workload.
+		So, multikernel design splits \os services into server processes that run in
+		isolation from user processes.
+		Through the message-passing approach, user processes request the kernel services.
+
+		At this level of abstraction, it is possible to exploit distributed system concepts as:
+
+		\begin{description}
+
+			\item[Local Automation:] Each node can be independent of the other nodes, providing
+				security, locking, access, integrity, and failover mechanisms.
+
+			\item[Replication Independence:] Servers and data can be replicated across multiple
+				nodes transparently and automatically synchronized.
+
+			\item[Non-dependency on a central node:] When replicating servers, the system no
+				longer relies on a central node.
+				It eliminates the risk of having a single point of failure that would affect all other nodes.
+				A central node could also become overloaded, resulting in loss of system performance.
+
+			\item[Location Transparency:] Users should not need to know where the servers
+				or data are located. For instance, a name server can control name resolution.
+
+		\end{description}
+
+		\autoref{fig:multikernel-overview} shows a possible configuration of a manycore using the Nanvix \multikernel.
+		Clusters located at the corners of the processor run multikernel services to serve a nearby subset of clusters better.
+		In the other clusters, we can see the distribution of two distinct applications.
+		An application does not necessarily need to use all cores in a cluster.
+		Now, looking carefully at a cluster, Nanvix \microkernel always reserves a single core for kernel execution,
+		making the other cores available for application execution.
+
+		\begin{figure}[!tb]
+			\centering%
+			\caption{Possible configurations on Nanvix \multikernel.}%
+			\label{fig:multikernel-overview}%
+			\includegraphics[width=.6\textwidth]{nanvix-multikernel-overview.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
+		\end{figure}
+
+		To enable Nanvix \os compliance with \posix, we can create services that implement standardized interfaces.
+		From this perspective, user applications are easily ported to run on Nanvix \multikernel, where client-side
+		interfaces abstract the communication with servers distributed on the processor.
+		\autoref{fig:multikernel-shm} exemplifies the existing layers to provide the \shm service.
+		When opening an \shm, the client does not have to worry about where data will be allocated or whether
+		other cores in other clusters are operating over the same memory region.
+		Consequently, we provide greater programmability and software portability for manycores processors.
+
+		\begin{figure}[!tb]
+			\centering%
+			\caption{\posix Compliance Example on Nanvix \multikernel.}%
+			\label{fig:multikernel-shm}%
+			\includegraphics[width=.9\textwidth]{nanvix-multikernel-shm.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
+		\end{figure}
