@@ -51,7 +51,7 @@
 	For instance, to achieve \exascale (10$^{18}$ \flops), the US Department of Defense
 	issued a report stipulating the energy efficiency of a supercomputer should be
 	around 50 GFLOPS/W~\cite{darpa:exascale}.
-	Recently, a new class of parallel processors, called \textit{lightweight} \manycores,
+	Recently, a new class of parallel processors, called \lightweight \manycores,
 	has emerged to provide high parallelism with low power consumption.
 	These processors own the following characteristics:
 
@@ -63,7 +63,7 @@
 		\item Frequently feature a heterogeneous configuration.
 	\end{itemize}
 
-	Some industry-successful examples of \textit{lightweight} \manycores are
+	Some industry-successful examples of \lightweight \manycores are
 	the \mppa~\cite{DeDinechin2013-1};
 	the \epiphany~\cite{olofsson2014}; and
 	the \taihulight~\cite{zheng2015}.
@@ -83,30 +83,27 @@
 			address spaces and small local memories require data tiling and prefetching to be
 			handled by the software~\cite{Castro2016};
 		\item \textit{Heterogeneous configuration:} the different programmable components on
-			\textit{lightweight} \manycores turns the actual deployment of applications in a
+			\lightweight \manycores turns the actual deployment of applications in a
 			complex task~\cite{barbalace2015}.
 	\end{itemize}
 
 % Challenges and Problem Definition
 	Part of these challenges derives from existing runtimes and \oss.
-% Primeiro as dificuldades que não são superadas apenas com um runtime.
 	On the one hand, runtimes do not hide the characteristics of hardware making
 	software development more challenging and nonportable, \eg do not allow
 	direct access to non-local data, nor the manipulation of them in a transparent way.
-% Concluir com a idea de que runtimes não proporcionam resource sharing and multiplexing.
 	Thus, fundamental \os mechanisms, such as core multiplexing, core partitioning,
 	and process and data migration, may not be addressed.
-% E, então, mencionar esforços em designs alternativos.
 	On the another hand, the complicated portability and scalability of traditional \oss with a
 	monolithic kernels, which were designed to homogeneous hardwares, is leading to alternative
 	\os designs~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
 
 % Goals and Contributions
-	We believe that \oss for the next-generation of \textit{lightweight} \manycores must be
+	We believe that \oss for the next-generation of \lightweight \manycores must be
 	redesigned from scratch to cope with their tight architectural constraints.
 	Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009}
 	is under investigations~\cite{penna2017-1,penna2017-2,penna2019}.
-	The \nanvix \multikernel features a generic and flexible \hal for \textit{lightweight} \manycores that
+	The \nanvix \multikernel features a generic and flexible \hal for \lightweight \manycores that
 	addresses the key issues encountered in the development for these processors.
 	On top of the \nanvix \hal, we are simultaneously designing and implementing a \microkernel
 	that provides bare bones system abstractions for each cluster.
@@ -136,9 +133,8 @@
 		\item Define Communication Services and their strategies in the use of the Inter-Cluster
 			Communication Module in the context of a microkernel-based \os;
 		\item Implement the Communication Services for the \nanvix Microkernel;
-		\item Analyze the performance of the proposed implementation using specific micro-benchmarks.
-			
-			\todo{Write about the experiments.}
+		\item Analyze the performance of the proposed implementation using specific micro-benchmarks
+			that simulates the typical collective communication routines of the \mpi.
 	\end{itemize}
 
 \section{Organization Of The Work}
@@ -147,7 +143,6 @@
 	The remainder of this work is organized as follows.
 	\autoref{ch.fundamentation} describes the background needed to accomplish this work.
 	\autoref{ch.related-work} discusses the principal related work.
-	\autoref{ch.proposal} presents the proposal for this work.
-	\autoref{ch.schedule} shows the schedule for the second phase of the
-	development of the undergraduate dissertation.
+	\autoref{ch.development} presents the development of this work.
+	\autoref{ch.experiments} describes the experiments accomplished and discusses the results.
 	Finally, \autoref{ch.conclusions} concludes this work.
