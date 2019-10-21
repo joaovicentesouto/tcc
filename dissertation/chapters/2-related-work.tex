@@ -11,7 +11,7 @@ proposed for such processors will be highlighted.
 
 	In addition to \mppa, many research studies exemplify the wide variety of
 	architectural possibilities of \lightweight \manycores.
-	For instance, Olofsson \etal~\cite{olofsson2014} introduce \epiphany as a
+	For instance, \citeonline{olofsson2014} introduce \epiphany as a
 	high-performance energy-efficient \manycore architecture suitable for
 	real-time embedded systems.
 	The architecture consists of nodes communicating through three 2D mesh \nocs
@@ -28,7 +28,7 @@ proposed for such processors will be highlighted.
 
 		\todo{"On the another hand" does not make sense AGAIN.}
 	On the other hand, for help and facilitate on the \manycore processor design,
-	Wallentowitz \etal~\cite{Wallentowitz2013} presents the open-source \optimsoc
+	\citeonline{Wallentowitz2013} presents the open-source \optimsoc
 	framework, which allows build a
 		\manycore \soc \todo[inline]{Maybe this is not correct, reread the paper.}
 	and simulate it on a computer or
@@ -52,7 +52,7 @@ proposed for such processors will be highlighted.
 	Finally, Wallentowitz \etal study policy of write-through snooping to provide
 	a global memory shared among tiles with cache coherence.
 
-	Similarly, Kurth \etal~\cite{Kurth2017} introduce the \hero, which unites an \arm
+	Similarly, \citeonline{Kurth2017} introduce the \hero, which unites an \arm
 	host processor with a fully modifiable \riscv \manycore implemented on an \fpga.
 	The \pmca uses a multi-cluster design and also relies on multi-banked memory, called \spm.
 	Multi-channel \dma engines had substituted the data caches, transferring data between
@@ -66,7 +66,7 @@ proposed for such processors will be highlighted.
 \section{Operating Systems for Lightweight Manycores}
 \label{sec.works.os}
 
-	Baumann \etal~\cite{Baumann2009} proposed a new \os architecture for scalable multicore
+	\citeonline{Baumann2009} proposed a new \os architecture for scalable multicore
 	systems, called \multikernel.
 	In their perspective, the future of the \oss is on embracing the networked nature
 	of the machines based on distributed systems ideas.
@@ -87,7 +87,7 @@ proposed for such processors will be highlighted.
 	And lastly, \textit{View \os state as replicated instead of shared} improves system
 	scalability.
 
-	In Wisniewski~\cite{Wisniewski2014} \etal, the concept of scalability was pushed
+	In \citeonline{Wisniewski2014} \etal, the concept of scalability was pushed
 	to the extreme, thinking on \hpc.
 	The principal motivation is the creation of an \os that simultaneously supports
 	programmability, through support \linux \api, and provides a lightweight kernel
@@ -98,7 +98,7 @@ proposed for such processors will be highlighted.
 	On the other hand, the Linux kernel
 	component acts as a service that provides Linux functionalities.
 
-	Similarly, Kluge \etal~\cite{kluge2014} developed the \moosca.
+	Similarly, \citeonline{kluge2014} developed the \moosca.
 	With \moosca, they introduce abstractions that are easily composed, called Nodes,
 	Channels and, Servers.
 	Where Nodes represent execution resources, Channels represent communication
@@ -109,7 +109,7 @@ proposed for such processors will be highlighted.
 	However, in order to deal with interferences in shared resources,
 	usage policies are introduced to make possible the prediction of system behavior.
 
-	Finally, Nightingale \etal~\cite{nightingale2009} presents the Helios \os to
+	Finally, \citeonline{nightingale2009} presents the Helios \os to
 	simplify the process of writing, deploy, and optimize an application across
 	heterogeneous cores.
 	They use the microkernel model, naming \textit{satellite kernel}, to export
