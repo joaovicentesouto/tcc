@@ -15,65 +15,105 @@
 	\section{\mppa Hardware Resources}
 	\label{sec.mppa-hardware-resources}
 
-			\todo[inline]{Resume or eliminate the first two paragraphs}
+		A realização da comunicação de baixo-nível depende principalmente de dois recursos do MPPA, interrupções e DMA.
+		Primeiro, o sistema de interrupções permitirá a configuração de tratadores das mensagens recebidas e enviadas através da NoC.
+		Isto possibilitará a assíncronidade das operações, ponto vital em um sistema operacional baseado no microkernel onde o mestre não pode ficar bloqueado esperando a conclusão de uma única comunicação.
+		Caso não fosse possível realizar pelo menos a recebimento de dados/sinais de forma assíncrona, sérios problemas de desempenho seriam introduzidos as camadas superiores.
+		Segundo, o DMA é o mediador de todas as comunicações, síncrona ou assíncronas.
+		Neste ponto, um hypervisor virtualiza a DMA, separando-a em duas estruturas lógicas globais, uma para a CNoC e outra para a DNoC.
+		Cada estrutura agrupa os registradores para a configuração de envio/recebimento, e campos de bits indicando quais slots geraram uma interrupção.
+		O hypervisor executa nos RM e controla, de forma assíncrona, as permissões de leitura/escrita dos registradores virtualizados.
 
-		Ideally, the \hal implementation should not use any other layer of software to
-		deal with the hardware. However, the implementation of \hal in \mppa uses the
-		software stack made available by Kalray.
-		In order to replace them, a great effort would be necessary, fleeing the proposal
-		of this work and the scope of Pedro H. Penna's Ph.D.
-			\todo{Missing citation.}
-		The main reasons for this decision were due to poor documentation and the
-		inability to execute kernel mode code freely.
+		O controle efetuado pelo hypervisor não engloba a alocação ou manipulação dos recursos.
+		Consequentemente, nós controlamos manualmente a alocação através de campos de bits.
+		Caso uma operação não esteja em conformidade com esse controle, é retornado um valor negativo indicando o erro, \eg alocação de um recursos que já está em uso.
+		Assim, não inflingimos custos indesejados ao transferir a responsabilidade de tratar o erro a camada superior, \eg aguardar a liberação do recurso.
+		A manipulação envolve procedimentos para configurar a DMA com as devidas permissões e garantir a coerência de cache das operações.
+		Por fim, vale ressaltar que não é realizado nenhum controle de concorrência sobre as estruturas comentadas para que não seja inflingido um sobre custo sobre a abordagem do microkernel.
+		Caso a HAL seja utilizada para desenvolver um sistema operacional monolítico, o mesmo deve se preocupar em garantir a atômicidade das operações.
 
-		\begin{figure}[!tb]
-			\centering
-			\caption{Software Stack of the \mppa.}
-			\label{fig:software-stack}
-			\includegraphics[width=.6\textwidth]{software-stack.png}
-			\fonte{\mppa Processor Documentation.}
-		\end{figure}
+		A DMA coordena três linhas de interrupções.
+		Duas delas são utilizados pela DNoC para notificar o recebimento de dados e o término do envio dados por uma microthread.
+		A CNoC só utiliza uma linha para o recebimento de sinais porque o envio de um sinal, um valor de 64-bits, é realizado explicitamente pelo core.
+		Para casa linha de interrupção existe um handler específico mas todos executam um algoritmo similar.
+		O Algoritmo 3 exemplifica de forma simplificada o comportamento de um handler.
+		Devido ao fato que a linha apenas notifica qual o tipo de interrupção, é responsabilidade do manipulador varrer os recursos de cada interface procurando quem acionou a interrupção.
+		Para que não ocorresse a perda de interrupções, foi garantido que o manipulador fosse reentrante.
+		Devido ao abordagem do microkernel, os problemas de concorrência são amenizados porque apenas o mestre trata as interrupções.
 
-		\autoref{fig:software-stack} shows the software stack present for the \mppa.
-		From it, only the \textit{hypervisor} and the \textit{vbsp} library will be used.
-		The hypervisor is used to virtualize the hardware by separating it into logical
-		parts, e.g., core virtualization, \cnoc virtualization, and \dnoc virtualization.
-		It also exports routines to manage, configure, and allow access to virtual resources.
-		The vbsp library, in turn, provides primitives for setting interrupts.
+		\begin{algorithm}
+			\caption{Simplified algorithm of a handler.}%
+			\label{alg.noc-handler}%
+			\begin{algorithmic}[1]
+				\Require $status[M_{Interfaces}][N_{Resources}]$, interrupt status of a resource.
+				\Require $handlers[M_{Interfaces}][N_{Resources}]$, interrupt handler of a resource.
+				\Procedure{handler}{}
+				\For {$i \in [1, M_{Interfaces}]$}
+					\For {$j \in [1, N_{Resources}$}
+						\If {$status[i][j] == Interrupt Triggered$}
+							\State {$clean\_status(i, j)$}
+							\State {$handlers[i][j](i, j)$}
+						\EndIf
+					\EndFor
+				\EndFor
+				\EndProcedure
+			\end{algorithmic}%
+			\fonte{Developed by the Author.}%
+		\end{algorithm}
 
-		The inter-cluster communication module will use \hal's interfaces and the
-		virtualizations of the \cnoc and \dnoc interfaces directly.
-		Virtual \noc interfaces export asynchronous calls to acquire read and write
-		permission from registers that configure the hardware for a given task.
-		For instance, the \dma configuration for asynchronous sending is abstracted by
-		$\mu$threads that are configured through global structures provided by the hypervisor.
+		NoC interfaces have two identifiers, one physical (physical ID) and the other logical (logical ID).
+		The hardware uses the physical IDs in the process of data routing through \noc.
+		Each physical ID is associated with a Logical ID to enable the identification
+		of \noc nodes outside the \hal.
+		Logical IDs primarily serve to disassociate the node identification from the
+		architecture that implements the \hal.
+			\autoref{tab.noc-node-id} shows the physical and logical identification performed for \mppa.
+		A Tabela 3 apresenta o mapeamento proposto para os clusters do MPPA.
+		Cada linha apresenta um dos três grupos de nós NoC existentes (primeira coluna), agrupados por proximidade dos identificadores lógicos.
+		Dentro de cada grupo temos um conjunto de identificadores físicos (segunda coluna) que são mapeados 1 para 1 para os identificadores lógicos (terceira coluna).
+		Por exemplo, o grupo IO0 constitui 4 interfaces, onde são mapeadas da seguinte forma: $128 \to 0$, $129 \to 1$, $130 \to 2$, e $131 \to 4$.
+		A ordem do mapeamento foi definido desta maneira para ficar mais intuitivo qual das interfaces, por consequência o cluster, é o mestre.
+		Neste caso, o nó mestre é o identificador lógico 0, IO0.
+		Este processo facilita na sincronização após o boot.
 
 		\begin{table}[!tb]
 			\centering%
 			\caption{Cluster Identification.}%
-			\label{tab.cluster-id}%
+			\label{tab.noc-node-id}%
 
-			\begin{tabular}{|l|l|l|}
-				\hline
-										& \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
-				\textbf{\ccluster}   & 0-15                 & 0-15                \\ \hline
-				\textbf{\iocluster0} & 128-131              & 16-19               \\ \hline
-				\textbf{\iocluster1} & 192-195              & 20-23               \\ \hline
+			\begin{tabular}{l|l|l|}
+				\cline{2-3}
+									                       & \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\iocluster0}} & 128-131              & 0-3                 \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\iocluster1}} & 192-195              & 4-7                 \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\ccluster}}   & 0-15                 & 8-23                \\ \hline
 			\end{tabular}
 
 			\fonte{Developed by the Author.}%
 		\end{table}
 
-		Clusters have two identifiers, one physical (physical ID) and the
-		other logical (logical ID).
-		The hardware uses the physical IDs in the process of data routing through \noc.
-		The logical IDs are numbers associated with the physical IDs so
-		that it is possible to identify the clusters outside the \hal.
-		Logical IDs primarily serve to disassociate the cluster
-		identification from the architecture in which \hal is implemented.
-			\todo{Explain the table.}
-		\autoref{tab.cluster-id} shows the physical and logical
-		identification performed for \mppa.
+		Para performar a comunicação entre dois clusters, é necessário que o emissor conheça qual o identificador do recurso que o receptor irá usar.
+		Por exemplo, caso o receptor configurar o recebimento em um recurso da DNoC e o emissor enviar para outro, mesmo que o identificador lógico esteja correto, o receptor não será notificado do recebimento.
+		Por esta razão, os slots de recebimento da CNoC e DNoC foram particionados por abstração.
+		Dentro de uma partição, cada slot é mapeado para um identificador lógico, \eg 0 à 23.
+		Em contraste, os canais de envio não possuem essa necessidade, podendo ser alocados dinâmicamente.
+		Entretanto, um conceito importante do Nanvix HAL é prover os recursos necessários para uma determinada operação sem realizar otimizações desnecessárias.
+		Desta forma, os canais de envio também foram particionados por abstração de modo que sejam reservados durando toda uma operação.
+		A tabela 3 apresenta cada abstração, identificados pelas linhas, e o particionamento dos recursos de cada NoC, identificados pelas colunas.
+		Como a abstração sync não realiza a troca de dados arbitrários, não foram reservados recursos na DNoC.
+		Vale notar que mesmo com a não utilização de todos os slots existentes, o aperfeiçoamento da programabilidade por não necessitar especificar os recursos de uma comunicação é um ponto forte do design das abstrações.
+
+		% To perform the communication between two clusters, it is necessary that the
+		% sender knows which resource the receiver will use.
+		% For this reason, the receive slot range of \cnoc and \dnoc are partitioned
+		% by abstraction, as can be seen in \autoref{tab.noc-resources}.
+		% Within a partition, each slot is associated with a cluster's logical ID.
+		% 	\todo{"On the another hand" does not make sense AGAIN.}
+		% On the other hand, the transmitters use sending channels that need to
+		% be reserved during the entire operation.
+		% 	\todo{Explain the table.}
+		% Thus, \autoref{tab.noc-resources} also shows the partition of the
+		% sending channels for each abstraction.
 
 		\begin{table}[!tb]
 			\centering%
@@ -91,18 +131,6 @@
 
 			\fonte{Developed by the Author.}%
 		\end{table}
-
-		To perform the communication between two clusters, it is necessary that the
-		sender knows which resource the receiver will use.
-		For this reason, the receive slot range of \cnoc and \dnoc are partitioned
-		by abstraction, as can be seen in \autoref{tab.noc-resources}.
-		Within a partition, each slot is associated with a cluster's logical ID.
-			\todo{"On the another hand" does not make sense AGAIN.}
-		On the other hand, the transmitters use sending channels that need to
-		be reserved during the entire operation.
-			\todo{Explain the table.}
-		Thus, \autoref{tab.noc-resources} also shows the partition of the
-		sending channels for each abstraction.
 
 	\section{Low-Level Communication}
 	\label{sec.low-level-comm}
