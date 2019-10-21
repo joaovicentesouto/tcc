@@ -1,7 +1,542 @@
-\chapter{Implementation of the HAL}
+\chapter{Development}
 \label{ch.development}
 
-In this Chapter, ...
+		\todo[inline]{Need a better introducion. vvvv--- this is only copy-paste from proposal.}
 
-\section{Overview}
-    In this section, I will write about ...
+	The proposal for this undergraduate dissertation is made up of two main contributions.
+	The first contribution will be the port of the \textit{Inter-Cluster Communication Module},
+	described in \autoref{sec.inter-cluster-communication}, for the \mppa manycore processor.
+	The second contribution will be the design and implementation of communication services
+	of a master-slave \os, described in \autoref{sec.communication-services}, on top of
+	the inter-cluster communication module.
+
+		\todo[inline]{Insert some paragraphs about the development, tools, etc.}
+
+	\section{\mppa Hardware Resources}
+	\label{sec.mppa-hardware-resources}
+
+			\todo[inline]{Resume or eliminate the first two paragraphs}
+
+		Ideally, the \hal implementation should not use any other layer of software to
+		deal with the hardware. However, the implementation of \hal in \mppa uses the
+		software stack made available by Kalray.
+		In order to replace them, a great effort would be necessary, fleeing the proposal
+		of this work and the scope of Pedro H. Penna's Ph.D.
+			\todo{Missing citation.}
+		The main reasons for this decision were due to poor documentation and the
+		inability to execute kernel mode code freely.
+
+		\begin{figure}[!tb]
+			\centering
+			\caption{Software Stack of the \mppa.}
+			\label{fig:software-stack}
+			\includegraphics[width=.6\textwidth]{software-stack.png}
+			\fonte{\mppa Processor Documentation.}
+		\end{figure}
+
+		\autoref{fig:software-stack} shows the software stack present for the \mppa.
+		From it, only the \textit{hypervisor} and the \textit{vbsp} library will be used.
+		The hypervisor is used to virtualize the hardware by separating it into logical
+		parts, e.g., core virtualization, \cnoc virtualization, and \dnoc virtualization.
+		It also exports routines to manage, configure, and allow access to virtual resources.
+		The vbsp library, in turn, provides primitives for setting interrupts.
+
+		The inter-cluster communication module will use \hal's interfaces and the
+		virtualizations of the \cnoc and \dnoc interfaces directly.
+		Virtual \noc interfaces export asynchronous calls to acquire read and write
+		permission from registers that configure the hardware for a given task.
+		For instance, the \dma configuration for asynchronous sending is abstracted by
+		$\mu$threads that are configured through global structures provided by the hypervisor.
+
+		\begin{table}[!tb]
+			\centering%
+			\caption{Cluster Identification.}%
+			\label{tab.cluster-id}%
+
+			\begin{tabular}{|l|l|l|}
+				\hline
+										& \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
+				\textbf{\ccluster}   & 0-15                 & 0-15                \\ \hline
+				\textbf{\iocluster0} & 128-131              & 16-19               \\ \hline
+				\textbf{\iocluster1} & 192-195              & 20-23               \\ \hline
+			\end{tabular}
+
+			\fonte{Developed by the Author.}%
+		\end{table}
+
+		Clusters have two identifiers, one physical (physical ID) and the
+		other logical (logical ID).
+		The hardware uses the physical IDs in the process of data routing through \noc.
+		The logical IDs are numbers associated with the physical IDs so
+		that it is possible to identify the clusters outside the \hal.
+		Logical IDs primarily serve to disassociate the cluster
+		identification from the architecture in which \hal is implemented.
+			\todo{Explain the table.}
+		\autoref{tab.cluster-id} shows the physical and logical
+		identification performed for \mppa.
+
+		\begin{table}[!tb]
+			\centering%
+			\caption{Partitions of \noc resources by abstraction.}%
+			\label{tab.noc-resources}%
+
+			\begin{tabular}{l|l|l|l|l|}
+				\cline{2-5}
+														& \multicolumn{2}{c|}{\textbf{\cnoc}}    & \multicolumn{2}{c|}{\textbf{\dnoc}}    \\ \cline{2-5}
+														& \textbf{RX Slot} & \textbf{TX Channel} & \textbf{RX Slot} & \textbf{TX Channel} \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\mailbox}} & 0-23             & 0                   & 0-23             & 1-3                 \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\portal}}  & 24-47            & 1-2                 & 24-47            & 4-7                 \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\sync}}    & 48-71            & 3                   & -                & -                   \\ \hline
+			\end{tabular}
+
+			\fonte{Developed by the Author.}%
+		\end{table}
+
+		To perform the communication between two clusters, it is necessary that the
+		sender knows which resource the receiver will use.
+		For this reason, the receive slot range of \cnoc and \dnoc are partitioned
+		by abstraction, as can be seen in \autoref{tab.noc-resources}.
+		Within a partition, each slot is associated with a cluster's logical ID.
+			\todo{"On the another hand" does not make sense AGAIN.}
+		On the other hand, the transmitters use sending channels that need to
+		be reserved during the entire operation.
+			\todo{Explain the table.}
+		Thus, \autoref{tab.noc-resources} also shows the partition of the
+		sending channels for each abstraction.
+
+	\section{Low-Level Communication}
+	\label{sec.low-level-comm}
+
+		The following sections conceptually present the three abstractions
+		exported by \hal and which will be implemented on the \mppa.
+		They are the \sync, \mailbox, and \portal abstraction.
+		The purpose of developing more specific abstractions than
+		send and receive primitives, is to provide more precise and easy-to-use
+		mechanisms for \os and client applications.
+		On top of them, it is possible to create all kinds of essential
+		services such as message passing and synchronization,
+		to more elaborate services such as shared memory regions~\cite{penna:rmen}.
+
+			\todo[inline]{The following paragraph is confusing. Refactor.}
+		A related point to consider is that mechanisms described below refer
+		to interactions between distinct clusters only.
+		As described in \autoref{sec.multicomputers-user-sw}, these system
+		abstractions can use the communication primitives, \ie send and receive
+		primitives, to export more elaborate services.
+		The behavior expected can be simulated both through synchronous calls
+		and asynchronous calls, depending only on hardware support.
+		In the same way, it is worth be noted that the small messaging exchange
+		is decoupled from abstraction to intense data transfer.
+		The motivation for this, as other details, is to exhibit better control
+		over the \qos to the higher layers.
+		For instance, the use of distinct \nocs for each service.
+
+		\subsection{Sync Abstraction}
+		\label{sec.sync-abs}
+
+			\begin{figure}[!tb]
+				\centering%
+				\caption{Synchronization Abstraction Concept.}%
+				\label{fig:conpt_sync}%
+
+				\subcaptionminipage[fig:conpt_sync-create]%
+					{.7\linewidth}%
+					{N Slaves notify the Master.}%
+					{\includegraphics[width=\linewidth]{sync-create.pdf}}%
+
+				\hfill
+
+				\subcaptionminipage[fig:conpt_sync-open]%
+					{.7\linewidth}%
+					{The Master notify N Slaves.}%
+					{\includegraphics[width=\linewidth]{sync-open.pdf}}%
+
+				\fonte{Developed by the Author.}%
+			\end{figure}
+
+				\todo[inline]{Make it more detailed.}
+
+			The \textit{Synchronization Abstraction}, called \sync, proves bare bones
+			for cluster synchronization.
+			From this, it is possible to create distributed barriers.
+			For instance, a set of clusters can wait for a notification coming
+			from a specific cluster.
+			The behavior is analogous to the \posix signal abstraction, but the \sync
+			provides only the case of notification.
+			Specifically, as can be seen in \autoref{fig:conpt_sync}, the
+			cardinality of the operation is N:1, where N clusters wait for 1 Cluster
+			to send a notification.
+
+			\subsection*{Sync Implementation}
+
+\begin{listing}[!tb]
+\caption{HAL Sync Interface for Receiver Cluster.}
+\label{code:sync-receiver}
+\begin{minted}{c}
+/**
+ * @brief Allocates and configures the receiving side of
+ * the synchronization point.
+ */
+int sync_create(const int *nodes, int nnodes, int type);
+
+/* @brief Releases and cleans receiver buffer. */
+int sync_unlink(int syncid);
+
+/* @brief Wait signal on a specific synchronization point. */
+int sync_wait(int syncid);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
+
+\begin{listing}[!tb]
+\caption{HAL Sync Interface for Sender Cluster.}
+\label{code:sync-sender}
+\begin{minted}{c}
+/**
+ * @brief Allocates and configures the sending side of
+ * the synchronization point.
+ */
+int sync_open(void);
+
+/* @brief Releases the sender resources on a specific DMA channel. */
+int sync_close(int syncid);
+
+/* @brief Send signal on a specific synchronization point. */
+int sync_signal(int syncid, const int *nodes, int nnodes, int type);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
+
+				As described in \autoref{sec.sync-abs}, the \sync abstraction allows the
+				creation of distributed barriers.
+				The \sync can be decomposed into two sets of functions, where the
+				\autoref{code:sync-receiver} shows the functions to one clusters
+				that will receive signals, and \autoref{code:sync-sender} shows the
+				ones that will send.
+				Each set allocates different types of resources.
+				Accurately, the receiver must allocate a receive slot of the frame,
+				and the transmitter will allocate a transmitter channel of the frame.
+				Because of this, 24 synchronization points can be created (\texttt{sync\_create()}),
+				and only 1 can be opened (\texttt{sync\_open()}) per cluster.
+
+				Sync functions implement two different types, depending on who is the
+				cluster master of the synchronization operation.
+				Specifically, every synchronization operation is separated into a
+				master cluster and one or more slave clusters defined by the
+				\texttt{ONE\_TO\_ALL} and \texttt{ALL\_TO\_ONE} constants.
+				The master always takes the role "ONE" and the slaves the "ALL" role.
+				The following subsections describe the behavior and implementation
+				details of each type of synchronization.
+
+				\subsubsection*{\texttt{ONE\_TO\_ALL} Synchronization Type}
+
+					The slave clusters involved in this type of synchronization expect
+					a signal sent from the master.
+					To do this, each slave will perform the function \texttt{sync\_create()}
+					by allocating the resource associated with the master's logical ID.
+					After allocating and configuring the resource, the cluster can
+					continue to run without worrying about whether the signal was received.
+					When the time comes to perform the synchronization, it is enough for
+					the slave to run the function.
+					Upon receiving the signal, the sync will auto reconfigure the resource
+					and free the cluster.
+
+					The cluster master, in turn, must perform the complementary functions.
+					That is, first, the master will allocate a sending resource by calling
+					the \texttt{sync\_open()} function.
+					After that, it should inform the set of clusters that will receive the
+					signal on its logical ID.
+					Finally, both can release sync resources by calling release functions,
+					\texttt{sync\_unlink()} for the slave and \texttt{sync\_close()} to
+					the master.
+
+				\subsubsection*{\texttt{ALL\_TO\_ONE} Synchronization Type}
+
+					Analogously to the previous type, the only changes are just on
+					the roles in which they are reversed.
+					The master must perform the functions of creation, configuration
+					of the resources, and waiting for the numerous signals.
+					The resource allocated by the master must be the resource
+					associated with its logical ID.
+						\todo{"On the another hand" does not make sense AGAIN.}
+					On the other hand, the slaves will perform the functions of
+					opening and sending a signal on the master's logical ID.
+
+		\subsection{Mailbox Abstraction}
+		\label{sec.mailbox-abs}
+
+			\begin{figure}[!tb]
+				\centering%
+				\caption{Mailbox Abstraction Concept.}%
+				\label{fig:conpt_mailbox}%
+
+				\subcaptionminipage[fig:conpt_mailbox-logical]%
+					{.5\linewidth}%
+					{Conceptual Overview.}%
+					{\includegraphics[width=\linewidth]{mailbox-logical.pdf}}%
+
+				\hfill
+
+				\subcaptionminipage[fig:conpt_mailbox-flow]%
+					{.6\linewidth}%
+					{Flow of execution: Slave sends a message, Master reads and notifies the sender.}%
+					{\includegraphics[width=\linewidth]{mailbox-flow.pdf}}%
+
+				\fonte{Developed by the Author.}%
+			\end{figure}
+
+				\todo[inline]{Make it more detailed.}
+
+			The \textit{Mailbox Abstraction} allows clusters to exchange fixed-size
+			messages with each other.
+			The message was thought to be a relatively small size, usually a few hundred bytes.
+			Similarly, the operation of the \mailbox follows \posix message queue behavior.
+			For example, the message can be used to encode small operations and system
+			control signals.
+			As illustrated in \autoref{fig:conpt_mailbox}, the operation cardinality is N:1,
+			where N senders can transfer one message at a time to a receiver queue.
+			When the receiver consumes a message, it notifies the sender to ensure
+			control of the flow.
+
+			\subsection*{Mailbox Implementation}
+
+\begin{listing}[!tb]
+\caption{HAL Mailbox Interface for Receiver Cluster.}
+\label{code:mailbox-receiver}
+\begin{minted}{c}
+/* @brief Creates a mailbox. */
+int mailbox_create(int nodenum);
+
+/* @brief Destroys a mailbox. */
+int mailbox_unlink(int mbxid);
+
+/* @brief Reads data from a mailbox. */
+ssize_t mailbox_read(int mbxid, void * buffer, size_t size);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
+
+\begin{listing}[!tb]
+\caption{HAL Mailbox Interface for Sender Cluster.}
+\label{code:mailbox-sender}
+\begin{minted}{c}
+/* @brief Opens a mailbox. */
+int mailbox_open(int nodenum);
+
+/* @brief Closes a mailbox. */
+int mailbox_close(int mbxid);
+
+/* @brief Writes data to a mailbox. */
+ssize_t mailbox_write(int mbxid, const void * buffer, size_t size);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
+
+				As explained in \autoref{sec.mailbox-abs}, the \mailbox abstraction
+				allows the exchange of small messages of sizes between clusters similar
+				to a \posix message queue.
+				The \mailbox is more complex than the previous abstraction because it
+				uses both \dnoc and \cnoc resources.
+				When executing the function \texttt{mailbox\_create()}, the receiver
+				will only use one \dnoc receive slot and configures it with a kernel
+				memory space, sufficient to receive 24 messages.
+				The messages are composed of the header identifying the sender
+				and a body containing the useful message.
+				When consuming a message (\texttt{mailbox\_read()}), the receiver
+				will copy the message to the user's buffer and send a signal
+				to the sender informing him that it can send another message.
+				If there is no message in the buffer, the receiver is blocked
+				until a message is received.
+
+					\todo{"On the another hand" does not make sense AGAIN.}
+				On the other hand, the sender will allocate a receive signal slot (\texttt{mailbox\_open()})
+				before sending its first message to the receiver.
+				If the sender attempts to send a message before the receiver has consumed
+				the previous message, the sender will be blocked waiting for the sender's notification.
+				In this way, flow control is guaranteed, and the sender will not overwrite
+				messages unread by the receiver.
+				Sending the message will always be executed asynchronously
+				because it will always be necessary to copy the message to
+				a kernel buffer that contains the header.
+				Thus, the sender will never be blocked waiting for the message to be sent.
+				In this configuration, the number of mailbox creations (\texttt{mailbox\_create()})
+				within a cluster is limited to 1 because of the \cnoc sending channel.
+					\todo{"On the another hand" does not make sense AGAIN.}
+				On the other hand, the maximum number of opens (\texttt{mailbox\_open()}) is
+				4 because of the limitation of the available \dnoc sending channels.
+
+		\subsection{Portal Abstraction}
+		\label{sec.portal-abs}
+
+			\begin{figure}[!tb]
+				\centering%
+				\caption{Portal Abstraction Concept: Node 1 create a portal and notify Node 2 to transfer the data.}%
+				\label{fig:conpt_portal}%
+				\includegraphics[width=.65\textwidth]{portal.pdf}%
+				\fonte{Developed by the Author.}%
+			\end{figure}
+
+				\todo[inline]{Make it more detailed.}
+
+			Lastly, the \textit{Portal Abstraction} enables two clusters to exchange arbitrary
+			amounts of data.
+			The conceptual idea of the \portal is similar to that implemented in \posix pipes.
+			\autoref{fig:conpt_portal} shows the \portal operation, with cardinality
+			1:1, a cluster pair opens a channel to transfer data.
+			However, the operation is only allowed in one direction with a flow control mechanism,
+			where the receiver cluster warns the sender cluster when it is ready to receive.
+
+			\subsection*{Portal Implementation}
+
+\begin{listing}[!tb]
+\caption{HAL Portal Interface for Receiver Cluster.}
+\label{code:portal-receiver}
+\begin{minted}{c}
+/* @brief Creates a portal. */
+int portal_create(int local);
+
+/* @brief Destroys a portal. */
+int portal_unlink(int portalid);
+
+/* @brief Allow sender to transfer data. */
+int portal_allow(int portalid, int remote);
+
+/* @brief Reads data asynchronously from a portal. */
+ssize_t portal_read(int portalid, void * buffer, size_t size);
+
+/**
+ * @brief Waits for an asynchronous operation on a
+ * portal to complete.
+ */
+int portal_wait(int portalid);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
+
+\begin{listing}[!tb]
+\caption{HAL Portal Interface for Sender Cluster.}
+\label{code:portal-sender}
+\begin{minted}{c}
+/* @brief Opens a portal. */
+int portal_open(int remote);
+
+/* @brief Closes a portal. */
+int portal_close(int portalid);
+
+/* @brief Writes data to a portal. */
+ssize_t portal_write(int portalid, const void * buffer, size_t size);
+
+/* @brief Writes data asynchronously to a portal. */
+int portal_awrite(int portalid, const void * buffer, size_t size);
+
+/**
+ * @brief Waits for an asynchronous operation on a
+ * portal to complete.
+ */
+int portal_wait(int portalid);
+\end{minted}
+\fonte{Developed by the Author.}
+\end{listing}
+
+				\autoref{sec.portal-abs} showed that the portal abstraction is similar to
+				a \posix pipe with flow control.
+				So, the \portal analogously follows the ideas implemented
+				in the \mailbox with the difference of the option to write,
+				that can be synchronously or asynchronously.
+				The total number of receive data operations (\texttt{portal\_create()})
+				is limited to 2 because of the number of available signal sending channels.
+					\todo{"On the another hand" does not make sense AGAIN.}
+				On the other hand, up to 4 send operations (\texttt{portal\_open()})
+				can be performed simultaneously because there are 4 available send
+				channels for the \portal.
+
+				Function \texttt{portal\_open()} starts the data send operation.
+				In it will be allocated a channel of data sending associated with
+				a $\mu$thread.
+				Also, a signal receiving slot will be allocated to receive the
+				signal that will release the sender to transfer data to the receiver.
+				In asynchronous send operation (\texttt{portal\_awrite()}), the cluster
+				cannot modify or release the buffer until the operation is completed.
+				To ensure that the buffer can use, the cluster must call function \texttt{portal\_wait()}.
+
+				The receiver will allocate a receiving slot of the \dnoc and a transfer
+				channel (\texttt{portal\_create()}) to receive data from another cluster.
+				After setting up the resources (\texttt{portal\_read()}), the receiver
+				can notify a sender (\texttt{portal\_allow()}), enabling it to transfer data.
+				For this reason, the read operation is always performed asynchronously.
+				After receiving the set amount of data, the receiver can use the buffer securely.
+
+	
+	\section{User-Level Communication}
+	\label{sec.comm-services}
+
+		\subsection{Inter-Cluster Communication Services}
+		\label{sec.inter-cluster-communication-module}
+
+			The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication-module},
+			is designed to export a standard and straightforward communication
+			primitives to different lightweight manycores.
+			These primitives can be used by various types of operating systems
+			and applications.
+			Thus, the module is flexible enough not to impact the performance
+			of the upper layers negatively.
+			For this, it does not provide rich management of the exposed abstractions.
+
+			In this scenario, the communication services of Nanvix Microkernel seek
+			to provide \ipc between distinct clusters.
+			Specifically, these services perform the multiplexing of the hardware
+			resources and the verification of the parameters that will be passed
+			on the communication primitives.
+			Due to the Master-Slave model, the responsibility of protecting,
+			manipulating, and configuring \hal resources is of the master core.
+			The slave core will request operations through a meta-interface,
+			passing the necessary information to the master.
+
+			Considering that the abstractions make up the fundamental elements of
+			the construction of more complex services, the Microkernel services
+			were responsible for the management and multiplexing of the finite
+			resources for the many cores of a cluster.
+			In total, there are three communication services in the Nanvix Microkernel,
+			each associated with an abstraction of the communication module,
+			analogously named \sync, \mailbox, and \portal services.
+
+		\subsection*{Inter-Cluster Communication Services Implementation}
+
+			\todo[inline]{Temporary}
+
+			As described in \autoref{sec.communication-services}, three communication
+			services will be developed for the Nanvix Microkernel, named \sync, \mailbox,
+			and \portal services.
+			Each service will be responsible for protecting, managing, manipulating,
+			and multiplexing the resources exposed by the \hal communication module.
+			These services must take into account the memory constraints and the
+			master-slave model chosen for the Microkernel.
+
+			Management and manipulation operations are similar to all services.
+			They will be provided through interfaces that function as wrappers
+			for the \hal abstraction functions.
+			In the implementation of these interfaces, there will be a mapping
+			between low-level identifiers, associated with \hal resources,
+			and high-level identifiers, associated with resource protection structures.
+
+			\todo[inline]{
+				According to Odorico, for the completion of the work, it is important to highlight:
+				\\ - How do you treat the protection operations?
+				\\ - How do you intend to test and to validate the correctness of the implemented services.
+			}
+
+			The protection operations are mostly similar.
+			For instance, the use of unallocated resources, sanitizing entries,
+			checking valid identifiers, non-null pointers, and checking
+			for conflicting operations (reading in write-only resources).
+			In the meantime, there are exceptional cases in some services
+			that must be taken.
+			For instance, in the \sync service, a cluster cannot synchronize
+			with itself, or there is a repetition of identifiers in the
+			stipulated set of clusters.
+
+			Finally, some aspects of services and implementation still need
+			to be analyzed and will be better detailed in another version
+			of the dissertation.
+			For example, what resource multiplexing methods will be used
+			and their impacts on the Nanvix Microkernel services.

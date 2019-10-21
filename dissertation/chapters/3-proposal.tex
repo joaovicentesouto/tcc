@@ -15,6 +15,7 @@ the communication module.
 	software stack made available by Kalray.
 	In order to replace them, a great effort would be necessary, fleeing the proposal
 	of this work and the scope of Pedro H. Penna's Ph.D.
+		\todo{Missing citation.}
 	The main reasons for this decision were due to poor documentation and the
 	inability to execute kernel mode code freely.
 
@@ -58,13 +59,13 @@ the communication module.
 
 	Clusters have two identifiers, one physical (physical ID) and the
 	other logical (logical ID).
-	The physical ID's are the numbers in hardware that identically them
-	during the process of routing the data through \noc.
-	The logical ID's are numbers associated with the physical ID's so
+	The hardware uses the physical IDs in the process of data routing through \noc.
+	The logical IDs are numbers associated with the physical IDs so
 	that it is possible to identify the clusters outside the \hal.
-	Logical ID's primarily serve to disassociate the cluster
+	Logical IDs primarily serve to disassociate the cluster
 	identification from the architecture in which \hal is implemented.
-	Table \ref{tab.cluster-id} shows the physical and logical
+		\todo{Explain the table.}
+	\autoref{tab.cluster-id} shows the physical and logical
 	identification performed for \mppa.
 
 	\begin{table}[t]
@@ -87,11 +88,13 @@ the communication module.
 	To perform the communication between two clusters, it is necessary that the
 	sender knows which resource the receiver will use.
 	For this reason, the receive slot range of \cnoc and \dnoc are partitioned
-	by abstraction, as can be seen in Table \ref{tab.noc-resources}.
+	by abstraction, as can be seen in \autoref{tab.noc-resources}.
 	Within a partition, each slot is associated with a cluster's logical ID.
+		\todo{"On the another hand" does not make sense AGAIN.}
 	On the other hand, the transmitters use sending channels that need to
 	be reserved during the entire operation.
-	Thus, Table \ref{tab.noc-resources} also shows the partition of the
+		\todo{Explain the table.}
+	Thus, \autoref{tab.noc-resources} also shows the partition of the
 	sending channels for each abstraction.
 
 	\subsection{Sync}
@@ -146,8 +149,8 @@ int sync_signal(int syncid, const int *nodes, int nnodes, int type);
 		Because of this, 24 synchronization points can be created (\texttt{sync\_create()}),
 		and only 1 can be opened (\texttt{sync\_open()}) per cluster.
 
-		Sync Functions implement two different types, depending on who cluster
-		should be the master of the synchronization operation.
+		Sync functions implement two different types, depending on who is the
+		cluster master of the synchronization operation.
 		Specifically, every synchronization operation is separated into a
 		master cluster and one or more slave clusters defined by the
 		\texttt{ONE\_TO\_ALL} and \texttt{ALL\_TO\_ONE} constants.
@@ -185,6 +188,7 @@ int sync_signal(int syncid, const int *nodes, int nnodes, int type);
 				of the resources, and waiting for the numerous signals.
 				The resource allocated by the master must be the resource
 				associated with its logical ID.
+					\todo{"On the another hand" does not make sense AGAIN.}
 				On the other hand, the slaves will perform the functions of
 				opening and sending a signal on the master's logical ID.
 
@@ -238,6 +242,7 @@ ssize_t mailbox_write(int mbxid, const void * buffer, size_t size);
 		If there is no message in the buffer, the receiver is blocked
 		until a message is received.
 
+			\todo{"On the another hand" does not make sense AGAIN.}
 		On the other hand, the sender will allocate a receive signal slot (\texttt{mailbox\_open()})
 		before sending its first message to the receiver.
 		If the sender attempts to send a message before the receiver has consumed
@@ -250,6 +255,7 @@ ssize_t mailbox_write(int mbxid, const void * buffer, size_t size);
 		Thus, the sender will never be blocked waiting for the message to be sent.
 		In this configuration, the number of mailbox creations (\texttt{mailbox\_create()})
 		within a cluster is limited to 1 because of the \cnoc sending channel.
+			\todo{"On the another hand" does not make sense AGAIN.}
 		On the other hand, the maximum number of opens (\texttt{mailbox\_open()}) is
 		4 because of the limitation of the available \dnoc sending channels.
 
@@ -312,6 +318,7 @@ int portal_wait(int portalid);
 		that can be synchronously or asynchronously.
 		The total number of receive data operations (\texttt{portal\_create()})
 		is limited to 2 because of the number of available signal sending channels.
+			\todo{"On the another hand" does not make sense AGAIN.}
 		On the other hand, up to 4 send operations (\texttt{portal\_open()})
 		can be performed simultaneously because there are 4 available send
 		channels for the \portal.
@@ -325,7 +332,7 @@ int portal_wait(int portalid);
 		cannot modify or release the buffer until the operation is completed.
 		To ensure that the buffer can use, the cluster must call function \texttt{portal\_wait()}.
 
-		The receiver will allocate a receive slot of the \dnoc and a send
+		The receiver will allocate a receiving slot of the \dnoc and a transfer
 		channel (\texttt{portal\_create()}) to receive data from another cluster.
 		After setting up the resources (\texttt{portal\_read()}), the receiver
 		can notify a sender (\texttt{portal\_allow()}), enabling it to transfer data.
@@ -348,6 +355,12 @@ int portal_wait(int portalid);
 		In the implementation of these interfaces, there will be a mapping
 		between low-level identifiers, associated with \hal resources,
 		and high-level identifiers, associated with resource protection structures.
+
+		\todo[inline]{
+			According to Odorico, for the completion of the work, it is important to highlight:
+			\\ - How do you treat the protection operations?
+			\\ - How do you intend to test and to validate the correctness of the implemented services.
+		}
 
 		The protection operations are mostly similar.
 		For instance, the use of unallocated resources, sanitizing entries,

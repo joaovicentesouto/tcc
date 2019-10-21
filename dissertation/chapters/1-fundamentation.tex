@@ -1,55 +1,51 @@
 \chapter{Background}
 \label{ch.fundamentation}
 
-	This chapter presents the background of multiple processor
-	systems from a hardware and software perspective.
-	Specifically, \autoref{sec.multiprocessors} and \autoref{sec.multicomputers}
-	will address details about multiprocessors and multicomputers, respectively.
-	Subsequently, \autoref{sec.mppa} will present the \mppa processor.
-	Next, \autoref{sec.nanvix} will show an overview of the Nanvix OS.
-	So finally, \autoref{sec.inter-cluster-communication} will cover the abstraction
-	concepts in the Inter-Cluster Communication Module.
+	In the early days of electronic digital computing, John Von Neumann
+	proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
+	\autoref{fig:neumann} pictures the model scheme.
+	The \cpu, also called core, loads instructions and data from an \mmu,
+	dealing with inputs and generating outputs from/to I/O Devices.
+	Modern processors still follow this model, but some components and
+	behaviors are specialized or replicated to increase performance.
 
-\section{Multiple Processor Systems}
-\label{sec.multiple-processor-systems}
-
-	According to Tanenbaum~\cite{tanenbaum:4ed}, there are three models of
+	\begin{figure}[!tb]
+		\centering%
+		\caption{Von Neumann Architecture Model.}%
+		\label{fig:neumann}%
+		\includegraphics[width=.7\textwidth]{neumann.pdf}%
+		\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+	\end{figure}
+	
+	According to \citeonline{tanenbaum:4ed}, there are three models of
 	modern multiple processor architectures.
 	A shared-memory multiprocessor, a message-passing multicomputer, and a wide
-	area distributed systems.
-	The sections below address the two first models presenting significant
-	hardware and software concepts for the present undergraduate dissertation.
+	area distributed system.
+	In this chapter, we present the background of multiple processor systems from
+	a hardware and software perspective.
+	Specifically, \autoref{sec.multiprocessors} and \autoref{sec.multicomputers} addresses
+	details about shared-memory multiprocessors and message-passing multicomputers, respectively.
+	Subsequently, \autoref{sec.mppa} presents the \mppa processor.
+	Finally, \autoref{sec.nanvix} shows an overview of Nanvix \os and the
+	three levels of abstraction designed for \lightweight \manycores processors.
 
-	\subsection{Multiprocessors}
+	\section{Multiprocessors}
 	\label{sec.multiprocessors}
 
-		\begin{figure}[t]
-			\centering%
-			\caption{Von Neumann Architecture Model.}%
-			\label{fig:neumann}%
-			\includegraphics[width=.7\textwidth]{neumann.pdf}%
-			\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-		\end{figure}
+		A shared-memory multiprocessor is a computer system in which two or more \cpus
+		share full access to a common \ram~\cite{tanenbaum:4ed}.
+		The ability to run execution streams in parallel intensifies the concurrency
+		issues that already existed in multi-tasking single-core processors.
+		The competition of different cores for shared resources may result in
+		inconsistent outputs or even in an inconsistent \os state.
+		For instance, when a thread writes a value to a global variable and
+		reads a different value.
+		Moreover, some architectures integrate heterogeneous cores introducing
+		portability and programmability problems too.
+		So, low-level software, such as \os kernels and runtimes, needs to handle
+		those issues and provide management systems to user-level.
 
-		In the early days of electronic digital computing, John Von Neumann
-		proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
-		As illustrated in \autoref{fig:neumann}, this model describes a \cpu,
-		also called core, that loads instructions and data from a \mmu,
-		dealing with inputs and generating outputs from/to I/O Devices.
-		Modern processors still follow this model, but some components and
-		behaviors are specialized or replicated to increase performance.
-
-		In this context, a shared-memory multiprocessor is a computer system
-		in which two or more \cpus share full access to a common \ram~\cite{tanenbaum:4ed}.
-		Concurrency issues begin to appear where are many \cpus competing for
-		shared resources.
-		For instance, when many threads of a process competing to read and write a global variable.
-		Moreover, some architectures integrate heterogeneous cores introducing portability
-		and programmability problems too.
-		So, low-level software, such as \os kernels and runtimes, needs to handle those
-		issues and provide management systems to user-level.
-
-		\subsubsection{Multiprocessor Hardware}
+		\subsection*{Multiprocessor Hardware}
 		\label{sec.multiprocessor-hw}
 
 			The multiprocessors can be usually classified using memory access
@@ -60,7 +56,25 @@
 			as fast as every other memory word are called \uma multiprocessors.
 			On the other hand, \numa multiprocessors do not have this property.
 
-			\begin{figure}[t]
+			The firsts \uma multiprocessors were bus-based architectures where
+			the \cpu wait for the bus channel stays free to perform a memory
+			access, as illustrated in \autoref{fig:uma_a}.
+			When the number of cores scale, the bus traffic becomes a
+			bottleneck of the system.
+			To solve this problem, a small but fast memory level, called cache,
+			is added to each \cpu, as depicted in \autoref{fig:uma_b}.
+			The cache allowed successive readings to be resolved locally,
+			reducing traffic to the main memory.
+			However, many problems of inconsistency and ordering of operations
+			on memory arose with the advent of caches.
+			For instance, when a write operation dirties a memory address in
+			a particular cache, this change must be notified to all other caches.
+			Equally important, it is necessary to ensure a specific order in
+			the concurrent operations on a given address through different caches.
+			The protocols that guarantee these properties are called cache-coherence
+			protocols~\cite{tanenbaum:4ed}.
+
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Two Bus-Based \uma Multiprocessor Examples.}%
 				\label{fig:uma}%
@@ -78,24 +92,18 @@
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
-			The firsts \uma multiprocessors were bus-based architectures where
-			the \cpu wait for the bus channel stays free to perform a memory
-			access, as illustrated in \autoref{fig:uma}(a).
-			When the number of cores scale, the bus traffic begin to be a
-			bottleneck of the system.
-			To solve this problem, a small but fast memory level, called cache,
-			is added to each \cpu, as depicted in \autoref{fig:uma}(b).
-			The cache allowed readings to be resolved locally, reducing traffic
-			to the main memory.
-			However, many problems of inconsistency and ordering of operations
-			on memory arose with the advent of caches.
-			For instance, when a write operation dirties a memory address in
-			a particular cache, this change must be notified to all other caches.
-			Equally important, it is necessary to ensure a specific order in
-			the concurrent operations on a given address through different caches.
-			The protocols that guarantee these properties are called cache-coherence protocols.
+			Nevertheless, the number of cores in \uma multiprocessors are limited
+			to a few dozens of \cpus.
+			Thus, to allow hundreds of cores to communicate, \autoref{fig:numa} illustrates
+			as that \numa machines provide a single address space visible to all \cpus
+			through an interconnection network.
+			Therefore, distributing a virtual memory space among local physics memories,
+			the access is guaranteed via load and store instructions.
+			Although the time to access the remote memory is slower than to local ones,
+			this granted that all \uma programs will be able to run on \numa machines
+			but with worse performance.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{\numa Multiprocessor Example.}%
 				\label{fig:numa}%
@@ -103,22 +111,26 @@
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
-			Nevertheless, the number of cores in \uma multiprocessors are limited
-			to a few dozens of \cpus.
-			Thus, to allow hundreds of cores to communicate, \autoref{fig:numa} illustrated
-			as that \numa machines provide a single address space visible to all \cpus
-			through an interconnection network.
-			Therefore, distributing a virtual memory space among local physics memories,
-			the access is guaranteed via load and store instructions.
-			Although the time to access to remote memory is slower than to local ones,
-			this granted that all \uma programs will be able to run on \numa machines
-			but with worse performance.
+			In the second place, the workflow classification proposed by \citeonline{flynn:1972},
+			split multiprocessors architecture based on the number of concurrent
+			instruction and data streams available, as depicted in \autoref{fig:flynn}.
+			First, the most straightforward class, \sisd describes a sequential
+			machine which exploits no parallelism in either the instruction or
+			data streams, like older uniprocessor machines.
+			Second, \simd uses multiple functional units to replicate and operate
+			a single instruction over multiples different data streams, like \gpu.
+			Third, the most uncommon class, \misd describe multiprocessors that
+			apply multiple instructions streams over one data stream.
+			Systems that need fault tolerance uses theses multiprocessors, like
+			modern flight control systems.
+			Finally, a \mimd architecture has multiple processors simultaneously
+			executing different instruction on different data, like \xeonphi.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Flynn's taxonomy.}%
 				\label{fig:flynn}%
-				
+
 				\subcaptionminipage[fig:flynn-sisd]%
 					{.4\linewidth}%
 					{Single Instruction Single Data.}%
@@ -142,36 +154,21 @@
 				\fonte{Adapted from \citeonline{url:flynn}.}%
 			\end{figure}
 
-			In the second place, the workflow classification proposed by Michael J. Flynn~\cite{flynn:1972},
-			split multiprocessors architecture based on the number of concurrent
-			instruction and data streams available, as depicted in \autoref{fig:flynn}.
-			First, the most straightforward class, \sisd describes a sequential
-			machine which exploits no parallelism in either the instruction or
-			data streams, like older uniprocessor machines.
-			Second, \simd uses multiple functional units to replicate and operate
-			a single instruction over multiples different data streams, like \gpu.
-			Third, the most uncommon class, \misd describe multiprocessors that
-			apply multiple instructions streams over one data stream.
-			Systems that need fault tolerance uses theses multiprocessors, like
-			modern flight control systems.
-			Finally, a \mimd architecture has multiple processors simultaneously
-			executing different instruction on different data, like \xeonphi.
-
 			Currently, two categories of multiprocessors attract attention, the \cmp and \mpsoc.
 			\cmps are multicore commercials, which follow a symmetric architecture,
 			integrating two or more identical cores into a single die.
 			They can have private or shared cache levels, and always share access
-			to the RAM.
+			to the \ram.
 			Alternatively, \mpsocs are designed with an asymmetric architecture,
 			have in addition to the main cores, specialized \cpus in particular
 			functions, \eg audio and video encoders, encryption, becoming truly
 			complete computer systems on a single chip.
 			All these cores are linked to each other by an on-chip network-based
 			communications subsystem, called \noc.
-			The \noc improve scalability and power consumption compared to other
+			The \noc improves scalability and power consumption compared to other
 			communication subsystem designs.
 
-		\subsubsection{Multiprocessor \oss}
+		\subsection*{Multiprocessor Operating Systems}
 		\label{sec.multiprocessor-os}
 
 			\oss are a fundamental part of any computer system.
@@ -184,21 +181,21 @@
 			such systems.
 			Those models are called Replicated, Master-Slave, and Symmetric \os.
 
-			\begin{figure}[t]
+			The Replicated Model is the simplest way to develop an \os for a
+			parallel architecture.
+			It only needs to replicate all the internal \os structures for each core.
+			\autoref{fig:replicated-os} illustrates how this model allocates fixed memory spaces
+			between the cores, giving each of them its private \os.
+			The system calls are performed by the calling \cpu, avoiding concurrency issues.
+			Also, a producer-consumer model is sufficient for two different \cpus to communicate.
+
+			\begin{figure}[!tb]
 				\centering%
 				\caption{Replicated \os Model.}%
 				\label{fig:replicated-os}%
 				\includegraphics[width=.55\textwidth]{replicated-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
-
-			The Replicated Model is the simplest way to develop an \os for a
-			parallel architecture.
-			It only needs to replicate all the internal \os structures for each core.
-			\autoref{fig:replicated-os} shows how this model allocates fixed memory spaces
-			between the cores, giving each of them its private \os.
-			The system calls are performed by the calling \cpu, avoiding concurrency issues.
-			Also, a producer-consumer model is sufficient for two different \cpus to communicate.
 
 			However, this model has imperceptible aspects~\cite{tanenbaum:4ed}.
 			First, since each \cpu has its own process and page tables, it is impossible
@@ -210,17 +207,9 @@
 			Finally, replication of the internal \os structures makes this model
 			impractical for systems with memory constraints.
 
-			\begin{figure}[t]
-				\centering%
-				\caption{Master-Slave \os Model.}%
-				\label{fig:master-slave-os}%
-				\includegraphics[width=.55\textwidth]{master-slave-os.pdf}%
-				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-			\end{figure}
-
 			The Master-Slave model began to attract attention with the return of
 			processors with no cache coherence.
-			As \autoref{fig:master-slave-os} shows, there is only one copy of
+			As \autoref{fig:master-slave-os} pictures, there is only one copy of
 			the internal \os structures, and they all belong to a single \cpu, called master.
 			In this way, all system calls performed by a worker \cpu, called slave,
 			are redirected to the master.
@@ -230,13 +219,13 @@
 			distributed dynamically to any \cpus.
 			However, when adopting a centralized approach, the master can become
 			the bottleneck of the system if it can not handle the number of the
-			incoming requisition.
+			incoming requisitions.
 
-			\begin{figure}[t]
+			\begin{figure}[!tb]
 				\centering%
-				\caption{Symmetric \os Model.}%
-				\label{fig:smp-os}%
-				\includegraphics[width=.55\textwidth]{symmetric-os.pdf}%
+				\caption{Master-Slave \os Model.}%
+				\label{fig:master-slave-os}%
+				\includegraphics[width=.55\textwidth]{master-slave-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
@@ -253,18 +242,26 @@
 			Besides, if the hardware does not support cache coherence, the process of
 			invalidating the cache may also introduce serious performance problems in \oss of this type.
 
+			\begin{figure}[!tb]
+				\centering%
+				\caption{Symmetric \os Model.}%
+				\label{fig:smp-os}%
+				\includegraphics[width=.55\textwidth]{symmetric-os.pdf}%
+				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+			\end{figure}
+
 			As it can be noted, the software is always lagging behind the constant hardware advances.
 			Many solutions may work very well in specific contexts but should be chosen with care.
 			In some cases, in order to extract the maximum performance from a system, it will be
-			necessary to redesign the whole process from scratch.
+			necessary to redesign the whole software stack from scratch.
 
-	\subsection{Multicomputers}
+	\section{Multicomputers}
 	\label{sec.multicomputers}
 
 		Increasing the number of cores and still providing a shared memory in a
 		single die is very expensive and challenging.
 		However, it is more simple and cheap to interconnect more straightforward
-		computers in a high-speed network. The result is a clustered archietcture.
+		computers in a high-speed network. The result is a clustered architecture.
 		Despite the problem of developing networks and high-speed interfaces
 		for communication of the nodes, it is analogous to the problem of
 		providing a shared memory in multiprocessors.
@@ -272,200 +269,202 @@
 		microseconds, as opposed to nanoseconds of the multiprocessors,
 		making things simpler~\cite{tanenbaum:4ed}.
 
-			\subsubsection{Multicomputer Hardware}
-			\label{sec.multicomputers-hw}
+		\subsection*{Multicomputer Hardware}
+		\label{sec.multicomputers-hw}
 
-				A multicomputer node can be considered as an elementary computer, with one or
-				more multiprocessors, local \ram and I/O devices.
-				In many cases, there is no need for monitors or keyboards, only the
-				network interface.
-				In this way, it is possible to integrate hundreds or even thousands
-				of nodes providing the vision of a single computer.
+			A multicomputer node can be considered as an elementary computer, with one or
+			more multiprocessors, local \ram and I/O devices.
+			In many cases, there is no need for monitors or keyboards, only the
+			network interface.
+			In this way, it is possible to integrate hundreds or even thousands
+			of nodes providing the vision of a single computer.
 
-				\begin{figure}[t]
-					\centering%
-					\caption{Network Topologies Examples.}%
-					\label{fig:net-topologies}%
+			A switch set is organized into different topologies to interconnect
+			the nodes of a multicomputer.
+			As illustrated in \autoref{fig:net-topologies}, there are a
+			variety of topologies with their own characteristics.
+			For instance, commercial multicomputer usually uses bi-dimensional
+			topologies such as \textit{grid} or \textit{mesh} because they present
+			regular behavior and can scale easily.
+			When the goal is to provide higher fault tolerance, in addition to the
+			smaller path between two points, the \textit{torus} variant implement
+			connections between the extreme points of the \textit{grid}.
+			Even multi-dimensional topologies can be used, all depending on the
+			characteristics expected from the network.
 
-					\subcaptionminipage[fig:net-start]%
-						{.25\linewidth}%
-						{Star.}%
-						{\includegraphics[width=\linewidth]{net-star.pdf}}%
-					\hspace{1cm}%
-					\subcaptionminipage[fig:net-ring]%
-						{.25\linewidth}%
-						{Ring.}%
-						{\includegraphics[width=\linewidth]{net-ring.pdf}}%
-					\hspace{1cm}%
-					\subcaptionminipage[fig:net-grid]%
-						{.25\linewidth}%
-						{Grid.}%
-						{\includegraphics[width=\linewidth]{net-grid.pdf}}%
+			\begin{figure}[!tb]
+				\centering%
+				\caption{Network Topologies Examples.}%
+				\label{fig:net-topologies}%
 
-					\subcaptionminipage[fig:net-torus]%
-						{.25\linewidth}%
-						{Torus.}%
-						{\includegraphics[width=\linewidth]{net-torus.pdf}}%
-					\hspace{1cm}%
-					\subcaptionminipage[fig:net.grid-3d]%
-						{.25\linewidth}%
-						{Grid 3D.}%
-						{\includegraphics[width=\linewidth]{net-3d.pdf}}%
+				\subcaptionminipage[fig:net-start]%
+					{.25\linewidth}%
+					{Star.}%
+					{\includegraphics[width=\linewidth]{net-star.pdf}}%
+				\hspace{1cm}%
+				\subcaptionminipage[fig:net-ring]%
+					{.25\linewidth}%
+					{Ring.}%
+					{\includegraphics[width=\linewidth]{net-ring.pdf}}%
+				\hspace{1cm}%
+				\subcaptionminipage[fig:net-grid]%
+					{.25\linewidth}%
+					{Grid.}%
+					{\includegraphics[width=\linewidth]{net-grid.pdf}}%
 
-					\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-				\end{figure}
+				\subcaptionminipage[fig:net-torus]%
+					{.25\linewidth}%
+					{Torus.}%
+					{\includegraphics[width=\linewidth]{net-torus.pdf}}%
+				\hspace{1cm}%
+				\subcaptionminipage[fig:net.grid-3d]%
+					{.25\linewidth}%
+					{Grid 3D.}%
+					{\includegraphics[width=\linewidth]{net-3d.pdf}}%
 
-				A switch set is organized into different topologies to interconnect
-				the nodes of a multicomputer.
-				As illustrated in \autoref{fig:net-topologies}, there are a
-				variety of topologies with their own characteristics.
-				For instance, commercial multicomputer usually uses bi-dimensional
-				topologies such as \textit{grid} or \textit{mesh} because they present
-				regular behavior and can scale easily.
-				When the goal is to provide higher fault tolerance, in addition to the
-				smaller path between two points, the \textit{torus} variant implement
-				connections between the extreme points of the \textit{grid}.
-				Even multi-dimensional topologies can be used, all depending on the
-				characteristics expected from the network.
+				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+			\end{figure}
 
-				There are two types of switching schemes in the multicomputer network.
-				The \textit{store-and-forward packet} switching scheme breaks the message
-				into fixed-size packets.
-				The packets are copied and moved between the switches following a
-				routing algorithm until they reach the destination.
-				Although flexible and efficient, this scenario can generate a variable
-				latency in packet delivery.
-				The other scheme, called \textit{circuit switching}, performs a resource
-				allocation protocol through all path from source to the destination.
-				This protocol ensures a steady communication stream, although the
-				slow start and possible sub-utilization of the resources.
+			There are two types of switching schemes in the multicomputer network.
+			The \textit{store-and-forward packet} switching scheme breaks the message
+			into fixed-size packets.
+			The packets are copied and moved between the switches following a
+			routing algorithm until they reach the destination.
+			Although flexible and efficient, this scenario can generate a variable
+			latency in packet delivery.
+			The other scheme, called \textit{circuit switching}, performs a resource
+			allocation protocol through all path from source to the destination.
+			This protocol ensures a steady communication stream, although the
+			slow start and possible sub-utilization of the resources.
 
-			\subsubsection{Low-Level Communication Software}
-			\label{sec.multicomputers-low-sw}
+		\subsection*{Low-Level Communication}
+		\label{sec.multicomputers-low-sw}
 
-				\begin{figure}[t]
-					\centering%
-					\caption{Simple Multicomputer Example.}%
-					\label{fig:multicomputer}%
-					\includegraphics[width=.8\textwidth]{multicomputer.pdf}%
-					\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-				\end{figure}
+			Multicomputer nodes are interconnected to each other through network interfaces.
+			Because these boards are built and connected to \cpus and \ram,
+			they have substantial impacts on system performance and \os design.
+			Virtually, interfaces have enough \ram space to receive/send packets.
+			If this address space is actually in main memory, we fall into the same
+			problem of multiprocessors in the struggle for the use of the bus channel.
+			Thus, in general, network cards have a dedicated memory so as not to
+			generate bottlenecks in access to main memory, as illustrated in \autoref{fig:multicomputer}.
 
-				Multicomputer nodes are interconnected to each other through network interfaces.
-				Because these boards are built and connected to \cpus and \ram,
-				they have substantial impacts on system performance and \os design.
-				Virtually, interfaces have enough \ram space to receive/send packets.
-				If this address space is actually in main memory, we fall into the same
-				problem of multiprocessors in the struggle for the use of the bus channel.
-				Thus, in general, network cards have a dedicated memory so as not to
-				generate bottlenecks in access to main memory, as illustrated in \autoref{fig:multicomputer}.
+			\begin{figure}[!tb]
+				\centering%
+				\caption{Simple Multicomputer Example.}%
+				\label{fig:multicomputer}%
+				\includegraphics[width=.8\textwidth]{multicomputer.pdf}%
+				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+			\end{figure}
 
-				However, excessive packet copying can degrade the performance of the system.
-				In an ideal scenario, four end-to-end copies would be needed:
-				(i) from the \ram of the sender to the interface memory;
-				(ii) from the interface to the network;
-				(iii) from the network to the memory of the target interface, and, finally,
-				(iv) to the \ram of the recipient.
-				Although, depending on how the \os provides access to communication
-				resources, that number can grow a lot.
-				For instance, mapping the interface into the kernel address space
-				rather than the user-space, an extra copy to an internal kernel
-				buffer is required.
-				Thus, for performance reasons, modern systems already map the interfaces
-				to user-space address.
-				Nonetheless, they introduce problems of concurrency between the various
-				users by the communication resources.
+			However, excessive packet copying can degrade the performance of the system.
+			In an ideal scenario, four end-to-end copies would be needed:
+			(i) from the \ram of the sender to the interface memory;
+			(ii) from the interface to the network;
+			(iii) from the network to the memory of the target interface, and, finally,
+			(iv) to the \ram of the recipient.
+			Notwithstanding, the number of copies may increase further, depending on
+			how the \os implements communication services on available hardware.
+			For instance, mapping the interface into the kernel address space
+			rather than the user-space, an extra copy to an internal kernel
+			buffer is required.
+			Thus, for performance reasons, modern systems already map the interfaces
+			to user-space address even as new concurrency issues arise over
+			communication resources.
 
-				Processors may also have one or more \cpus specialized in
-				communication procedures, called \dma.
-				\dmas can make copies between system memories, send/receive packets
-				without the main \cpus intervention. This reduces considerably wasted cycles due to 
-				network interfaces communication and/or main memory access bottlenecks.
-				However, such intermediate copies lead to overhead on system structures,
-				such as cache, \tlb, or page management.
-				Furthermore, this introduces concurrency issues in the interaction between
-				\cpus and existing \dma channels.
+			Processors may also have one or more \cpus specialized in
+			communication procedures, called \dma.
+			\dmas can make copies between system memories, send/receive packets
+			without the main \cpus intervention.
+			This reduces considerably wasted cycles due to network interfaces
+			communication and/or main memory access bottlenecks.
+			However, such intermediate copies lead to overhead on system structures,
+			such as cache, \tlb, or page management.
+			Furthermore, this introduces concurrency issues in the interaction between
+			\cpus and existing \dma channels.
 
-			\subsubsection{User-Level Communication Software}
-			\label{sec.multicomputers-user-sw}
+		\subsection*{User-Level Communication}
+		\label{sec.multicomputers-user-sw}
 
-				The low-level mechanisms discussed above allow \cpus on different
-				computers to communicate through the messages exchange by
-				send/receive primitives.
-				The basic configuration needed for send primitive is knowing the
-				recipient identifier and the message.
-				Moreover, the receive primitive needs to identify which of
-				the network interfaces it should configure and where to write the
-				incoming data.
+			The low-level mechanisms discussed above allow cores on different
+			computers to communicate through the messages exchange by
+			send/receive primitives.
+			However, it is still the responsibility of the user to define the
+			required parameters to perform such operations.
+			In order for the user to send a message, he must inform the
+			localization of the message, its size, and the identifier of the
+			receiving interface.
+			On the receiver side, the user must configure the interface with
+			the location of sufficient memory space to receive the incoming message.
 
-				\begin{figure}[t]
-					\centering%
-					\caption{Calls Types.}%
-					\label{fig:calls-types}%
+			\begin{figure}[!tb]
+				\centering%
+				\caption{Synchronous and Asynchronous Calls.}%
+				\label{fig:calls-types}%
 
-					\subcaptionminipage[fig:call-sync]%
-						{.9\linewidth}%
-						{Synchronous Call on Sender Node.}%
-						{\includegraphics[width=\linewidth]{call-sync.pdf}}%
+				\subcaptionminipage[fig:call-sync]%
+					{.9\linewidth}%
+					{Synchronous Call on Sender Node.}%
+					{\includegraphics[width=\linewidth]{call-sync.pdf}}%
 
-					\hfill
+				\hfill
 
-					\subcaptionminipage[fig:call-async]%
-						{.9\linewidth}%
-						{Asynchronous Call on Sender Node.}%
-						{\includegraphics[width=\linewidth]{call-async.pdf}}%
+				\subcaptionminipage[fig:call-async]%
+					{.9\linewidth}%
+					{Asynchronous Call on Sender Node.}%
+					{\includegraphics[width=\linewidth]{call-async.pdf}}%
 
-					\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-				\end{figure}
+				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+			\end{figure}
 
-				\autoref{fig:calls-types} illustrates the two approaches to implement
-				these primitives, either through blocking or non-blocking calls.
-				Blocking calls, called \textit{synchronous calls}, block the requesting \cpu
-				until complete the procedure.
-				Non-blocking calls, called \textit{asynchronous calls}, return control to the
-				\cpu while the procedure is still in progress.
-				Although asynchronous calls provide better performance than
-				synchronous ones, they introduce some disadvantages where the sender/receiver
-				cannot use the message buffer before the operation is complete.
-				According to Tanenbaum~\cite{tanenbaum:4ed}, there are four ways to implement
-				a send primitive:
-				\begin{itemize}
-					\item \textit{Blocking sending:} \cpu hibernates or schedules another
-						process, while the message is transmitted;
-					\item \textit{Non-blocking sending with copying:} realizes an extra copy of
-						the message to a kernel buffer, degrading performance;
-					\item \textit{Non-blocking sending with interrupt:} notifies the \cpu
-						when the send finishes, where the buffer must remain untouchable,
-						difficulting the programmability;
-					\item \textit{\cow:} management of buffers to make an extra copy only
-						when needed, but can copy unnecessarily.
-				\end{itemize}
+			\autoref{fig:calls-types} illustrates the two approaches to implement
+			these primitives, either through blocking or non-blocking calls.
+			Blocking calls, called \textit{synchronous calls}, block the requesting \cpu
+			until complete the procedure.
+			Non-blocking calls, called \textit{asynchronous calls}, return control to the
+			\cpu while the procedure is still in progress.
+			Although asynchronous calls provide better performance than
+			synchronous ones, they introduce some disadvantages where the sender/receiver
+			cannot use the message buffer before the operation is complete.
+			According to Tanenbaum~\cite{tanenbaum:4ed}, there are four ways to implement
+			a send primitive:
+			\begin{itemize}
+				\item \textit{Blocking sending:} \cpu hibernates or schedules another
+					process, while the message is transmitted;
+				\item \textit{Non-blocking sending with copying:} realizes an extra copy of
+					the message to a kernel buffer, degrading performance;
+				\item \textit{Non-blocking sending with interrupt:} notifies the \cpu
+					when the send finishes, where the buffer must remain untouchable,
+					difficulting the programmability;
+				\item \textit{\cow:} management of buffers to make an extra copy only
+					when needed, but can copy unnecessarily.
+			\end{itemize}
 
-				Analogously, there are other four forms to implement a receive primitive:
-				\begin{itemize}
-					\item \textit{Blocking receive:} \cpu hibernates or schedules another
-						process until a message is received;
-					\item \textit{Non-Blocking receive with messages pool:} \cpu creates
-						a buffer to store incoming messages, then consumes from it when
-						there is some message available, requiring synchronization;
-					\item \textit{Non-Blocking receive with Pop-up Threads:} creates a specific
-						thread upon receiving a message to perform the necessary operations,
-						but consumes resource for creating and destroying the thread;
-					\item \textit{Non-Blocking receive with interrupt handlers:} the receiver
-						is interrupted to execute a handler when receiving a message, resulting
-						in a better performance than creating a thread but difficults
-						the programmability.
-				\end{itemize}
+			Analogously, there are other four forms to implement a receive primitive:
+			\begin{itemize}
+				\item \textit{Blocking receive:} \cpu hibernates or schedules another
+					process until a message is received;
+				\item \textit{Non-Blocking receive with messages pool:} \cpu creates
+					a buffer to store incoming messages, then consumes from it when
+					there is some message available, requiring synchronization;
+				\item \textit{Non-Blocking receive with Pop-up Threads:} creates a specific
+					thread upon receiving a message to perform the necessary operations,
+					but consumes resource for creating and destroying the thread;
+				\item \textit{Non-Blocking receive with interrupt handlers:} the receiver
+					is interrupted to execute a handler when receiving a message, resulting
+					in a better performance than creating a thread but difficults
+					the programmability.
+			\end{itemize}
 
-				Some of the implementation approaches may be hardware dependent.
-				However, choosing the ideal approach is still the responsibility of the \os designer.
-				Even so, the distributed nature of multicomputers forces developers to
-				use a messaging strategy regardless of what the hardware has to offer.
+			Some of the implementation approaches may be hardware dependent.
+			However, choosing the ideal approach is still the responsibility of the \os designer.
+			Even so, the distributed nature of multicomputers forces a message-passing
+			strategy regardless of what the hardware has to offer.
 
-\section{The MPPA-256 Lightweight Manycore Processor}
+\section{MPPA-256 Lightweight Manycore Processor}
 \label{sec.mppa}
 
-	\begin{figure}[t]
+	\begin{figure}[!tb]
 		\centering%
 		\caption{Architectural overview of the \mppa processor.}%
 		\label{fig:mppa-arch}%
@@ -481,9 +480,8 @@
 	to coordinate the cores and the local resource balancing, and
 	follows a multicomputer model in inter-cluster communication.
 
-	As illustrated by \autoref{fig:mppa-arch}, the used version of
-	the architecture, called Bostan, has 256 general-purpose cores and
-	32 firmware cores, called \pes and \rms, respectively.
+	\autoref{fig:mppa-arch} illustrates the version of \mppa architecture used, called Bostan.
+	It has 256 general-purpose cores and 32 firmware cores, called \pes and \rms, respectively.
 	The processor use 28~mm CMOS technology and all cores run at 500~MHz.
 	Besides, all cores have caches and \mmus with software-managed \tlbs.
 	Finally, the 288 cores are grouped into 16 \cclusters, dedicated to
@@ -491,7 +489,7 @@
 
 	Each \ccluster features 16 \pes, an \rm, an \noc interface and 2~MB of \sram.
 	The hardware does not support cache coherence to improve energy consumption.
-	On the other hand, \ioclusters have only 4 \rms with cache coherence support,
+	In contrast, \ioclusters have only 4 \rms with cache coherence support,
 	4 \noc interfaces, and 4~MB of local \sram added to 4~GB of \dram.
 	The address space on each cluster is private, forcing exchange messages
 	by one of two different interleaved 2-D Torus \nocs.
@@ -501,7 +499,7 @@
 	Additionally, all clusters have available \dmas associated with each
 	\noc interfaces to handle communication issues.
 
-	As discussed in \autoref{sec.multicomputers-user-sw}, the \noc interfaces
+	As discussed in \autoref{sec.multicomputers-user-sw}, \noc interfaces
 	expose communication resource to perform send and receive primitives
 	like network interfaces.
 	Accurately, they summarize the following resources:
@@ -512,7 +510,7 @@
 		\item 4 channels for sending commands;
 		\item 8 channels for sending data, and;
 		\item 8 $\mu$threads for sending asynchronous data (each of which must
-			to be associated with a transfer channel).
+			to be associated with a data transfer channel).
 	\end{itemize}
 
 	The configuration of these features is accomplished by a mix between
@@ -522,218 +520,245 @@
 \section{Nanvix: An Operating System for Lightweight Manycores}
 \label{sec.nanvix}
 
-	Current research efforts on Nanvix \os focus on the programmability and portability
-	challenges that have arisen with \textit{lightweight \manycores}~\cite{christgau2017, gamell2012, serres2011}.
-	We believe that significant barriers will still arise in this scenario, and the
-	solution is to rethink \os design from scratch~\cite{penna:compas19, penna2019}. 
-	In this context, the Nanvix \os aims improving programmability and
-	software portability in lightweight manycores by means of a fully-featured
-	\posix-compliant \os~\cite{penna:compas19}.
-	It follows a multi-kernel design where OS services are scattered across cores and
-	interacting with user processes through a Client-Server approach.
-	
-	Nanvix \os can be divided into three distinct kernels, \multikernel,
-	\microkernel, and \hal.
-	The \multikernel is made up of high-level OS services, \eg shared memory
-	regions and name resolution.
-	It exports both the client and server interfaces, both developed above
-	the \microkernel services.
-	On top of the \hal, The \microkernel follows the Master-Slave \os model
-	to avoid the problem of the lack of coherence of many manycores.
-	It shall run in each cluster and provide bare bones system abstractions,
-	such as thread management, thread synchronization,
-	virtual memory support and communication services.
-	And finally, the next section will introduce \hal.
+	During the 1970s and 1980s, several \os initiatives began to emerge.
+	To prevent \oss from being incompatible with each other, the \ieee creates
+	the \posix standardization.
+	\posix defines interfaces and behaviors expected from an \os, \eg creation
+	and control of processes.
+	Many of these systems ceased to exist, and new ones emerged, but \posix has
+	consolidated and continues to extend to new concepts.
 
-	\subsection{Hardware Abstract Layer (HAL)}
+	The vast majority of current \oss are designed to work with a small number of cores.
+	As the number of cores increases, certain parts of the \os require redesign.
+	At some point, this rework will be unfeasible.
+	This assertion led researchers to study design alternatives for the new era of
+	processors~\cite{wentzlaff_factored_2009, baumann_multikernel:_2009, Wisniewski2014}.
+	However, the focus of these \oss is on improving performance.
+	Occasionally, aspects of hardware and design interfere with \os interfaces and behavior.
+	Additionally, a lack of alternative \oss for \lightweight \manycores that balance the
+	development cost requires from the user a considerable development and debugging effort.
+
+	In this context, current research efforts on Nanvix \os focus on the
+	programmability and portability	challenges that have arisen with
+	\lightweight \manycores~\cite{christgau2017, gamell2012, serres2011}.
+	We believe that significant barriers will still arise in this scenario, and
+	the solution is to rethink \os design from scratch without losing back
+	compatibility~\cite{penna:compas19, penna2019}.
+	\autoref{fig:nanvix-goal} summaries the balancing of Nanvix \os goals.
+	To achieve this balance, the Nanvix \os aims to improve programmability
+	and software portability in lightweight manycores through a fully-featured
+	\posix-compliant \os~\cite{penna:compas19}.
+
+	\begin{figure}[!tb]
+		\centering%
+		\caption{Conceptual Goals of the Nanvix \os.}%
+		\label{fig:nanvix-goal}%
+		\includegraphics[width=.55\textwidth]{nanvix-goal.pdf}%
+		\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
+	\end{figure}
+
+	Three distinct layers of kernels make up the Nanvix \os.
+	In a bottom-up approach of abstraction level, they are namely \nanvix \hal,
+	\nanvix \microkernel, and \nanvix \multikernel.
+	The next sections will introduce the concepts and problems addressed by
+	each layer.
+
+	\subsection{Nanvix Hardware Abstract Layer}
 	\label{sec.hal}
 
 		Nanvix \os proposes a generic and flexible \hal around the
-		intrinsic architectural characteristics of the \textit{lightweight \manycores}.
-		In this undergraduate dissertation, we  focus on the development of \hal
-		to \mppa~\cite{DeDinechin2013-1}.
-		However, other efforts have also been done for other platforms such
-		as~\optimsoc~\cite{Wallentowitz2013}.
+		intrinsic architectural characteristics of the \lightweight \manycores.
+		Currently, \hal has available all the essential modules to run standalone
+		processes for the \mppa~\cite{DeDinechin2013-1}, \optimsoc~~\cite{Wallentowitz2013},
+		and \hero~\cite{Kurth2017} platforms.
+		Hence, in this undergraduate dissertation, we will focus on developing
+		inter-cluster communication module for the \mppa processor.
 
 		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 		the \hal belongs to one level below.
 		It is the first layer on top of the hardware and should provide a standard
-		view of these emerging processors for a client applications, \eg \os.
-		As illustrated in \autoref{fig:hal-struct}, this \hal is structured in
-		two major logic layers: \textit{Cluster Abstraction Layer} and \textit{Processor Abstraction Layer}.
+		view of these emerging processors for a client application, \eg \os.
+		At this level, we do not protect internal structures with locks.
+		Thus, the upper-level decides how to protect and multiplex \hal access.
+		On the one hand, a traditional monolithic \os that implements a time-sharing
+		behavior to access internal structures will need to apply locks manually.
+		On the other hand, a master-slave \os not require such strict control,
+		improving its performance.
+		\autoref{fig:hal-overview} pictures the three logic layers of the \hal:
 
-		\begin{figure}[t]
+		\begin{figure}[!tb]
 			\centering%
-			\caption{Structural overview of the proposed \hal.}%
-			\label{fig:hal-struct}%
-			\includegraphics[width=.8\textwidth]{hal-struct.pdf}%
-			\fonte{\citeonline{penna:compas19}.}%
+			\caption{Structural overview of the \hal.}%
+			\label{fig:hal-overview}%
+			\includegraphics[width=.55\textwidth]{nanvix-hal-overview.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
 		\end{figure}
 
-		The \textit{Cluster Abstraction Layer} encapsulates the management of a single cluster.
-		It provides two modules, \textit{Core Management}, and \textit{Memory Management}.
-		The \textit{Core Management Module} aims to provide to a client application a complete
-		thread synchronization and management system, rich support of handling
-		interrupts/exceptions, and an adequate system call interface.
-		The \textit{Memory Management Module} provides a uniform view of the \tlbs
-		and paging systems with maintenance routines for them and the cache.
-		Therefore, some design decisions are made to create interfaces that are not
-		dependent on the underlying hardware.
-		For example, a context switch mechanism was not provided in the
-		Core Management module because this would force the client \os
-		to write code in assembly, hurting the conceptual idea of the \hal.
+		\begin{description}
 
-		The \textit{Processor Abstraction Layer}, in particular, embraces
-		architectural features related to multiple clusters.
-		The \textit{Inter-Cluster Communication Module}, the focus of
-		this undergraduate dissertation, exports three main abstractions to allow the
-		cluster to exchange data between them, based on ideas proposed along with the
-		\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
-		Lastly, the \textit{Monitoring and Debugging Module}, as the
-		name shows, exports routines to aid debugging and extraction
-		of diagnostics about hardware metrics, such as the number of
-		page-fault or detour taken.
+			\item[Core Abstraction Layer]
+				encapsulates the management of a single core.
+				It provides a uniform view and maintenance routines for \tlbs, \mmu and cache,
+				a rich support of handling exceptions/traps/interrupts, and
+				access to \pmio.
+				Therefore, some design decisions are made to create interfaces that are not
+				dependent on the underlying hardware.
+				For example, a context switch mechanism was not provided in the
+				\textit{Core Package} because this would force the client \os
+				to write code in assembly, hurting the conceptual idea of the \hal.
 
-		\subsubsection{Inter-Cluster Communication Module}
-		\label{sec.inter-cluster-communication}
+			\item[Cluster Abstraction Layer]
+				encapsulates the management of characteristics that affect all cores in a cluster.
+				It provides support for virtual memory, cross-core notification through events,
+				clock counter fetching, and access to I/O resources such as \mmio and \dma.
 
-			The following sections conceptually present the three abstractions
-			exported by \hal and which will be implemented on the \mppa.
-			They are the \sync, \mailbox, and \portal abstraction.
-			The purpose of developing more specific abstractions than
-			send and receive primitives, described in \autoref{sec.multicomputers-user-sw},
-			is to provide more precise and easy-to-use mechanisms for
-			\os and client applications.
-			On top of them, it is possible to create all kinds of essential
-			services such as message passing and synchronization,
-			to more elaborate services such as shared memory regions~\cite{penna:rmen}.
+			\item[Processor Abstraction Layer]
+				embraces architectural features related to multiple clusters.
+				The \textit{Inter-Cluster Communication Module}, the focus of
+				this undergraduate dissertation, provide \noc identification routines and
+				exports three main abstractions to allow synchronizaton and data
+				exchange among clusters, based on ideas proposed along with the
+				\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
 
-			A related point to consider is that mechanisms described below refer
-			to interactions between distinct clusters only.
-			As described in \autoref{sec.multicomputers-user-sw}, these system
-			abstractions can use the communication primitives, \ie send and receive
-			primitives, to export more elaborate services.
-			The behavior expected can be simulated both through synchronous calls
-			and asynchronous calls, depending only on hardware support.
-			In the same way, it is worth be noted that the small messaging exchange
-			is decoupled from abstraction to intense data transfer.
-			The motivation for this, as other details, is to exhibit better control
-			over the \qos to the higher layers.
-			For instance, the use of distinct \nocs for each service.
+		\end{description}
 
-			\subsubsubsection*{Sync Abstraction}
-			\label{sec.sync-abs}
+	\subsection{Nanvix Microkernel}
+	\label{sec.microkernel}
 
-				\begin{figure}[t]
-					\centering%
-					\caption{Synchronization Abstraction Concept.}%
-					\label{fig:conpt_sync}%
+		The \nanvix \microkernel, running above the \hal, provide
+		bare bones system abstractions to the client applications~\cite{penna:sbesc19}.
+		Through a rich system call interface, it follows a Master-Slave \os model
+		to avoid cache coherence issues present in manycores.
+		The scope of the \microkernel is within a single cluster.
+		System calls and internal subsystems manage local and shared resources
+		available to all cores to maintain the coherence of the \os.
+		\autoref{fig:microkernel-overview} pictures the five logic layers of the \microkernel:
 
-					\subcaptionminipage[fig:conpt_sync-create]%
-						{.7\linewidth}%
-						{N Slaves notify the Master.}%
-						{\includegraphics[width=\linewidth]{sync-create.pdf}}%
+		\begin{figure}[!tb]
+			\centering%
+			\caption{Concept Structural overview of the Nanvix Microkernel.}%
+			\label{fig:microkernel-overview}%
+			\includegraphics[width=.55\textwidth]{nanvix-microkernel-overview.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
+		\end{figure}
 
-					\hfill
+		\begin{description}
 
-					\subcaptionminipage[fig:conpt_sync-open]%
-						{.7\linewidth}%
-						{The Master notify N Slaves.}%
-						{\includegraphics[width=\linewidth]{sync-open.pdf}}%
+			\item[IPC Facility]
+				encapsulates the rest of this undergraduate dissertation, providing
+				manipulation and protection of the inter-cluster communication abstractions.
+				
+			\item[Thread System]
+				implements a rich mechanism to criation, management and protection of threads.
+				This system features schedules, sleep, and wakeup routines of the user threads.
+				
+			\item[Memory System]
+				provides a rich memory management and virtual memory support at cluster-level.
+				It is based in a two-level paging scheme, supports pages of heterogeneous sizes
+				and uses a capabilities system~\cite{Baumann2009} to keep track of permissions on pages.
 
-					\fonte{Developed by the Author.}%
-				\end{figure}
+			\item[Device System]
+				controls the access to memory and port mapped devices, and provides
+				mechanisms to forward the implementation of rich device drivers to user space.
 
-				The \textit{Synchronization Abstraction}, called \sync, proves bare bones
-				for cluster synchronization.
-				From this, it is possible to create distributed barriers.
-				For instance, a set of clusters can wait for a notification coming
-				from a specific cluster.
-				The behavior is analogous to the \posix signal abstraction, but the \sync
-				provides only the case of notification.
-				Specifically, as can be seen in \autoref{fig:conpt_sync}, the
-				cardinality of the operation is N:1, where N clusters wait for 1 Cluster
-				to send a notification.
+			\item[Kernel Call Interface]
+				isolates the \microkernel internal structures through a rich system call interface.
+				This interface implements the Master-Slave \os model
+				and decides whether or not a kernel call should be executed locally or remotely.
 
-			\subsubsubsection*{Mailbox Abstraction}
-			\label{sec.mailbox-abs}
+		\end{description}
 
-				\begin{figure}[t]
-					\centering%
-					\caption{Mailbox Abstraction Concept.}%
-					\label{fig:conpt_mailbox}%
+		\autoref{fig:microkernel-execution} exemplifies a thread creation on \nanvix \microkernel.
+		When a user thread makes a kernel call, a set of sanity checks are performed
+		to ensure the integrity of the operation.
+		After verifying the correctness of the parameters, the user thread notifies
+		the kernel thread and waits locked.
+		The kernel thread implements a producer/consumer policy and executes requests
+		one at a time.
+		When consuming a request, the master identifies it and performs the necessary operations.
+		In the end, the kernel thread releases the requesting slave.
+		Note that the master core always performs all operations that change internal
+		\os structures.
+		kernel calls that only query static parameters or structures (performing cache invalidation) are made locally.
 
-					\subcaptionminipage[fig:conpt_mailbox-logical]%
-						{.5\linewidth}%
-						{Conceptual Overview.}%
-						{\includegraphics[width=\linewidth]{mailbox-logical.pdf}}%
+		\begin{figure}[!tb]
+			\centering%
+			\caption{Execution example of the Nanvix Microkernel.}%
+			\label{fig:microkernel-execution}%
+			\includegraphics[width=.8\textwidth]{nanvix-microkernel-execution.pdf}%
+			\fonte{Developed by the Author.}%
+		\end{figure}
 
-					\hfill
+	\subsection{Nanvix Multikernel}
+	\label{sec.multikernel}
 
-					\subcaptionminipage[fig:conpt_mailbox-flow]%
-						{.6\linewidth}%
-						{Flow of execution: Slave sends a message, Master reads and notifies the sender.}%
-						{\includegraphics[width=\linewidth]{mailbox-flow.pdf}}%
+		The \nanvix \multikernel follows a multikernel design, where \os services
+		are scattered across clusters and interact with user processes through a
+		Client-Server model.
+		Ideally, \os services run in isolation from user processes.
+		Via a message-passing approach, user processes request such services and
+		cooperate with other processes.
 
-					\fonte{Developed by the Author.}%
-				\end{figure}
+		Research that explores the parallel and distributed nature of multicore and
+		manycore processors inspires the \nanvix \multikernel~\cite{wentzlaff_factored_2009, baumann_multikernel:_2009, Wisniewski2014}.
+		By treating the processor as a network of independent cores, it is possible
+		to cover concepts of modern distributed systems.
+		At this level of abstraction, the following distributed system concepts can be exploited:
 
-				The \textit{Mailbox Abstraction} allows clusters to exchange fixed-size
-				messages with each other.
-				The message was thought to be a relatively small size, usually a few hundred bytes.
-				Similarly, the operation of the \mailbox follows \posix message queue behavior.
-				For example, the message can be used to encode small operations and system
-				control signals.
-				As illustrated in \autoref{fig:conpt_mailbox}, the operation cardinality is N:1,
-				where N senders can transfer one message at a time to a receiver queue.
-				When the receiver consumes a message, it notifies the sender to ensure
-				control of the flow.
+		\begin{description}
 
-			\subsubsubsection*{Portal Abstraction}
-			\label{sec.portal-abs}
+			\item[Local Automation:] Each node can be independent of the other nodes, providing
+				security, locking, access, integrity, and failover mechanisms.
 
-				\begin{figure}[t]
-					\centering%
-					\caption{Portal Abstraction Concept: Node 1 create a portal and notify Node 2 to transfer the data.}%
-					\label{fig:conpt_portal}%
-					\includegraphics[width=.65\textwidth]{portal.pdf}%
-					\fonte{Developed by the Author.}%
-				\end{figure}
+			\item[Replication Independence:] Servers and data can be replicated across multiple
+				nodes transparently and automatically synchronized.
 
-				Lastly, the \textit{Portal Abstraction} enables two clusters to exchange arbitrary
-				amounts of data.
-				The conceptual idea of the \portal is similar to that implemented in \posix pipes.
-				\autoref{fig:conpt_portal} shows the \portal operation, with cardinality
-				1:1, a cluster pair opens a channel to transfer data.
-				However, the operation is only allowed in one direction with a flow control mechanism,
-				where the receiver cluster warns the sender cluster when it is ready to receive.
-		
-	\subsection{Communication Services for the Nanvix Microkernel}
-	\label{sec.communication-services}
-	
-		The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication},
-		is designed to export a standard and straightforward communication
-		primitives to different lightweight manycores.
-		These primitives can be used by various types of operating systems
-		and applications.
-		Thus, the module is flexible enough not to impact the performance
-		of the upper layers negatively.
-		For this, it does not provide rich management of the exposed abstractions.
+			\item[Non-dependency on a central node:] When replicating servers, the system no
+				longer relies on a central node.
+				It eliminates the risk of having a single point of failure that would affect all other nodes.
+				A central node could also become overloaded, resulting in loss of system performance.
 
-		In this scenario, the communication services of Nanvix Microkernel seek
-		to provide \ipc between distinct clusters.
-		Specifically, these services perform the multiplexing of the hardware
-		resources and the verification of the parameters that will be passed
-		on the communication primitives.
-		Due to the Master-Slave model, the responsibility of protecting,
-		manipulating, and configuring \hal resources is of the master core.
-		The slave core will request operations through a meta-interface,
-		passing the necessary information to the master.
+			\item[Location Transparency:] Users should not need to know where the servers
+				or data are located. For instance, a name server can control name resolution.
 
-		Considering that the abstractions make up the fundamental elements of
-		the construction of more complex services, the Microkernel services
-		were responsible for the management and multiplexing of the finite
-		resources for the many cores of a cluster.
-		In total, there are three communication services in the Nanvix Microkernel,
-		each associated with an abstraction of the communication module,
-		analogously named \sync, \mailbox, and \portal services.
+		\end{description}
+
+		\autoref{fig:multikernel-overview} shows a possible configuration of a
+		manycore using the \nanvix \multikernel.
+		Clusters located at the corners of the processor run kernel services
+		to better serve a nearby subset of clusters.
+		In the other clusters, we can see the distribution of two distinct applications.
+		An application does not necessarily need to use all cores in a cluster.
+		Now, looking carefully at a cluster, we can see that Nanvix Microkernel
+		always reserves a single core for kernel execution, making the other cores
+		available for application execution.
+
+		\begin{figure}[!tb]
+			\centering%
+			\caption{Possible configurations on Nanvix Multikernel.}%
+			\label{fig:multikernel-overview}%
+			\includegraphics[width=.55\textwidth]{nanvix-multikernel-overview.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
+		\end{figure}
+
+		To enable Nanvix \os compliance with \posix, the \nanvix \multikernel is
+		made up of high-level \os services that implement standardized interfaces.
+		It exports both the client and server interfaces developed atop	the
+		Nanvix Microkernel services.
+		From this perspective, user applications are easily ported to run on
+		\nanvix \multikernel, where client-side interfaces abstract the communication
+		with servers distributed on the processor.
+		\autoref{fig:multikernel-shm} exemplifies the existing layers to provide the \shm service.
+		When opening an \shm, the client does not have to worry about where data
+		will be allocated or whether other cores in other clusters are operating
+		over the same memory region.
+		Consequently, we provide greater programmability and software portability
+		for manycores processors.
+
+		\begin{figure}[!tb]
+			\centering%
+			\caption{\posix Compliance Example on Nanvix Multikernel.}%
+			\label{fig:multikernel-shm}%
+			\includegraphics[width=.9\textwidth]{nanvix-multikernel-shm.pdf}%
+			\fonte{VER COM O PEDRO COMO REFERENCIAR (REPOSITÓRIO NANVIX?).}%
+		\end{figure}
