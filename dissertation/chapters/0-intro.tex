@@ -35,14 +35,11 @@
 	memory and on-chip networking~\cite{freitas:thesis}.
 
 	\begin{figure}[t]
-		\centering
-		\caption{42 years of Multiprocessor Trend Data.}
-		\label{fig:microprocessor-data}
-
-		\todo[inline]{It is missing vertical scale subtitles.}
-
-		\includegraphics[width=.85\textwidth]{42-years-processor-trend.pdf}
-		\fonte{\citeonline{url:microprocessor-trend-data}.}
+		\centering%
+		\caption{42 years of Multiprocessor Trend Data.}%
+		\label{fig:microprocessor-data}%
+		\includegraphics[width=.85\textwidth]{42-years-processor-trend.pdf}%
+		\fonte{\citeonline{url:microprocessor-trend-data}.}%
 	\end{figure}
 
 % From multicore to manycores and Manycores characteristics
@@ -50,7 +47,7 @@
 	and power consumption (\watts) of a manycore, as shown in \autoref{fig:microprocessor-data}.
 	For instance, to achieve \exascale (10$^{18}$ \flops), the US Department of Defense
 	issued a report stipulating the energy efficiency of a supercomputer should be
-	around 50 GFLOPS/W~\cite{darpa:exascale}.
+	around 50 GFLOPS/\watts~\cite{darpa:exascale}.
 	Recently, a new class of parallel processors, called \lightweight \manycores,
 	has emerged to provide high parallelism with low power consumption.
 	These processors own the following characteristics:
@@ -101,11 +98,11 @@
 % Goals and Contributions
 	We believe that \oss for the next-generation of \lightweight \manycores must be
 	redesigned from scratch to cope with their tight architectural constraints.
-	Based on this idea, a new fully-featured distributed \os based on a \multikernel approach~\cite{Baumann2009}
+	Based on this idea, a new fully-featured distributed \os based on a multikernel approach~\cite{Baumann2009}
 	is under investigations~\cite{penna2017-1,penna2017-2,penna2019}.
 	The \nanvix \multikernel features a generic and flexible \hal for \lightweight \manycores that
 	addresses the key issues encountered in the development for these processors.
-	On top of the \nanvix \hal, we are simultaneously designing and implementing a \microkernel
+	On top of the \nanvix \textit{\hal}, we are simultaneously designing and implementing a microkernel
 	that provides bare bones system abstractions for each cluster.
 
 \section{Goals}
@@ -117,10 +114,10 @@
 \label{sec.goals.general}
 
 	The foremost goal of this undergraduate dissertation is to propose a \textit{Inter-Cluster Communication Module}
-	to the \nanvix \hal and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
+	to the \nanvix \textit{\hal} and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
 	This module will expose the essential abstractions that permit upper layers to create more
 	sophisticated communication services.
-	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix Microkernel.
+	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix \microkernel.
 	This work will be done in collaboration with Pedro Henrique Penna, who is a Ph.D. student at the
 	University of Grenoble Alpes, developer of Nanvix and co-advisor of this work.
 
@@ -130,10 +127,10 @@
 	\begin{itemize}
 		\item Implement the proposed interfaces of the Inter-Cluster Communication Module of the \hal 
 			for the \textit{\mppa manycore processor};
-		\item Define Communication Services and their strategies in the use of the Inter-Cluster
-			Communication Module in the context of a microkernel-based \os;
-		\item Implement the Communication Services for the \nanvix Microkernel;
-		\item Analyze the performance of the proposed implementation using specific micro-benchmarks
+		\item Define Communication Services and their strategies for each abstraction exported
+			by the Inter-Cluster Communication Module in the context of a microkernel-based \os;
+		\item Implement the Communication Services for the Nanvix Microkernel;
+		\item Analyze the performance of the Communication Services using specific micro-benchmarks
 			that simulates the typical collective communication routines of the \mpi.
 	\end{itemize}
 
