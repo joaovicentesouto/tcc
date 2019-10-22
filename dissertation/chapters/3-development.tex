@@ -42,7 +42,7 @@
 		Devido ao abordagem do microkernel, os problemas de concorrência são amenizados porque apenas o mestre trata as interrupções.
 
 		\begin{algorithm}
-			\caption{Simplified algorithm of the \noc handler.}%
+			\caption{Simplified NoC Handler Algorithm.}%
 			\label{alg.noc-handler}%
 			\begin{algorithmic}[1]
 				\Require $status[M_{Interfaces}][N_{Resources}]$, interrupt status of a resource.
@@ -78,7 +78,7 @@
 
 		\begin{table}[!tb]
 			\centering%
-			\caption{\noc Interface Identification.}%
+			\caption{NoC Interface Identification.}%
 			\label{tab.noc-node-id}%
 
 			\begin{tabular}{l|l|l|}
@@ -117,7 +117,7 @@
 
 		\begin{table}[!tb]
 			\centering%
-			\caption{Partitions of \noc resources by abstraction.}%
+			\caption{Partitions of NoC resources by abstraction.}%
 			\label{tab.noc-resources}%
 
 			\begin{tabular}{l|l|l|l|l|}
@@ -142,8 +142,8 @@
 
 		O Nanvix HAL provê o módulo de comunicação inter-cluster para permitir que cluster distintos troquem informações.
 		Esse módulo é constituido de três abstrações de comunicação, nomeados Sync, mailbox e portal.
-		Essas abstrações proveêm mecânismos mais precisos, fáceis de usar, escalonáveis e facilmente portáveis para diferentes arquiteturas~\cite{fleets}.
-		Sobre eles, é possível criar dos mais simples serviços, como sincronização e troca de dados, à serviços mais complexos como \shm, \semaphone, \rmen~\cite{penna:rmen}.
+		Essas abstrações proveêm mecânismos mais precisos, fáceis de usar, escalonáveis e facilmente portáveis para diferentes arquiteturas~\cite{wentzlaff_fleets:_2011}.
+		Sobre eles, é possível criar dos mais simples serviços, como sincronização e troca de dados, à serviços mais complexos como \shm, POSIX Semaphore, \rmem~\cite{penna:rmen}.
 		O comportamento esperado pode ser simulado por ambos tipos de chamadas, sincronas ou assíncronas, dependendo apenas do suporte em hardware.
 		Motivados a expor melhor controle sobre QoS para as camadas superiores, nós dissociamos as pequenas transferência de dados das grandes, isto é, mailbox e portal.
 		Vale notar que seria possível utilizar uma NoC para cada abstração se o hardware suportasse.
@@ -174,41 +174,41 @@
 			Assim, nós garantimos que o mestre não trave todo o sistema por ficar a espera de uma única notificação.
 
 			\begin{algorithm}
-				\caption{Lazy Transfer Algorithm.}
+				\caption{Simplified Lazy Transfer Algorithm.}
 				\label{euclid}
 				\begin{algorithmic}[1]
 				\Require $resources$, Abstraction Resource Table
 
 				\Algphase{Phase 1 - Async transfer.}
 
-				\Procedure{async\_write}{$id, message, size$}
-					\State {$resources[id].message \gets message$}
-					\State {$resources[id].size \gets size$}
-					\If {$resources[id].has\_permission$} 
-						\State {$\Call{do\_lazy\_write}{id}$}
-					\Else
-						\State {$resources[id].valid\_lazy \gets True$}
-					\EndIf
-				\EndProcedure%
+					\Procedure{async\_write}{$id, message, size$}
+						\State {$resources[id].message \gets message$}
+						\State {$resources[id].size \gets size$}
+						\If {$resources[id].has\_permission$} 
+							\State {$\Call{do\_lazy\_write}{id}$}
+						\Else
+							\State {$resources[id].valid\_lazy \gets True$}
+						\EndIf
+					\EndProcedure%
 
 				\Algphase{Phase 2 - Receive permission.}
 
-				\Procedure{handler}{$id$} 
-					\If {$resources[id].valid\_lazy$} 
-						\State {$\Call{do\_lazy\_write}{id}$} 
-					\Else
-						\State {$resources[id].has\_permission \gets True$}
-					\EndIf
-				\EndProcedure%
+					\Procedure{handler}{$id$} 
+						\If {$resources[id].valid\_lazy$} 
+							\State {$\Call{do\_lazy\_write}{id}$} 
+						\Else
+							\State {$resources[id].has\_permission \gets True$}
+						\EndIf
+					\EndProcedure%
 
 				\Algphase{Phase 3 - Transfer the data.}
 
-				\Procedure{do\_lazy\_write}{$id$} 
-					\State {$resources[id].valid\_lazy \gets False$}
-					\State {$resources[id].has\_permission \gets False$}
-					\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$} 
-					\State {$\Call{unlock}{resources[id].lock}$}\Comment{Releases slave core.}
-				\EndProcedure%
+					\Procedure{do\_lazy\_write}{$id$} 
+						\State {$resources[id].valid\_lazy \gets False$}
+						\State {$resources[id].has\_permission \gets False$}
+						\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$} 
+						\State {$\Call{unlock}{resources[id].lock}$}\Comment{Releases slave core.}
+					\EndProcedure%
 
 				\end{algorithmic}
 
