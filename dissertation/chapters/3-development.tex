@@ -187,14 +187,14 @@
 						\If {$resources[id].has\_permission$} 
 							\State {$\Call{do\_lazy\_write}{id}$}
 						\Else
-							\State {$resources[id].valid\_lazy \gets True$}
+							\State {$resources[id].is\_waiting \gets True$}
 						\EndIf
 					\EndProcedure%
 
 				\Algphase{Phase 2 - Receive permission.}
 
 					\Procedure{handler}{$id$} 
-						\If {$resources[id].valid\_lazy$} 
+						\If {$resources[id].is\_waiting$} 
 							\State {$\Call{do\_lazy\_write}{id}$} 
 						\Else
 							\State {$resources[id].has\_permission \gets True$}
@@ -204,7 +204,7 @@
 				\Algphase{Phase 3 - Transfer the data.}
 
 					\Procedure{do\_lazy\_write}{$id$} 
-						\State {$resources[id].valid\_lazy \gets False$}
+						\State {$resources[id].is\_waiting \gets False$}
 						\State {$resources[id].has\_permission \gets False$}
 						\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$} 
 						\State {$\Call{unlock}{resources[id].lock}$}\Comment{Releases slave core.}
@@ -297,10 +297,10 @@
  */
 int sync_create(const int *nodes, int nnodes, int type);
 
-/* @brief Releases and cleans receiver buffer. */
+/* @brief Releases and cleans receiver slot. */
 int sync_unlink(int syncid);
 
-/* @brief Wait signal on a specific synchronization point. */
+/* @brief Waits a signal. */
 int sync_wait(int syncid);
 \end{minted}
 \fonte{Developed by the Author.}
@@ -314,13 +314,13 @@ int sync_wait(int syncid);
  * @brief Allocates and configures the sending side of
  * the synchronization point.
  */
-int sync_open(void);
+int sync_open(const int *nodes, int nnodes, int type);
 
-/* @brief Releases the sender resources on a specific DMA channel. */
+/* @brief Releases the transfer channel. */
 int sync_close(int syncid);
 
-/* @brief Send signal on a specific synchronization point. */
-int sync_signal(int syncid, const int *nodes, int nnodes, int type);
+/* @brief Sends a signal. */
+int sync_signal(int syncid);
 \end{minted}
 \fonte{Developed by the Author.}
 \end{listing}
