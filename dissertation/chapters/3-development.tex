@@ -122,11 +122,11 @@
 
 			\begin{tabular}{l|l|l|l|l|}
 				\cline{2-5}
-														& \multicolumn{2}{c|}{\textbf{\cnoc}}    & \multicolumn{2}{c|}{\textbf{\dnoc}}    \\ \cline{2-5}
-														& \textbf{RX Slot} & \textbf{TX Channel} & \textbf{RX Slot} & \textbf{TX Channel} \\ \hline
-				\multicolumn{1}{|l|}{\textbf{\mailbox}} & 0-23             & 0                   & 0-23             & 1-3                 \\ \hline
-				\multicolumn{1}{|l|}{\textbf{\portal}}  & 24-47            & 1-2                 & 24-47            & 4-7                 \\ \hline
-				\multicolumn{1}{|l|}{\textbf{\sync}}    & 48-71            & 3                   & -                & -                   \\ \hline
+														& \multicolumn{2}{c|}{\textbf{\cnoc}}          & \multicolumn{2}{c|}{\textbf{\dnoc}}          \\ \cline{2-5}
+														& \textbf{RX Slot ID} & \textbf{TX Channel ID} & \textbf{RX Slot ID} & \textbf{TX Channel ID} \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\mailbox}} & 0-23                & 0                      & 0-23                & 1-3                    \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\portal}}  & 24-47               & 1-2                    & 24-47               & 4-7                    \\ \hline
+				\multicolumn{1}{|l|}{\textbf{\sync}}    & 48-71               & 3                      & -                   & -                      \\ \hline
 			\end{tabular}
 
 			\fonte{Developed by the Author.}%
@@ -140,29 +140,114 @@
 	\section{Low-Level Communication}
 	\label{sec.low-level-comm}
 
-		The following sections conceptually present the three abstractions
-		exported by \hal and which will be implemented on the \mppa.
-		They are the \sync, \mailbox, and \portal abstraction.
-		The purpose of developing more specific abstractions than
-		send and receive primitives, is to provide more precise and easy-to-use
-		mechanisms for \os and client applications.
-		On top of them, it is possible to create all kinds of essential
-		services such as message passing and synchronization,
-		to more elaborate services such as shared memory regions~\cite{penna:rmen}.
+		O Nanvix HAL provê o módulo de comunicação inter-cluster para permitir que cluster distintos troquem informações.
+		Esse módulo é constituido de três abstrações de comunicação, nomeados Sync, mailbox e portal.
+		Essas abstrações proveêm mecânismos mais precisos, fáceis de usar, escalonáveis e facilmente portáveis para diferentes arquiteturas~\cite{fleets}.
+		Sobre eles, é possível criar dos mais simples serviços, como sincronização e troca de dados, à serviços mais complexos como \shm, \semaphone, \rmen~\cite{penna:rmen}.
+		O comportamento esperado pode ser simulado por ambos tipos de chamadas, sincronas ou assíncronas, dependendo apenas do suporte em hardware.
+		Motivados a expor melhor controle sobre QoS para as camadas superiores, nós dissociamos as pequenas transferência de dados das grandes, isto é, mailbox e portal.
+		Vale notar que seria possível utilizar uma NoC para cada abstração se o hardware suportasse.
+		Não fizemos isso no MPPA porque a CNoC só provê a transferência de valores de 64 bits.
 
-			\todo[inline]{The following paragraph is confusing. Refactor.}
-		A related point to consider is that mechanisms described below refer
-		to interactions between distinct clusters only.
-		As described in \autoref{sec.multicomputers-user-sw}, these system
-		abstractions can use the communication primitives, \ie send and receive
-		primitives, to export more elaborate services.
-		The behavior expected can be simulated both through synchronous calls
-		and asynchronous calls, depending only on hardware support.
-		In the same way, it is worth be noted that the small messaging exchange
-		is decoupled from abstraction to intense data transfer.
-		The motivation for this, as other details, is to exhibit better control
-		over the \qos to the higher layers.
-		For instance, the use of distinct \nocs for each service.
+		Está seção está organizada da seguinte maneira.
+		Subseção 0 abrange pontos comuns entre todas as abstrações.
+		Subseção 1, 2 e 3 apresentam conceitualmente cada uma das abstrações, os problemas que elas englobam, e detalhes de implementação.
+
+		\subsection{General Concepts}
+		\label{sec.general-concepts}
+
+			Tecnicamente, o Nanvix HAL não sabe que tipos de aplicações ou kernels o utilizaram.
+			Desta forma, é preciso garantir um comportamento comum que não afete o funcionanto da camada superior.
+			O microkernel, especificamente, restringe o core mestre a estar quase sempre disponível para atender solicitações dos escravos.
+			Por isso, as interfaces exportam apenas chamadas assíncronas (isto é, funções async e wait).
+			Isto força a camadas superior, caso queira, criar chamadas síncronas que chamam a função wait logo após a operação assíncrona.
+			Deste modo, no nível do microkernel, nós conseguimos garantir que o mestre configure ou execute as funções assíncronas e notifique os escravos que aguardam na função wait.
+			No MPPA, este controle é realizado através de spinlocks atrelados a cada recurso das abstrações.
+			Ao concluir uma operação, o mestre libera o bloqueio para o escravo continuar sua execução.
+
+			Contudo, a limitação da DMA descrita na Seção 0 acrescenta um agravante na operação de transferência das abstrações mailbox e portal.
+			Nestas abstrações, existe um controle de fluxo onde o receptor deve notificar o emissor, dando-lhe permissão para transfir os dados.
+			Este comportamento pode ocasionar que o mestre seja impossibilitado de realizar as operações e bloqueia esperando a permissão.
+			Para burlar esse problema, foi introduzido o conceito de envio preguiçoso.
+			O algoritmo 4 ilustra o comportamento do envio preguiçoso, onde o mestre guarda os paramêtros caso não tenha permissão e vai atender outras solicitações.
+			Ao receber a permissão do receptor, o manipulador de interrupções identifica o recurso, realiza de fato o envio dos dados e libera o escravo que solicitou o envio.
+			Assim, nós garantimos que o mestre não trave todo o sistema por ficar a espera de uma única notificação.
+
+			\begin{algorithm}
+				\caption{Lazy Transfer Algorithm.}
+				\label{euclid}
+				\begin{algorithmic}[1]
+				\Require $resources$, Abstraction Resource Table
+
+				\Algphase{Phase 1 - Async transfer.}
+
+				\Procedure{async\_write}{$id, message, size$}
+					\State {$resources[id].message \gets message$}
+					\State {$resources[id].size \gets size$}
+					\If {$resources[id].has\_permission$} 
+						\State {$\Call{do\_lazy\_write}{id}$}
+					\Else
+						\State {$resources[id].valid\_lazy \gets True$}
+					\EndIf
+				\EndProcedure%
+
+				\Algphase{Phase 2 - Receive permission.}
+
+				\Procedure{handler}{$id$} 
+					\If {$resources[id].valid\_lazy$} 
+						\State {$\Call{do\_lazy\_write}{id}$} 
+					\Else
+						\State {$resources[id].has\_permission \gets True$}
+					\EndIf
+				\EndProcedure%
+
+				\Algphase{Phase 3 - Transfer the data.}
+
+				\Procedure{do\_lazy\_write}{$id$} 
+					\State {$resources[id].valid\_lazy \gets False$}
+					\State {$resources[id].has\_permission \gets False$}
+					\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$} 
+					\State {$\Call{unlock}{resources[id].lock}$}\Comment{Releases slave core.}
+				\EndProcedure%
+
+				\end{algorithmic}
+
+				\fonte{Developed by the Author.}%
+			\end{algorithm}
+
+			As interfaces das abstrações seguem uma convenção para distinguir os papeis de receptor e emissor.
+			Receptores utilizam as funções com sufíxo \texttt{create}, \texttt{unlink}, \texttt{aread} e \texttt{wait}.
+			Emissores, por sua vez, utilizam funções com sufíxo \texttt{open}, \texttt{close}, \texttt{awrite} e \texttt{wait}.
+			Como a função \texttt{wait} é compartilhada, a abstração deve fazer a distinção do papel pelo identificador do recurso.
+			Essa diferenciação ajuda tanto o usuário, sendo bastante intuitivo, como na implementação da HAL por explicitar quais recursos serão necessário.
+
+			Por fim, como já comentado anteriormente, o Nanvix HAL não realiza nenhum tipo de multiplexação dos recursos físicos do hardware.
+			A quantidade de recursos de comunicação disponíveis é diretamente relativa a quantidade de recursos físico para realizar uma dada operação.
+			A tabela 4 mostra quais recursos físicos são necessário para cada abstração e a quantidade total de abstrações simultaneas que pode existir.
+			Por exemplo, a criação de um portal precisa de um recurso da DNoC para receber dados e 1 da CNoC para enviar a permissão para o emissor.
+			As quantidades são baixas devido aos poucos canais de transmissão, porém quem deve se preocupar com a multiplexação dos recursos deve ser da camada superior.
+
+			\begin{table}[!tb]
+				\centering%
+				\caption{Physical requirements by abstraction.}%
+				\label{tab.abstractions-amount}%
+
+				\begin{tabular}{l|l|l|l|l|l|l|}
+					\cline{2-7}
+															& \multicolumn{3}{c|}{\textbf{Create}}  & \multicolumn{3}{c|}{\textbf{Open}}                              \\ \cline{2-7}
+															& \multicolumn{1}{|c|}{\textbf{RX}}
+															            & \multicolumn{1}{|c|}{\textbf{TX}}
+																		            & \multicolumn{1}{|c|}{\textbf{Available}}
+																					                & \multicolumn{1}{|c|}{\textbf{RX}}
+																							                    & \multicolumn{1}{|c|}{\textbf{TX}}
+																							        			            & \multicolumn{1}{|c|}{\textbf{Available}} \\ \hline
+					\multicolumn{1}{|l|}{\textbf{\mailbox}} & 1 (\dnoc) & 1 (\cnoc) & 1             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
+					\multicolumn{1}{|l|}{\textbf{\portal}}  & 1 (\dnoc) & 1 (\cnoc) & 2             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
+					\multicolumn{1}{|l|}{\textbf{\sync}}    & 1 (\cnoc) & 0         & 24            & 0         & 1 (\cnoc) & 1                                        \\ \hline
+				\end{tabular}
+
+				\fonte{Developed by the Author.}%
+			\end{table}
 
 		\subsection{Sync Abstraction}
 		\label{sec.sync-abs}
