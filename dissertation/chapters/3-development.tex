@@ -42,7 +42,7 @@
 		Devido ao abordagem do microkernel, os problemas de concorrência são amenizados porque apenas o mestre trata as interrupções.
 
 		\begin{algorithm}
-			\caption{Simplified algorithm of a handler.}%
+			\caption{Simplified algorithm of the \noc handler.}%
 			\label{alg.noc-handler}%
 			\begin{algorithmic}[1]
 				\Require $status[M_{Interfaces}][N_{Resources}]$, interrupt status of a resource.
@@ -78,7 +78,7 @@
 
 		\begin{table}[!tb]
 			\centering%
-			\caption{Cluster Identification.}%
+			\caption{\noc Interface Identification.}%
 			\label{tab.noc-node-id}%
 
 			\begin{tabular}{l|l|l|}
@@ -131,6 +131,11 @@
 
 			\fonte{Developed by the Author.}%
 		\end{table}
+
+		Por fim, nós conseguimos remover quase toda dependência com a pilha de software disponibilizada pela Kalray.
+		Porém, ao eliminar as biliotecas de comunicação, a falta de documentação da virtualização do hardware e exemplos funcionais de comunicação, surgiram limitações no envio dos dados pela DNoC.
+		Resumidamente, não foi possível configurar corretamente as microthreads existentes na DMA para envio assíncrono, tornando-se um trabalho futuro.
+		Entretanto, tal limitação não impactou no design das abstrações exigindo apenas que o core mestre perca um tempo enviando os dados manualmente.
 
 	\section{Low-Level Communication}
 	\label{sec.low-level-comm}
