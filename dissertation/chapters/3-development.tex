@@ -179,7 +179,7 @@
 				\begin{algorithmic}[1]
 				\Require $resources$, Abstraction Resource Table
 
-				\Algphase{Phase 1 - Async transfer.}
+				\Algphase{Configures data transfer.}
 
 					\Procedure{async\_write}{$id, message, size$}
 						\State {$resources[id].message \gets message$}
@@ -191,7 +191,7 @@
 						\EndIf
 					\EndProcedure%
 
-				\Algphase{Phase 2 - Receive permission.}
+				\Algphase{Receives permission.}
 
 					\Procedure{handler}{$id$} 
 						\If {$resources[id].is\_waiting$} 
@@ -201,7 +201,7 @@
 						\EndIf
 					\EndProcedure%
 
-				\Algphase{Phase 3 - Transfer the data.}
+				\Algphase{Transfers the data.}
 
 					\Procedure{do\_lazy\_write}{$id$} 
 						\State {$resources[id].is\_waiting \gets False$}
@@ -257,17 +257,17 @@
 				\caption{Synchronization Abstraction Concept.}%
 				\label{fig:conpt_sync}%
 
-				\subcaptionminipage[fig:conpt_sync-create]%
+				\subcaptionminipage[fig:sync-all-to-one]%
 					{.7\linewidth}%
 					{N Slaves notify the Master.}%
-					{\includegraphics[width=\linewidth]{sync-create.pdf}}%
+					{\includegraphics[width=\linewidth]{sync-all-to-one.pdf}}%
 
 				\hfill
 
-				\subcaptionminipage[fig:conpt_sync-open]%
+				\subcaptionminipage[fig:sync-one-to-all]%
 					{.7\linewidth}%
 					{The Master notify N Slaves.}%
-					{\includegraphics[width=\linewidth]{sync-open.pdf}}%
+					{\includegraphics[width=\linewidth]{sync-one-to-all.pdf}}%
 
 				\fonte{Developed by the Author.}%
 			\end{figure}
@@ -325,8 +325,6 @@ int sync_signal(int syncid);
 \fonte{Developed by the Author.}
 \end{listing}
 
-				As described in \autoref{sec.sync-abs}, the \sync abstraction allows the
-				creation of distributed barriers.
 				The \sync can be decomposed into two sets of functions, where the
 				\autoref{code:sync-receiver} shows the functions to one clusters
 				that will receive signals, and \autoref{code:sync-sender} shows the
