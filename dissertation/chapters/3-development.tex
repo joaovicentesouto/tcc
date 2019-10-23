@@ -35,7 +35,7 @@
 		A DMA coordena três linhas de interrupções.
 		Duas delas são utilizados pela DNoC para notificar o recebimento de dados e o término do envio dados por uma microthread.
 		A CNoC só utiliza uma linha para o recebimento de sinais porque o envio de um sinal, um valor de 64-bits, é realizado explicitamente pelo core.
-		Para casa linha de interrupção existe um handler específico mas todos executam um algoritmo similar.
+		Para cada linha de interrupção existe um handler específico mas todos executam um algoritmo similar.
 		O Algoritmo 3 exemplifica de forma simplificada o comportamento de um handler.
 		Devido ao fato que a linha apenas notifica qual o tipo de interrupção, é responsabilidade do manipulador varrer os recursos de cada interface procurando quem acionou a interrupção.
 		Para que não ocorresse a perda de interrupções, foi garantido que o manipulador fosse reentrante.
@@ -47,12 +47,12 @@
 			\begin{algorithmic}[1]
 				\Require $status[M_{Interfaces}][N_{Resources}]$, interrupt status of a resource.
 				\Require $handlers[M_{Interfaces}][N_{Resources}]$, interrupt handler of a resource.
-				\Procedure{handler}{}
+				\Procedure{noc\_handler}{}
 				\For {$i \in [1, M_{Interfaces}]$}
-					\For {$j \in [1, N_{Resources}$}
+					\For {$j \in [1, N_{Resources}]$}
 						\If {$status[i][j] == Interrupt Triggered$}
-							\State {$clean\_status(i, j)$}
-							\State {$handlers[i][j](i, j)$}
+							\State {$\Call{clean\_status}{i, j}$}
+							\State {$\Call{handlers[i][j]}{i, j}$}
 						\EndIf
 					\EndFor
 				\EndFor
@@ -95,7 +95,7 @@
 		Para performar a comunicação entre dois clusters, é necessário que o emissor conheça qual o identificador do recurso que o receptor irá usar.
 		Por exemplo, caso o receptor configurar o recebimento em um recurso da DNoC e o emissor enviar para outro, mesmo que o identificador lógico esteja correto, o receptor não será notificado do recebimento.
 		Por esta razão, os slots de recebimento da CNoC e DNoC foram particionados por abstração.
-		Dentro de uma partição, cada slot é mapeado para um identificador lógico, \eg 0 à 23.
+		Dentro de uma partição, cada slot é mapeado estaticamente para um identificador lógico, \eg 0 à 23.
 		Em contraste, os canais de envio não possuem essa necessidade, podendo ser alocados dinâmicamente.
 		Entretanto, um conceito importante do Nanvix HAL é prover os recursos necessários para uma determinada operação sem realizar otimizações desnecessárias.
 		Desta forma, os canais de envio também foram particionados por abstração de modo que sejam reservados durando toda uma operação.
@@ -141,7 +141,7 @@
 	\label{sec.low-level-comm}
 
 		O Nanvix HAL provê o módulo de comunicação inter-cluster para permitir que cluster distintos troquem informações.
-		Esse módulo é constituido de três abstrações de comunicação, nomeados Sync, mailbox e portal.
+		Esse módulo é constituido de três abstrações, nomeados Sync, mailbox e portal.
 		Essas abstrações proveêm mecânismos mais precisos, fáceis de usar, escalonáveis e facilmente portáveis para diferentes arquiteturas~\cite{wentzlaff_fleets:_2011}.
 		Sobre eles, é possível criar dos mais simples serviços, como sincronização e troca de dados, à serviços mais complexos como \shm, POSIX Semaphore, \rmem~\cite{penna:rmen}.
 		O comportamento esperado pode ser simulado por ambos tipos de chamadas, sincronas ou assíncronas, dependendo apenas do suporte em hardware.
@@ -160,22 +160,22 @@
 			Desta forma, é preciso garantir um comportamento comum que não afete o funcionanto da camada superior.
 			O microkernel, especificamente, restringe o core mestre a estar quase sempre disponível para atender solicitações dos escravos.
 			Por isso, as interfaces exportam apenas chamadas assíncronas (isto é, funções async e wait).
-			Isto força a camadas superior, caso queira, criar chamadas síncronas que chamam a função wait logo após a operação assíncrona.
+			Isto força a camada superior, caso queira, criar chamadas síncronas que chamam a função wait logo após a operação assíncrona.
 			Deste modo, no nível do microkernel, nós conseguimos garantir que o mestre configure ou execute as funções assíncronas e notifique os escravos que aguardam na função wait.
 			No MPPA, este controle é realizado através de spinlocks atrelados a cada recurso das abstrações.
 			Ao concluir uma operação, o mestre libera o bloqueio para o escravo continuar sua execução.
 
 			Contudo, a limitação da DMA descrita na Seção 0 acrescenta um agravante na operação de transferência das abstrações mailbox e portal.
-			Nestas abstrações, existe um controle de fluxo onde o receptor deve notificar o emissor, dando-lhe permissão para transfir os dados.
-			Este comportamento pode ocasionar que o mestre seja impossibilitado de realizar as operações e bloqueia esperando a permissão.
+			Nestas abstrações, existe um controle de fluxo onde o receptor deve notificar o emissor, dando-lhe permissão para transferir os dados.
+			Este comportamento pode ocasionar o bloqueio do mestre ao esperar uma permissão.
 			Para burlar esse problema, foi introduzido o conceito de envio preguiçoso.
 			O algoritmo 4 ilustra o comportamento do envio preguiçoso, onde o mestre guarda os paramêtros caso não tenha permissão e vai atender outras solicitações.
 			Ao receber a permissão do receptor, o manipulador de interrupções identifica o recurso, realiza de fato o envio dos dados e libera o escravo que solicitou o envio.
-			Assim, nós garantimos que o mestre não trave todo o sistema por ficar a espera de uma única notificação.
+			Assim, nós garantimos que o mestre deixe de fazer algo útil e trave todo o sistema.
 
 			\begin{algorithm}
-				\caption{Simplified Lazy Transfer Algorithm.}
-				\label{euclid}
+				\caption{Simplified Lazy Transfer Algorithm.}%
+				\label{euclid}%
 				\begin{algorithmic}[1]
 				\Require $resources$, Abstraction Resource Table
 
@@ -193,7 +193,7 @@
 
 				\Algphase{Receives permission.}
 
-					\Procedure{handler}{$id$} 
+					\Procedure{abstractions\_handler}{$id$} 
 						\If {$resources[id].is\_waiting$} 
 							\State {$\Call{do\_lazy\_write}{id}$} 
 						\Else
@@ -207,89 +207,87 @@
 						\State {$resources[id].is\_waiting \gets False$}
 						\State {$resources[id].has\_permission \gets False$}
 						\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$} 
-						\State {$\Call{unlock}{resources[id].lock}$}\Comment{Releases slave core.}
+						\State {$\Call{unlock}{resources[id].lock}$}                                \Comment{Releases slave core.}
 					\EndProcedure%
 
-				\end{algorithmic}
+				\end{algorithmic}%
 
 				\fonte{Developed by the Author.}%
 			\end{algorithm}
 
-			As interfaces das abstrações seguem uma convenção para distinguir os papeis de receptor e emissor.
+			Por fim, as interfaces das abstrações seguem uma convenção para distinguir os papeis de receptor e emissor.
 			Receptores utilizam as funções com sufíxo \texttt{create}, \texttt{unlink}, \texttt{aread} e \texttt{wait}.
 			Emissores, por sua vez, utilizam funções com sufíxo \texttt{open}, \texttt{close}, \texttt{awrite} e \texttt{wait}.
 			Como a função \texttt{wait} é compartilhada, a abstração deve fazer a distinção do papel pelo identificador do recurso.
-			Essa diferenciação ajuda tanto o usuário, sendo bastante intuitivo, como na implementação da HAL por explicitar quais recursos serão necessário.
+			A diferenciação da natureza das operações ajuda tanto o usuário, sendo bastante intuitivo, como na implementação da HAL por explicitar quais recursos serão necessário.
 
-			Por fim, como já comentado anteriormente, o Nanvix HAL não realiza nenhum tipo de multiplexação dos recursos físicos do hardware.
-			A quantidade de recursos de comunicação disponíveis é diretamente relativa a quantidade de recursos físico para realizar uma dada operação.
-			A tabela 4 mostra quais recursos físicos são necessário para cada abstração e a quantidade total de abstrações simultaneas que pode existir.
-			Por exemplo, a criação de um portal precisa de um recurso da DNoC para receber dados e 1 da CNoC para enviar a permissão para o emissor.
-			As quantidades são baixas devido aos poucos canais de transmissão, porém quem deve se preocupar com a multiplexação dos recursos deve ser da camada superior.
+			% Por fim, como já comentado anteriormente, o Nanvix HAL não realiza nenhum tipo de multiplexação dos recursos físicos do hardware.
+			% A quantidade de recursos de comunicação disponíveis é diretamente relativa a quantidade de recursos físico para realizar uma dada operação.
+			% A tabela 4 mostra quais recursos físicos são necessário para cada abstração e a quantidade total de abstrações simultaneas que podem existir.
+			% Por exemplo, a criação de um portal precisa de um slot de recebimento da DNoC e 1 canal de transmissão da CNoC.
+			% As quantidades são baixas devido aos poucos canais de transmissão, porém quem deve se preocupar com a multiplexação dos recursos deve ser da camada superior.
 
-			\begin{table}[!tb]
-				\centering%
-				\caption{Physical requirements by abstraction.}%
-				\label{tab.abstractions-amount}%
+			% \begin{table}[!tb]
+			% 	\centering%
+			% 	\caption{Physical requirements by abstraction.}%
+			% 	\label{tab.abstractions-amount}%
 
-				\begin{tabular}{l|l|l|l|l|l|l|}
-					\cline{2-7}
-															& \multicolumn{3}{c|}{\textbf{Create}}  & \multicolumn{3}{c|}{\textbf{Open}}                              \\ \cline{2-7}
-															& \multicolumn{1}{|c|}{\textbf{RX}}
-															            & \multicolumn{1}{|c|}{\textbf{TX}}
-																		            & \multicolumn{1}{|c|}{\textbf{Available}}
-																					                & \multicolumn{1}{|c|}{\textbf{RX}}
-																							                    & \multicolumn{1}{|c|}{\textbf{TX}}
-																							        			            & \multicolumn{1}{|c|}{\textbf{Available}} \\ \hline
-					\multicolumn{1}{|l|}{\textbf{\mailbox}} & 1 (\dnoc) & 1 (\cnoc) & 1             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
-					\multicolumn{1}{|l|}{\textbf{\portal}}  & 1 (\dnoc) & 1 (\cnoc) & 2             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
-					\multicolumn{1}{|l|}{\textbf{\sync}}    & 1 (\cnoc) & 0         & 24            & 0         & 1 (\cnoc) & 1                                        \\ \hline
-				\end{tabular}
+			% 	\begin{tabular}{l|l|l|l|l|l|l|}
+			% 		\cline{2-7}
+			% 												& \multicolumn{3}{c|}{\textbf{Create}}  & \multicolumn{3}{c|}{\textbf{Open}}                              \\ \cline{2-7}
+			% 												& \multicolumn{1}{|c|}{\textbf{RX}}
+			% 												            & \multicolumn{1}{|c|}{\textbf{TX}}
+			% 															            & \multicolumn{1}{|c|}{\textbf{Available}}
+			% 																		                & \multicolumn{1}{|c|}{\textbf{RX}}
+			% 																				                    & \multicolumn{1}{|c|}{\textbf{TX}}
+			% 																				        			            & \multicolumn{1}{|c|}{\textbf{Available}} \\ \hline
+			% 		\multicolumn{1}{|l|}{\textbf{\mailbox}} & 1 (\dnoc) & 1 (\cnoc) & 1             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
+			% 		\multicolumn{1}{|l|}{\textbf{\portal}}  & 1 (\dnoc) & 1 (\cnoc) & 2             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
+			% 		\multicolumn{1}{|l|}{\textbf{\sync}}    & 1 (\cnoc) & 0         & 24            & 0         & 1 (\cnoc) & 1                                        \\ \hline
+			% 	\end{tabular}
 
-				\fonte{Developed by the Author.}%
-			\end{table}
+			% 	\fonte{Developed by the Author.}%
+			% \end{table}
 
 		\subsection{Sync Abstraction}
 		\label{sec.sync-abs}
 
+			A abstração de sincronização, chamada sync, provê o básico para a sincronização de clusters.
+			A partir dela, é possível criar barreiras distribuidas.
+			Seu comportamento é análogo a abstração POSIX Signals, mas as notificações não carregam informações, servem apenas para sincronização.
+			O sync define dois modos de sincronização, ALLTOONE e ONETOALL.
+			Nois dois modos, os clusters são separados entre um único nó mestre (ONE) e um ou mais nós escravos (ALL).
+			A Figura 1 ilustra o modo ALLTOONE, onde o nó mestre aguarda bloqueado os N escravos realizarem a sincronização.
+			Em contrapartida, o modo ONETOALL mostra o mestre notificando os N escravos, liberando-os do bloqueio, ilustrado pela Figura 3.
+			Os nós emissores nunca ficam bloqueados, o trabalho deles é emitir um sinal.
+			Os nós receptores são responsáveis por aguardar a chegada de todas as notificações.
+
 			\begin{figure}[!tb]
 				\centering%
-				\caption{Synchronization Abstraction Concept.}%
-				\label{fig:conpt_sync}%
+				\caption{Synchronization Abstraction Example.}%
+				\label{fig:sync-concepts}%
 
 				\subcaptionminipage[fig:sync-all-to-one]%
-					{.7\linewidth}%
-					{N Slaves notify the Master.}%
+					{.6\linewidth}%
+					{N Slaves notify the Master (\texttt{ALL\_TO\_ONE}).}%
 					{\includegraphics[width=\linewidth]{sync-all-to-one.pdf}}%
-
 				\hfill
-
 				\subcaptionminipage[fig:sync-one-to-all]%
-					{.7\linewidth}%
-					{The Master notify N Slaves.}%
+					{.6\linewidth}%
+					{The Master notify N Slaves (\texttt{ONE\_TO\_ALL}).}%
 					{\includegraphics[width=\linewidth]{sync-one-to-all.pdf}}%
 
 				\fonte{Developed by the Author.}%
 			\end{figure}
 
-				\todo[inline]{Make it more detailed.}
+			\subsubsection{Receiver Side Implementation}
 
-			The \textit{Synchronization Abstraction}, called \sync, proves bare bones
-			for cluster synchronization.
-			From this, it is possible to create distributed barriers.
-			For instance, a set of clusters can wait for a notification coming
-			from a specific cluster.
-			The behavior is analogous to the \posix signal abstraction, but the \sync
-			provides only the case of notification.
-			Specifically, as can be seen in \autoref{fig:conpt_sync}, the
-			cardinality of the operation is N:1, where N clusters wait for 1 Cluster
-			to send a notification.
-
-			\subsection*{Sync Implementation}
+				O Codigo 4 apresenta a interface do Sync proposta para o Nanvix HAL.
+				Como mencionado na Seção (recursos de hardware), é possível identificar os dois conjuntos de funções, um para os receptores e outro para emissor.
 
 \begin{listing}[!tb]
-\caption{HAL Sync Interface for Receiver Cluster.}
-\label{code:sync-receiver}
+\caption{Nanvix HAL: Sync Interface for Receiver.}
+\label{code:hal-sync-receiver}
 \begin{minted}{c}
 /**
  * @brief Allocates and configures the receiving side of
@@ -306,9 +304,13 @@ int sync_wait(int syncid);
 \fonte{Developed by the Author.}
 \end{listing}
 
+			\subsubsection{Sender Side Implementation}
+
+				Ela foi pensada para que os parâmetros de criação fossem os mesmo que os parâmetros de abertura.
+
 \begin{listing}[!tb]
-\caption{HAL Sync Interface for Sender Cluster.}
-\label{code:sync-sender}
+\caption{Nanvix HAL: Sync Interface for Sender.}
+\label{code:hal-sync-sender}
 \begin{minted}{c}
 /**
  * @brief Allocates and configures the sending side of
@@ -324,59 +326,6 @@ int sync_signal(int syncid);
 \end{minted}
 \fonte{Developed by the Author.}
 \end{listing}
-
-				The \sync can be decomposed into two sets of functions, where the
-				\autoref{code:sync-receiver} shows the functions to one clusters
-				that will receive signals, and \autoref{code:sync-sender} shows the
-				ones that will send.
-				Each set allocates different types of resources.
-				Accurately, the receiver must allocate a receive slot of the frame,
-				and the transmitter will allocate a transmitter channel of the frame.
-				Because of this, 24 synchronization points can be created (\texttt{sync\_create()}),
-				and only 1 can be opened (\texttt{sync\_open()}) per cluster.
-
-				Sync functions implement two different types, depending on who is the
-				cluster master of the synchronization operation.
-				Specifically, every synchronization operation is separated into a
-				master cluster and one or more slave clusters defined by the
-				\texttt{ONE\_TO\_ALL} and \texttt{ALL\_TO\_ONE} constants.
-				The master always takes the role "ONE" and the slaves the "ALL" role.
-				The following subsections describe the behavior and implementation
-				details of each type of synchronization.
-
-				\subsubsection*{\texttt{ONE\_TO\_ALL} Synchronization Type}
-
-					The slave clusters involved in this type of synchronization expect
-					a signal sent from the master.
-					To do this, each slave will perform the function \texttt{sync\_create()}
-					by allocating the resource associated with the master's logical ID.
-					After allocating and configuring the resource, the cluster can
-					continue to run without worrying about whether the signal was received.
-					When the time comes to perform the synchronization, it is enough for
-					the slave to run the function.
-					Upon receiving the signal, the sync will auto reconfigure the resource
-					and free the cluster.
-
-					The cluster master, in turn, must perform the complementary functions.
-					That is, first, the master will allocate a sending resource by calling
-					the \texttt{sync\_open()} function.
-					After that, it should inform the set of clusters that will receive the
-					signal on its logical ID.
-					Finally, both can release sync resources by calling release functions,
-					\texttt{sync\_unlink()} for the slave and \texttt{sync\_close()} to
-					the master.
-
-				\subsubsection*{\texttt{ALL\_TO\_ONE} Synchronization Type}
-
-					Analogously to the previous type, the only changes are just on
-					the roles in which they are reversed.
-					The master must perform the functions of creation, configuration
-					of the resources, and waiting for the numerous signals.
-					The resource allocated by the master must be the resource
-					associated with its logical ID.
-						\todo{"On the another hand" does not make sense AGAIN.}
-					On the other hand, the slaves will perform the functions of
-					opening and sending a signal on the master's logical ID.
 
 		\subsection{Mailbox Abstraction}
 		\label{sec.mailbox-abs}
@@ -414,11 +363,11 @@ int sync_signal(int syncid);
 			When the receiver consumes a message, it notifies the sender to ensure
 			control of the flow.
 
-			\subsection*{Mailbox Implementation}
+			\subsubsection{Receiver Side Implementation}
 
 \begin{listing}[!tb]
-\caption{HAL Mailbox Interface for Receiver Cluster.}
-\label{code:mailbox-receiver}
+\caption{Nanvix HAL: Mailbox Interface for Receiver.}
+\label{code:hal-mailbox-receiver}
 \begin{minted}{c}
 /* @brief Creates a mailbox. */
 int mailbox_create(int nodenum);
@@ -427,14 +376,22 @@ int mailbox_create(int nodenum);
 int mailbox_unlink(int mbxid);
 
 /* @brief Reads data from a mailbox. */
-ssize_t mailbox_read(int mbxid, void * buffer, size_t size);
+ssize_t mailbox_aread(int mbxid, void * buffer, size_t size);
+
+/**
+ * @brief Waits for an asynchronous operation on a
+ * mailbox to complete.
+ */
+int mailbox_wait(int syncid);
 \end{minted}
 \fonte{Developed by the Author.}
 \end{listing}
 
+			\subsubsection{Sender Side Implementation}
+
 \begin{listing}[!tb]
-\caption{HAL Mailbox Interface for Sender Cluster.}
-\label{code:mailbox-sender}
+\caption{Nanvix HAL: Mailbox Interface for Sender.}
+\label{code:hal-mailbox-sender}
 \begin{minted}{c}
 /* @brief Opens a mailbox. */
 int mailbox_open(int nodenum);
@@ -443,7 +400,13 @@ int mailbox_open(int nodenum);
 int mailbox_close(int mbxid);
 
 /* @brief Writes data to a mailbox. */
-ssize_t mailbox_write(int mbxid, const void * buffer, size_t size);
+ssize_t mailbox_awrite(int mbxid, const void * buffer, size_t size);
+
+/**
+ * @brief Waits for an asynchronous operation on a
+ * mailbox to complete.
+ */
+int mailbox_wait(int syncid);
 \end{minted}
 \fonte{Developed by the Author.}
 \end{listing}
@@ -502,11 +465,11 @@ ssize_t mailbox_write(int mbxid, const void * buffer, size_t size);
 			However, the operation is only allowed in one direction with a flow control mechanism,
 			where the receiver cluster warns the sender cluster when it is ready to receive.
 
-			\subsection*{Portal Implementation}
+			\subsubsection{Receiver Side Implementation}
 
 \begin{listing}[!tb]
-\caption{HAL Portal Interface for Receiver Cluster.}
-\label{code:portal-receiver}
+\caption{Nanvix HAL: Portal Interface for Receiver.}
+\label{code:hal-portal-receiver}
 \begin{minted}{c}
 /* @brief Creates a portal. */
 int portal_create(int local);
@@ -518,7 +481,7 @@ int portal_unlink(int portalid);
 int portal_allow(int portalid, int remote);
 
 /* @brief Reads data asynchronously from a portal. */
-ssize_t portal_read(int portalid, void * buffer, size_t size);
+ssize_t portal_aread(int portalid, void * buffer, size_t size);
 
 /**
  * @brief Waits for an asynchronous operation on a
@@ -529,18 +492,17 @@ int portal_wait(int portalid);
 \fonte{Developed by the Author.}
 \end{listing}
 
+			\subsubsection{Sender Side Implementation}
+
 \begin{listing}[!tb]
-\caption{HAL Portal Interface for Sender Cluster.}
-\label{code:portal-sender}
+\caption{Nanvix HAL: Portal Interface for Sender.}
+\label{code:hal-portal-sender}
 \begin{minted}{c}
 /* @brief Opens a portal. */
 int portal_open(int remote);
 
 /* @brief Closes a portal. */
 int portal_close(int portalid);
-
-/* @brief Writes data to a portal. */
-ssize_t portal_write(int portalid, const void * buffer, size_t size);
 
 /* @brief Writes data asynchronously to a portal. */
 int portal_awrite(int portalid, const void * buffer, size_t size);
@@ -616,7 +578,7 @@ int portal_wait(int portalid);
 			each associated with an abstraction of the communication module,
 			analogously named \sync, \mailbox, and \portal services.
 
-		\subsection*{Inter-Cluster Communication Services Implementation}
+		\subsection{Inter-Cluster Communication Services Implementation}
 
 			\todo[inline]{Temporary}
 
