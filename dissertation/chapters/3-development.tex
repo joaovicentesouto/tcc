@@ -282,11 +282,30 @@
 
 			\subsubsection{Receiver Side Implementation}
 
-				O Codigo 4 apresenta a interface do Sync proposta para o Nanvix HAL.
-				Como mencionado na Seção (recursos de hardware), é possível identificar os dois conjuntos de funções, um para os receptores e outro para emissor.
+% O que é a interface?
+% Quais são os parâmetros para realizar uma operação?
+				O Codigo 4 apresenta a interface Sync para nós receptores proposta para o Nanvix HAL.
+				Os parêmetros necessário para a abertura de um ponto de sincronização é uma lista de IDs lógicos, o tamanho da lista e o tipo de sincronização.
+				A lista deve ser sempre inicializada com o ID do nó mestre, independentemente do modo.
+				Os identificadores restantes, contando que não tenham repetição, podem estar em qualquer ordem.
+				O tipos de sincronização são os modos descritos anteriormente definidos através de constantes.
+				As demais funções utilizam o identificador da abstração retornado pela função de criação.
+				Caso algum parâmetro esteja em desacordo ou inválido, um valor negativo é retornado indicando o erro, \eg, \texttt{nodes == NULL}.
+
+% Quais recursos são necessário para cada tipo de operação, envio e recebimento?
+				Para realizar a operação de recebimento de sinais, a HAL reserva 1 slot de recebimento da CNoC.
+				Este slot é relativo ao identificador do mestre da operação.
+				Deste modo, eliminamos o conflito no uso de diferentes slots por diferentes configurações de sincronização.
+				Em contrapartida, um nó não poderá ser o mestre em duas operações simultâneas.
+				A liberação do slot só é realizada na 
+
+% Como as operações funcionam?
+
+
+% Como foi resolvido o problema de multiplos nós nos IOs?
 
 \begin{listing}[!tb]
-\caption{Nanvix HAL: Sync Interface for Receiver.}
+\caption{Nanvix HAL: Sync Interface for Receiver Node.}
 \label{code:hal-sync-receiver}
 \begin{minted}{c}
 /**
@@ -306,10 +325,9 @@ int sync_wait(int syncid);
 
 			\subsubsection{Sender Side Implementation}
 
-				Ela foi pensada para que os parâmetros de criação fossem os mesmo que os parâmetros de abertura.
 
 \begin{listing}[!tb]
-\caption{Nanvix HAL: Sync Interface for Sender.}
+\caption{Nanvix HAL: Sync Interface for Sender Node.}
 \label{code:hal-sync-sender}
 \begin{minted}{c}
 /**
@@ -366,7 +384,7 @@ int sync_signal(int syncid);
 			\subsubsection{Receiver Side Implementation}
 
 \begin{listing}[!tb]
-\caption{Nanvix HAL: Mailbox Interface for Receiver.}
+\caption{Nanvix HAL: Mailbox Interface for Receiver Node.}
 \label{code:hal-mailbox-receiver}
 \begin{minted}{c}
 /* @brief Creates a mailbox. */
@@ -390,7 +408,7 @@ int mailbox_wait(int syncid);
 			\subsubsection{Sender Side Implementation}
 
 \begin{listing}[!tb]
-\caption{Nanvix HAL: Mailbox Interface for Sender.}
+\caption{Nanvix HAL: Mailbox Interface for Sender Node.}
 \label{code:hal-mailbox-sender}
 \begin{minted}{c}
 /* @brief Opens a mailbox. */
@@ -468,7 +486,7 @@ int mailbox_wait(int syncid);
 			\subsubsection{Receiver Side Implementation}
 
 \begin{listing}[!tb]
-\caption{Nanvix HAL: Portal Interface for Receiver.}
+\caption{Nanvix HAL: Portal Interface for Receiver Node.}
 \label{code:hal-portal-receiver}
 \begin{minted}{c}
 /* @brief Creates a portal. */
@@ -495,7 +513,7 @@ int portal_wait(int portalid);
 			\subsubsection{Sender Side Implementation}
 
 \begin{listing}[!tb]
-\caption{Nanvix HAL: Portal Interface for Sender.}
+\caption{Nanvix HAL: Portal Interface for Sender Node.}
 \label{code:hal-portal-sender}
 \begin{minted}{c}
 /* @brief Opens a portal. */
