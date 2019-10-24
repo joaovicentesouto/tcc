@@ -149,6 +149,8 @@
 		Vale notar que seria possível utilizar uma NoC para cada abstração se o hardware suportasse.
 		Não fizemos isso no MPPA porque a CNoC só provê a transferência de valores de 64 bits.
 
+		FALAR DAS MOTIVAÇOES E DECISÕES QUE LEVARAM A ESCOLHA DAS 3 ABSTRAÇÕES
+
 		Está seção está organizada da seguinte maneira.
 		Subseção 0 abrange pontos comuns entre todas as abstrações.
 		Subseção 1, 2 e 3 apresentam conceitualmente cada uma das abstrações, os problemas que elas englobam, e detalhes de implementação.
@@ -258,7 +260,7 @@
 			O sync define dois modos de sincronização, ALLTOONE e ONETOALL.
 			Nois dois modos, os clusters são separados entre um único nó mestre (ONE) e um ou mais nós escravos (ALL).
 			A Figura 1 ilustra o modo ALLTOONE, onde o nó mestre aguarda bloqueado os N escravos realizarem a sincronização.
-			Em contrapartida, o modo ONETOALL mostra o mestre notificando os N escravos, liberando-os do bloqueio, ilustrado pela Figura 3.
+			Em contrapartida, o modo ONETOALL é utilizado quando o mestre notifica os N escravos, liberando-os do bloqueio, ilustrado pela Figura 3.
 			Os nós emissores nunca ficam bloqueados, o trabalho deles é emitir um sinal.
 			Os nós receptores são responsáveis por aguardar a chegada de todas as notificações.
 
@@ -293,21 +295,50 @@
 				Caso algum parâmetro esteja em desacordo ou inválido, um valor negativo é retornado indicando o erro, \eg, \texttt{nodes == NULL}.
 
 % Quais recursos são necessário para cada tipo de operação, envio e recebimento?
-				Para realizar a operação de recebimento de sinais, a HAL reserva 1 slot de recebimento da CNoC.
+				O recebimento das notificações requer a reserva 1 slot rx da CNoC.
+				% Para realizar a operação de recebimento de sinais, a HAL reserva 1 slot de recebimento da CNoC.
 				Este slot é relativo ao identificador do mestre da operação.
 				Deste modo, eliminamos o conflito no uso de diferentes slots por diferentes configurações de sincronização.
 				Em contrapartida, um nó não poderá ser o mestre em duas operações simultâneas.
-				A liberação do slot só é realizada na 
+				O total de abstrações que podem ser criadas desta maneira é igual a quantidade de nós existentes (24 no MPPA).
+				A configuração do slot é realizado através de uma máscara de 64-bits.
+				Está mascará é construida com os IDs lógicos dos emissores de modo que os bits relativos a suas posições sejam iguais a 0.
+				Ao receber um sinal, a DMA realiza um OR com o valor anterior.
+				Caso todos os bits se tornem 1's, a DMA emite uma notificação e zera todos os bits do registrador.
 
 % Como as operações funcionam?
-
+				Um vetor de estruturas internas realiza o controle das operações.
+				Cada possíção do vetor é reservado a um slot físico e guarda flags de controle, uma mascará de 64-bits e um spinlock.
+				Ao realizar a abertura, espera ou unlink de um sync, a HAL verifica as flags  alocado, ocupado, se é apenas leitura ou apenas escrita.
+				A mascará é construída com os IDs dos emissores e é reutilizada para reconfigurar a DMA quando disparadá uma interrupção, por exemplo, a mascará para os emissores [0,2,4] é 0xFF...FFEA.
+				Por fim, o spinlock é utilizado para sincronização da operação com os núcleos escravos.
+				Em um sistema microkernel, o core mestre configura o sync e o escravo aguarda ser liberado no spinlock.
+				A falta de coerência de cache não afeta os spinlock porque são utilizadas instruições especiais para garantir o comportamento padrão de um lock.
 
 % Como foi resolvido o problema de multiplos nós nos IOs?
+				A implementação nos Cluster I/O requeriu 
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Sync Interface for Receiver Node.}
 \label{code:hal-sync-receiver}
 \begin{minted}{c}
+#define SYNC_CREATE_MAX (N_OF_DMA_AVAIABLES * N_OF_NOC_NODES)
+
+PRIVATE struct sync
+{
+	/**
+	 * @brief Receiver Synchronization Points
+	 */
+	struct rx
+	{
+		struct resource resource; /**< Control flags.  */
+		uint64_t mask;            /**< Initial value.  */
+		k1b_spinlock_t lock;      /**< Wait condition. */
+	} rxs[SYNC_CREATE_MAX];
+
+	/* ... */
+};
+
 /**
  * @brief Allocates and configures the receiving side of
  * the synchronization point.
