@@ -11,8 +11,8 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="165mm"
-   height="87mm"
-   viewBox="0 0 165 87"
+   height="85mm"
+   viewBox="0 0 165 85"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (unknown)"
@@ -369,8 +369,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="201.47282"
-     inkscape:cy="214.16195"
+     inkscape:cx="307.35109"
+     inkscape:cy="145.35679"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -394,7 +394,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -402,201 +402,219 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-210)">
-    <g
-       id="g1419"
-       transform="translate(-1.7387218,3.9879479)">
-      <path
-         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 66.21205,218.75899 v 72.20129"
-         id="path15744"
-         inkscape:connector-curvature="0" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         x="65.998444"
-         y="213.17635"
-         id="text15760-4"><tspan
-           sodipodi:role="line"
-           x="65.998444"
-           y="213.17635"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05555534px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.26458332"
-           id="tspan15758-4">Master</tspan></text>
-      <rect
-         style="fill:#b4b9cb;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         id="rect2908"
-         width="18.888897"
-         height="9.3522148"
-         x="224.09286"
-         y="-70.888123"
-         transform="rotate(90)" />
-      <text
-         id="text2912"
-         y="235.08786"
-         x="28.316238"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           id="tspan2910"
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#43517d;fill-opacity:1;stroke-width:0.26458332"
-           y="235.08786"
-           x="28.316238"
-           sodipodi:role="line">mailbox_create()</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         x="29.153738"
-         y="256.20844"
-         id="text2916"><tspan
-           sodipodi:role="line"
-           x="29.153738"
-           y="256.20844"
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#43517d;fill-opacity:1;stroke-width:0.26458332"
-           id="tspan2914">mailbox_aread()</tspan></text>
-      <path
-         inkscape:connector-curvature="0"
-         id="path2924"
-         d="m 102.72454,218.75899 v 72.20129"
-         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <text
-         id="text2928"
-         y="213.17635"
-         x="102.51077"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           id="tspan2926"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05555534px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.26458332"
-           y="213.17635"
-           x="102.51077"
-           sodipodi:role="line">Slave</tspan></text>
-      <rect
-         transform="rotate(90)"
-         y="-107.44748"
-         x="224.04587"
-         height="9.4462051"
-         width="14.757661"
-         id="rect2930"
-         style="fill:#cca6a6;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#8d1919;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         x="138.91667"
-         y="232.98792"
-         id="text2934"><tspan
-           sodipodi:role="line"
-           x="138.91667"
-           y="232.98792"
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#8d1919;fill-opacity:1;stroke-width:0.26458332"
-           id="tspan2932">mailbox_open()</tspan></text>
-      <text
-         id="text2938"
-         y="253.46603"
-         x="140.41597"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#8d1919;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           id="tspan2936"
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#8d1919;fill-opacity:1;stroke-width:0.26458332"
-           y="253.46603"
-           x="140.41597"
-           sodipodi:role="line">mailbox_awrite()</tspan></text>
-      <rect
-         style="fill:#8d1919;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         id="rect2940"
-         width="16.648119"
-         height="9.4038553"
-         x="243.59143"
-         y="-107.42626"
-         transform="rotate(90)" />
-      <path
-         sodipodi:nodetypes="cccc"
-         inkscape:connector-curvature="0"
-         id="path2944"
-         d="m 59.34932,260.27533 h -3.48025 v -11.23492 h 3.48025"
-         style="fill:none;stroke:#000000;stroke-width:0.44694912;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 59.32619,242.95858 h -3.43713 v -18.84255 h 3.43713"
-         id="path2946"
-         inkscape:connector-curvature="0" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path2948"
-         d="m 109.5641,238.75253 h 3.43713 v -14.63032 h -3.43713"
-         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 109.57426,260.26579 h 3.41819 v -16.70061 h -3.41819"
-         id="path2950"
-         inkscape:connector-curvature="0" />
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path2952"
-         d="M 71.137973,271.81578 98.022408,260.23956"
-         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3217)" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker6441)"
-         d="M 98.022408,287.82596 70.87339,275.61901"
-         id="path6437"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cc" />
-      <rect
-         style="fill:#43517d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.44545895;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         id="rect1369"
-         width="11.468004"
-         height="9.3283005"
-         x="248.92085"
-         y="-70.87616"
-         transform="rotate(90)" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:0.44694912;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 59.34932,275.50599 h -3.48025 v -11.23492 h 3.48025"
-         id="path1371"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccc" />
-      <rect
-         transform="rotate(90)"
-         y="-70.87616"
-         x="264.15152"
-         height="9.3283005"
-         width="11.468004"
-         id="rect1373"
-         style="fill:#43517d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.44545895;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <text
-         id="text1377"
-         y="271.43909"
-         x="31.326563"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           id="tspan1375"
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#43517d;fill-opacity:1;stroke-width:0.26458332"
-           y="271.43909"
-           x="31.326563"
-           sodipodi:role="line">mailbox_wait()</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#8d1919;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         x="137.58136"
-         y="279.66342"
-         id="text1381"><tspan
-           sodipodi:role="line"
-           x="137.58136"
-           y="279.66342"
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#8d1919;fill-opacity:1;stroke-width:0.26458332"
-           id="tspan1379">mailbox_wait()</tspan></text>
-      <rect
-         transform="rotate(90)"
-         y="-107.42626"
-         x="268.2674"
-         height="9.4038544"
-         width="19.55855"
-         id="rect1383"
-         style="fill:#8d1919;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <path
-         sodipodi:nodetypes="cccc"
-         inkscape:connector-curvature="0"
-         id="path1385"
-         d="m 109.57426,287.85224 h 3.41819 V 268.3735 h -3.41819"
-         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
+     transform="translate(0,-212)">
+    <path
+       inkscape:connector-curvature="0"
+       id="path15744"
+       d="m 64.473329,225.73132 v 68.23254"
+       style="fill:none;stroke:#000000;stroke-width:0.97212762;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       id="text15760-4"
+       y="220.14867"
+       x="64.25972"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         id="tspan15758-4"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05555534px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.26458332"
+         y="220.14867"
+         x="64.25972"
+         sodipodi:role="line">Master</tspan></text>
+    <rect
+       transform="rotate(90)"
+       y="-69.149399"
+       x="231.06519"
+       height="9.3522148"
+       width="18.888897"
+       id="rect2908"
+       style="fill:#b4b9cb;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="26.577518"
+       y="242.06018"
+       id="text2912"><tspan
+         sodipodi:role="line"
+         x="26.577518"
+         y="242.06018"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#43517d;fill-opacity:1;stroke-width:0.26458332"
+         id="tspan2910">mailbox_create()</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.97212762;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 100.98582,225.73132 v 68.23254"
+       id="path2924"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="100.77205"
+       y="220.14867"
+       id="text2928"><tspan
+         sodipodi:role="line"
+         x="100.77205"
+         y="220.14867"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05555534px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.26458332"
+         id="tspan2926">Slave</tspan></text>
+    <rect
+       style="fill:#cca6a6;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect2930"
+       width="14.757661"
+       height="9.4462051"
+       x="231.01819"
+       y="-105.70876"
+       transform="rotate(90)" />
+    <text
+       id="text2934"
+       y="239.96024"
+       x="137.17795"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#8d1919;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         id="tspan2932"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#8d1919;fill-opacity:1;stroke-width:0.26458332"
+         y="239.96024"
+         x="137.17795"
+         sodipodi:role="line">mailbox_open()</tspan></text>
+    <rect
+       transform="rotate(90)"
+       y="-105.68754"
+       x="250.56375"
+       height="9.4038553"
+       width="16.648119"
+       id="rect2940"
+       style="fill:#8d1919;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 57.610599,265.66015 h -3.48025 v -11.23492 h 3.48025"
+       id="path2944"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path2946"
+       d="m 57.587469,249.93091 h -3.43713 v -18.84255 h 3.43713"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 107.82538,245.72486 h 3.43713 v -14.63032 h -3.43713"
+       id="path2948"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path2950"
+       d="m 107.83554,267.23812 h 3.41819 v -16.70061 h -3.41819"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3217)"
+       d="m 69.399252,275.87769 26.884435,-8.6658"
+       id="path2952"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path6437"
+       d="M 100.64931,289.14391 69.134669,281.00383"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker6441)" />
+    <rect
+       transform="rotate(90)"
+       y="-69.137436"
+       x="254.30569"
+       height="9.3283005"
+       width="11.468004"
+       id="rect1369"
+       style="fill:#43517d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path1371"
+       d="m 57.610599,280.89081 h -3.48025 v -11.23492 h 3.48025"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       style="fill:#43517d;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect1373"
+       width="11.468004"
+       height="9.3283005"
+       x="269.53632"
+       y="-69.137436"
+       transform="rotate(90)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="29.587843"
+       y="276.82388"
+       id="text1377"><tspan
+         sodipodi:role="line"
+         x="29.587843"
+         y="276.82388"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#43517d;fill-opacity:1;stroke-width:0.26458332"
+         id="tspan1375">mailbox_wait()</tspan></text>
+    <text
+       id="text1381"
+       y="276.05228"
+       x="135.84264"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#8d1919;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         id="tspan1379"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#8d1919;fill-opacity:1;stroke-width:0.26458332"
+         y="276.05228"
+         x="135.84264"
+         sodipodi:role="line">mailbox_wait()</tspan></text>
+    <rect
+       style="fill:#8d1919;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect1383"
+       width="8.2220259"
+       height="9.576705"
+       x="270.39072"
+       y="-105.77396"
+       transform="rotate(90)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 107.83554,278.54466 h 3.41819 v -7.96136 h -3.41819"
+       id="path1385"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#8d1919;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="138.67725"
+       y="257.52795"
+       id="text2938"><tspan
+         sodipodi:role="line"
+         x="138.67725"
+         y="257.52795"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#8d1919;fill-opacity:1;stroke-width:0.26458332"
+         id="tspan2936">mailbox_awrite()</tspan></text>
+    <text
+       id="text20217"
+       y="263.34879"
+       x="138.67725"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cca6a6;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         id="tspan20215"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#cca6a6;fill-opacity:1;stroke-width:0.26458332"
+         y="263.34879"
+         x="138.67725"
+         sodipodi:role="line">asynchronous</tspan></text>
+    <text
+       id="text2916"
+       y="258.52966"
+       x="27.415018"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         id="tspan2914"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#43517d;fill-opacity:1;stroke-width:0.26458332"
+         y="258.52966"
+         x="27.415018"
+         sodipodi:role="line">mailbox_aread()</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#b4b9cb;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="27.4648"
+       y="264.65082"
+       id="text20221"><tspan
+         sodipodi:role="line"
+         x="27.4648"
+         y="264.65082"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.99722242px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#b4b9cb;fill-opacity:1;stroke-width:0.26458332"
+         id="tspan20219">asynchronous</tspan></text>
   </g>
 </svg>
