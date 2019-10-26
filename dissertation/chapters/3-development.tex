@@ -400,10 +400,10 @@ int sync_signal(int syncid);
 			O tamanho da mensagem foi projetado para ser relativamente pequeno,
 			geralmente algumas centenas de bytes.
 			Essas mensagens são consumidas pelo receptor sem a necessidade de conhecer quem as enviou.
+			Similarmente, a operação da \mailbox segue o comportamento da fila de mensagens \posix.
 			A Figura (conceito) ilustra conceitualmente uma das formas de implementar uma Mailbox.
 			O receptor aloca espaço suficiente para receber 1 mensagem de cada possível emissor.
 			O emissor envia para o espaço reservado para sua mensagem, eliminando a concorrência de escrita das mensagens.
-			Similarmente, a operação da \mailbox segue o comportamento da fila de mensagens \posix.
 
 			\begin{figure}[!tb]
 				\centering%
@@ -481,13 +481,10 @@ int mailbox_create(int nodenum);
 /* @brief Destroys a mailbox. */
 int mailbox_unlink(int mbxid);
 
-/* @brief Reads data from a mailbox. */
+/* @brief Reads data asynchronously from a mailbox. */
 ssize_t mailbox_aread(int mbxid, void * buffer, size_t size);
 
-/**
- * @brief Waits for an asynchronous operation on a
- * mailbox to complete.
- */
+/* @brief Waits for an asynchronous operation to complete. */
 int mailbox_wait(int mbxid);
 \end{minted}
 \fonte{Developed by the Author.}
@@ -519,13 +516,10 @@ int mailbox_open(int nodenum);
 /* @brief Closes a mailbox. */
 int mailbox_close(int mbxid);
 
-/* @brief Writes data to a mailbox. */
+/* @brief Writes data asynchronously to a mailbox. */
 ssize_t mailbox_awrite(int mbxid, const void * buffer, size_t size);
 
-/**
- * @brief Waits for an asynchronous operation on a
- * mailbox to complete.
- */
+/* @brief Waits for an asynchronous operation to complete. */
 int mailbox_wait(int mbxid);
 \end{minted}
 \fonte{Developed by the Author.}
@@ -549,12 +543,28 @@ int mailbox_wait(int mbxid);
 			% 	\fonte{Developed by the Author.}%
 			% \end{figure}
 
+% Apresentação do portal e o conceito.
+			Por fim, a abstração Portal permite que dois nós troquem quantidades arbitrárias de dados.
+			A Figura (conceito) apresenta a ideia conceitual do portal, onde se assemelha a do POSIX Pipes com controle de fluxo.
+			A cardinalidade das operações é sempre 1:1, onde um par de nós abre um canal unidirecional para transferência de dados.
+			Porém, ao contrário do POSIX Pipes que define que o pipe existe apenas entre dois processos, o portal permite que o receptor se comunique com outros nós através de um mesmo canal.
+			O emissor, por sua vez, poderá apenas se comunicar com um nó.
+
+% Fluxo da operação
+			A Figura (fluxo) exemplifica o controle de fluxo proposto para o portal.
+			Ao tentar transmitir dados ao receptor, o emissor blorqueará até que o receptor esteja apto a receber.
+			O receptor, ao habilitar uma troca de dados de cada vez, configura a leitura e notifica o emissor.
+			Deste modo, o controle de fluxo garante que o receptor não será sobrecarregado, não receberá dados sem que a DMA esteja devidamente configurada, e não sobrescreverá dados prévios.
+			O ato de habilitar uma comunicação permite que o receptor escolha com qual nó deseja se comunicar.
+
+% Diferença do posix, receptor allows multiples issuers
+
 			\begin{figure}[!tb]
 				\centering%
 				\caption{Portal Abstraction Concept.}%
 				\label{fig:portal}%
 
-				\subcaptionminipage[fig:portal-logical]%
+				\subcaptionminipage[fig:portal-concept]%
 					{.4\linewidth}%
 					{Conceptual Overview.}%
 					{\includegraphics[width=\linewidth]{portal-concept.pdf}}%
@@ -569,22 +579,31 @@ int mailbox_wait(int mbxid);
 				\fonte{Developed by the Author.}%
 			\end{figure}
 
-				\todo[inline]{Make it more detailed.}
-
-			Lastly, the \textit{Portal Abstraction} enables two clusters to exchange arbitrary
-			amounts of data.
-			The conceptual idea of the \portal is similar to that implemented in \posix pipes.
-			\autoref{fig:portal} shows the \portal operation, with cardinality
-			1:1, a cluster pair opens a channel to transfer data.
-			However, the operation is only allowed in one direction with a flow control mechanism,
-			where the receiver cluster warns the sender cluster when it is ready to receive.
-
-				\autoref{sec.portal-abs} showed that the portal abstraction is similar to
-				a \posix pipe with flow control.
-				So, the \portal analogously follows the ideas implemented
-				in the \mailbox.
-
 			\subsubsection{Receiver Side Implementation}
+
+% Interface e seus parâmetros
+				O Código 5 apresenta a interface portal para nós receptores.
+				Assim como a mailbox, a aplicação deve informar o nó local para criar um portal por causa dos clusters I/O.
+				As demais operações utilizam o identificador do portal retornado pela função de criação.
+				Para criar um canal de comunicação, o receptor sempre deverá executar 3 operações, allow, aread, wait.
+				A função allow aloca um slot rx relativo ao nó remoto informado, limitando um canal por par de nós.
+				Entretanto, a notificação apenas será enviada após a configuração da DMA pela função aread.
+				Por fim, o nó bloqueará na função wait até a comunicação ser completada.
+
+% Recursos de hardware
+				
+
+% Desafios da implementação
+
+				The receiver will allocate a receiving slot of the \dnoc and a transfer
+				channel (\texttt{portal\_create()}) to receive data from another cluster.
+				After setting up the resources (\texttt{portal\_read()}), the receiver
+				can notify a sender (\texttt{portal\_allow()}), enabling it to transfer data.
+				For this reason, the read operation is always performed asynchronously.
+				After receiving the set amount of data, the receiver can use the buffer securely.
+
+				The total number of receive data operations (\texttt{portal\_create()})
+				is limited to 2 because of the number of available signal sending channels.
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Portal Interface for Receiver Node.}
@@ -602,21 +621,11 @@ int portal_allow(int portalid, int remote);
 /* @brief Reads data asynchronously from a portal. */
 ssize_t portal_aread(int portalid, void * buffer, size_t size);
 
-/**
- * @brief Waits for an asynchronous operation on a
- * portal to complete.
- */
+/* @brief Waits for an asynchronous operation to complete. */
 int portal_wait(int portalid);
 \end{minted}
 \fonte{Developed by the Author.}
 \end{listing}
-
-				The receiver will allocate a receiving slot of the \dnoc and a transfer
-				channel (\texttt{portal\_create()}) to receive data from another cluster.
-				After setting up the resources (\texttt{portal\_read()}), the receiver
-				can notify a sender (\texttt{portal\_allow()}), enabling it to transfer data.
-				For this reason, the read operation is always performed asynchronously.
-				After receiving the set amount of data, the receiver can use the buffer securely.
 
 			\subsubsection{Sender Side Implementation}
 
@@ -633,18 +642,12 @@ int portal_close(int portalid);
 /* @brief Writes data asynchronously to a portal. */
 int portal_awrite(int portalid, const void * buffer, size_t size);
 
-/**
- * @brief Waits for an asynchronous operation on a
- * portal to complete.
- */
+/* @brief Waits for an asynchronous operation to complete. */
 int portal_wait(int portalid);
 \end{minted}
 \fonte{Developed by the Author.}
 \end{listing}
 
-				The total number of receive data operations (\texttt{portal\_create()})
-				is limited to 2 because of the number of available signal sending channels.
-					\todo{"On the another hand" does not make sense AGAIN.}
 				On the other hand, up to 4 send operations (\texttt{portal\_open()})
 				can be performed simultaneously because there are 4 available send
 				channels for the \portal.
