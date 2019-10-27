@@ -25,8 +25,6 @@
 		Vale notar que seria possível utilizar uma NoC para cada abstração se o hardware suportasse.
 		Não fizemos isso no MPPA porque a CNoC só provê a transferência de valores de 64 bits.
 
-		FALAR DAS MOTIVAÇOES E DECISÕES QUE LEVARAM A ESCOLHA DAS 3 ABSTRAÇÕES
-
 		Está seção está organizada da seguinte maneira.
 		Subseção 0 abrange pontos comuns entre todas as abstrações.
 		Subseção 1, 2 e 3 apresentam conceitualmente cada uma das abstrações, os problemas que elas englobam, e detalhes de implementação.
@@ -552,7 +550,7 @@ int mailbox_wait(int mbxid);
 
 % Fluxo da operação
 			A Figura (fluxo) exemplifica o controle de fluxo proposto para o portal.
-			Ao tentar transmitir dados ao receptor, o emissor blorqueará até que o receptor esteja apto a receber.
+			Ao tentar transmitir dados ao receptor, o emissor blorqueará até que o receptor esteja apto à receber.
 			O receptor, ao habilitar uma troca de dados de cada vez, configura a leitura e notifica o emissor.
 			Deste modo, o controle de fluxo garante que o receptor não será sobrecarregado, não receberá dados sem que a DMA esteja devidamente configurada, e não sobrescreverá dados prévios.
 			O ato de habilitar uma comunicação permite que o receptor escolha com qual nó deseja se comunicar.
@@ -583,27 +581,21 @@ int mailbox_wait(int mbxid);
 
 % Interface e seus parâmetros
 				O Código 5 apresenta a interface portal para nós receptores.
-				Assim como a mailbox, a aplicação deve informar o nó local para criar um portal por causa dos clusters I/O.
-				As demais operações utilizam o identificador do portal retornado pela função de criação.
+				Assim como a mailbox, a aplicação deve identificar o nó local para criar um portal.
+				As demais funções utilizam o identificador do portal retornado pela função de criação.
 				Para criar um canal de comunicação, o receptor sempre deverá executar 3 operações, allow, aread, wait.
 				A função allow aloca um slot rx relativo ao nó remoto informado, limitando um canal por par de nós.
-				Entretanto, a notificação apenas será enviada após a configuração da DMA pela função aread.
+				Entretanto, a notificação apenas será enviada, relativo ao nó remote, após a configuração da DMA pela função aread.
 				Por fim, o nó bloqueará na função wait até a comunicação ser completada.
 
 % Recursos de hardware
-				
-
-% Desafios da implementação
-
-				The receiver will allocate a receiving slot of the \dnoc and a transfer
-				channel (\texttt{portal\_create()}) to receive data from another cluster.
-				After setting up the resources (\texttt{portal\_read()}), the receiver
-				can notify a sender (\texttt{portal\_allow()}), enabling it to transfer data.
-				For this reason, the read operation is always performed asynchronously.
-				After receiving the set amount of data, the receiver can use the buffer securely.
-
-				The total number of receive data operations (\texttt{portal\_create()})
-				is limited to 2 because of the number of available signal sending channels.
+				Um portal receptor aloca um slot rx da DNoC e um canal tx da CNoC.
+				Diferente da mailbox, o portal tem disponível 2 canais tx o que permite a criação de dois portais simultâneos.
+				Tais portais não podem se comunicar com o mesmo nó ao mesmo tempo por causa da escolha do slot físico da DMA comentado no parágrafo anterior.
+				A leitura configura o slot rx com o buffer e tamanho informado pela aplicação.
+				Isto elimina as cópias intermediárias como da mailbox, onde a DMA escreve os dados direto no buffer da aplicação.
+				As estruturas de controle também são simplificadas por causa disso
+				contendo apenas flags e um spinlock liberado pelo manipulador do portal.
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Portal Interface for Receiver Node.}
@@ -629,6 +621,21 @@ int portal_wait(int portalid);
 
 			\subsubsection{Sender Side Implementation}
 
+% Interface e seus parâmetros
+				O código 6 apresenta a interface portal para nós emissores.
+				Na abertura de um portal, a aplicação é obrigada a informar o nó remote que receberá os dados.
+				O id do nó remote será utilizado para alocar e configurar o slot rx da CNoC que receberá a permissão de transferência.
+				Isto garante que a permissão não será perdida, mesmo se a permissão chegar antes do emissor configurar a escrita.
+				Os dados são transferidos seguindo o algoritmo de envio preguiçoso.
+
+% Recursos de hardware
+				Os recursos de hardware necessários para abrir um portal são opostos ao recursos de criação.
+				Especificamente, são necessários 1 slot rx da CNoC e 1 canal tx da DNoC.
+				O slot rx está apto a receber a permissão desde a abertura do portal.
+				O canal de transmissão é reservado mas só é utilizado quando for permitido o envio.
+				Devido a limitação de 4 canais tx para o portal, apenas 4 portais emissores podem ser abertos ao mesmo tempo.
+				A estruturas de controle para os portais emissores contém os parâmetros necessário para realizar o envio preguiçoso e um spinlock para controlar o término da operação de transferência.
+
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Portal Interface for Sender Node.}
 \label{code:hal-portal-sender}
@@ -648,64 +655,41 @@ int portal_wait(int portalid);
 \fonte{Developed by the Author.}
 \end{listing}
 
-				On the other hand, up to 4 send operations (\texttt{portal\_open()})
-				can be performed simultaneously because there are 4 available send
-				channels for the \portal.
-
-				Function \texttt{portal\_open()} starts the data send operation.
-				In it will be allocated a channel of data sending associated with
-				a $\mu$thread.
-				Also, a signal receiving slot will be allocated to receive the
-				signal that will release the sender to transfer data to the receiver.
-				In asynchronous send operation (\texttt{portal\_awrite()}), the cluster
-				cannot modify or release the buffer until the operation is completed.
-				To ensure that the buffer can use, the cluster must call function \texttt{portal\_wait()}.
+				\todo[inline]{Trabalhos futuros: Eliminar a necessidade de informar o remote na abertura criando um função allow igual o reciever.}
 
 	\section{User-Level Communication}
 	\label{sec.comm-services}
 	\todo{Or: Nanvix Microkernel Level}
 
-		\subsection{Inter-Cluster Communication Services}
-		\label{sec.inter-cluster-communication-module}
+		The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication-module},
+		is designed to export a standard and straightforward communication
+		primitives to different lightweight manycores.
+		These primitives can be used by various types of \oss and applications.
+		Thus, the module is flexible enough not to impact the performance
+		of the upper layers negatively.
+		For this, it does not provide rich management of the exposed abstractions.
 
-			The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication-module},
-			is designed to export a standard and straightforward communication
-			primitives to different lightweight manycores.
-			These primitives can be used by various types of operating systems
-			and applications.
-			Thus, the module is flexible enough not to impact the performance
-			of the upper layers negatively.
-			For this, it does not provide rich management of the exposed abstractions.
+		In this scenario, the communication services of \nanvix \microkernel seek
+		to provide \ipc between distinct clusters.
+		Specifically, these services perform the multiplexing of the hardware
+		resources and the verification of the parameters that will be passed
+		on the communication primitives.
+		Due to the Master-Slave model, the responsibility of protecting,
+		manipulating, and configuring \hal resources is of the master core.
+		The slave core will request operations through the system call interface,
+		passing the necessary information to the master.
 
-			In this scenario, the communication services of Nanvix Microkernel seek
-			to provide \ipc between distinct clusters.
-			Specifically, these services perform the multiplexing of the hardware
-			resources and the verification of the parameters that will be passed
-			on the communication primitives.
-			Due to the Master-Slave model, the responsibility of protecting,
-			manipulating, and configuring \hal resources is of the master core.
-			The slave core will request operations through a meta-interface,
-			passing the necessary information to the master.
-
-			Considering that the abstractions make up the fundamental elements of
-			the construction of more complex services, the Microkernel services
-			were responsible for the management and multiplexing of the finite
-			resources for the many cores of a cluster.
-			In total, there are three communication services in the Nanvix Microkernel,
-			each associated with an abstraction of the communication module,
-			analogously named \sync, \mailbox, and \portal services.
+		Considering that the abstractions make up the fundamental elements of
+		the construction of more complex services, the \microkernel services
+		were responsible for the management and multiplexing of the finite
+		resources for the many cores of a cluster.
+		In total, there are three communication services in the \nanvix \microkernel,
+		each associated with an abstraction of the communication module,
+		analogously named \sync, \mailbox, and \portal services.
+		These services must take into account the memory constraints and the
+		Master-Slave model chosen for the \microkernel.
 
 		\subsection{Inter-Cluster Communication Services Implementation}
-
-			\todo[inline]{Temporary}
-
-			As described in \autoref{sec.communication-services}, three communication
-			services will be developed for the Nanvix Microkernel, named \sync, \mailbox,
-			and \portal services.
-			Each service will be responsible for protecting, managing, manipulating,
-			and multiplexing the resources exposed by the \hal communication module.
-			These services must take into account the memory constraints and the
-			master-slave model chosen for the Microkernel.
 
 			Management and manipulation operations are similar to all services.
 			They will be provided through interfaces that function as wrappers
@@ -735,3 +719,11 @@ int portal_wait(int portalid);
 			of the dissertation.
 			For example, what resource multiplexing methods will be used
 			and their impacts on the Nanvix Microkernel services.
+
+		\subsection{Impacts of the Master-Slave Model}
+
+		\subsection{Management}
+
+		\subsection{Protection}
+
+		\subsection{Multiplexing}
