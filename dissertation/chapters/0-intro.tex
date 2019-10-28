@@ -4,8 +4,8 @@
 % Context
 % Historical background
 % Frequency barrier
-	For some years, it was common to increase the frequency of processors
-	to improve their processing power.
+	For some years, the increasing in the processor frequency was used
+	as the main technique to improve their performance.
 	However, as a side effect, the temperature rise very high, limiting the
 	adoption of this practice.
 	Alternatively, the constant improvement of semiconductor technology helped
@@ -16,12 +16,12 @@
 	to keep increasing the processing power of computer systems.
 
 % Improves architectural parts
-	Such researches led to a wide diversity of trade-offs in modern architectures.
+	These researches led to a wide diversity of trade-offs in modern architectures.
 	For instance, different types of instruction sets, instruction parallelism,
-	out-of-order processing techniques, detour prediction techniques, and various
+	out-of-order processing techniques, branch prediction techniques, and various
 	memory hierarchies were some of the key techniques proposed to improve the
 	performance of a single core.
-	Then, the performance of computer systems has been improved even further by
+	Then, the performance of computer systems was improved even further by
 	increasing the number of processing cores in a single die.
 	These architectures, called \textit{multicores}, allowed the continuous
 	rise of the computing performance.
@@ -49,7 +49,7 @@
 	issued a report stipulating the energy efficiency of a supercomputer should be
 	around 50 GFLOPS/\watts~\cite{darpa:exascale}.
 	Recently, a new class of parallel processors, called \lightweight \manycores,
-	has emerged to provide high parallelism with low power consumption.
+	emerged to provide high parallelism with low power consumption.
 	These processors own the following characteristics:
 
 	\begin{itemize}
@@ -86,13 +86,13 @@
 
 % Challenges and Problem Definition
 	Part of these challenges derives from existing runtimes and \oss.
-	On the one hand, runtimes do not hide the characteristics of hardware making
+	On one hand, runtimes do not hide the characteristics of hardware making
 	software development more challenging and nonportable, \eg do not allow
 	direct access to non-local data, nor the manipulation of them in a transparent way.
 	Thus, fundamental \os mechanisms, such as core multiplexing, core partitioning,
 	and process and data migration, may not be addressed.
-	On the another hand, the complicated portability and scalability of traditional \oss with a
-	monolithic kernels, which were designed to homogeneous hardwares, is leading to alternative
+	On the other hand, the complicated portability and scalability of traditional \oss with a
+	monolithic kernels, which were designed to homogeneous hardware, is leading to alternative
 	\os designs~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
 
 % Goals and Contributions
@@ -118,14 +118,17 @@
 	This module will expose the essential abstractions that permit upper layers to create more
 	sophisticated communication services.
 	Using this module, we also propose \textit{Inter-Cluster Communication Services} to the \nanvix \microkernel.
-	This work will be done in collaboration with Pedro Henrique Penna, who is a Ph.D. student at the
-	University of Grenoble Alpes, developer of Nanvix and co-advisor of this work.
+	This work will be done in collaboration with Pedro Henrique Penna,
+	who is a Ph.D. candidate at the
+	University of Grenoble Alpes (UGA), developer of Nanvix and co-advisor of this work.
 
 \subsection{Specific Goals}
 \label{sec.goals.specific}
 
 	\begin{itemize}
-		\item Implement the proposed interfaces of the Inter-Cluster Communication Module of the \hal 
+		\item Propose a Inter-Cluster Communication Interface for
+		lightweight manycores;
+		\item Implement the proposed interface of the Inter-Cluster Communication Module of the \hal 
 			for the \textit{\mppa manycore processor};
 		\item Define Communication Services and their strategies for each abstraction exported
 			by the Inter-Cluster Communication Module in the context of a microkernel-based \os;
