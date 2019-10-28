@@ -227,15 +227,10 @@
 		\subsection{Sync Abstraction}
 		\label{sec.sync-abs}
 
-			A abstração de sincronização, chamada sync, provê o básico para a sincronização de clusters.
-			A partir dela, é possível criar barreiras distribuidas.
-			Seu comportamento é análogo a abstração POSIX Signals, mas as notificações não carregam informações, servem apenas para sincronização.
-			O sync define dois modos de sincronização, ALLTOONE e ONETOALL.
-			Nois dois modos, os clusters são separados entre um único nó mestre (ONE) e um ou mais nós escravos (ALL).
-			A Figura 1 ilustra o modo ALLTOONE, onde o nó mestre aguarda bloqueado os N escravos realizarem a sincronização.
-			Em contrapartida, o modo ONETOALL é utilizado quando o mestre notifica os N escravos, liberando-os do bloqueio, ilustrado pela Figura 3.
-			Os nós emissores nunca ficam bloqueados, o trabalho deles é emitir um sinal.
-			Os nós receptores são responsáveis por aguardar a chegada de todas as notificações.
+			% A abstração de sincronização, chamada sync, provê o básico para a sincronização de clusters. A partir dela, é possível criar barreiras distribuidas. Seu comportamento é análogo a abstração POSIX Signals, mas as notificações não carregam informações, servem apenas para sincronização. O sync define dois modos de sincronização, ALLTOONE e ONETOALL. Nois dois modos, os clusters são separados entre um único nó mestre (ONE) e um ou mais nós escravos (ALL). A Figura 1 ilustra o modo ALLTOONE, onde o nó mestre aguarda bloqueado os N escravos realizarem a sincronização. Em contrapartida, o modo ONETOALL é utilizado quando o mestre notifica os N escravos, liberando-os do bloqueio, ilustrado pela Figura 3. Os nós emissores nunca ficam bloqueados, o trabalho deles é emitir um sinal. Os nós receptores são responsáveis por aguardar a chegada de todas as notificações.
+
+			\textit{Synchronization Abstraction}, called \sync, provides the basis for cluster synchronization across distributed barriers. Its behavior is analogous to \posix Signals abstraction, but notifications do not carry information, they are only for synchronization.
+			\sync defines two synchronization modes, \texttt{ALL\_TO\_ONE} and \texttt{ONE\_TO\_ALL}. In both modes separates the clusters between a single master node (\texttt{ONE}) and one or more slave nodes (\texttt{ALL}). \autoref{fig:sync-all-to-one} illustrates the \texttt{ALL\_TO\_ONE} mode, where the master node waits blocked for the $N$ notifications coming from the slaves. In contrast, \autoref{fig:sync-one-to-all} pictures the \texttt{ONE\_TO\_ALL} mode, where the master notifies the $N$ slaves, releasing them from the lock. The sender nodes are responsible for sending a signal and never will block. Receiver nodes are responsible for waiting for all notifications to arrive.
 
 			\begin{figure}[!tb]
 				\centering%
@@ -249,7 +244,7 @@
 				\hfill
 				\subcaptionminipage[fig:sync-one-to-all]%
 					{.6\linewidth}%
-					{The Master notify N Slaves (\texttt{ONE\_TO\_ALL}).}%
+					{The Master notifies N Slaves (\texttt{ONE\_TO\_ALL}).}%
 					{\includegraphics[width=\linewidth]{sync-one-to-all.pdf}}%
 
 				\fonte{Developed by the Author.}%
@@ -259,13 +254,9 @@
 
 % O que é a interface?
 % Quais são os parâmetros para realizar uma operação?
-				O Codigo 4 apresenta a interface Sync para nós receptores proposta para o Nanvix HAL.
-				Os parâmetros necessário para a abertura de um ponto de sincronização é uma lista de IDs lógicos, o tamanho da lista e o tipo de sincronização.
-				A lista deve ser sempre inicializada com o ID do nó mestre, independentemente do modo.
-				Os identificadores restantes, contando que não tenham repetição, podem estar em qualquer ordem.
-				O tipos de sincronização são os modos descritos anteriormente definidos através de constantes.
-				As demais funções utilizam o identificador da abstração retornado pela função de criação.
-				Caso algum parâmetro esteja em desacordo ou inválido, um valor negativo é retornado indicando o erro, \eg, \texttt{nodes == NULL}.
+				% O Codigo 4 apresenta a interface Sync para nós receptores proposta para o Nanvix HAL. Os parâmetros necessário para a abertura de um ponto de sincronização é uma lista de IDs lógicos, o tamanho da lista e o tipo de sincronização. A lista deve ser sempre inicializada com o ID do nó mestre, independentemente do modo. Os identificadores restantes, contando que não tenham repetição, podem estar em qualquer ordem. O tipos de sincronização são os modos descritos anteriormente definidos através de constantes. As demais funções utilizam o identificador da abstração retornado pela função de criação. Caso algum parâmetro esteja em desacordo ou inválido, um valor negativo é retornado indicando o erro, \eg, \texttt{nodes == NULL}.
+
+				\autoref{code:hal-sync-receiver} introduces the Sync Interface for Receiver Nodes proposed for the \nanvix \hal. The parameters required for creating a sync point are a list of logical IDs, list size, and mode of synchronization. The list must always be initialized with the master node ID, regardless of mode. The remaining identifiers, provided they have no repetition, can be in any order. The other functions use the abstraction identifier returned by the create function. If any parameters are in disagreement or invalid, a negative value is returned indicating the error, \eg nodes pointer equal to \texttt{NULL}.
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Sync Interface for Receiver Node.}
@@ -275,7 +266,7 @@
  * @brief Allocates and configures the receiving side of
  * the synchronization point.
  */
-int sync_create(const int *nodes, int nnodes, int type);
+int sync_create(const int *nodes, int nnodes, int mode);
 
 /* @brief Releases and cleans receiver slot. */
 int sync_unlink(int syncid);
@@ -287,24 +278,14 @@ int sync_wait(int syncid);
 \end{listing}
 
 % Quais recursos são necessário para cada tipo de operação, envio e recebimento?
-				O recebimento das notificações requer a reserva 1 slot rx da CNoC relativo ao identificador do mestre.
-				Deste modo, eliminamos o conflito no uso de diferentes slots por diferentes configurações de sincronização.
-				Em contrapartida, um nó não poderá ser o mestre em duas operações simultâneas.
-				O total de abstrações que podem ser criadas desta maneira é igual a quantidade de nós existentes (24 no MPPA).
-				Nos cluster I/O, este total é multiplicado pelo número de interface NoC disponíveis, ou seja, 24 por DMA.
-				A configuração do slot é realizado através de uma máscara de 64-bits.
-				Está mascará é construida com os IDs lógicos dos emissores de modo que os bits relativos a suas posições sejam iguais a 0.
-				Ao receber um sinal, a DMA realiza um OR com o valor anterior.
-				Quando todos os bits se tornarem 1's, a DMA zera todos os bits do registrador e emite uma interrupção.
+				% O recebimento das notificações requer a reserva 1 slot rx da CNoC relativo ao identificador do mestre. Deste modo, eliminamos o conflito no uso de diferentes slots por diferentes configurações de sincronização. Em contrapartida, um nó não poderá ser o mestre em duas operações simultâneas. O total de abstrações que podem ser criadas desta maneira é igual a quantidade de nós existentes (24 no MPPA). Nos cluster I/O, este total é multiplicado pelo número de interface NoC disponíveis, ou seja, 24 por DMA. A configuração do slot é realizado através de uma máscara de 64-bits. Está mascará é construida com os IDs lógicos dos emissores de modo que os bits relativos a suas posições sejam iguais a 0. Ao receber um sinal, a DMA realiza um OR com o valor anterior. Quando todos os bits se tornarem 1's, a DMA zera todos os bits do registrador e emite uma interrupção.
 
 % Como as operações funcionam?
-				Um vetor de estruturas internas realiza o controle das operações.
-				Cada posição do vetor é reservado a um slot físico e guarda flags de controle, a mascará e um spinlock.
-				Ao realizar a abertura, espera ou unlink de um sync, a HAL verifica discrepâncias nos IDs, nas flags de controle ou nos parâmetros.
-				Por fim, o spinlock é utilizado para sincronização da operação com os núcleos escravos.
-				Em um sistema microkernel, o core mestre configura o sync e o escravo aguarda ser liberado no spinlock.
-				O tratador de interrupções do Sync identifica a estrutura e libera o bloqueio.
-				A falta de coerência de cache não afeta os spinlock porque são utilizadas instruções que garantem a atomicidade que implementam o lock.
+				% Um vetor de estruturas internas realiza o controle das operações. Cada posição do vetor é reservado a um slot físico e guarda flags de controle, a mascará e um spinlock. Ao realizar a abertura, espera ou unlink de um sync, a HAL verifica discrepâncias nos IDs, nas flags de controle ou nos parâmetros. Por fim, o spinlock é utilizado para sincronização da operação com os núcleos escravos. Em um sistema microkernel, o core mestre configura o sync e o escravo aguarda ser liberado no spinlock. O tratador de interrupções do Sync identifica a estrutura e libera o bloqueio. A falta de coerência de cache não afeta os spinlock porque são utilizadas instruções que garantem a atomicidade que implementam o lock.
+
+				Receipt of notifications requires booking 1 \cnoc RX slot related to the Master ID. This relation eliminates the conflict of using a same slot across different synchronization settings. Consequently, a node cannot be the master in two simultaneous operations. Thus, the total of \sync created simultaneously is equal to the number of existing nodes, \ie 24 in \mppa. In \ioclusters, this total is multiplied by the number of available NoC interfaces, \ie 24 per \dma. A 64-bit mask, created from sender node IDs, configures the RX slot. Bits positioned on nodes IDs are 0. When receiving a signal, \dma performs an \textit{OR-bitwise} with the previous value. When all bits become 1's, \dma clears the register and triggers an interrupt.
+
+				A vector of internal structures controls the operations. Each structure is reserved for a physical slot and holds control flags, the initial mask, and a spinlock. \hal checks for discrepancies in IDs, control flags, or parameters when creating, waiting, or unlinking a \sync. Finally, the spinlock is used to synchronize the operation with slave cores. On a microkernel-based system, the master core configures \sync, and the slave waits for the spinlock release. The interrupt handler of the \sync identifies the structure and releases the lock. The lack of cache coherence does not affect spinlocks because instructions that guarantee the atomicity are used to implement the lock.
 
 % Como foi resolvido o problema de multiplos nós nos IOs? PRECISA FALAR? DARIA PRA ARRUMAR ISSO NO CÓDIGO FORÇANDO QUE O ID[1] FOSSE O ID LOCAL (CASO NAO FOR O MESTRE).
 				% A lista de nós foi projetada para utilizar os IDs das interfaces NoCs ao invés dos IDs dos Cluster para não desperdiçar as DMAs extras existentes nos Cluster I/O.
@@ -313,12 +294,9 @@ int sync_wait(int syncid);
 
 % O que é a interface?
 % Quais são os parâmetros para realizar uma operação?
-				A interface do nó emissor, apresentada pelo Código 3, utiliza os mesmo parâmetros para abertura de um sync.
-				Ao utilizar os mesmo valores na criação e abertura, a aplicação cliente pode definir o papel do cluster simplemente definindo qual função deve ser chamada.
-				Entretanto, tanto na criação quanto na abertura, o ID lógico local deve estar Range correto do lista.
-				Por exemplo, um sync é aberto com o ID local como mestre mas o tipo de sincronização é definido como ALL\_TO\_ONE.
-				Isto retornará um erro e o sync não será aberto porque o mestre deveria ser o receptor das notificações e não o emissor.
-				O restante da implementação segue o que já foi explicado na seção anterior.
+				% A interface do nó emissor, apresentada pelo Código 3, utiliza os mesmo parâmetros para abertura de um sync. Ao utilizar os mesmo valores na criação e abertura, a aplicação cliente pode definir o papel do cluster simplemente definindo qual função deve ser chamada. Entretanto, tanto na criação quanto na abertura, o ID lógico local deve estar Range correto do lista. Por exemplo, um sync é aberto com o ID local como mestre mas o tipo de sincronização é definido como ALL\_TO\_ONE. Isto retornará um erro e o sync não será aberto porque o mestre deveria ser o receptor das notificações e não o emissor. O restante da implementação segue o que já foi explicado na seção anterior.
+
+				The Sync Interface for Sender Nodes, presented by \autoref{code:hal-sync-sender}, uses the same create parameters for opening a \sync point. The standardization of parameters simplifies the role of a cluster in a synchronization. However, at both creation and opening, the local ID must be included in the list. For instance, a \sync opened with the local ID as master, but the mode defines \texttt{ALL\_TO\_ONE} behavior. This discrepancy will return an error because the master should be the notification receiver and not the sender. The rest of the implementation follows what was already explained in the previous section.
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Sync Interface for Sender Node.}
@@ -328,7 +306,7 @@ int sync_wait(int syncid);
  * @brief Allocates and configures the sending side of
  * the synchronization point.
  */
-int sync_open(const int *nodes, int nnodes, int type);
+int sync_open(const int *nodes, int nnodes, int mode);
 
 /* @brief Releases the transfer channel. */
 int sync_close(int syncid);
@@ -340,15 +318,10 @@ int sync_signal(int syncid);
 \end{listing}
 
 % Quais recursos são necessário para cada tipo de operação, envio e recebimento?
-				De maneira oposta ao receptor, o emissor necessita de 1 canal de envio da CNoC para abrir um sync.
-				Devido a separação dos canais descritos na seção (MPPA HARDWARE), um nó só poderá abrir um sync por vez.
 % Como as operações funcionam?
-				Para emitir um sinal, o nó precisa identificar o ID lógico e o slot de recebimento do mestre.
-				A mascará que será ser enviada é sempre um valor de 64-bits com o bit relativo ao nó emissor setado como 1.
-				A estrutura de controle do emissor também possui flags para garantir a semântica das operações.
-				Somado a isso, o emissor guarda, em um array de inteiros, todos os IDs lógicos dos destinatário do sinal.
-				Ao performar de fato o envio, será configurado e enviado um sinal para cada target desta lista.
-				O envio do sinal é realizado através da escrita em um registrador da DMA, desta maneira, não é possível realizar esta ação de forma assíncrona como as demais abstrações.
+				% De maneira oposta ao receptor, o emissor necessita de 1 canal de envio da CNoC para abrir um sync. Devido a separação dos canais descritos na seção (MPPA HARDWARE), um nó só poderá abrir um sync por vez. Para emitir um sinal, o nó precisa identificar o ID lógico e o slot de recebimento do mestre. A mascará que será ser enviada é sempre um valor de 64-bits com o bit relativo ao nó emissor setado como 1. A estrutura de controle do emissor também possui flags para garantir a semântica das operações. Somado a isso, o emissor guarda, em um array de inteiros, todos os IDs lógicos dos destinatário do sinal. Ao performar de fato o envio, será configurado e enviado um sinal para cada target desta lista. O envio do sinal é realizado através da escrita em um registrador da DMA, desta maneira, não é possível realizar esta ação de forma assíncrona como as demais abstrações.
+
+				Unlike the receiver, the sender needs 1 \cnoc TX channel to open a \sync point. Due to the separation of channels described in the \autoref{tab.noc-resources}, a node can only open one \sync at a time. The node must identify the target ID and RX slot of the master to emit a signal. A 64-bit value composes the mask with the sender node bit set to 1. The sender control structure also has flags to ensure the semantics of the operations. Besides, the sender stores, in an array of integers, all IDs of the receivers. When performing the notification, a signal will be sent to each target of this list.
 
 		\subsection{Mailbox Abstraction}
 		\label{sec.mailbox-abs}
