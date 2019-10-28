@@ -16,47 +16,48 @@
 	\label{sec.low-level-comm}
 	\todo{Or: Nanvix HAL Level}
 
-		O Nanvix HAL provê o módulo de comunicação inter-cluster para permitir que cluster distintos troquem informações.
-		Esse módulo é constituido de três abstrações, nomeados Sync, mailbox e portal.
-		Essas abstrações proveêm mecânismos mais precisos, fáceis de usar, escalonáveis e facilmente portáveis para diferentes arquiteturas~\cite{wentzlaff_fleets:_2011}.
-		Sobre eles, é possível criar dos mais simples serviços, como sincronização e troca de dados, à serviços mais complexos como \shm, POSIX Semaphore, \rmem~\cite{penna:rmen}.
-		O comportamento esperado pode ser simulado por ambos tipos de chamadas, sincronas ou assíncronas, dependendo apenas do suporte em hardware.
-		Motivados a expor melhor controle sobre QoS para as camadas superiores, nós dissociamos as pequenas transferência de dados das grandes, isto é, mailbox e portal.
-		Vale notar que seria possível utilizar uma NoC para cada abstração se o hardware suportasse.
-		Não fizemos isso no MPPA porque a CNoC só provê a transferência de valores de 64 bits.
+		% O Nanvix HAL provê o módulo de comunicação inter-cluster para permitir que cluster distintos troquem informações. Esse módulo é constituido de três abstrações, nomeados Sync, mailbox e portal. Essas abstrações proveêm mecânismos mais precisos, fáceis de usar, escalonáveis e facilmente portáveis para diferentes arquiteturas~\cite{wentzlaff_fleets:_2011}. Sobre eles, é possível criar dos mais simples serviços, como sincronização e troca de dados, à serviços mais complexos como \shm, POSIX Semaphore, \rmem~\cite{penna:rmen}. O comportamento esperado pode ser simulado por ambos tipos de chamadas, sincronas ou assíncronas, dependendo apenas do suporte em hardware. Motivados a expor melhor controle sobre QoS para as camadas superiores, nós dissociamos as pequenas transferência de dados das grandes, isto é, mailbox e portal. Vale notar que seria possível utilizar uma NoC para cada abstração se o hardware suportasse. Não fizemos isso no MPPA porque a CNoC só provê a transferência de valores de 64 bits.
 
-		Está seção está organizada da seguinte maneira.
-		Subseção 0 abrange pontos comuns entre todas as abstrações.
-		Subseção 1, 2 e 3 apresentam conceitualmente cada uma das abstrações, os problemas que elas englobam, e detalhes de implementação.
+		% Está seção está organizada da seguinte maneira. Subseção 0 abrange pontos comuns entre todas as abstrações. Subseção 1, 2 e 3 apresentam conceitualmente cada uma das abstrações, os problemas que elas englobam, e detalhes de implementação.
+
+		\nanvix \hal provides the inter-cluster communication module to allow separate
+		clusters to exchange information.
+		This module consists of three abstractions, named \sync, \mailbox, and \portal.
+		These abstractions provide more precise, easy-to-use, scalable, and easily
+		portable mechanisms for different architectures~\cite{wentzlaff_fleets:_2011}.
+		Above them, it is possible to create from the most straightforward services, such
+		as synchronization and data exchange, to more elaborate services
+		like \shm, \posix Semaphore, and \rmem~\cite{penna:rmen}.
+		Expected behavior can be simulated by both types of calls, synchronous or
+		asynchronous, depending only on hardware support.
+		Motivated to expose better \qos control to the upper layers, we decouple small data
+		transfers from large ones, \ie \mailbox and \portal.
+		Note that it would be possible to use an \noc for each abstraction if the hardware supported it.
+		We did not do this in \mppa because \cnoc only provides the transfer of 64-bit values.
+		
+		This section is organized as follows.
+		\autoref{sec.mppa-hardware-resources} clarifies the use of \mppa hardware resources.
+		\autoref{sec.general-concepts} covers commonalities between all abstractions.
+		\autoref{sec.sync-abs},
+		\autoref{sec.mailbox-abs}, and
+		\autoref{sec.portal-abs}
+		conceptually present each of the abstractions, encompassed problems, and 
+		implementation details.
 
 		\subsection{\mppa Hardware Resources}
 		\label{sec.mppa-hardware-resources}
 
-			A realização da comunicação de baixo-nível depende principalmente de dois recursos do MPPA, interrupções e DMA.
-			Primeiro, o sistema de interrupções permitirá a configuração de tratadores das mensagens recebidas e enviadas através da NoC.
-			Isto possibilitará a assíncronidade das operações, ponto vital em um sistema operacional baseado no microkernel onde o mestre não pode ficar bloqueado esperando a conclusão de uma única comunicação.
-			Caso não fosse possível realizar pelo menos a recebimento de dados/sinais de forma assíncrona, sérios problemas de desempenho seriam introduzidos as camadas superiores.
-			Segundo, o DMA é o mediador de todas as comunicações, síncrona ou assíncronas.
-			Neste ponto, um hypervisor virtualiza a DMA, separando-a em duas estruturas lógicas globais, uma para a CNoC e outra para a DNoC.
-			Cada estrutura agrupa os registradores para a configuração de envio/recebimento, e campos de bits indicando quais slots geraram uma interrupção.
-			O hypervisor executa nos RM e controla, de forma assíncrona, as permissões de leitura/escrita dos registradores virtualizados.
+			% A realização da comunicação de baixo-nível depende principalmente de dois recursos do MPPA, interrupções e DMA. Primeiro, o sistema de interrupções permitirá a configuração de tratadores das mensagens recebidas e enviadas através da NoC. Isto possibilitará a assíncronidade das operações, ponto vital em um sistema operacional baseado no microkernel onde o mestre não pode ficar bloqueado esperando a conclusão de uma única comunicação. Caso não fosse possível realizar pelo menos a recebimento de dados/sinais de forma assíncrona, sérios problemas de desempenho seriam introduzidos as camadas superiores. Segundo, o DMA é o mediador de todas as comunicações, síncrona ou assíncronas. Neste ponto, um hypervisor virtualiza a DMA, separando-a em duas estruturas lógicas globais, uma para a CNoC e outra para a DNoC. Cada estrutura agrupa os registradores para a configuração de envio/recebimento, e campos de bits indicando quais slots geraram uma interrupção. O hypervisor executa nos RM e controla, de forma assíncrona, as permissões de leitura/escrita dos registradores virtualizados.
 
-			O controle efetuado pelo hypervisor não engloba a alocação ou manipulação dos recursos.
-			Consequentemente, nós controlamos manualmente a alocação através de campos de bits.
-			Caso uma operação não esteja em conformidade com esse controle, é retornado um valor negativo indicando o erro, \eg alocação de um recursos que já está em uso.
-			Assim, não inflingimos custos indesejados ao transferir a responsabilidade de tratar o erro a camada superior, \eg aguardar a liberação do recurso.
-			A manipulação envolve procedimentos para configurar a DMA com as devidas permissões e garantir a coerência de cache das operações.
-			Por fim, vale ressaltar que não é realizado nenhum controle de concorrência sobre as estruturas comentadas para que não seja inflingido um sobre custo sobre a abordagem do microkernel.
-			Caso a HAL seja utilizada para desenvolver um sistema operacional monolítico, o mesmo deve se preocupar em garantir a atômicidade das operações.
+			% O controle efetuado pelo hypervisor não engloba a alocação ou manipulação dos recursos. Consequentemente, nós controlamos manualmente a alocação através de campos de bits. Caso uma operação não esteja em conformidade com esse controle, é retornado um valor negativo indicando o erro, \eg alocação de um recursos que já está em uso. Assim, não inflingimos custos indesejados ao transferir a responsabilidade de tratar o erro a camada superior, \eg aguardar a liberação do recurso. A manipulação envolve procedimentos para configurar a DMA com as devidas permissões e garantir a coerência de cache das operações. Por fim, vale ressaltar que não é realizado nenhum controle de concorrência sobre as estruturas comentadas para que não seja inflingido um sobre custo sobre a abordagem do microkernel. Caso a HAL seja utilizada para desenvolver um sistema operacional monolítico, o mesmo deve se preocupar em garantir a atômicidade das operações.
 
-			A DMA coordena três linhas de interrupções.
-			Duas delas são utilizados pela DNoC para notificar o recebimento de dados e o término do envio dados por uma microthread.
-			A CNoC só utiliza uma linha para o recebimento de sinais porque o envio de um sinal, um valor de 64-bits, é realizado explicitamente pelo core.
-			Para cada linha de interrupção existe um handler específico mas todos executam um algoritmo similar.
-			O Algoritmo 3 exemplifica de forma simplificada o comportamento de um handler.
-			Devido ao fato que a linha apenas notifica qual o tipo de interrupção, é responsabilidade do manipulador varrer os recursos de cada interface procurando quem acionou a interrupção.
-			Para que não ocorresse a perda de interrupções, foi garantido que o manipulador fosse reentrante.
-			Devido ao abordagem do microkernel, os problemas de concorrência são amenizados porque apenas o mestre trata as interrupções.
+			% A DMA coordena três linhas de interrupções. Duas delas são utilizados pela DNoC para notificar o recebimento de dados e o término do envio dados por uma microthread. A CNoC só utiliza uma linha para o recebimento de sinais porque o envio de um sinal, um valor de 64-bits, é realizado explicitamente pelo core. Para cada linha de interrupção existe um handler específico mas todos executam um algoritmo similar. O Algoritmo 3 exemplifica de forma simplificada o comportamento de um handler. Devido ao fato que a linha apenas notifica qual o tipo de interrupção, é responsabilidade do manipulador varrer os recursos de cada interface procurando quem acionou a interrupção. Para que não ocorresse a perda de interrupções, foi garantido que o manipulador fosse reentrante. Devido ao abordagem do microkernel, os problemas de concorrência são amenizados porque apenas o mestre trata as interrupções.
+
+			The realization of low-level communication mainly depends on two \mppa features. First, the interrupt system allows the configuration of handlers for messages received and sent through \noc. Interrupts enable asynchronous operations, which is a vital point in a microkernel-based operating system where the master cannot be blocked waiting for a single communication to complete. If it were not possible to perform at least asynchronously receiving data/signals, upper layers would face severe performance issues. Second, \dma is the mediator of all communications, either synchronous or asynchronous. At this point, a \hypervisor virtualizes the \dma, separating it into two global logical structures, one for \cnoc and one for \dnoc. Each structure groups registers for the send/receive configuration, and bit fields indicating which slots generated an interrupt. The \hypervisor runs on \rms and asynchronously controls read/write permissions of virtualized registers.
+
+			The control made by the \hypervisor does not include allocation or manipulation of resources. Consequently, we manually control allocation through bit fields. If an operation does not comply with this control, a negative value is returned, indicating the error, \eg allocation of a resource that is already in use. Thus, we do not inflict undesired costs by shifting responsibility for handling the error to the upper layer, \eg waiting for the release of a resource. Manipulation involves procedures for configuring the DMA with proper permissions and ensuring cache consistency of operations. Finally, it is noteworthy that there is no concurrency control over the commented structures so as not to inflict a cost over the microkernel approach. If the \nanvix \hal is used to develop a monolithic operating system, it should be concerned with ensuring atomic operations.
+
+			The \dma coordinates three interruption lines. Two of these are used by \dnoc to notify the data receipt and completion of data sending by a micro-thread. \cnoc only uses one line for receiving signals because sending a signal (64-bit value) is explicitly performed by the core. For each interrupt line, there is a specific handler, but they all execute a similar algorithm. \autoref{alg.noc-handler} exemplifies the behavior of an \noc handler. Because the line only notifies what type of interrupt, it is the responsibility of the handler to search the resources of each interface looking for who triggered the interrupt. The handlers are reentrant to avoid loss of interrupts. Due to the microkernel approach, concurrency issues are softened because only the master handles interrupts.
 
 			\begin{algorithm}
 				\caption{Simplified NoC Handler Algorithm.}%
@@ -78,20 +79,10 @@
 				\fonte{Developed by the Author.}%
 			\end{algorithm}
 
-			NoC interfaces have two identifiers, one physical (physical ID) and the other logical (logical ID).
-			The hardware uses the physical IDs in the process of data routing through \noc.
-			Each physical ID is associated with a Logical ID to enable the identification
-			of \noc nodes outside the \hal.
-			Logical IDs primarily serve to disassociate the node identification from the
-			architecture that implements the \hal.
-				\autoref{tab.noc-node-id} shows the physical and logical identification performed for \mppa.
-			A Tabela 3 apresenta o mapeamento proposto para os clusters do MPPA.
-			Cada linha apresenta um dos três grupos de nós NoC existentes (primeira coluna), agrupados por proximidade dos identificadores lógicos.
-			Dentro de cada grupo temos um conjunto de identificadores físicos (segunda coluna) que são mapeados 1 para 1 para os identificadores lógicos (terceira coluna).
-			Por exemplo, o grupo IO0 constitui 4 interfaces, onde são mapeadas da seguinte forma: $128 \to 0$, $129 \to 1$, $130 \to 2$, e $131 \to 4$.
-			A ordem do mapeamento foi definido desta maneira para ficar mais intuitivo qual das interfaces, por consequência o cluster, é o mestre.
-			Neste caso, o nó mestre é o identificador lógico 0, IO0.
-			Este processo facilita na sincronização após o boot.
+			% NoC interfaces have two identifiers, one physical (physical ID) and the other logical (logical ID). The hardware uses the physical IDs in the process of data routing through \noc. Each physical ID is associated with a Logical ID to enable the identification of \noc nodes outside the \hal. Logical IDs primarily serve to disassociate the node identification from the architecture that implements the \hal. \autoref{tab.noc-node-id} shows the physical and logical identification performed for \mppa.
+			% A Tabela 3 apresenta o mapeamento proposto para os clusters do MPPA. Cada linha apresenta um dos três grupos de nós NoC existentes (primeira coluna), agrupados por proximidade dos identificadores lógicos. Dentro de cada grupo temos um conjunto de identificadores físicos (segunda coluna) que são mapeados 1 para 1 para os identificadores lógicos (terceira coluna). Por exemplo, o grupo IO0 constitui 4 interfaces, onde são mapeadas da seguinte forma: $128 \to 0$, $129 \to 1$, $130 \to 2$, e $131 \to 4$. A ordem do mapeamento foi definido desta maneira para ficar mais intuitivo qual das interfaces, por consequência o cluster, é o mestre. Neste caso, o nó mestre é o identificador lógico 0, IO0. Este processo facilita na sincronização após o boot.
+
+			\noc interfaces have two identifiers, one physical (physical ID) and the other logical (logical ID). The hardware uses the physical IDs in the process of data routing through \noc. Each physical ID is associated with a Logical ID to enable the identification of \noc nodes outside the \hal. Logical IDs primarily serve to disassociate the node identification from the architecture that implements the \hal. \autoref{tab.noc-node-id} presents the proposed mapping for \mppa clusters. Each row has one of three groups of existing \noc nodes (first column), grouped by type of the clusters. Within each group, we have a set of physical identifiers (second column) that are mapped 1 to 1 to logical identifiers (third column). For example, the \iocluster 0 constitutes 4 \noc interfaces, where they are mapped as follows: $128 \to 0$, $129 \to 1$, $130 \to 2$, and $131 \to 4$. This mapping is a more natural form to identifiers the \noc nodes through different architectures.
 
 			\begin{table}[!tb]
 				\centering%
@@ -100,25 +91,18 @@
 
 				\begin{tabular}{l|l|l|}
 					\cline{2-3}
-															& \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
+															   & \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
 					\multicolumn{1}{|l|}{\textbf{\iocluster0}} & 128-131              & 0-3                 \\ \hline
 					\multicolumn{1}{|l|}{\textbf{\iocluster1}} & 192-195              & 4-7                 \\ \hline
-					\multicolumn{1}{|l|}{\textbf{\ccluster}}   & 0-15                 & 8-23                \\ \hline
+					\multicolumn{1}{|l|}{\textbf{\cclusters}}  & 0-15                 & 8-23                \\ \hline
 				\end{tabular}
 
 				\fonte{Developed by the Author.}%
 			\end{table}
 
-			Para performar a comunicação entre dois clusters, é necessário que o emissor conheça qual o identificador do recurso que o receptor irá usar.
-			Por exemplo, caso o receptor configurar o recebimento em um recurso da DNoC e o emissor enviar para outro, mesmo que o identificador lógico esteja correto, o receptor não será notificado do recebimento.
-			Por esta razão, os slots de recebimento da CNoC e DNoC foram particionados por abstração.
-			Dentro de uma partição, cada slot é mapeado estaticamente para um identificador lógico, \eg 0 à 23.
-			Em contraste, os canais de envio não possuem essa necessidade, podendo ser alocados dinâmicamente.
-			Entretanto, um conceito importante do Nanvix HAL é prover os recursos necessários para uma determinada operação sem realizar otimizações desnecessárias.
-			Desta forma, os canais de envio também foram particionados por abstração de modo que sejam reservados durando toda uma operação.
-			A tabela 3 apresenta cada abstração, identificados pelas linhas, e o particionamento dos recursos de cada NoC, identificados pelas colunas.
-			Como a abstração sync não realiza a troca de dados arbitrários, não foram reservados recursos na DNoC.
-			Vale notar que mesmo com a não utilização de todos os slots existentes, o aperfeiçoamento da programabilidade por não necessitar especificar os recursos de uma comunicação é um ponto forte do design das abstrações.
+			% Para performar a comunicação entre dois clusters, é necessário que o emissor conheça qual o identificador do recurso que o receptor irá usar. Por exemplo, caso o receptor configurar o recebimento em um recurso da DNoC e o emissor enviar para outro, mesmo que o identificador lógico esteja correto, o receptor não será notificado do recebimento. Por esta razão, os slots de recebimento da CNoC e DNoC foram particionados por abstração. Dentro de uma partição, cada slot é mapeado estaticamente para um identificador lógico, \eg 0 à 23. Em contraste, os canais de envio não possuem essa necessidade, podendo ser alocados dinâmicamente. Entretanto, um conceito importante do Nanvix HAL é prover os recursos necessários para uma determinada operação sem realizar otimizações desnecessárias. Desta forma, os canais de envio também foram particionados por abstração de modo que sejam reservados durando toda uma operação. A tabela 3 apresenta cada abstração, identificados pelas linhas, e o particionamento dos recursos de cada NoC, identificados pelas colunas. Como a abstração sync não realiza a troca de dados arbitrários, não foram reservados recursos na DNoC. Vale notar que mesmo com a não utilização de todos os slots existentes, o aperfeiçoamento da programabilidade por não necessitar especificar os recursos de uma comunicação é um ponto forte do design das abstrações.
+
+			The sender needs to know which logical ID the receiver will use to perform a communication. For instance, if the receiver sets up receiving on one \dnoc resource and the sender sends it to another, even if the ID is correct, the DMA will not notify the receiver. For this reason, the receive slots of the \cnoc and \dnoc have been partitioned by abstraction. Within a partition, each slot is statically mapped to a logical ID, \eg 0 to 23 mappings. In contrast, transfer channels can be dynamically allocated. However, an essential concept of Nanvix HAL is to provide the resources required for a given operation without performing additional optimizations. Thus, the transfer channels were also partitioned by abstraction so that they are reserved for an entire job. \autoref{tab.noc-resources} presents each abstraction, identified by the rows, and the partitioning of the resources of each \noc, identified by the columns. Since sync abstraction does not exchange arbitrary data, no resources have been reserved in \dnoc. It is worth noting that even without using all existing slots, improving programmability by not having to specify communication features is a strength of abstraction design.
 
 			% To perform the communication between two clusters, it is necessary that the
 			% sender knows which resource the receiver will use.
@@ -151,10 +135,9 @@
 				\fonte{Developed by the Author.}%
 			\end{table}
 
-			Por fim, nós conseguimos remover quase toda dependência com a pilha de software disponibilizada pela Kalray.
-			Porém, ao eliminar as biliotecas de comunicação, a falta de documentação da virtualização do hardware e exemplos funcionais de comunicação, surgiram limitações no envio dos dados pela DNoC.
-			Resumidamente, não foi possível configurar corretamente as microthreads existentes na DMA para envio assíncrono, tornando-se um trabalho futuro.
-			Entretanto, tal limitação não impactou no design das abstrações exigindo apenas que o core mestre perca um tempo enviando os dados manualmente.
+			% Por fim, nós conseguimos remover quase toda dependência com a pilha de software disponibilizada pela Kalray. Porém, ao eliminar as biliotecas de comunicação, a falta de documentação da virtualização do hardware e exemplos funcionais de comunicação, surgiram limitações no envio dos dados pela DNoC. Resumidamente, não foi possível configurar corretamente as microthreads existentes na DMA para envio assíncrono, tornando-se um trabalho futuro. Entretanto, tal limitação não impactou no design das abstrações exigindo apenas que o core mestre perca um tempo enviando os dados manualmente.
+
+			Finally, we were able to remove almost all dependency on the software stack provided by Kalray. However, by eliminating communication libraries, the lack of documentation of hardware virtualization, and functional examples of communication, limitations have arisen in the transfer of data through \dnoc. In summary, it was not possible to correctly configure existing micro-threads in the \dma for asynchronous transfer, making it a future job. However, this limitation did not impact on the design of abstractions, requiring only that the master core waste time transferring data manually.
 
 		\subsection{General Concepts of Communication Abstractions}
 		\label{sec.general-concepts}
