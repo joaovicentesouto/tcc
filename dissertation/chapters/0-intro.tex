@@ -4,16 +4,18 @@
 	% Context
 	% Historical background
 	% Frequency barrier
-	For some years, the increasing in the processor frequency was used
-	as the main technique to improve their performance.  However, as a
-	side effect, the temperature rise very high, limiting the adoption
-	of this practice.  Alternatively, the constant improvement of
-	semiconductor technology helped to mitigate the impact of this
-	problem, allowing the industry to build more powerful processors
-	with the same frequency.  Therefore, knowing the frequency barrier
-	and the imminent end of Moore's Law~\cite{moore:1965}, the academy
-	and industry began to research and invest in alternatives to keep
-	increasing the processing power of computer systems.
+	For several years, the increase in the frequency of processors was
+	employed as the main technique for achieving performance
+	improvements. However, as a side effect, the temperature of
+	processors started rising to high values, thus imposing a physical
+	limit to the aforementioned technique.  Alternatively, the constant
+	improvement of semiconductor technology helped to mitigate the
+	impact of this problem, allowing the industry to build more powerful
+	processors with the same frequency.  Therefore, knowing the
+	frequency barrier and the imminent end of Moore's
+	Law~\cite{moore:1965}, the academy and industry began to research
+	and invest in alternatives to keep increasing the processing power
+	of computer systems.
 
 	% Improves architectural parts
 	These researches led to a wide diversity of trade-offs in modern
@@ -21,10 +23,13 @@
 	instruction parallelism, out-of-order processing techniques, branch
 	prediction techniques, and various memory hierarchies were some of
 	the key techniques proposed to improve the performance of a single
-	core.  Then, the performance of computer systems was improved even
+	core.  Then, the performance of computer systems was pushed even
 	further by increasing the number of processing cores in a single
-	die.  These architectures, called \textit{multicores}, allowed the
+	die. These architectures, called \textit{multicores}, allowed the
 	continuous rise of the computing performance.
+
+	\todo[inline]{Acho que seria legal usar a figura para deixar mais
+		claro o texto nos dois último parágrafos.}
 
 	The ever-increasing number of transistors and cores in a chip
 	quickly lead to the advent of \manycores.  Notwithstanding, the line
@@ -43,31 +48,42 @@
 	\end{figure}
 
 	% From multicore to manycores and Manycores characteristics
-	Yet another classification is based on the ratio between processing
-	power (\flops) and power consumption (\watts) of a manycore, as
-	shown in \autoref{fig:microprocessor-data}.  For instance, to
-	achieve \exascale (10$^{18}$ \flops), the US Department of Defense
-	issued a report stipulating the energy efficiency of a supercomputer
-	should be around 50 GFLOPS/\watts~\cite{darpa:exascale}.  Recently,
-	a new class of parallel processors, called \lightweight \manycores,
-	emerged to provide high parallelism with low power consumption.
-	These processors own the following characteristics:
+	Yet another classification for manycores is based on
+	their ratio between processing power (\flops) and power consumption
+	(\watts), as shown in \autoref{fig:microprocessor-data}.  For
+	instance, to achieve \exascale (10$^{18}$ \flops), the US Department
+	of Defense issued a report stipulating the energy efficiency of a
+	supercomputer should be around 50
+	GFLOPS/\watts~\cite{darpa:exascale}.  Recently, a new class of
+	parallel processors, called \lightweight \manycores, emerged to
+	provide high parallelism with low power consumption.  These
+	processors own the following characteristics:
 
 	\begin{itemize}
 		\item Integrate thousands of low-power cores in a single die organized in clusters;
-		\item Are designed to cope with Multiple Instruction Multiple Data (MIMD) workloads;
+		\item Are designed to cope with Multiple Instruction Multiple
+		Data (MIMD\todo{adicionar acronym para mmid}) workloads;
 		\item Rely on a high-bandwidth \noc for fast and reliable message-passing communication;
 		\item Present constrained memory systems; and
 		\item Frequently feature a heterogeneous configuration.
 	\end{itemize}
 
+	\todo[inline]{Qual a diferenca entre manycores e lightweight
+		manycores? Nao ficou muito clara a transicao de manycores para
+			lightweight manycores. Talvez a ideia seria de deixar bem
+			claro o contraponto. ex: Lightweight manycores differ from
+			traditional large-scale multicores and manycores in several
+			points: <listar as diferencas>}
+
+
 	Some industry-successful examples of \lightweight \manycores are the
 	\mppa~\cite{DeDinechin2013-1}; the \epiphany~\cite{olofsson2014};
-	and the \taihulight~\cite{zheng2015}.  Jointly with further performance
+	and the \taihulight~\cite{zheng2015}.  Together with superior performance
 	scalability and energy efficiency, lightweight manycores brought a new
 	set of challenges in software development coming from their
-	architectural particularities.  Precisely, these particularities
-	introduce the following difficulties:
+	architectural particularities.  More precisely, these 
+	introduced the following difficulties:
+
 	\begin{itemize}
 		\item \textit{Hybrid programming model:} due to the parallel and
 		distributed nature of the architecture, engineers are frequently
@@ -94,7 +110,7 @@
 	\end{itemize}
 
 	% Challenges and Problem Definition
-	Part of these challenges derives from existing runtimes and \oss.
+	Part of these challenges derive from existing runtimes and \oss.
 	On one hand, runtimes do not hide the characteristics of hardware
 	making software development more challenging and nonportable, \eg do
 	not allow direct access to non-local data, nor the manipulation of
@@ -128,48 +144,60 @@
 \subsection{General Goals}
 \label{sec.goals.general}
 
-	The foremost goal of this undergraduate dissertation is to propose a
+	The main goal of this undergraduate dissertation is to propose a
 	\textit{Inter-Cluster Communication Module} to the \nanvix
 	\textit{\hal} and port it to the \mppa manycore
-	processor~\cite{DeDinechin2013-1}.  This module will expose the
-	essential abstractions that permit upper layers to create more
-	sophisticated communication services.  Using this module, we also
+	processor~\cite{DeDinechin2013-1}.  This module exposes the
+	essential abstractions that allow overlying layers to create richer
+	communication services.  Using this module, we also
 	propose \textit{Inter-Cluster Communication Services} to the \nanvix
-	\microkernel.  This work will be done in collaboration with Pedro
-	Henrique Penna, who is a Ph.D. candidate at the University of
-	Grenoble Alpes (UGA), developer of Nanvix and co-advisor of this
+	\microkernel.  This work was carried out in collaboration with Pedro
+	Henrique Penna, who is ia Ph.D. candidate at the University of
+	Grenoble Alpes (UGA), main engineer of Nanvix and co-advisor of this
 	work.
+
+	\todo[inline]{Acho que ao inves de falar que o trabalho foi
+	desenvolvido comigo, dizer que está inserido em um contexto
+	maior, onde a UFSC, PUC Minas e UGA trabalham juntos no
+	projeto}.
 
 \subsection{Specific Goals}
 \label{sec.goals.specific}
 
 	\begin{itemize}
-		\item Propose a Inter-Cluster Communication Interface for
+		\item Propose an Inter-Cluster Communication interface for
 		lightweight manycores;
 		
-		\item Implement the proposed interface of the Inter-Cluster
-		Communication Module of the \hal for the \textit{\mppa manycore
-			processor};
+		\item Implement the proposed interface in the \hal of Nanvix
+		for the \textit{\mppa manycore processor};
 		
-		\item Define Communication Services and their strategies for
-		each abstraction exported by the Inter-Cluster Communication
-		Module in the context of a microkernel-based \os;
+		\item On top of the Inter-Cluster Communication interface,
+		propose a Communication Service for a microkernel-based \os.
 		
-		\item Implement the Communication Services for the Nanvix
-		Microkernel;
+		\item Implement and integrate the proposed Communication Service
+		int the Nanvix Microkernel;
 
-		\item Analyze the performance of the Communication Services
-		using specific micro-benchmarks that simulates the typical
+		\item Evaluate the performance of the proposed Communication
+		Services using synthetic micro-benchmarks that reproduce
 		collective communication routines of the \mpi.
 	\end{itemize}
+
+
+	\todo[inline]{%
+		Na minha visão, as contribuições podem ser quebradas em 5: (i)
+		definicao e proposta de uma inteface no nivel da HAL, (ii)
+		implementacao dessa interface na HAL; (iii) integracao dessa
+		interface no microkernel; (iv) avaliacao de desemepenho da
+		implementacao feita.
+	}
 
 \section{Organization Of The Work}
 \label{sec.organization}
 	
 	The remainder of this work is organized as follows.
-	\autoref{ch.fundamentation} describes the background needed to
-	accomplish this work.  \autoref{ch.related-work} discusses the
-	principal related work.  \autoref{ch.development} presents the
-	development of this work.  \autoref{ch.experiments} describes the
-	experiments accomplished and discusses the results.  Finally,
-	\autoref{ch.conclusions} concludes this work.
+	\autoref{ch.fundamentation} details the background of this work.
+	\autoref{ch.related-work} discusses the principal related work.
+	\autoref{ch.development} presents the development of this work.
+	\autoref{ch.experiments} describes the experiments accomplished and
+	discusses the results.  Finally, \autoref{ch.conclusions} outlines
+	the main conclusions of this work.
