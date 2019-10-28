@@ -623,8 +623,8 @@ int portal_wait(int portalid);
 
 % Interface e seus parâmetros
 				O código 6 apresenta a interface portal para nós emissores.
-				Na abertura de um portal, a aplicação é obrigada a informar o nó remote que receberá os dados.
-				O id do nó remote será utilizado para alocar e configurar o slot rx da CNoC que receberá a permissão de transferência.
+				Na abertura de um portal, a aplicação é obrigada a informar o nó local e o nó remote que receberá os dados.
+				O id local serve para distinguir a interface NoC casa haja multiplos nó em um cluster e o id do nó remote será utilizado para alocar e configurar o slot rx da CNoC que receberá a permissão de transferência.
 				Isto garante que a permissão não será perdida, mesmo se a permissão chegar antes do emissor configurar a escrita.
 				Os dados são transferidos seguindo o algoritmo de envio preguiçoso.
 
@@ -641,7 +641,7 @@ int portal_wait(int portalid);
 \label{code:hal-portal-sender}
 \begin{minted}{c}
 /* @brief Opens a portal. */
-int portal_open(int remote);
+int portal_open(int local, int remote);
 
 /* @brief Closes a portal. */
 int portal_close(int portalid);
@@ -661,7 +661,7 @@ int portal_wait(int portalid);
 	\label{sec.comm-services}
 	\todo{Or: Nanvix Microkernel Level}
 
-		The inter-cluster communication module, described in \autoref{sec.inter-cluster-communication-module},
+		The inter-cluster communication module, described in \autoref{sec.low-level-comm},
 		is designed to export a standard and straightforward communication
 		primitives to different lightweight manycores.
 		These primitives can be used by various types of \oss and applications.
@@ -689,41 +689,88 @@ int portal_wait(int portalid);
 		These services must take into account the memory constraints and the
 		Master-Slave model chosen for the \microkernel.
 
-		\subsection{Inter-Cluster Communication Services Implementation}
+		The impacts of the Master-Slave model, protection, management and manipulation 
+		operations are similar to all services.
+		Thereat, the following sections provide an overview of these topics punctuating 
+		the differences of each service.
 
-			Management and manipulation operations are similar to all services.
-			They will be provided through interfaces that function as wrappers
-			for the \hal abstraction functions.
-			In the implementation of these interfaces, there will be a mapping
-			between low-level identifiers, associated with \hal resources,
-			and high-level identifiers, associated with resource protection structures.
+		They will be provided through interfaces that function as wrappers
+		for the \hal abstraction functions.
+		In the implementation of these interfaces, there will be a mapping
+		between low-level identifiers, associated with \hal resources,
+		and high-level identifiers, associated with resource protection structures.
 
-			\todo[inline]{
-				According to Odorico, for the completion of the work, it is important to highlight:
-				\\ - How do you treat the protection operations?
-				\\ - How do you intend to test and to validate the correctness of the implemented services.
-			}
+			% The protection operations are mostly similar.
+			% For instance, the use of unallocated resources, sanitizing entries,
+			% checking valid identifiers, non-null pointers, and checking
+			% for conflicting operations (reading in write-only resources).
+			% In the meantime, there are exceptional cases in some services
+			% that must be taken.
+			% For instance, in the \sync service, a cluster cannot synchronize
+			% with itself, or there is a repetition of identifiers in the
+			% stipulated set of clusters.
 
-			The protection operations are mostly similar.
-			For instance, the use of unallocated resources, sanitizing entries,
-			checking valid identifiers, non-null pointers, and checking
-			for conflicting operations (reading in write-only resources).
-			In the meantime, there are exceptional cases in some services
-			that must be taken.
-			For instance, in the \sync service, a cluster cannot synchronize
-			with itself, or there is a repetition of identifiers in the
-			stipulated set of clusters.
-
-			Finally, some aspects of services and implementation still need
-			to be analyzed and will be better detailed in another version
-			of the dissertation.
-			For example, what resource multiplexing methods will be used
-			and their impacts on the Nanvix Microkernel services.
+			% Finally, some aspects of services and implementation still need
+			% to be analyzed and will be better detailed in another version
+			% of the dissertation.
+			% For example, what resource multiplexing methods will be used
+			% and their impacts on the Nanvix Microkernel services.
 
 		\subsection{Impacts of the Master-Slave Model}
 
-		\subsection{Management}
+			O modelo mestre-escravo define que as estruturas internas do SO devem ser exclusivamente manipuladas pelo núcleo mestre.
+			Para isso, cada serviço possui estruturas genéricas e simples que guardam flags de controle, parâmetros para identificação da recurso e armazenamento dos descritores físicos retornados pela HAL.
+			Desta forma, existem dois conjuntos de funções que separa a responsabilidade dos escravos das responsabilidades do mestre.
+			A única excessão é a chamada da função de esperar onde ela é inteiramente realizadas pelo núcleo escravo.
+			Inclusive, foi possível exportar funções síncronas do lado do escravo ao forçar a espera da conclusão de operações assíncronas em uma chamada de sistema.
 
-		\subsection{Protection}
+			O conjunto de funções do mestre segue a notação \texttt{kernel\_\textbf{abstraction}\_\textit{operation}} e é utilizada pelo mecanismo de chamadas de sistemas para realizar a proteção, manuseio e multiplexação dos serviços.
+			O conjunto de funções destinada aos escravos é a interface exportada pelas chamadas de sistemas, definidas como \texttt{k\textbf{abstraction}\_\textit{operation}}.
+			Suas responsabilidades é pesquisar qual identificado anexo ao nó local, caso exista mais de um, e realizar os testes de sanidade possíveis do lado do escravo.
+
+			O fato de que o mestre não pode bloquear a espera de uma única operação forçou que a operação da chamada de espera seja realizada pelo escravo.
+			Neste ponto, o escravo precisa acessar a estrutura interna do SO para consultar o descritor de baixo nível da abstração para que tenha acesso ao spinlock da HAL.
+			Para garantir a coerência da estrutura, o mestre atualiza a memória local sempre que uma modificação é realizada e o escravo invalida sua cache.
+
+		\subsection{Protection and Management}
+
+			As operações de proteção e gerência envolvem duas fases, a fase do escravo e a fase do mestre.
+			Na fase do escravo é verificado todos os problemas que poderiam ser detectados antes de requisitar a operação ao mestre.
+			Por exemplo,
+			(i) descritores de arquivos válidos,
+			(ii) ponteiros de buffer não nulos,
+			(iii) tamanhos de buffers dentro do limite estipulado, e
+			(iv) a semântica dos serviços como sincronização consigo mesmo.
+			
+			O mestre, além de realizar as mesmas verificações do escravo, tem a responsabilidade de conferir a semântica das operações sobre um determinado recurso.
+			Especificamente, o mestre
+			(i) identifica multiplas criações/aberturas
+			(ii) verifica operações conflitantes, como escritas em recursos configurados apenas para leitura,
+			(iii) mensura tempo de comunicação e quantidade total de bytes transmitidos/recebidos, e
+			(iv) chama as abstrações da HAL identificando erros retornados.
 
 		\subsection{Multiplexing}
+
+			A identificação de recursos criados/abertos com os mesmo argumentos permite que multiplos escravos utilizem um mesmo recurso em momentos distintos.
+			Para isso, as estruturas internas do SO guardam, da forma mais simplificada possível, os argumentos utilizados na criação/abertura de um serviço.
+			Quando identificado os mesmos argumentos, um contador de referências é incrementado.
+			O mestre configura o recurso como ocupado quando solicitado uma leitura/escrita.
+			Um segundo escravo que deseja ler/escrever será impedido até que a operação anterior seja concluida.
+			A liberação dos recursos da HAL só seram liberados quando todas as referências forem removidas.
+
+		\subsection{Input/Output Control}
+
+			Os serviços de mailbox e portal contam com uma chamada de sistema especial, chamada de \ioctl.
+			Essas chamada concede a implementação de operações que não podem ser expressadas por chamadas de sistemas regulares.
+			No caso dos serviços de comunicação, 2 tipos de operações foram implementadas.
+			A primeira operação, denominada \texttt{IOCTL\_GET\_VOLUME} consulta a quantidade atual de bytes transmitidos/recebidos de um serviço.
+			A segunda operação, denominada \texttt{IOCTL\_GET\_LATENCY}, consulta a soma das latências das comunicações mensuradas através da diferença de duas leituras de clock.
+			Essa chamada de sistema pode ser extendida futuramente para introduzir novas funcionalidades e operações sem causar mudanças nas interfaces atuais.
+
+		\subsection{Validation and Correctness Tests}
+
+			A validação e teste de corretude da implementação dos serviços foi realizada através de 2 conjunto de testes unitários, testes de API e testes de FALHA, respectivamente.
+			Por um lado, os testes de API criam, abrem e estimulam os serviços com argumentos dentro dos intervalos de valores válidos.
+			Por outro lado, os testes de FALHA utilizam argumentos fora do intervalo de domínio das operações.
+			A falha deve gerar um valor de erro previamente conhecido.
+			Os testes validam qualquer mudança feita verificando todos os comportamentos esperados pelos serviços.
