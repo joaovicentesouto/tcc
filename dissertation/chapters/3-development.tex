@@ -142,26 +142,17 @@
 		\subsection{General Concepts of Communication Abstractions}
 		\label{sec.general-concepts}
 
-			Tecnicamente, o Nanvix HAL não sabe que tipos de aplicações ou kernels o utilizaram.
-			Desta forma, é preciso garantir um comportamento comum que não afete o funcionanto da camada superior.
-			O microkernel, especificamente, restringe o core mestre a estar quase sempre disponível para atender solicitações dos escravos.
-			Por isso, as interfaces exportam apenas chamadas assíncronas (isto é, funções async e wait).
-			Isto força a camada superior, caso queira, criar chamadas síncronas que chamam a função wait logo após a operação assíncrona.
-			Deste modo, no nível do microkernel, nós conseguimos garantir que o mestre configure ou execute as funções assíncronas e notifique os escravos que aguardam na função wait.
-			No MPPA, este controle é realizado através de spinlocks atrelados a cada recurso das abstrações.
-			Ao concluir uma operação, o mestre libera o bloqueio para o escravo continuar sua execução.
+			% Tecnicamente, o Nanvix HAL não sabe que tipos de aplicações ou kernels o utilizaram. Desta forma, é preciso garantir um comportamento comum que não afete o funcionanto da camada superior. O microkernel, especificamente, restringe o core mestre a estar quase sempre disponível para atender solicitações dos escravos. Por isso, as interfaces exportam apenas chamadas assíncronas (isto é, funções async e wait). Isto força a camada superior, caso queira, criar chamadas síncronas que chamam a função wait logo após a operação assíncrona. Deste modo, no nível do microkernel, nós conseguimos garantir que o mestre configure ou execute as funções assíncronas e notifique os escravos que aguardam na função wait. No MPPA, este controle é realizado através de spinlocks atrelados a cada recurso das abstrações. Ao concluir uma operação, o mestre libera o bloqueio para o escravo continuar sua execução.
 
-			Contudo, a limitação da DMA descrita na Seção 0 acrescenta um agravante na operação de transferência das abstrações mailbox e portal.
-			Nestas abstrações, existe um controle de fluxo onde o receptor deve notificar o emissor, dando-lhe permissão para transferir os dados.
-			Este comportamento pode ocasionar o bloqueio do mestre ao esperar uma permissão.
-			Para burlar esse problema, foi introduzido o conceito de envio preguiçoso.
-			O algoritmo 4 ilustra o comportamento do envio preguiçoso, onde o mestre guarda os paramêtros caso não tenha permissão e vai atender outras solicitações.
-			Ao receber a permissão do receptor, o manipulador de interrupções identifica o recurso, realiza de fato o envio dos dados e libera o escravo que solicitou o envio.
-			Assim, nós garantimos que o mestre deixe de fazer algo útil e trave todo o sistema.
+			% Contudo, a limitação da DMA descrita na Seção 0 acrescenta um agravante na operação de transferência das abstrações mailbox e portal. Nestas abstrações, existe um controle de fluxo onde o receptor deve notificar o emissor, dando-lhe permissão para transferir os dados. Este comportamento pode ocasionar o bloqueio do mestre ao esperar uma permissão. Para burlar esse problema, foi introduzido o conceito de envio preguiçoso. O algoritmo 4 ilustra o comportamento do envio preguiçoso, onde o mestre guarda os paramêtros caso não tenha permissão e vai atender outras solicitações. Ao receber a permissão do receptor, o manipulador de interrupções identifica o recurso, realiza de fato o envio dos dados e libera o escravo que solicitou o envio. Assim, nós garantimos que o mestre deixe de fazer algo útil e trave todo o sistema.
+
+			Technically, \nanvix \hal does not know what types of applications or kernels have used it. Thus, we must ensure a standard behavior that does not affect the functionality of the upper layer. The microkernel specifically restricts the master core from being almost always available to handle slave requests. Therefore, interfaces export only asynchronous calls. This decision forces the upper layer, if desired, to create synchronous calls that call the wait function right after the asynchronous operation. Thus, at the microkernel level, we can ensure that the master sets or executes asynchronous functions and notifies blocked slaves. In \mppa, spinlocks perform synchronization between the master and the slaves. Upon completion of an operation, the master releases the lock for the slave to continue its execution.
+
+			However, the limitation of the \dma, described in \autoref{sec.mppa-hardware-resources} adds an aggravation to the transfer operations of the mailbox and portal abstraction. In these abstractions, there is a flow control where the receiver must notify the sender, permitting him to transfer the data. This behavior can cause the master to lock while waiting for permission. The concept of lazy sending was introduced to circumvent this problem. \autoref{alg:lazy-transfer} illustrates the behavior of lazy transfer, where the master saves the parameters if not allowed and will handle other requests. Upon receiving permission from the receiver, the interrupt handler identifies the resource, actually sends the data and releases the slave that requested the send. This algorithm ensures that the master is always doing useful operations and never crashes the entire system.
 
 			\begin{algorithm}
 				\caption{Simplified Lazy Transfer Algorithm.}%
-				\label{euclid}%
+				\label{alg:lazy-transfer}%
 				\begin{algorithmic}[1]
 				\Require $resources$, Abstraction Resource Table
 
@@ -201,11 +192,9 @@
 				\fonte{Developed by the Author.}%
 			\end{algorithm}
 
-			Por fim, as interfaces das abstrações seguem uma convenção para distinguir os papeis de receptor e emissor.
-			Receptores utilizam as funções com sufíxo \texttt{create}, \texttt{unlink}, \texttt{aread} e \texttt{wait}.
-			Emissores, por sua vez, utilizam funções com sufíxo \texttt{open}, \texttt{close}, \texttt{awrite} e \texttt{wait}.
-			Como a função \texttt{wait} é compartilhada, a abstração deve fazer a distinção do papel pelo identificador do recurso.
-			A diferenciação da natureza das operações ajuda tanto o usuário, sendo bastante intuitivo, como na implementação da HAL por explicitar quais recursos serão necessário.
+			% Por fim, as interfaces das abstrações seguem uma convenção para distinguir os papeis de receptor e emissor. Receptores utilizam as funções com sufíxo \texttt{create}, \texttt{unlink}, \texttt{aread} e \texttt{wait}. Emissores, por sua vez, utilizam funções com sufíxo \texttt{open}, \texttt{close}, \texttt{awrite} e \texttt{wait}. Como a função \texttt{wait} é compartilhada, a abstração deve fazer a distinção do papel pelo identificador do recurso. A diferenciação da natureza das operações ajuda tanto o usuário, sendo bastante intuitivo, como na implementação da HAL por explicitar quais recursos serão necessário.
+
+			Finally, abstraction interfaces follow a convention to distinguish between receiver and sender roles. Receivers use functions with \texttt{create}, \texttt{unlink}, \texttt{aread}, and \texttt{wait} suffixes. Senders, in turn, use functions with \texttt{open}, \texttt{close}, \texttt{awrite/signal}, and \texttt{wait} suffixes. Because the \texttt{wait} function is shared, the abstraction must distinguish the role by the resource identifier. Discriminating the nature of operations helps both the user, being entirely intuitive, and implementing HAL by explaining what features will be needed.
 
 			% Por fim, como já comentado anteriormente, o Nanvix HAL não realiza nenhum tipo de multiplexação dos recursos físicos do hardware.
 			% A quantidade de recursos de comunicação disponíveis é diretamente relativa a quantidade de recursos físico para realizar uma dada operação.
