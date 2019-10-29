@@ -18,59 +18,44 @@ proposed for such processors will be highlighted.
 	with a distributed shared-memory model without coherence protocol.
 	Each node has one \risc \cpu, multi-banked local memory, a \dma engine,
 	an event monitor and a network interface.
-	The three \nocs, named rMesh, cMesh, and xMesh, are independent and scalable.
-	They implement a packet-switched model with four duplex links at every node.
-	When a node wants to read a remote data, first, it sends a read request over
-	the rMesh and waits for a signal to arrive on cMesh.
-		\todo{"On the another hand" does not make sense.}
-	On the another hand, the write operation allows the node to continue running
-	while data is tranfered through over xMesh.
+	The three \nocs are independent, scalable, and implement a packet-switched
+	model with four duplex links at every node.
 
-		\todo{"On the another hand" does not make sense AGAIN.}
-	On the other hand, for help and facilitate on the \manycore processor design,
-	\citeonline{Wallentowitz2013} presents the open-source \optimsoc
-	framework, which allows build a
-		\manycore \soc \todo[inline]{Maybe this is not correct, reread the paper.}
-	and simulate it on a computer or
-	synthesize it on an \fpga.
-	The \pe are \openrisc~\footnote{https://opencores.org/openrisc}
-		\todo[inline]{The number is with extra space.}
-	processor organized in tiles.
-	The central architectural element is the LISNoC, a \textit{packet-switched \noc}
-	that implements virtual channels to avoid message-dependent deadlocks.
-	The LISNoC support various network topologies, depending only on the tiles organization.
+	\citeonline{Wallentowitz2013} presents the open-source \optimsoc framework
+	for help and facilitate on the manycore processor design. The \optimsoc
+	allows to simulate a manycore on a computer or synthesize it on an \fpga.
+	It groups \openrisc processors~\footnote{https://opencores.org/openrisc} in tiles.
+	The tiles communicate through a \textit{packet-switched \noc}.
+	The \noc support various network topologies, depending only on the tiles organization.
 	Precisely, a \textit{network adapter} handles the memory transfers between
-	tile and the memory and provides hardware means to a message-passing communication
+	tile and the local memory and provides a message-passing communication
 	model among tiles.
-	The tiles organization and the network topology also allows handling communication
-	in three different ways.
-	First, when using distributed memory, communication is performed through the
-	message-exchange between the tiles.
-	Second, by using a partitioned global address space scattered through the
-	local memories of the tiles, the network adapter can perform \mpu-like memory
-	address translation hiding the exchange of messages without providing cache coherence.
-	Finally, Wallentowitz \etal study policy of write-through snooping to provide
-	a global memory shared among tiles with cache coherence.
+	The tiles organization and the network topology allow handling
+	communication by (i) message-exchange, (ii) partitioned global
+	address space without cache coherence, and (iii) global memory
+	with cache coherence via a write-through policy.
 
-	Similarly, \citeonline{Kurth2017} introduce the \hero, which unites an \arm
-	host processor with a fully modifiable \riscv \manycore implemented on an \fpga.
-	The \pmca uses a multi-cluster design and also relies on multi-banked memory, called \spm.
-	Multi-channel \dma engines had substituted the data caches, transferring data between
-	a shared L1 \spm and all remote \spms or a shared main memory.
-	Communication to main memory passes through software-managed lightweight \rab.
-	The \rab performs the translation of the virtual-to-physical address, likes an \mmu.
+	Similarly, \citeonline{Kurth2017} introduces the \hero, which
+	unites an \arm host processor with a fully modifiable
+	\riscv \manycore implemented on an \fpga. The \pmca uses a
+	multi-cluster design and relies on multi-banked memory, called \spm.
+	Multi-channel \dma engines had substituted the data caches.
+	Data transfer occurs between a local \spm and all remote \spms or
+	with shared global memory. Communication to main memory passes
+	through software-managed lightweight \rab. The \rab performs the
+	translation of the virtual-to-physical address, likes an \mmu.
 	In this way, clusters can share virtual address pointers.
-	Besides, exists different designs for the shared instruction caches and
-	top-level interconnection such as bus or \noc.
+	Besides, exists different designs for a shared instruction
+	cache and top-level interconnection such as bus or \noc.
 
-\section{Operating Systems for Lightweight Manycores}
+\section{Operating Systems for Manycores}
 \label{sec.works.os}
 
 	\citeonline{Baumann2009} proposed a new \os architecture for scalable multicore
 	systems, called \multikernel.
 	In their perspective, the future of the \oss is on embracing the networked nature
 	of the machines based on distributed systems ideas.
-	Assuming the cores are independent nodes of a network, they build the tradicional
+	Assuming the cores are independent nodes of a network, they build the traditional
 	\os functionalities as fully-featured processes.
 	These processes communicate via message-passing and do not share the internal
 	structures of the \os.
@@ -87,20 +72,18 @@ proposed for such processors will be highlighted.
 	And lastly, \textit{View \os state as replicated instead of shared} improves system
 	scalability.
 
-	In \citeonline{Wisniewski2014} \etal, the concept of scalability was pushed
+	In \citeonline{Wisniewski2014}, the concept of scalability was pushed
 	to the extreme, thinking on \hpc.
 	The principal motivation is the creation of an \os that simultaneously supports
-	programmability, through support \linux \api, and provides a lightweight kernel
+	programmability through support \linux \api, and provides a lightweight kernel
 	to performance, scalability, and reliability.
 	The \os, named \mos, provides as much of the hardware resources as
-	possible to the \hpc applications.
-		\todo{"On the another hand" does not make sense AGAIN.}
-	On the other hand, the Linux kernel
-	component acts as a service that provides Linux functionalities.
+	possible to the \hpc applications and the \linux kernel component
+	acts as a service that provides \linux functionalities.
 
 	Similarly, \citeonline{kluge2014} developed the \moosca.
 	With \moosca, they introduce abstractions that are easily composed, called Nodes,
-	Channels and, Servers.
+	Channels, and Servers.
 	Where Nodes represent execution resources, Channels represent communication
 	resources, \eg \noc resources, and lastly, Servers are nodes that provide
 	services to client Nodes.
@@ -130,18 +113,19 @@ proposed for such processors will be highlighted.
 	However, due to the domain for which these processors were designed, they end up
 	presenting several differences among them at the hardware level.
 
-		\todo{"On the another hand" does not make sense AGAIN.}
-	On the other hand, \autoref{sec.works.os} presents studies of \oss that focus on
-	mitigating these differences in order to provide greater programmability and portability.
-	Nevertheless, they span the entire development spectrum, delivering to end-users
-	high-level abstractions for increase productivity.
-	In this way, it is possible to notice the extensive rework that all of them had in
-	dealing with the closest layer of hardware that, as observed, can be abstracted to
-	a common perspective.
+	Additionally, \autoref{sec.works.os} presents \oss studies that focus
+	on the most efficient exploration of manycores processor characteristics.
+	Many of them introduce entirely new concepts, reducing the programmability
+	and portability of development environments. Some even seek to provide
+	\posix interfaces by porting an adapted version of known kernels, but
+	this can lead to optimization losses at near-hardware levels.
+	However, the \os and communication models presented fit well with the
+	distributed nature of manycores.
 
-	In this context, the proposed \hal deal with the lowest level possible with a focus
-	on the aspects that make it challenging to work with \manycores.
-	Thus, different \oss and services can be developed and disseminated by various
-	architectures that implement this perspective.
-		\todo[inline]{Weird phrase, "So consequently?".}
-	So consequently, the applications that run on top of them.
+	In this context, \nanvix \hal deals with the lowest possible layer
+	with a focus on aspects that make it challenging to work with a
+	specific group of manycores, \ie \lightweight \manycores. The exported
+	interfaces sought to group lightweight manycores on a common and effective
+	view. Above \hal, services will be developed that seek first and foremost
+	to provide greater programmability and portability through a fully-featured
+	\posix-compliant \os.
