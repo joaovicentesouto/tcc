@@ -338,15 +338,9 @@ int sync_signal(int syncid);
 			% When the receiver consumes a message, it notifies the sender to ensure
 			% control of the flow.
 
-			A abstração \textit{Mailbox} permite que clusters troquem mensagens
-			de tamanho fixo entre si.
-			O tamanho da mensagem foi projetado para ser relativamente pequeno,
-			geralmente algumas centenas de bytes.
-			Essas mensagens são consumidas pelo receptor sem a necessidade de conhecer quem as enviou.
-			Similarmente, a operação da \mailbox segue o comportamento da fila de mensagens \posix.
-			A Figura (conceito) ilustra conceitualmente uma das formas de implementar uma Mailbox.
-			O receptor aloca espaço suficiente para receber 1 mensagem de cada possível emissor.
-			O emissor envia para o espaço reservado para sua mensagem, eliminando a concorrência de escrita das mensagens.
+			% A abstração \textit{Mailbox} permite que clusters troquem mensagens de tamanho fixo entre si. O tamanho da mensagem foi projetado para ser relativamente pequeno, geralmente algumas centenas de bytes. Essas mensagens são consumidas pelo receptor sem a necessidade de conhecer quem as enviou. Similarmente, a operação da \mailbox segue o comportamento da fila de mensagens \posix. A Figura (conceito) ilustra conceitualmente uma das formas de implementar uma Mailbox. O receptor aloca espaço suficiente para receber 1 mensagem de cada possível emissor. O emissor envia para o espaço reservado para sua mensagem, eliminando a concorrência de escrita das mensagens.
+
+			Mailbox abstraction allows clusters to exchange fixed-length messages with each other. The message size is designed to be relatively small, usually a few hundred bytes. The recipient consumes these messages without needing to know who sent them. Similarly, the mailbox operation follows the behavior of the Posix message queue. Figure (concept) conceptually illustrates one of the ways to implement a Mailbox. The receiver allocates enough space to receive one message from each possible sender. The sender transfers the message to a predefined location.
 
 			\begin{figure}[!tb]
 				\centering%
@@ -368,18 +362,14 @@ int sync_signal(int syncid);
 				\fonte{Developed by the Author.}%
 			\end{figure}
 
-			A Figura (fluxo) exemplifica o fluxo de comunicação entre um nó receptor e um emissor.
-			A criação de uma Mailbox cria uma fila de mensagens vazia, onde os emissores são livres para enviar a primeira mensagem.
-			Posteriormente, todos os envios necessitaram da permissão do receptor para que mensagens não sejam sobreescritas.
-			Por este motivo, o receptor notificará o emissor ao consumir sua mensagem.
-			A mensagem será copiada para um buffer do usuário e o espaço estará novamente disponível.
+			% A Figura (fluxo) exemplifica o fluxo de comunicação entre um nó receptor e um emissor. A criação de uma Mailbox cria uma fila de mensagens vazia, onde os emissores são livres para enviar a primeira mensagem. Posteriormente, todos os envios necessitaram da permissão do receptor para que mensagens não sejam sobreescritas. Por este motivo, o receptor notificará o emissor ao consumir sua mensagem. A mensagem será copiada para um buffer do usuário e o espaço estará novamente disponível.
 
-			Teoricamente, a quantidade de mensagens permitidas por emissor pode ser de 1 à N.
-			Entretanto, optou-se por permitir apenas 1 no Nanvix HAL devido as restrições de memória apresentada por manycores.
-			E como o espaço é alocado estatícamente dentro do espaço de memória do kernel, permitir que o usuário escolhe-se o tamanho da fila de mensagem não reduziria o espaço prévio necessário.
-			Todavia, o uso de uma mensagem é suficiente para programas servidores tratarem requisitações no nível do Multikernel.
-			Por exemplo, a mensagem pode ser usada para codificar pequenas operações e sinais de controle do sistema.
+			% Teoricamente, a quantidade de mensagens permitidas por emissor pode ser de 1 à N. Entretanto, optou-se por permitir apenas 1 no Nanvix HAL devido as restrições de memória apresentada por manycores. E como o espaço é alocado estatícamente dentro do espaço de memória do kernel, permitir que o usuário escolhe-se o tamanho da fila de mensagem não reduziria o espaço prévio necessário. Todavia, o uso de uma mensagem é suficiente para programas servidores tratarem requisitações no nível do Multikernel. Por exemplo, a mensagem pode ser usada para codificar pequenas operações e sinais de controle do sistema.
 
+			Figure (flow) exemplifies the communication flow between a receiver and a sender node. The receiver creates an empty message queue where senders are free to send the first message. Subsequently, in order not to overwrite old messages, all transmissions require the permission of the receiver. For this reason,  when the receiver consumes a message, it copies the message to the user buffer, releases the queue space, and notifies the sender.
+			
+			Theoretically, the number of messages allowed per sender can be from 1 to N.  However, Nanvix HAL statically allocates sufficient memory for the message queue inside the kernel. Therefore, we chose to allow only one message due to memory constraints presented by lightweight manycores. Furthermore, using one message is sufficient for servers to handle requests at the Multikernel level. For instance, the message can be used to encode small operations and system control signals.
+			
 			\subsubsection{Receiver Side Implementation}
 
 % Interface e seus parâmetros
