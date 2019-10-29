@@ -283,7 +283,7 @@ int sync_wait(int syncid);
 % Como as operações funcionam?
 				% Um vetor de estruturas internas realiza o controle das operações. Cada posição do vetor é reservado a um slot físico e guarda flags de controle, a mascará e um spinlock. Ao realizar a abertura, espera ou unlink de um sync, a HAL verifica discrepâncias nos IDs, nas flags de controle ou nos parâmetros. Por fim, o spinlock é utilizado para sincronização da operação com os núcleos escravos. Em um sistema microkernel, o core mestre configura o sync e o escravo aguarda ser liberado no spinlock. O tratador de interrupções do Sync identifica a estrutura e libera o bloqueio. A falta de coerência de cache não afeta os spinlock porque são utilizadas instruções que garantem a atomicidade que implementam o lock.
 
-				Receipt of notifications requires booking 1 \cnoc RX slot related to the Master ID. This relation eliminates the conflict of using a same slot across different synchronization settings. Consequently, a node cannot be the master in two simultaneous operations. Thus, the total of \sync created simultaneously is equal to the number of existing nodes, \ie 24 in \mppa. In \ioclusters, this total is multiplied by the number of available NoC interfaces, \ie 24 per \dma. A 64-bit mask, created from sender node IDs, configures the RX slot. Bits positioned on nodes IDs are 0. When receiving a signal, \dma performs an \textit{OR-bitwise} with the previous value. When all bits become 1's, \dma clears the register and triggers an interrupt.
+				Receipt of notifications requires booking one \cnoc RX slot related to the Master ID. This relation eliminates the conflict of using a same slot across different synchronization settings. Consequently, a node cannot be the master in two simultaneous operations. Thus, the total of \sync created simultaneously is equal to the number of existing nodes, \ie 24 in \mppa. In \ioclusters, this total is multiplied by the number of available NoC interfaces, \ie 24 per \dma. A 64-bit mask, created from sender node IDs, configures the RX slot. Bits positioned on nodes IDs are 0. When receiving a signal, \dma performs an \textit{OR-bitwise} with the previous value. When all bits become 1's, \dma clears the register and triggers an interrupt.
 
 				A vector of internal structures controls the operations. Each structure is reserved for a physical slot and holds control flags, the initial mask, and a spinlock. \hal checks for discrepancies in IDs, control flags, or parameters when creating, waiting, or unlinking a \sync. Finally, the spinlock is used to synchronize the operation with slave cores. On a microkernel-based system, the master core configures \sync, and the slave waits for the spinlock release. The interrupt handler of the \sync identifies the structure and releases the lock. The lack of cache coherence does not affect spinlocks because instructions that guarantee the atomicity are used to implement the lock.
 
@@ -321,7 +321,7 @@ int sync_signal(int syncid);
 % Como as operações funcionam?
 				% De maneira oposta ao receptor, o emissor necessita de 1 canal de envio da CNoC para abrir um sync. Devido a separação dos canais descritos na seção (MPPA HARDWARE), um nó só poderá abrir um sync por vez. Para emitir um sinal, o nó precisa identificar o ID lógico e o slot de recebimento do mestre. A mascará que será ser enviada é sempre um valor de 64-bits com o bit relativo ao nó emissor setado como 1. A estrutura de controle do emissor também possui flags para garantir a semântica das operações. Somado a isso, o emissor guarda, em um array de inteiros, todos os IDs lógicos dos destinatário do sinal. Ao performar de fato o envio, será configurado e enviado um sinal para cada target desta lista. O envio do sinal é realizado através da escrita em um registrador da DMA, desta maneira, não é possível realizar esta ação de forma assíncrona como as demais abstrações.
 
-				Unlike the receiver, the sender needs 1 \cnoc TX channel to open a \sync point. Due to the separation of channels described in the \autoref{tab.noc-resources}, a node can only open one \sync at a time. The node must identify the target ID and RX slot of the master to emit a signal. A 64-bit value composes the mask with the sender node bit set to 1. The sender control structure also has flags to ensure the semantics of the operations. Besides, the sender stores, in an array of integers, all IDs of the receivers. When performing the notification, a signal will be sent to each target of this list.
+				Unlike the receiver, the sender needs one \cnoc TX channel to open a \sync point. Due to the separation of channels described in the \autoref{tab.noc-resources}, a node can only open one \sync at a time. The node must identify the target ID and RX slot of the master to emit a signal. A 64-bit value composes the mask with the sender node bit set to 1. The sender control structure also has flags to ensure the semantics of the operations. Besides, the sender stores, in an array of integers, all IDs of the receivers. When performing the notification, a signal will be sent to each target of this list.
 
 		\subsection{Mailbox Abstraction}
 		\label{sec.mailbox-abs}
@@ -340,7 +340,14 @@ int sync_signal(int syncid);
 
 			% A abstração \textit{Mailbox} permite que clusters troquem mensagens de tamanho fixo entre si. O tamanho da mensagem foi projetado para ser relativamente pequeno, geralmente algumas centenas de bytes. Essas mensagens são consumidas pelo receptor sem a necessidade de conhecer quem as enviou. Similarmente, a operação da \mailbox segue o comportamento da fila de mensagens \posix. A Figura (conceito) ilustra conceitualmente uma das formas de implementar uma Mailbox. O receptor aloca espaço suficiente para receber 1 mensagem de cada possível emissor. O emissor envia para o espaço reservado para sua mensagem, eliminando a concorrência de escrita das mensagens.
 
-			Mailbox abstraction allows clusters to exchange fixed-length messages with each other. The message size is designed to be relatively small, usually a few hundred bytes. The recipient consumes these messages without needing to know who sent them. Similarly, the mailbox operation follows the behavior of the Posix message queue. Figure (concept) conceptually illustrates one of the ways to implement a Mailbox. The receiver allocates enough space to receive one message from each possible sender. The sender transfers the message to a predefined location.
+			\textit{Message Queue Abstraction}, called \mailbox, allows clusters to exchange
+			fixed-length messages with each other. The message size is designed to be
+			relatively small, usually a few hundred bytes. The recipient consumes these
+			messages without needing to know who sent them. Similarly, mailbox operations
+			follows the behavior of the \posix message queue. \autoref{fig:mailbox-concept}
+			conceptually illustrates one of the ways to implement a \mailbox. The receiver
+			allocates enough space to receive one message from each possible sender.
+			The sender transfers the message to a predefined location.
 
 			\begin{figure}[!tb]
 				\centering%
@@ -366,43 +373,72 @@ int sync_signal(int syncid);
 
 			% Teoricamente, a quantidade de mensagens permitidas por emissor pode ser de 1 à N. Entretanto, optou-se por permitir apenas 1 no Nanvix HAL devido as restrições de memória apresentada por manycores. E como o espaço é alocado estatícamente dentro do espaço de memória do kernel, permitir que o usuário escolhe-se o tamanho da fila de mensagem não reduziria o espaço prévio necessário. Todavia, o uso de uma mensagem é suficiente para programas servidores tratarem requisitações no nível do Multikernel. Por exemplo, a mensagem pode ser usada para codificar pequenas operações e sinais de controle do sistema.
 
-			Figure (flow) exemplifies the communication flow between a receiver and a sender node. The receiver creates an empty message queue where senders are free to send the first message. Subsequently, in order not to overwrite old messages, all transmissions require the permission of the receiver. For this reason,  when the receiver consumes a message, it copies the message to the user buffer, releases the queue space, and notifies the sender.
+			\autoref{fig:mailbox-flow} exemplifies the communication flow between a
+			receiver and a sender node. The receiver creates an empty message queue
+			where senders are free to send the first message. Subsequently, in order
+			not to overwrite old messages, all transmissions require the permission
+			of the receiver. For this reason,  when the receiver consumes a message,
+			it copies the message to the user buffer, releases the queue space, and
+			notifies the sender.
 			
-			Theoretically, the number of messages allowed per sender can be from 1 to N.  However, Nanvix HAL statically allocates sufficient memory for the message queue inside the kernel. Therefore, we chose to allow only one message due to memory constraints presented by lightweight manycores. Furthermore, using one message is sufficient for servers to handle requests at the Multikernel level. For instance, the message can be used to encode small operations and system control signals.
+			Theoretically, the number of messages allowed per sender can be from
+			$1$ to $N$. However, \nanvix \hal statically allocates sufficient
+			memory for the message queue inside the kernel. Therefore, we chose
+			to allow only one message due to memory constraints presented by
+			lightweight manycores. Furthermore, using one message is sufficient	for
+			servers to handle requests at the \multikernel level. For instance, the
+			message can be used to encode small operations and system control signals.
 			
 			\subsubsection{Receiver Side Implementation}
 
-% Interface e seus parâmetros
-				O código 3 apresenta a interface da Mailbox para um nó receptor.
-				A criação de uma Mailbox requer que a aplicação informe o ID Lógico no nó local.
-				Esta identificação é necessária por causa do múltiplos nós existentes nos Cluster I/O.
-				As demais operações utilizam o identicador retornado na criação da mailbox.
-				Para a leitura de uma mensagem, o usuário é obrigado a passar o local onde a mensagem será copiada e o tamanho a ser copiado.
-				O tamanho é sempre constante mas é utilizado como verificação da integridade da operação.
-				A cópia bem sucedida de uma mensagem liberará o escravo que executar a função de espera.
-				Neste processo de liberação, o core mestre executa o flush da mensagem para a SRAM para que o escravo, ao invalidar a sua cache, possa ler a mensagem.
+% % Interface e seus parâmetros
+% 				O código 3 apresenta a interface da Mailbox para um nó receptor. A criação de uma Mailbox requer que a aplicação informe o ID Lógico no nó local. Esta identificação é necessária por causa do múltiplos nós existentes nos Cluster I/O. As demais operações utilizam o identicador retornado na criação da mailbox. Para a leitura de uma mensagem, o usuário é obrigado a passar o local onde a mensagem será copiada e o tamanho a ser copiado. O tamanho é sempre constante mas é utilizado como verificação da integridade da operação. A cópia bem sucedida de uma mensagem liberará o escravo que executar a função de espera. Neste processo de liberação, o core mestre executa o flush da mensagem para a SRAM para que o escravo, ao invalidar a sua cache, possa ler a mensagem.
 
-% Recursos de hardware
-				A Mailbox é mais complexa do que o Sync porque utiliza recursos DNoC e CNoC.
-				Especificamente, o receptor necessita de 1 slot de recebimento da DNoC e 1 canal de transmissão da CNoC.
-				A necessidade de 1 canal de transmissão durante toda a vida da Mailbox do receptor limita a criação de apenas 1 mailbox por nó NoC.
-				O slot rx é configurado utilizando dois tamanhos.
-				Um para o tamanho de uma mensagem, o qual gerará interrupções, e outro para o tamanho total buffer alocado para proteção.
-				O buffer é alocado dentro da memória do kernel com espaço suficiente para receber 24 mensagens.
-				A mensagem, propriamente dita, é composta por um cabeçalho identificando o emissor, um corpo contendo a mensagem útil e um rodapé com o mesmo identificador.
-				O canal de transmissão, por sua vez, é utilizado após a cópia da mensagem útil para o buffer do usuário, notificando o ID do cabeçalho.
+% % Recursos de hardware
+% 				A Mailbox é mais complexa do que o Sync porque utiliza recursos DNoC e CNoC. Especificamente, o receptor necessita de 1 slot de recebimento da DNoC e 1 canal de transmissão da CNoC. A necessidade de 1 canal de transmissão durante toda a vida da Mailbox do receptor limita a criação de apenas 1 mailbox por nó NoC. O slot rx é configurado utilizando dois tamanhos. Um para o tamanho de uma mensagem, o qual gerará interrupções, e outro para o tamanho total buffer alocado para proteção. O buffer é alocado dentro da memória do kernel com espaço suficiente para receber 24 mensagens. A mensagem, propriamente dita, é composta por um cabeçalho identificando o emissor, um corpo contendo a mensagem útil e um rodapé com o mesmo identificador. O canal de transmissão, por sua vez, é utilizado após a cópia da mensagem útil para o buffer do usuário, notificando o ID do cabeçalho.
 
-% Desafios da implementação
-				O paralelismo no recebimento das mensagens introduziu alguns desafios na leitura assíncrona do Mailbox como 
-				(i) cada mensagem gera uma interrupção,
-				(ii) interrupções preemptadas por outras não encontraram os recursos da DNoC que emitiram a interrupção e
-				(iii) não é possível verificar a quantidade de interrupções geradas por um recurso.
-				Para burlar estas barreiras, foi implementado um comportamento similar ao envio preguiçoso.
-				Primeiro, um contador global contendo a quantidade total de mensagens recebidas permite que o receptor copie mensagens recebidas antes de uma leitura.
-				Segundo, caso não haja mensagens disponíveis, a cópia será realizada pelo próximo disparo do manipulador.
-				Terceiro, para resolver o problema das interrupções preemptadas, sempre que um manipulador é disparado ele percorrerá a fila de mensagens conferindo os cabeçalhos e rodapés.
-				Ao identificar uma mensagem válida, o manipulador incrementa o contador e altera o rodapé para um código especifico.
-				Desta forma, não perdemos nenhuma mensagem por não tratar uma interrupção.
+% % Desafios da implementação
+% 				O paralelismo no recebimento das mensagens introduziu alguns desafios na leitura assíncrona do Mailbox como (i) cada mensagem gera uma interrupção, (ii) interrupções preemptadas por outras não encontraram os recursos da DNoC que emitiram a interrupção e (iii) não é possível verificar a quantidade de interrupções geradas por um recurso. Para burlar estas barreiras, foi implementado um comportamento similar ao envio preguiçoso. Primeiro, um contador global contendo a quantidade total de mensagens recebidas permite que o receptor copie mensagens recebidas antes de uma leitura. Segundo, caso não haja mensagens disponíveis, a cópia será realizada pelo próximo disparo do manipulador. Terceiro, para resolver o problema das interrupções preemptadas, sempre que um manipulador é disparado ele percorrerá a fila de mensagens conferindo os cabeçalhos e rodapés. Ao identificar uma mensagem válida, o manipulador incrementa o contador e altera o rodapé para um código especifico. Desta forma, não perdemos nenhuma mensagem por não tratar uma interrupção.
+
+					\autoref{code:hal-mailbox-receiver} presents the Mailbox interface for
+					Receiver Nodes. The multiples nodes in \ioclusters forces the application
+					to inform the local node ID on the creation of the \mailbox. The other
+					operations use the file descriptor returned by creation function.
+					Consumption of a message requires the application to enter a buffer and
+					message size. Although the size is constant, it is used to verify the
+					integrity of the operation. Successful copying of a message will release
+					the slave that performs the wait function. In the release protocol, the
+					master core flushes the message to the SRAM so that the slave, when
+					invalidating its cache, can read the message.
+					
+					\mailbox is more complicated than Sync in terms of hardware resources.
+					Specifically, the receiver requires one \dnoc receiving slot and one \cnoc
+					transfer channel. The need for one transfer channel for the lifetime
+					of the receiver limits the creation of only one mailbox per \noc node.
+					The receiving slot is configured using two sizes. One for the size of
+					a message, which will generate interrupts, and one for the total buffer
+					size allocated for protection. The buffer is allocated within kernel
+					memory with sufficient space to receive 24 messages. The message
+					itself is composed of a header identifying the sender, a body containing
+					the useful message, and a footer for handler control. The transfer channel,
+					in turn, is used after copying the useful message to the user buffer,
+					notifying the header ID.
+					
+					Parallelism in receiving messages introduced some challenges in the
+					asynchronous reading of Mailbox. Where (i) each message generates an
+					interrupt, (ii) interrupts preempted by others did not find the \dnoc
+					resources that issued the interrupt, and (iii) cannot verify the
+					number of interrupts generated by a resource. A behavior similar to
+					lazy transfer has been implemented to circumvent these difficulties.
+					First, a global counter containing the total amount of messages
+					received allows the receiver to copy received messages on the
+					asynchronous read call. Second, if no messages are available, copying
+					will be performed by the next triggered handler. Third, to solve the
+					problem of preemptive interrupts, whenever a handler is triggered,
+					it will traverse the message queue checking headers and footers.
+					When identifying a valid message, the handler increments the counter
+					and changes the footer to a specific code. This way, no message is
+					lost because a single handler identifies messages not yet counted.
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Mailbox Interface for Receiver Node.}
@@ -426,13 +462,15 @@ int mailbox_wait(int mbxid);
 			\subsubsection{Sender Side Implementation}
 
 % Interface e seus parâmetros
-				O código 3 apresenta a interface da mailbox para o nó emissor.
-				A abertura de uma mailbox requer que a aplicação informe o ID lógico do nó que irá receber a mensagem.
-				O identificador da mailbox retornado pela função de abertura é utilizada para configurar e controlar as demais funções.
-				A função de envio, em especial, implementa o conceito de envio preguiçoso.
-				Ou seja, o core mestre nunca ficará bloqueado caso a mailbox não tenha permissão para enviar a mensagem.
-				Ele realiza o agendamento do envio setando valores nas estruturas internas do kernel e copiando a mensagem útil para um buffer local, no qual consta o identificador do emissor.
-				A função de espera é a mesma função utilizada pelo nó receptor onde o núcleo escravo aguardaram bloqueado em um spinlock até receber a permissão de envio.
+				% O código 3 apresenta a interface da mailbox para o nó emissor. A abertura de uma mailbox requer que a aplicação informe o ID lógico do nó que irá receber a mensagem. O identificador da mailbox retornado pela função de abertura é utilizada para configurar e controlar as demais funções. A função de envio, em especial, implementa o conceito de envio preguiçoso. Ou seja, o core mestre nunca ficará bloqueado caso a mailbox não tenha permissão para enviar a mensagem. Ele realiza o agendamento do envio setando valores nas estruturas internas do kernel e copiando a mensagem útil para um buffer local, no qual consta o identificador do emissor. A função de espera é a mesma função utilizada pelo nó receptor onde o núcleo escravo aguardaram bloqueado em um spinlock até receber a permissão de envio.
+
+				\autoref{code:hal-mailbox-sender} displays the Mailbox Interface for
+				Sender Nodes. Opening a mailbox requires the application to inform
+				the receiver ID to allocate related resources. The send function,
+				in particular, implements the concept of lazy transfer. So, the master
+				core never blocks if the mailbox is not allowed to transfer the message.
+				The wait function is the same function used by the receiver node where
+				the slave core waits blocked until receiving the transfer permission.
 
 				% If the sender attempts to send a message before the receiver has consumed
 				% the previous message, the sender will be blocked waiting for the sender's notification.
@@ -459,11 +497,15 @@ int mailbox_wait(int mbxid);
 \end{listing}
 
 % Recursos de hardware
-				O lado emissor também exige a alocação de recursos das duas NoCs.
-				Porém, os recursos são opostos ao do receptor, no qual serão alocados 1 slot rx da CNoC e 1 canal de transmissão da DNoC.
-				O slot rx CNOC alocado é relativo ao ID do receptor para evitar que aberturas para receptores distintos conflitassem ao tentar alocar o mesmo slot.
-				O canal de transmissão é alocado dinamicamente dentre os 4 disponíveis.
-				Deste modo, a quantidade máximo de mailboxes abertas por nó é limitado pelo número de canais de transmissão.
+				% O lado emissor também exige a alocação de recursos das duas NoCs. Porém, os recursos são opostos ao do receptor, no qual serão alocados 1 slot rx da CNoC e 1 canal de transmissão da DNoC. O slot rx CNOC alocado é relativo ao ID do receptor para evitar que aberturas para receptores distintos conflitassem ao tentar alocar o mesmo slot. O canal de transmissão é alocado dinamicamente dentre os 4 disponíveis. Deste modo, a quantidade máximo de mailboxes abertas por nó é limitado pelo número de canais de transmissão.
+
+				The sender implementation also requires the allocation of resources
+				from both \nocs. However, the resources are opposite to the receiver,
+				where it allocates one \cnoc receiving slot and one \dnoc transfer channel.
+				The allocated \cnoc receiving slot is relative to the receiver ID to
+				prevent conflicts among openings for distinct receivers. The transfer
+				channel is dynamically allocated. Because it has fewer transfer channels
+				than receiving slots, transfer channels limit mailbox openings to 4 per node.
 
 		\subsection{Portal Abstraction}
 		\label{sec.portal-abs}
@@ -477,20 +519,28 @@ int mailbox_wait(int mbxid);
 			% \end{figure}
 
 % Apresentação do portal e o conceito.
-			Por fim, a abstração Portal permite que dois nós troquem quantidades arbitrárias de dados.
-			A Figura (conceito) apresenta a ideia conceitual do portal, onde se assemelha a do POSIX Pipes com controle de fluxo.
-			A cardinalidade das operações é sempre 1:1, onde um par de nós abre um canal unidirecional para transferência de dados.
-			Porém, ao contrário do POSIX Pipes que define que o pipe existe apenas entre dois processos, o portal permite que o receptor se comunique com outros nós através de um mesmo canal.
-			O emissor, por sua vez, poderá apenas se comunicar com um nó.
+			% Por fim, a abstração Portal permite que dois nós troquem quantidades arbitrárias de dados. A Figura (conceito) apresenta a ideia conceitual do portal, onde se assemelha a do POSIX Pipes com controle de fluxo. A cardinalidade das operações é sempre 1:1, onde um par de nós abre um canal unidirecional para transferência de dados. Porém, ao contrário do POSIX Pipes que define que o pipe existe apenas entre dois processos, o portal permite que o receptor se comunique com outros nós através de um mesmo canal. O emissor, por sua vez, poderá apenas se comunicar com um nó.
 
 % Fluxo da operação
-			A Figura (fluxo) exemplifica o controle de fluxo proposto para o portal.
-			Ao tentar transmitir dados ao receptor, o emissor blorqueará até que o receptor esteja apto à receber.
-			O receptor, ao habilitar uma troca de dados de cada vez, configura a leitura e notifica o emissor.
-			Deste modo, o controle de fluxo garante que o receptor não será sobrecarregado, não receberá dados sem que a DMA esteja devidamente configurada, e não sobrescreverá dados prévios.
-			O ato de habilitar uma comunicação permite que o receptor escolha com qual nó deseja se comunicar.
+			% A Figura (fluxo) exemplifica o controle de fluxo proposto para o portal. Ao tentar transmitir dados ao receptor, o emissor blorqueará até que o receptor esteja apto à receber. O receptor, ao habilitar uma troca de dados de cada vez, configura a leitura e notifica o emissor. Deste modo, o controle de fluxo garante que o receptor não será sobrecarregado, não receberá dados sem que a DMA esteja devidamente configurada, e não sobrescreverá dados prévios. O ato de habilitar uma comunicação permite que o receptor escolha com qual nó deseja se comunicar.
 
-% Diferença do posix, receptor allows multiples issuers
+			Finally, \textit{Portal Abstraction} allows two nodes to exchange arbitrary
+			amounts of data. \autoref{fig:portal-concept} presents the conceptual idea
+			of the \portal, which resembles that of \posix Pipes with flow control.
+			The cardinality of operations is always $1:1$, where a pair of nodes opens
+			a one-way channel for data transfer. However, unlike \posix Pipes, which
+			defines that the pipe exists only between two processes, the \portal allows
+			the receiver to communicate with other nodes through the same channel.
+			The sender, in turn, can only communicate with one node.
+
+			\autoref{fig:portal-flow} exemplifies the flow control of the \portal.
+			When attempting to transmit data to the receiver, the sender will block
+			until the receiver can accept it. By enabling one data exchange at a time,
+			the receiver sets the readout and notifies the sender. In this way,
+			the flow control ensures that the receiver will not be overloaded, will
+			not receive data without properly configured \dma, and will not overwrite
+			previous data. Allowing communication empowers the receiver to choose which
+			communications to prioritize.
 
 			\begin{figure}[!tb]
 				\centering%
@@ -515,22 +565,32 @@ int mailbox_wait(int mbxid);
 			\subsubsection{Receiver Side Implementation}
 
 % Interface e seus parâmetros
-				O Código 5 apresenta a interface portal para nós receptores.
-				Assim como a mailbox, a aplicação deve identificar o nó local para criar um portal.
-				As demais funções utilizam o identificador do portal retornado pela função de criação.
-				Para criar um canal de comunicação, o receptor sempre deverá executar 3 operações, allow, aread, wait.
-				A função allow aloca um slot rx relativo ao nó remoto informado, limitando um canal por par de nós.
-				Entretanto, a notificação apenas será enviada, relativo ao nó remote, após a configuração da DMA pela função aread.
-				Por fim, o nó bloqueará na função wait até a comunicação ser completada.
+				% O Código 5 apresenta a interface portal para nós receptores. Assim como a mailbox, a aplicação deve identificar o nó local para criar um portal. As demais funções utilizam o identificador do portal retornado pela função de criação. Para criar um canal de comunicação, o receptor sempre deverá executar 3 operações, allow, aread, wait. A função allow aloca um slot rx relativo ao nó remoto informado, limitando um canal por par de nós. Entretanto, a notificação apenas será enviada, relativo ao nó remote, após a configuração da DMA pela função aread. Por fim, o nó bloqueará na função wait até a comunicação ser completada.
 
 % Recursos de hardware
-				Um portal receptor aloca um slot rx da DNoC e um canal tx da CNoC.
-				Diferente da mailbox, o portal tem disponível 2 canais tx o que permite a criação de dois portais simultâneos.
-				Tais portais não podem se comunicar com o mesmo nó ao mesmo tempo por causa da escolha do slot físico da DMA comentado no parágrafo anterior.
-				A leitura configura o slot rx com o buffer e tamanho informado pela aplicação.
-				Isto elimina as cópias intermediárias como da mailbox, onde a DMA escreve os dados direto no buffer da aplicação.
-				As estruturas de controle também são simplificadas por causa disso
-				contendo apenas flags e um spinlock liberado pelo manipulador do portal.
+				% Um portal receptor aloca um slot rx da DNoC e um canal tx da CNoC. Diferente da mailbox, o portal tem disponível 2 canais tx o que permite a criação de dois portais simultâneos. Tais portais não podem se comunicar com o mesmo nó ao mesmo tempo por causa da escolha do slot físico da DMA comentado no parágrafo anterior. A leitura configura o slot rx com o buffer e tamanho informado pela aplicação. Isto elimina as cópias intermediárias como da mailbox, onde a DMA escreve os dados direto no buffer da aplicação. As estruturas de controle também são simplificadas por causa disso contendo apenas flags e um spinlock liberado pelo manipulador do portal.
+
+				\autoref{code:hal-portal-receiver} presents the Portal Interface for
+				Receiver Nodes. Like the \mailbox, the application must identify the
+				local node to create a \portal. The receiver must always perform
+				three operations to perform communication, i.e., \textit{allow},
+				\textit{read}, and \textit{wait}. The allow function allocates one
+				receiving slot relative to the given remote node, limiting one
+				channel per pair of nodes. However, the permission will only be
+				sent after \dma configuration by the read function. Finally, the
+				node will block in the wait function until receiving the informed
+				data size.
+
+				A Receiver allocates one \dnoc receiving slot and one \cnoc transfer
+				channel. Unlike \mailbox, the \portal has two transfer channels
+				available, which allows the creation of two simultaneous portals.
+				Such portals cannot communicate with the same node at the same time
+				because of the choice of the same physical slot. Read sets the
+				receiving slot to the buffer and size informed by the application.
+				The \dma eliminates intermediate copies like Mailbox because it
+				writes data directly to the application buffer. Consequently,
+				control structures have also been simplified, containing only
+				control flags and the spinlock for asynchronous operations.
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Portal Interface for Receiver Node.}
@@ -557,19 +617,28 @@ int portal_wait(int portalid);
 			\subsubsection{Sender Side Implementation}
 
 % Interface e seus parâmetros
-				O código 6 apresenta a interface portal para nós emissores.
-				Na abertura de um portal, a aplicação é obrigada a informar o nó local e o nó remote que receberá os dados.
-				O id local serve para distinguir a interface NoC casa haja multiplos nó em um cluster e o id do nó remote será utilizado para alocar e configurar o slot rx da CNoC que receberá a permissão de transferência.
-				Isto garante que a permissão não será perdida, mesmo se a permissão chegar antes do emissor configurar a escrita.
-				Os dados são transferidos seguindo o algoritmo de envio preguiçoso.
+				% O código 6 apresenta a interface portal para nós emissores. Na abertura de um portal, a aplicação é obrigada a informar o nó local e o nó remote que receberá os dados. O id local serve para distinguir a interface NoC casa haja multiplos nó em um cluster e o id do nó remote será utilizado para alocar e configurar o slot rx da CNoC que receberá a permissão de transferência. Isto garante que a permissão não será perdida, mesmo se a permissão chegar antes do emissor configurar a escrita. Os dados são transferidos seguindo o algoritmo de envio preguiçoso.
 
 % Recursos de hardware
-				Os recursos de hardware necessários para abrir um portal são opostos ao recursos de criação.
-				Especificamente, são necessários 1 slot rx da CNoC e 1 canal tx da DNoC.
-				O slot rx está apto a receber a permissão desde a abertura do portal.
-				O canal de transmissão é reservado mas só é utilizado quando for permitido o envio.
-				Devido a limitação de 4 canais tx para o portal, apenas 4 portais emissores podem ser abertos ao mesmo tempo.
-				A estruturas de controle para os portais emissores contém os parâmetros necessário para realizar o envio preguiçoso e um spinlock para controlar o término da operação de transferência.
+				% Os recursos de hardware necessários para abrir um portal são opostos ao recursos de criação. Especificamente, são necessários 1 slot rx da CNoC e 1 canal tx da DNoC. O slot rx está apto a receber a permissão desde a abertura do portal. O canal de transmissão é reservado mas só é utilizado quando for permitido o envio. Devido a limitação de 4 canais tx para o portal, apenas 4 portais emissores podem ser abertos ao mesmo tempo. A estruturas de controle para os portais emissores contém os parâmetros necessário para realizar o envio preguiçoso e um spinlock para controlar o término da operação de transferência.
+
+				\autoref{code:hal-portal-sender} presents the Portal Interface for
+				Sender Nodes. When opening a \portal, the application is required to
+				inform the local node ID and the receiver node ID. The local ID serves
+				to distinguish the NoC interface on \ioclusters. The receiver node ID
+				identifies the \cnoc receiving slot that will catch the transfer
+				permission. The early allocation ensures that the permission will not
+				be lost even if the permission arrives before the sender sets up the
+				transfer. The transfer configuration follows the lazy transfer algorithm.
+
+				The hardware resources required to open a portal are the opposite of
+				resources to create. Specifically, one \cnoc receiving slot and one
+				\dnoc transfer channel are required. The transfer channel is reserved
+				but only used when the transfer is allowed. Due to the limitation of
+				four transfer channels to the portal, a node can open only four portals
+				at a time. The control structures for the sender portals contain the
+				parameters needed to perform the lazy transfer and a spinlock to
+				asynchronous operations.
 
 \begin{listing}[!tb]
 \caption{Nanvix HAL: Portal Interface for Sender Node.}
