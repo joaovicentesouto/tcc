@@ -475,22 +475,18 @@
 		\includegraphics[width=.7\textwidth]{arch-mppa.pdf}%
 		\fonte{\citeonline{Penna2018}.}%
 	\end{figure}
+	
+	The lightweight manycores class features processors that have a vast
+	number of cores and endeavor to be energy efficient. In general,
+	they no longer provide global memory and work with distributed memory, and
+	the communication among cores must be made explicitly through message
+	exchanges. The \mppa fits this processor profile.
 
-	\todo[inline]{Acho que seria interessante coloca rum paragrafo aqui
-		para fazer um gancho onde no embasamento teorico o MPPA se
-			encontra: ele é um processoador com multiplos núcleos, mas
-			possui uma arquitetura de memória distribuída onde
-			comunicação é feita por passagem de mensagem. Essa idéia já
-			é reforçada no texto a seguir, mas o ponto seria fazer um
-			gancho com a seção anterior, sem citar features técnicas}
-
-	The \mppa is a high-performance, lightweight multicore processor
-	developed by the French company Kalray.
-	Developed to handle \mimd workloads, \mppa mixes features of
-	multiprocessors and multicomputers on a single chip.
-	Precisely, the multiprocessor model is used inside a cluster
-	to coordinate the cores and the local resource balancing, and
-	follows a multicomputer model in inter-cluster communication.
+	Specifically, \mppa is a high-performance, lightweight multicore processor
+	developed by the French company Kalray. Developed to handle \mimd workloads,
+	\mppa mixes features of multiprocessors and multicomputers on a single chip.
+	Precisely, the coordination of cores within a cluster utilizes multiprocessor
+	concepts and inter-cluster communication employs multicomputer concepts.
 
 	\autoref{fig:mppa-arch} illustrates the version of \mppa architecture used, called Bostan.
 	It has 256 general-purpose cores and 32 firmware cores, called \pes and \rms, respectively.
@@ -566,7 +562,7 @@
 		\caption{Conceptual Goals of the Nanvix OS.}%
 		\label{fig:nanvix-goal}%
 		\includegraphics[width=.55\textwidth]{nanvix-goal.pdf}%
-		\fonte{VER COM O PEDRO COMO REFERENCIAR.}%
+		\fonte{Adapted from \citeonline{penna:sbesc19}}%
 	\end{figure}
 
 	Three distinct layers of kernels make up the Nanvix \os.
@@ -604,7 +600,7 @@
 			\caption{Structural overview of the Nanvix HAL.}%
 			\label{fig:hal-overview}%
 			\includegraphics[width=.55\textwidth]{nanvix-hal-overview.pdf}%
-			\fonte{VER COM O PEDRO COMO REFERENCIAR.}%
+			\fonte{Adapted from \citeonline{penna:compas19}}%
 		\end{figure}
 
 		\begin{description}
@@ -652,7 +648,7 @@
 			\caption{Concept Structural overview of the Nanvix Microkernel.}%
 			\label{fig:microkernel-overview}%
 			\includegraphics[width=.55\textwidth]{nanvix-microkernel-overview.pdf}%
-			\fonte{VER COM O PEDRO COMO REFERENCIAR.}%
+			\fonte{Adapted from \citeonline{penna:sbesc19}}%
 		\end{figure}
 
 		\begin{description}
@@ -752,7 +748,7 @@
 			\caption{Possible configurations on Nanvix Multikernel.}%
 			\label{fig:multikernel-overview}%
 			\includegraphics[width=.55\textwidth]{nanvix-multikernel-overview.pdf}%
-			\fonte{VER COM O PEDRO COMO REFERENCIAR.}%
+			\fonte{Adapted from \citeonline{penna:sbesc19}}%
 		\end{figure}
 
 		To enable Nanvix \os compliance with \posix, the \nanvix \multikernel is
@@ -774,9 +770,5 @@
 			\caption{\posix Compliance Example on Nanvix Multikernel.}%
 			\label{fig:multikernel-shm}%
 			\includegraphics[width=.9\textwidth]{nanvix-multikernel-shm.pdf}%
-			\fonte{VER COM O PEDRO COMO REFERENCIAR.}%
+			\fonte{Adapted from \citeonline{penna:rmen} and \citeonline{penna:sbesc19}}%
 		\end{figure}
-
-		\todo[inline]{Em geral, as figuras do capítulo foram adaptadas
-			de outros trabalhos. Entao você pode dizer adaptado de e
-				coloca a referência ;-)}
