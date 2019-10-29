@@ -23,7 +23,7 @@
 	area distributed system.
 	In this chapter, we present the background of multiple processor systems from
 	a hardware and software perspective.
-	Specifically, \autoref{sec.multiprocessors} and \autoref{sec.multicomputers} addresses
+	Specifically, \autoref{sec.multiprocessors} and \autoref{sec.multicomputers} address
 	details about shared-memory multiprocessors and message-passing multicomputers, respectively.
 	Subsequently, \autoref{sec.mppa} presents the \mppa processor.
 	Finally, \autoref{sec.nanvix} shows an overview of Nanvix \os and the
@@ -33,13 +33,15 @@
 	\label{sec.multiprocessors}
 
 		A shared-memory multiprocessor is a computer system in which two or more \cpus
-		share full access to a common \ram~\cite{tanenbaum:4ed}.
+		share full access to the same \ram~\cite{tanenbaum:4ed}.
 		The ability to run execution streams in parallel intensifies the concurrency
 		issues that already existed in multi-tasking single-core processors.
 		The competition of different cores for shared resources may result in
 		inconsistent outputs or even in an inconsistent \os state.
 		For instance, when a thread writes a value to a global variable and
-		reads a different value.
+		reads a different value. Thus, to solve this problem, special
+		instructions are required to enable synchronization between
+		threads.
 		Moreover, some architectures integrate heterogeneous cores introducing
 		portability and programmability problems too.
 		So, low-level software, such as \os kernels and runtimes, needs to handle
@@ -48,7 +50,8 @@
 		\subsection{Multiprocessor Hardware}
 		\label{sec.multiprocessor-hw}
 
-			The multiprocessors can be usually classified using memory access
+			The multiprocessors can be usually classified according
+			to memory access
 			and workflow properties.
 			In the first place, the access time to different memory addresses
 			split multiprocessors into two groups.
@@ -56,7 +59,7 @@
 			as fast as every other memory word are called \uma multiprocessors.
 			On the other hand, \numa multiprocessors do not have this property.
 
-			The firsts \uma multiprocessors were bus-based architectures where
+			The first \uma multiprocessors were bus-based architectures where
 			the \cpu wait for the bus channel stays free to perform a memory
 			access, as illustrated in \autoref{fig:uma_a}.
 			When the number of cores scale, the bus traffic becomes a
@@ -67,7 +70,7 @@
 			reducing traffic to the main memory.
 			However, many problems of inconsistency and ordering of operations
 			on memory arose with the advent of caches.
-			For instance, when a write operation dirties a memory address in
+			For instance, when a write operation modifies a memory address in
 			a particular cache, this change must be notified to all other caches.
 			Equally important, it is necessary to ensure a specific order in
 			the concurrent operations on a given address through different caches.
@@ -94,10 +97,10 @@
 
 			Nevertheless, the number of cores in \uma multiprocessors are limited
 			to a few dozens of \cpus.
-			Thus, to allow hundreds of cores to communicate, \autoref{fig:numa} illustrates
+			Therefore, to allow hundreds of cores to communicate, \autoref{fig:numa} illustrates
 			as that \numa machines provide a single address space visible to all \cpus
 			through an interconnection network.
-			Therefore, distributing a virtual memory space among local physics memories,
+			Thus, distributing a virtual memory space among local physics memories,
 			the access is guaranteed via load and store instructions.
 			Although the time to access the remote memory is slower than to local ones,
 			this granted that all \uma programs will be able to run on \numa machines
@@ -124,7 +127,8 @@
 			Systems that need fault tolerance uses theses multiprocessors, like
 			modern flight control systems.
 			Finally, a \Glsfirst{MIMD} architecture has multiple processors simultaneously
-			executing different instruction on different data, like \xeonphi.
+			executing different instruction on different data, like
+			modern processors from Intel.
 
 			\begin{figure}[!tb]
 				\centering%
@@ -171,7 +175,7 @@
 		\subsection{Multiprocessor Operating Systems}
 		\label{sec.multiprocessor-os}
 
-			\oss are a fundamental part of any computer system.
+			\oss are a fundamental part of a computer system.
 			They act as an intermediary between users and hardware, with the
 			purpose to provide an environment in which users can run programs
 			in a conveniently and efficiently manner~\cite{Silberschatz:9ed}.
@@ -197,7 +201,7 @@
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
-			However, this model has imperceptible aspects~\cite{tanenbaum:4ed}.
+			Notwithstanding, this model has imperceptible aspects~\cite{tanenbaum:4ed}.
 			First, since each \cpu has its own process and page tables, it is impossible
 			to optimize the use of resources.
 			For instance, if many of processes are waiting for use an overloaded \cpu,
@@ -232,7 +236,7 @@
 			Finally, the Symmetric model, called \smp, eliminates the centralization
 			problem of the foregoing model, as illustrated in \autoref{fig:smp-os}.
 			So, there is still only one copy of the \os structures but shared in memory.
-			When a \cpu makes a system call, it loads the structures and operates on them.
+			When a \cpu issues a system call, it loads the structures and operates on them.
 			Consequently, processes and memory pages also continue to be dynamically balanced.
 			The difficulties introduced by this model lie in concurrency for \os structures.
 			Depending on how the critical regions are managed, the performance of the system
@@ -435,7 +439,7 @@
 					the message to a kernel buffer, degrading performance;
 				\item \textit{Non-blocking sending with interrupt:} notifies the \cpu
 					when the send finishes, where the buffer must remain untouchable,
-					difficulting the programmability;
+					make more challenging software programming;
 				\item \textit{\cow:} management of buffers to make an extra copy only
 					when needed, but can copy unnecessarily.
 			\end{itemize}
@@ -452,8 +456,8 @@
 					but consumes resource for creating and destroying the thread;
 				\item \textit{Non-Blocking receive with interrupt handlers:} the receiver
 					is interrupted to execute a handler when receiving a message, resulting
-					in a better performance than creating a thread but difficults
-					the programmability.
+					in a better performance than creating a thread but
+					makes programming more difficult.
 			\end{itemize}
 
 			Some of the implementation approaches may be hardware dependent.
@@ -471,6 +475,14 @@
 		\includegraphics[width=.7\textwidth]{arch-mppa.pdf}%
 		\fonte{\citeonline{Penna2018}.}%
 	\end{figure}
+
+	\todo[inline]{Acho que seria interessante coloca rum paragrafo aqui
+		para fazer um gancho onde no embasamento teorico o MPPA se
+			encontra: ele é um processoador com multiplos núcleos, mas
+			possui uma arquitetura de memória distribuída onde
+			comunicação é feita por passagem de mensagem. Essa idéia já
+			é reforçada no texto a seguir, mas o ponto seria fazer um
+			gancho com a seção anterior, sem citar features técnicas}
 
 	The \mppa is a high-performance, lightweight multicore processor
 	developed by the French company Kalray.
@@ -571,8 +583,9 @@
 		Currently, \hal has available all the essential modules to run standalone
 		processes for the \mppa~\cite{DeDinechin2013-1}, \optimsoc~~\cite{Wallentowitz2013},
 		and \hero~\cite{Kurth2017} platforms.
-		Hence, in this undergraduate dissertation, we will focus on developing
-		inter-cluster communication module for the \mppa processor.
+		Hence, in this work, we focus on proposing
+		inter-cluster communication module for the \hal of Nanvix, and
+		providing an implementation for the \mppa processor.
 
 		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 		the \hal belongs to one level below.
@@ -580,7 +593,7 @@
 		view of these emerging processors for a client application, \eg \os.
 		At this level, we do not protect internal structures with locks.
 		Thus, the upper-level decides how to protect and multiplex \hal access.
-		On the one hand, a traditional monolithic \os that implements a time-sharing
+		On one hand, a traditional monolithic \os that implements a time-sharing
 		behavior to access internal structures will need to apply locks manually.
 		On the other hand, a master-slave \os not require such strict control,
 		improving its performance.
@@ -608,7 +621,7 @@
 				to write code in assembly, hurting the conceptual idea of the \hal.
 
 			\item[Cluster Abstraction Layer]
-				encapsulates the management of characteristics that affect all cores in a cluster.
+				bundles the resource management that concern all cores in a cluster.
 				It provides support for virtual memory, cross-core notification through events,
 				clock counter fetching, and access to I/O resources such as \mmio and \dma.
 
@@ -616,7 +629,7 @@
 				embraces architectural features related to multiple clusters.
 				The \textit{Inter-Cluster Communication Module}, the focus of
 				this undergraduate dissertation, provide \noc identification routines and
-				exports three main abstractions to allow synchronizaton and data
+				exports three main abstractions to allow synchronization and data
 				exchange among clusters, based on ideas proposed along with the
 				\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
 
@@ -649,7 +662,7 @@
 				manipulation and protection of the inter-cluster communication abstractions.
 				
 			\item[Thread System]
-				implements a rich mechanism to criation, management and protection of threads.
+				implements a rich mechanism to creation, management and protection of threads.
 				This system features schedules, sleep, and wakeup routines of the user threads.
 				
 			\item[Memory System]
@@ -668,7 +681,8 @@
 
 		\end{description}
 
-		\autoref{fig:microkernel-execution} exemplifies a thread creation on \nanvix \microkernel.
+		\autoref{fig:microkernel-execution} details how thread creation
+		happens on \nanvix \microkernel.
 		When a user thread makes a kernel call, a set of sanity checks are performed
 		to ensure the integrity of the operation.
 		After verifying the correctness of the parameters, the user thread notifies
@@ -679,7 +693,7 @@
 		In the end, the kernel thread releases the requesting slave.
 		Note that the master core always performs all operations that change internal
 		\os structures.
-		kernel calls that only query static parameters or structures (performing cache invalidation) are made locally.
+		Kernel calls that only query static parameters or structures (performing cache invalidation) are made locally.
 
 		\begin{figure}[!tb]
 			\centering%
@@ -762,3 +776,7 @@
 			\includegraphics[width=.9\textwidth]{nanvix-multikernel-shm.pdf}%
 			\fonte{VER COM O PEDRO COMO REFERENCIAR.}%
 		\end{figure}
+
+		\todo[inline]{Em geral, as figuras do capítulo foram adaptadas
+			de outros trabalhos. Entao você pode dizer adaptado de e
+				coloca a referência ;-)}
