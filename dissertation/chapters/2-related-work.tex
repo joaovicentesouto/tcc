@@ -1,14 +1,11 @@
 \chapter{Related Work}
 \label{ch.related-work}
 
-In this chapter we discuss about related research efforts to ours.
-First, we present an overview on the state-of-the-art on \lightweight
-\manycore processors. Then, we cover different \oss proposed for these
-emerging class of processors.
-
-\todo[inline]{Na real, os trabalhos relacionados propoe sistemas para
-manycore apenas. O diferencial é que o Nanvix olha para as
-arquiteturas lightweight.}
+In this chapter, we discuss related research efforts to ours.
+First, we present an overview of the state-of-the-art on
+\textit{\lightweight \manycore processors}. Then, due to the
+lack of \oss focused on lightweight manycores, we will cover
+different proposed \oss for manycores in general.
 
 \section{Lightweight Manycore Processors}
 \label{sec.works.manycores}
@@ -50,11 +47,7 @@ arquiteturas lightweight.}
 	with shared global memory. Communication to main memory passes
 	through software-managed lightweight \rab. The \rab performs the
 	translation of the virtual-to-physical address, similarly to
-	traditional \mmu.
-	In this way, clusters can share virtual address pointers.
-	Besides, exists different designs for a shared instruction
-	cache and top-level interconnection such as bus or \noc\todo{nao
-		entnedi essa frase}.
+	traditional \mmu, allowing clusters to share virtual address pointers.
 
 \section{Operating Systems for Manycores}
 \label{sec.works.os}
@@ -133,15 +126,15 @@ arquiteturas lightweight.}
 
 	In this context, \nanvix \hal deals with the lowest possible layer
 	with a focus on aspects that make it challenging to work with a
-	specific group of manycores, \ie \lightweight \manycores. The exported
-	interfaces sought to group lightweight manycores on a common and effective
-	view. Above \hal, services will be developed that seek first and foremost
+	specific group of manycores, \ie \lightweight \manycores.
+	The exported interfaces sought to group lightweight manycores on a common and effective view.
+	Above \hal, services will be developed that seek first and foremost
 	to provide greater programmability and portability through a fully-featured
-	\posix-compliant \os.
-
-	\todo[inline]{Na minha visao, aqui cabe um paragrafo adicional. Em
-		comparacao com os sistemas anteriores, o Nanvix visa manycores
-			com uma NoC onde a programacao é explicita. Os demais
-			trabalham com plataformas NUMA, onde existe um barramento
-			complexo, mas nao há de fato "network prgramming". Acho que
-	value ressaltar isso e os desafios envolvidos.}
+	\posix-compliant \os. Besides, many of these \oss work with \numa systems,
+	where a complex bus system makes communication transparent. Therefore, there
+	is, in fact, no network programming. Unlike these \oss, \nanvix serves manycores
+	that require explicit programming of communication through \noc. Also, features
+	such as memory constraints, missing support for cache coherency, and heterogeneous
+	components punctually appear in \numa architectures. The combination of these
+	features makes designing an \os for \lightweight \manycores challenging.
+	
