@@ -1,4 +1,3 @@
-abstraction;kernel;nioclusters;ncclusters;buffersize;latency;volume
 mailbox;broadcast;1;1;120;42132;120
 mailbox;broadcast;1;1;120;42712;120
 mailbox;broadcast;1;1;120;42712;120

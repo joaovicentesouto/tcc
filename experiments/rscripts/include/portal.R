@@ -1,11 +1,16 @@
+
 #===============================================================================
 # Benchmark Information
 #===============================================================================
 
+if (!exists(script.variant)) {
+	script.variant <- "all"
+}
+
 benchmark.id                <- "portal"
 benchmark.name              <- "Portal Benchmark"
 benchmark.dataset.directory <- "./cooked"
-benchmark.dataset.file      <- "portal.csv"
+benchmark.dataset.file      <- paste0(paste0("portal-", script.variant), ".csv")
 
 #-------------------------------------------------------------------------------
 # Benchmark Parameters
@@ -19,8 +24,8 @@ benchmark.dataset.file      <- "portal.csv"
 # Benchmark Variables
 #-------------------------------------------------------------------------------
 
-benchmark.variables.id <- c("buffersize", "kernel")
-benchmark.variables.name <- c("Buffer Size (in KB)", "Kernel")
+benchmark.variables.id   <- c("buffersize", "kernel")
+benchmark.variables.name <- c("Buffer Size (KB)", "Routine")
 
 #===============================================================================
 # Setup
@@ -38,8 +43,6 @@ data.raw <- read.table(file = infile, sep = ";", header = TRUE)
 # Pre-Processing
 #==============================================================================
 
-# data.raw$abstraction <- as.factor(data.raw$abstraction)
-# data.raw$kernel      <- as.factor(data.raw$kernel)
 data.raw$buffersize  <- data.raw$buffersize / KB
 data.raw$latency     <- data.raw$latency / MPPA.FREQ
 data.raw$throughput  <- (data.raw$volume / data.raw$latency) / MB
@@ -48,8 +51,7 @@ data.raw$throughput  <- (data.raw$volume / data.raw$latency) / MB
 # Pre-Processing
 #===============================================================================
 
-# data.filtered <- data.raw
-
+# Removes unnecessary columns
 data.filtered <- select(data.raw, -c(abstraction,nioclusters,ncclusters,latency,volume))
 
 data.melted <- melt(data = data.filtered, id.vars = benchmark.variables.id)

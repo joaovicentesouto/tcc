@@ -31,11 +31,10 @@ library(dplyr, warn.conflicts = FALSE)
 source("./rscripts/consts.R")
 source("./rscripts/myPlots.R")
 
-print("ABC")
+# Defines variant
+script.variant <- "essential"
 
 source("./rscripts/include/portal.R")
-
-print("DEF")
 
 #==============================================================================
 # Build
@@ -61,7 +60,7 @@ plot.factors.id <- c(
 )
 
 plot.factors.name <- c(
-	"Throughput (in MB/s)"
+	"Throughput (MB/s)"
 )
 
 # Build Plot Data Frame
@@ -98,7 +97,7 @@ plot.axis.y.limits <- c(4, 512)
 
 # Legend
 plot.legend.title <- NULL
-plot.legend.labels <- c("allgather", "broadcast", "gather", "pingpong", "scatter")
+plot.legend.labels <- c("Broadcast", "Gather", "AllGather", "Pingpong")
 
 plot <- plot.linespoint(
 	df = plot.df,
@@ -107,10 +106,10 @@ plot <- plot.linespoint(
 	legend.title = plot.legend.title, legend.labels = plot.legend.labels,
 	axis.x.title = plot.axis.x.title, axis.x.breaks = plot.axis.x.breaks, axis.x.trans = 'log2',
 	axis.y.title = plot.axis.y.title, axis.y.limits = plot.axis.y.limits, axis.y.breaks = plot.axis.y.breaks, axis.y.trans = 'log2'
-) +  myTheme + theme(legend.title = element_blank())
+) +  outsideTheme + theme(legend.title = element_blank())
 
 plot.save(
 	directory = paste("./img", sep = "/"),
-	filename  = paste(benchmark.id, "throughput", sep = "-"),
-	plot
+	filename  = paste(benchmark.id, script.variant, "throughput", sep = "-"),
+	plot, width = 5, height = 2.8
 )

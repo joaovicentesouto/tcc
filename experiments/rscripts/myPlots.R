@@ -77,6 +77,7 @@ plot.stacked.bars <- function(
 		) +
 		theme_classic()
 }
+
 #===============================================================================
 # Bars Plot
 #===============================================================================
@@ -169,8 +170,6 @@ myTheme2 <- theme (
 	panel.grid.minor = element_line(color = 'gray', size = 0.1, linetype = 'dashed')
 )
 
-
-
 myTheme3 <- theme (
 	# Legend
 	legend.title = element_blank(),
@@ -190,6 +189,31 @@ myTheme3 <- theme (
 	panel.grid.major = element_line(color = 'gray', size = 0.2, linetype = 'dashed'),
 	panel.grid.minor = element_line(color = 'gray', size = 0.1, linetype = 'dashed')
 )
+
+outsideTheme <- theme (
+	# Legend
+	legend.title = element_blank(),
+	legend.text = element_text(size = 10, color = 'black'),
+	legend.justification = c(1.0, 1.0),
+	# legend.position = c(1.1, 0.98),
+	legend.position="right",
+	legend.background = element_rect(fill="white", size=0.5, linetype="solid", colour ="black"),
+
+	# Not clip the legend
+	# par(xpd=TRUE),
+	
+	# X Axis
+	axis.text.x = element_text(size = 10, color = 'black'),
+	axis.title.x = element_text(size = 12, color = 'black', margin = margin(t = 10, r = 0, b = 0, l = 0)),
+	# Y Axis
+	axis.text.y = element_text(size = 10, color = 'black'),
+	axis.title.y = element_text(size = 12, color = 'black', margin = margin(t = 0, r = 5, b = 0, l = 0)),
+	# Grid
+	panel.border = element_rect(colour = "black", fill = NA, size = 1),
+	panel.grid.major = element_line(color = 'gray', size = 0.2, linetype = 'dashed'),
+	panel.grid.minor = element_line(color = 'gray', size = 0.1, linetype = 'dashed')
+)
+
 plot.linespoint <- function(
   df,
   factor, respvar, param,
