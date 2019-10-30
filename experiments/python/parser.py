@@ -43,7 +43,7 @@ else:
             if row['abstraction'] == 'portal' and row['kernel'] == 'broadcast':
                 break
 
-            if row['abstraction'] == 'portal' and row['kernel'] == 'sather':
+            if row['abstraction'] == 'portal' and row['kernel'] == 'scatter':
                 break
 
             data.append([row['abstraction'], row['kernel'], 1, (row['slaves'] - 1), buffersize, row['latency'], row['volume']])

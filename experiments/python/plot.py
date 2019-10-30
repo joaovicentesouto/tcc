@@ -43,7 +43,7 @@
 
 #     if df['kernel'][0] == 'pingpong':
 #         pass
-#     elif df['kernel'][0] == 'broadcast' or df['kernel'][0] == 'sather':
+#     elif df['kernel'][0] == 'broadcast' or df['kernel'][0] == 'scatter':
 
 #         # # Transform
 #         df['latency']    = df['latency'] / CPU_FREQ
