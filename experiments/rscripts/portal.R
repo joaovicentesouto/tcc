@@ -31,7 +31,11 @@ library(dplyr, warn.conflicts = FALSE)
 source("./rscripts/consts.R")
 source("./rscripts/myPlots.R")
 
-source("./rscripts/include/fork-join.R")
+print("ABC")
+
+source("./rscripts/include/portal.R")
+
+print("DEF")
 
 #==============================================================================
 # Build
@@ -65,8 +69,8 @@ plot.df <- subset(
 	data.digested,
 	variable %in% plot.factors.id
 )
-plot.df$mean <- plot.df$mean/KILO
-plot.df$sd <- plot.df$sd/KILO
+# plot.df$mean <- plot.df$mean/KILO
+# plot.df$sd <- plot.df$sd/KILO
 
 # Plot Titles
 if (script.params.plotTitles) {
@@ -88,7 +92,9 @@ plot.axis.x.breaks <- c(4, 8, 16, 32, 64)
 
 # Y Axis
 plot.axis.y.title <- bquote("Throughput (MB/s)")
-plot.axis.y.limits <- c(0, 150)
+# plot.axis.y.limits <- c(min(data.filtered$throughput), max(data.filtered$throughput))
+plot.axis.y.breaks <- c(4, 8, 16, 32, 64, 128, 256, 512)
+plot.axis.y.limits <- c(4, 512)
 
 # Legend
 plot.legend.title <- NULL
@@ -99,8 +105,8 @@ plot <- plot.linespoint(
 	factor = plot.variable.id[1], respvar = "mean", param = plot.variable.id[2],
 	title = plot.title, subtitle = plot.subtitle,
 	legend.title = plot.legend.title, legend.labels = plot.legend.labels,
-	axis.x.title = plot.axis.x.title, axis.x.breaks = plot.axis.x.breaks,
-	axis.y.title = plot.axis.y.title, axis.y.limits = plot.axis.y.limits
+	axis.x.title = plot.axis.x.title, axis.x.breaks = plot.axis.x.breaks, axis.x.trans = 'log2',
+	axis.y.title = plot.axis.y.title, axis.y.limits = plot.axis.y.limits, axis.y.breaks = plot.axis.y.breaks, axis.y.trans = 'log2'
 ) +  myTheme + theme(legend.title = element_blank())
 
 plot.save(

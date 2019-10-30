@@ -48,7 +48,9 @@ data.raw$throughput  <- (data.raw$volume / data.raw$latency) / MB
 # Pre-Processing
 #===============================================================================
 
-data.filtered <- data.raw
+# data.filtered <- data.raw
+
+data.filtered <- select(data.raw, -c(abstraction,nioclusters,ncclusters,latency,volume))
 
 data.melted <- melt(data = data.filtered, id.vars = benchmark.variables.id)
 

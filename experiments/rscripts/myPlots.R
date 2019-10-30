@@ -196,6 +196,7 @@ plot.linespoint <- function(
   title, subtitle = NULL,
   legend.title, legend.labels,
   axis.x.title, axis.x.breaks,
+  axis.x.trans = 'identity',
   axis.y.title, axis.y.limits = NULL,
   axis.y.trans = 'identity',
   axis.y.trans.fn = function(x) x,
@@ -211,6 +212,9 @@ ggplot(
 		aes(shape = get(param)),
 		fill = "black"
 	) +
+	geom_errorbar(aes(ymin = get(respvar) - cv, ymax = get(respvar) + cv),
+					width = 0.1
+	) +
   labs(
     title = title,
     subtitle = subtitle,
@@ -224,14 +228,15 @@ ggplot(
 
   ) +
   scale_x_continuous(
-    breaks = axis.x.breaks
+    breaks = axis.x.breaks,
+	trans = axis.x.trans
   ) +
   scale_y_continuous(
     expand = c(0, 0),
     limits = axis.y.limits,
     trans = axis.y.trans,
-    breaks = axis.y.breaks,
-    labels = trans_format(axis.y.trans, axis.y.trans.format)
+    breaks = axis.y.breaks
+    # labels = trans_format(axis.y.trans, axis.y.trans.format)
   ) +
   theme_classic()
 }
