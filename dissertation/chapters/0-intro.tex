@@ -18,7 +18,7 @@
 	of computer systems.
 
 	% Improves architectural parts
-	\autoref{fig:microprocessor-data} illustrates the paradigm break
+	\autoref{fig:microprocessor-data} illustrates the paradigm shift
 	that processors have gone through to the present day. From mid-2000,
 	the frequency of processors tended to stagnate. The steady increase
 	in transistors in the same chip area and the vast diversity of
@@ -33,7 +33,7 @@
 	performance.
 
 	The ever-increasing number of transistors and cores in a chip
-	quickly lead to the advent of \manycores. Notwithstanding, the line
+	quickly led to the advent of \manycores. Notwithstanding, the line
 	between \textit{multicores} and \manycores is very tenuous. Some
 	researchers argue that the in latter architectures, losing a core it
 	will not significantly impact the performance of the platform. A
@@ -42,7 +42,7 @@
 
 	\begin{figure}[t]
 		\centering%
-		\caption{42 years of Multiprocessor Trend Data.}%
+		\caption{Multiprocessor evolution.}%
 		\label{fig:microprocessor-data}%
 		\includegraphics[width=.85\textwidth]{42-years-processor-trend.pdf}%
 		\fonte{Adapted from \citeonline{url:microprocessor-trend-data}.}%
@@ -50,24 +50,24 @@
 
 	% From multicore to manycores and Manycores characteristics
 	Yet another classification for manycores is based on
-	their ratio between processing power (\flops) and power consumption
-	(\watts). \autoref{fig:microprocessor-data} pictures that even as the
+	their ratio between processing speed, measured by the number of \flops, and power consumption,
+	in \watts. \autoref{fig:microprocessor-data} pictures that even as the
 	number of cores increasing, typical power has not grown uncontrollably.
 	For instance, to achieve \exascale ($10^{18}$ \flops), the US Department
 	of Defense issued a report stipulating the energy efficiency of a
-	supercomputer should be around 50
-	GFLOPS/\watts~\cite{darpa:exascale}. Recently, a new class of
+	supercomputer should be around 50 GFLOPS/\watts~\cite{darpa:exascale}. 
+	To cope with this energy constraint, a new class of
 	parallel processors, called \lightweight \manycores, emerged to
 	provide high parallelism with low power consumption.
 	Lightweight manycores differ from traditional large-scale
 	multicores and manycores in several points: 
 
 	\begin{itemize}
-		\item Integrate thousands of low-power cores in a single die organized in clusters;
-		\item Are designed to cope with \mimd workloads;
-		\item Rely on a high-bandwidth \noc for fast and reliable message-passing communication;
-		\item Present constrained memory systems; and
-		\item Frequently feature a heterogeneous configuration.
+		\item They integrate thousands of low-power cores in a single die organized in clusters;
+		\item They are designed to cope with \mimd workloads;
+		\item They rely on a high-bandwidth \noc for fast and reliable message-passing communication;
+		\item They have constrained memory systems; and
+		\item They frequently feature a heterogeneous configuration.
 	\end{itemize}
 
 	Some industry-successful examples of \lightweight \manycores are the
@@ -105,9 +105,9 @@
 
 	% Challenges and Problem Definition
 	Part of these challenges derive from existing runtimes and \oss.
-	On one hand, runtimes do not hide the characteristics of hardware
-	making software development more challenging and nonportable, \eg do
-	not allow direct access to non-local data, nor the manipulation of
+	On the one hand, runtimes do not hide the characteristics of hardware
+	making software development more challenging and non-portable, \eg they
+	neither allow direct access to non-local data, nor the manipulation of
 	them in a transparent way. Thus, fundamental \os mechanisms, such
 	as core multiplexing, core partitioning, and process and data
 	migration, may not be addressed. On the other hand, the complicated
@@ -124,9 +124,8 @@
 	The \nanvix \multikernel features a generic and flexible \hal for
 	\lightweight \manycores that addresses the key issues encountered in
 	the development for these processors. On top of the \nanvix
-	\textit{\hal}, we are simultaneously designing and implementing a
-	microkernel that provides bare bones system abstractions for each
-	cluster.
+	\textit{\hal}, a microkernel is being designed and implemented
+	to provide the bare bones of the most important system abstractions.
 
 \section{Goals}
 \label{sec.goals}
@@ -155,9 +154,9 @@
 
 		\item Implementation of the proposed interface in the \nanvix \hal for the \mppa lightweight manycore processor;
         
-		\item Integration of the Nanvix HAL Interface with the \nanvix \microkernel.
+		\item Integration of the \nanvix \hal interface with the \nanvix \microkernel;
 		
-		\item Performance evaluation of Nanvix Microkernel Implementation using synthetic micro-benchmarks that reproduce the \textit{collective communication routines} of the \mpi.
+		\item Performance evaluation of \nanvix \microkernel implementation using synthetic micro-benchmarks that reproduce the \textit{collective communication routines} of the \mpi programming model.
 	\end{itemize}
 
 \section{Organization Of The Work}

@@ -5,15 +5,15 @@
 	proposed an architectural model for computers to be easily programmable~\cite{von-neumann:model}.
 	\autoref{fig:neumann} pictures the model scheme.
 	The \cpu, also called core, loads instructions and data from an \mmu,
-	dealing with inputs and generating outputs from/to I/O Devices.
+	dealing with inputs and generating outputs from/to \io devices.
 	Modern processors still follow this model, but some components and
 	behaviors are specialized or replicated to increase performance.
 
 	\begin{figure}[!tb]
 		\centering%
-		\caption{Von Neumann Architecture Model.}%
+		\caption{Von Neumann architecture model.}%
 		\label{fig:neumann}%
-		\includegraphics[width=.7\textwidth]{neumann.pdf}%
+		\includegraphics[width=.6\textwidth]{neumann.pdf}%
 		\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 	\end{figure}
 	
@@ -22,10 +22,10 @@
 	A shared-memory multiprocessor, a message-passing multicomputer, and a wide
 	area distributed system.
 	In this chapter, we present the background of multiple processor systems from
-	a hardware and software perspective.
+	a hardware and software perspectives.
 	Specifically, \autoref{sec.multiprocessors} and \autoref{sec.multicomputers} address
 	details about shared-memory multiprocessors and message-passing multicomputers, respectively.
-	Subsequently, \autoref{sec.mppa} presents the \mppa processor.
+	Then, \autoref{sec.mppa} presents the \mppa processor.
 	Finally, \autoref{sec.nanvix} shows an overview of Nanvix \os and the
 	three levels of abstraction designed for \lightweight \manycores processors.
 
@@ -38,8 +38,8 @@
 		issues that already existed in multi-tasking single-core processors.
 		The competition of different cores for shared resources may result in
 		inconsistent outputs or even in an inconsistent \os state.
-		For instance, when a thread writes a value to a global variable and
-		reads a different value. Thus, to solve this problem, special
+		For instance, this inconsistency occurs when a thread writes a value to a global variable and
+		reads a different one. Thus, to solve this problem, special
 		instructions are required to enable synchronization between
 		threads.
 		Moreover, some architectures integrate heterogeneous cores introducing
@@ -50,7 +50,7 @@
 		\subsection{Multiprocessor Hardware}
 		\label{sec.multiprocessor-hw}
 
-			The multiprocessors can be usually classified according
+			Multiprocessors can be usually classified according
 			to memory access
 			and workflow properties.
 			In the first place, the access time to different memory addresses
@@ -60,7 +60,7 @@
 			On the other hand, \numa multiprocessors do not have this property.
 
 			The first \uma multiprocessors were bus-based architectures where
-			the \cpu wait for the bus channel stays free to perform a memory
+			the \cpu waits for the bus channel to become free to perform a memory
 			access, as illustrated in \autoref{fig:uma_a}.
 			When the number of cores scale, the bus traffic becomes a
 			bottleneck of the system.
@@ -79,16 +79,16 @@
 
 			\begin{figure}[!tb]
 				\centering%
-				\caption{Two Bus-Based UMA Multiprocessor Examples.}%
+				\caption{Two bus-based UMA multiprocessor examples.}%
 				\label{fig:uma}%
 
 				\subcaptionminipage[fig:uma_a]%
-					{.4\linewidth}%
+					{.3\linewidth}%
 					{Without caching.}%
 					{\includegraphics[width=\linewidth]{uma_a.pdf}}%
 				\hspace{1.5cm}%
 				\subcaptionminipage[fig:uma_b]%
-					{.4\linewidth}%
+					{.3\linewidth}%
 					{With caching.}%
 					{\includegraphics[width=\linewidth]{uma_b.pdf}}%
 
@@ -97,18 +97,23 @@
 
 			Nevertheless, the number of cores in \uma multiprocessors are limited
 			to a few dozens of \cpus.
-			Therefore, to allow hundreds of cores to communicate, \autoref{fig:numa} illustrates
-			as that \numa machines provide a single address space visible to all \cpus
-			through an interconnection network.
-			Thus, distributing a virtual memory space among local physics memories,
-			the access is guaranteed via load and store instructions.
-			Although the time to access the remote memory is slower than to local ones,
-			this granted that all \uma programs will be able to run on \numa machines
-			but with worse performance.
+			\numa multiprocessors provide much more scalability by employing a single
+			address space visible to all \cpus through an interconnection network, as 
+			shown in \autoref{fig:numa}. The network is used to interconnect
+			several memory blocks (also known as local memories) into a single address space,\
+			allowing hundreds of cores to communicate more efficiently. The side effect is that
+			the interconnection network affects the latency observed by the processors to access
+			the main memory, because the memory access time will depend on the memory location 
+			relative to the processor, which could be \textit{local} or \textit{remote}.			
+			The single address space provided by \numa multiprocessors
+			allows parallel programs that were originally developed for \uma processors to
+			run without any source code changes. However, these applications usually achieve
+			sub-optimal performance on \numa multiprocessors, because there were not optimized
+			to take into account local and remote memory accesses. 
 
 			\begin{figure}[!tb]
 				\centering%
-				\caption{NUMA Multiprocessor Example.}%
+				\caption{NUMA multiprocessor example.}%
 				\label{fig:numa}%
 				\includegraphics[width=.7\textwidth]{numa.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
@@ -124,7 +129,7 @@
 			a single instruction over multiples different data streams, like \gpu.
 			Third, the most uncommon class, \misd describe multiprocessors that
 			apply multiple instructions streams over one data stream.
-			Systems that need fault tolerance uses theses multiprocessors, like
+			Systems that need fault tolerance use theses multiprocessors, like
 			modern flight control systems.
 			Finally, a \Glsfirst{MIMD} architecture has multiple processors simultaneously
 			executing different instruction on different data, like
@@ -168,7 +173,7 @@
 			functions, \eg audio and video encoders, encryption, becoming truly
 			complete computer systems on a single chip.
 			All these cores are linked to each other by an on-chip network-based
-			communications subsystem, called \noc.
+			communication subsystem, called \noc.
 			The \noc improves scalability and power consumption compared to other
 			communication subsystem designs.
 
@@ -193,11 +198,13 @@
 			The system calls are performed by the calling \cpu, avoiding concurrency issues.
 			Also, a producer-consumer model is sufficient for two different \cpus to communicate.
 
+			\todo[inline]{Márcio: Figs. 6 and 7 can be side-by-side.}
+
 			\begin{figure}[!tb]
 				\centering%
-				\caption{Replicated OS Model.}%
+				\caption{Replicated OS model.}%
 				\label{fig:replicated-os}%
-				\includegraphics[width=.55\textwidth]{replicated-os.pdf}%
+				\includegraphics[width=.4\textwidth]{replicated-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
@@ -206,7 +213,7 @@
 			to optimize the use of resources.
 			For instance, if many of processes are waiting for use an overloaded \cpu,
 			it is impossible to migrate them to an available \cpu.
-			Second, operations with I/O devices can introduce inconsistency problems
+			Second, operations with \io devices can introduce inconsistency problems
 			such as the same disk block operated by different \cpus.
 			Finally, replication of the internal \os structures makes this model
 			impractical for systems with memory constraints.
@@ -223,19 +230,19 @@
 			distributed dynamically to any \cpus.
 			However, when adopting a centralized approach, the master can become
 			the bottleneck of the system if it can not handle the number of the
-			incoming requisitions.
+			incoming requests.
 
 			\begin{figure}[!tb]
 				\centering%
-				\caption{Master-Slave OS Model.}%
+				\caption{Master-Slave OS model.}%
 				\label{fig:master-slave-os}%
-				\includegraphics[width=.55\textwidth]{master-slave-os.pdf}%
+				\includegraphics[width=.4\textwidth]{master-slave-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
 			Finally, the Symmetric model, called \smp, eliminates the centralization
 			problem of the foregoing model, as illustrated in \autoref{fig:smp-os}.
-			So, there is still only one copy of the \os structures but shared in memory.
+			So, there is still only one copy of the \os structures but it is shared in memory.
 			When a \cpu issues a system call, it loads the structures and operates on them.
 			Consequently, processes and memory pages also continue to be dynamically balanced.
 			The difficulties introduced by this model lie in concurrency for \os structures.
@@ -248,7 +255,7 @@
 
 			\begin{figure}[!tb]
 				\centering%
-				\caption{Symmetric OS Model.}%
+				\caption{Symmetric OS model.}%
 				\label{fig:smp-os}%
 				\includegraphics[width=.55\textwidth]{symmetric-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
@@ -277,7 +284,7 @@
 		\label{sec.multicomputers-hw}
 
 			A multicomputer node can be considered as an elementary computer, with one or
-			more multiprocessors, local \ram and I/O devices.
+			more multiprocessors, local \ram and \io devices.
 			In many cases, there is no need for monitors or keyboards, only the
 			network interface.
 			In this way, it is possible to integrate hundreds or even thousands
@@ -298,7 +305,7 @@
 
 			\begin{figure}[!tb]
 				\centering%
-				\caption{Network Topologies Examples.}%
+				\caption{Network topologies examples.}%
 				\label{fig:net-topologies}%
 
 				\subcaptionminipage[fig:net-start]%
@@ -395,7 +402,7 @@
 			send/receive primitives.
 			However, it is still the responsibility of the user to define the
 			required parameters to perform such operations.
-			In order for the user to send a message, he must inform the
+			To send a message, one must inform the
 			localization of the message, its size, and the identifier of the
 			receiving interface.
 			On the receiver side, the user must configure the interface with
@@ -403,19 +410,19 @@
 
 			\begin{figure}[!tb]
 				\centering%
-				\caption{Synchronous and Asynchronous Calls.}%
+				\caption{Synchronous and asynchronous calls.}%
 				\label{fig:calls-types}%
 
 				\subcaptionminipage[fig:call-sync]%
 					{.9\linewidth}%
-					{Synchronous Call on Sender Node.}%
+					{Synchronous call on sender node.}%
 					{\includegraphics[width=\linewidth]{call-sync.pdf}}%
 
 				\hfill
 
 				\subcaptionminipage[fig:call-async]%
 					{.9\linewidth}%
-					{Asynchronous Call on Sender Node.}%
+					{Asynchronous call on sender node.}%
 					{\includegraphics[width=\linewidth]{call-async.pdf}}%
 
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
@@ -552,36 +559,35 @@
 	We believe that significant barriers will still arise in this scenario, and
 	the solution is to rethink \os design from scratch without losing back
 	compatibility~\cite{penna:compas19, penna2019}.
-	\autoref{fig:nanvix-goal} summaries the balancing of Nanvix \os goals.
-	To achieve this balance, the Nanvix \os aims to improve programmability
-	and software portability in lightweight manycores through a fully-featured
+	\autoref{fig:nanvix-goal} depicts the three main conceptual goals of Nanvix \os.
+	The main efforts in Nanvix \os are focused on programmability and portability
+	issues of lightweight manycores. This can be accomplished through a fully-featured
 	\posix-compliant \os~\cite{penna:compas19}.
 
 	\begin{figure}[!tb]
 		\centering%
-		\caption{Conceptual Goals of the Nanvix OS.}%
+		\caption{Conceptual goals of the Nanvix OS.}%
 		\label{fig:nanvix-goal}%
-		\includegraphics[width=.55\textwidth]{nanvix-goal.pdf}%
+		\includegraphics[width=.4\textwidth]{nanvix-goal.pdf}%
 		\fonte{Adapted from \citeonline{penna:sbesc19}}%
 	\end{figure}
 
-	Three distinct layers of kernels make up the Nanvix \os.
+	Nanvix \os is composed of three distinct kernel layers.
 	In a bottom-up approach of abstraction level, they are namely \nanvix \hal,
 	\nanvix \microkernel, and \nanvix \multikernel.
 	The next sections will introduce the concepts and problems addressed by
 	each layer.
 
-	\subsection{Nanvix Hardware Abstract Layer}
+	\subsection{Nanvix Hardware Abstract Layer (HAL)}
 	\label{sec.hal}
 
 		Nanvix \os proposes a generic and flexible \hal around the
 		intrinsic architectural characteristics of the \lightweight \manycores.
-		Currently, \hal has available all the essential modules to run standalone
+		Currently, \hal features all the essential modules to run standalone
 		processes for the \mppa~\cite{DeDinechin2013-1}, \optimsoc~~\cite{Wallentowitz2013},
 		and \hero~\cite{Kurth2017} platforms.
-		Hence, in this work, we focus on proposing
-		inter-cluster communication module for the \hal of Nanvix, and
-		providing an implementation for the \mppa processor.
+		In this work, we focus on proposing an inter-cluster communication module
+		for the Nanvix \hal, and providing its implementation for the \mppa processor.
 
 		Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
 		the \hal belongs to one level below.
@@ -589,17 +595,18 @@
 		view of these emerging processors for a client application, \eg \os.
 		At this level, we do not protect internal structures with locks.
 		Thus, the upper-level decides how to protect and multiplex \hal access.
-		On one hand, a traditional monolithic \os that implements a time-sharing
+		On the one hand, a traditional monolithic \os that implements a time-sharing
 		behavior to access internal structures will need to apply locks manually.
 		On the other hand, a master-slave \os not require such strict control,
 		improving its performance.
-		\autoref{fig:hal-overview} pictures the three logic layers of the \hal:
+		\autoref{fig:hal-overview} pictures the three logic layers of the \hal, which are
+		detailed below:
 
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Structural overview of the Nanvix HAL.}%
 			\label{fig:hal-overview}%
-			\includegraphics[width=.55\textwidth]{nanvix-hal-overview.pdf}%
+			\includegraphics[width=.4\textwidth]{nanvix-hal-overview.pdf}%
 			\fonte{Adapted from \citeonline{penna:compas19}}%
 		\end{figure}
 
@@ -619,12 +626,12 @@
 			\item[Cluster Abstraction Layer]
 				bundles the resource management that concern all cores in a cluster.
 				It provides support for virtual memory, cross-core notification through events,
-				clock counter fetching, and access to I/O resources such as \mmio and \dma.
+				clock counter fetching, and access to \io resources such as \mmio and \dma.
 
 			\item[Processor Abstraction Layer]
 				embraces architectural features related to multiple clusters.
-				The \textit{Inter-Cluster Communication Module}, the focus of
-				this undergraduate dissertation, provide \noc identification routines and
+				The \textit{inter-cluster communication module}, which is the focus of
+				this undergraduate dissertation, provides \noc identification routines and
 				exports three main abstractions to allow synchronization and data
 				exchange among clusters, based on ideas proposed along with the
 				\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
@@ -634,20 +641,21 @@
 	\subsection{Nanvix Microkernel}
 	\label{sec.microkernel}
 
-		The \nanvix \microkernel, running above the \hal, provide
+		The \nanvix \microkernel, running above the \hal, provides
 		bare bones system abstractions to the client applications~\cite{penna:sbesc19}.
 		Through a rich system call interface, it follows a Master-Slave \os model
 		to avoid cache coherence issues present in manycores.
 		The scope of the \microkernel is within a single cluster.
 		System calls and internal subsystems manage local and shared resources
 		available to all cores to maintain the coherence of the \os.
-		\autoref{fig:microkernel-overview} pictures the five logic layers of the \microkernel:
+		\autoref{fig:microkernel-overview} pictures the five logic layers of the \microkernel,
+		which are detailed below:
 
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Concept Structural overview of the Nanvix Microkernel.}%
 			\label{fig:microkernel-overview}%
-			\includegraphics[width=.55\textwidth]{nanvix-microkernel-overview.pdf}%
+			\includegraphics[width=.4\textwidth]{nanvix-microkernel-overview.pdf}%
 			\fonte{Adapted from \citeonline{penna:sbesc19}}%
 		\end{figure}
 
@@ -658,11 +666,11 @@
 				manipulation and protection of the inter-cluster communication abstractions.
 				
 			\item[Thread System]
-				implements a rich mechanism to creation, management and protection of threads.
+				implements a rich mechanism for creation, management and protection of threads.
 				This system features schedules, sleep, and wakeup routines of the user threads.
 				
 			\item[Memory System]
-				provides a rich memory management and virtual memory support at cluster-level.
+				provides a rich memory management and virtual memory support at cluster level.
 				It is based in a two-level paging scheme, supports pages of heterogeneous sizes
 				and uses a capabilities system~\cite{Baumann2009} to keep track of permissions on pages.
 
@@ -691,9 +699,11 @@
 		\os structures.
 		Kernel calls that only query static parameters or structures (performing cache invalidation) are made locally.
 
+		\todo[inline]{Márcio:Ficou estranha essa caixa grande preta da Fig. 16. Não entendi o motivo de ter uma caixa preta desse tamanho.}
+
 		\begin{figure}[!tb]
 			\centering%
-			\caption{Execution example of the Nanvix Microkernel.}%
+			\caption{Execution example of the Nanvix microkernel.}%
 			\label{fig:microkernel-execution}%
 			\includegraphics[width=.8\textwidth]{nanvix-microkernel-execution.pdf}%
 			\fonte{Developed by the Author.}%
@@ -721,7 +731,7 @@
 				security, locking, access, integrity, and failover mechanisms.
 
 			\item[Replication Independence:] Servers and data can be replicated across multiple
-				nodes transparently and automatically synchronized.
+				nodes, being transparently and automatically synchronized.
 
 			\item[Non-dependency on a central node:] When replicating servers, the system no
 				longer relies on a central node.
@@ -739,13 +749,13 @@
 		to better serve a nearby subset of clusters.
 		In the other clusters, we can see the distribution of two distinct applications.
 		An application does not necessarily need to use all cores in a cluster.
-		Now, looking carefully at a cluster, we can see that Nanvix Microkernel
+		Now, looking carefully at a cluster, we can see that \nanvix \microkernel
 		always reserves a single core for kernel execution, making the other cores
 		available for application execution.
 
 		\begin{figure}[!tb]
 			\centering%
-			\caption{Possible configurations on Nanvix Multikernel.}%
+			\caption{Possible configurations on Nanvix multikernel.}%
 			\label{fig:multikernel-overview}%
 			\includegraphics[width=.55\textwidth]{nanvix-multikernel-overview.pdf}%
 			\fonte{Adapted from \citeonline{penna:sbesc19}}%
@@ -758,16 +768,18 @@
 		From this perspective, user applications are easily ported to run on
 		\nanvix \multikernel, where client-side interfaces abstract the communication
 		with servers distributed on the processor.
+		
 		\autoref{fig:multikernel-shm} exemplifies the existing layers to provide the \shm service.
 		When opening an \shm, the client does not have to worry about where data
 		will be allocated or whether other cores in other clusters are operating
 		over the same memory region.
+		\todo[inline]{Falou-se pouco da Fig. 18. Deves descrever, de forma geral, o que é cada um dos blocos.}
 		Consequently, we provide greater programmability and software portability
 		for manycores processors.
 
 		\begin{figure}[!tb]
 			\centering%
-			\caption{\posix Compliance Example on Nanvix Multikernel.}%
+			\caption{\posix Compliance example of Nanvix multikernel.}%
 			\label{fig:multikernel-shm}%
 			\includegraphics[width=.9\textwidth]{nanvix-multikernel-shm.pdf}%
 			\fonte{Adapted from \citeonline{penna:rmen} and \citeonline{penna:sbesc19}}%

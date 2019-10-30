@@ -1,9 +1,10 @@
 \chapter{Related Work}
 \label{ch.related-work}
 
-In this chapter, we discuss related research efforts to ours.
+In this chapter, we discuss research efforts related to this
+undergraduate dissertation.
 First, we present an overview of the state-of-the-art on
-\textit{\lightweight \manycore processors}. Then, due to the
+\lightweight \manycores. Then, due to the
 lack of \oss focused on lightweight manycores, we will cover
 different proposed \oss for manycores in general.
 
@@ -11,38 +12,36 @@ different proposed \oss for manycores in general.
 \label{sec.works.manycores}
 
 	Several research initiatives are focused on the design of
-	\lightweight \manycores, aside from the \mppa \lightweight manycore
-	processor.  For instance, \citeonline{olofsson2014} introduce
+	\lightweight \manycores, aside from the \mppa \lightweight \manycore.
+	For instance, \citeonline{olofsson2014} introduce
 	\epiphany as a high-performance energy-efficient \manycore
 	architecture suitable for real-time embedded systems.  The
-	processor features multiple nodes, that communicating through three 2D mesh
+	processor features multiple nodes interconnected through three 2D mesh
 	\nocs with a distributed shared-memory model without coherence
-	protocol.  Each node has one \risc \cpu, multi-banked local memory,
+	protocol. Each node has one \risc \cpu, multi-banked local memory,
 	a \dma engine, an event monitor and a network interface.  The three
 	\nocs are independent, scalable, and implement a packet-switched
 	model with four duplex links at every node.
 
 	\citeonline{Wallentowitz2013} presents the open-source \optimsoc framework
-	for help and facilitate on the manycore processor design. The \optimsoc
+	to aid manycore processor design. The \optimsoc
 	enables the rapid prototyping of a manycore, either via VHDL
 	simulation or \fpga synthesis.
-	In this architecture, several \openrisc
-	core~\footnote{https://opencores.org/openrisc} are bundled into
-	tiles, which in turn communicate through a \textit{packet-switched \noc}.
-	The \noc support various network topologies, depending only on the tiles organization.
+	In this architecture, several \openrisc cores\footnote{https://opencores.org/openrisc} are bundled into
+	tiles, which in turn communicate through a packet-switched \noc.
+	The \noc supports various network topologies, depending only on how the tiles are disposed on chip.
 	Precisely, a \textit{network adapter} handles the memory transfers between
-	tile and the local memory and provides a message-passing communication
+	a tile and its local memory and provides a message-passing communication
 	model among tiles.
-	The tiles organization and the network topology allow handling
-	communication by (i) message-exchange, (ii) partitioned global
-	address space without cache coherence, and (iii) global memory
+	Tiles can communicate by using message-exchange, partitioned global
+	address space without cache coherence, or global memory
 	with cache coherence via a write-through policy.
 
-	Similarly, \citeonline{Kurth2017} introduces the \hero, which
+	Similarly, \citeonline{Kurth2017} introduces \hero, which
 	groups an \arm host processor with a fully modifiable
 	\riscv \manycore implemented on an \fpga. The \pmca uses a
 	multi-cluster design and relies on multi-banked memory, called \spm.
-	Multi-channel \dma engines had substituted the data caches.
+	\todo{Não entendi.}{Multi-channel \dma engines had substituted the data caches.}
 	Data transfer occurs between a local \spm and all remote \spms or
 	with shared global memory. Communication to main memory passes
 	through software-managed lightweight \rab. The \rab performs the
@@ -65,32 +64,31 @@ different proposed \oss for manycores in general.
 	shared-memory instead of exchanging messages and the subsequent increase of
 	the complexity of cache-coherence protocols.
 	The \multikernel implementation, named Barelfish, follows three design principles.
-	First, \textit{Make all inter-core communication explicit} turns the system
+	The first principle is to \textit{make all inter-core communication explicit}, which turns the system
 	amenable to human or automated analysis because processes communicate only
 	through well-defined interfaces.
-	Second, \textit{Make \os structures hardware-neutral} makes the hardware-independent
-	code easy to debug, optimize, and facilitates the deployment of \os for new
-	processor types, avoiding rework.
-	And lastly, \textit{View \os state as replicated instead of shared} improves system
+	The second principle is to \textit{make \os structures hardware-neutral}, so the kernel
+	code can be easy to debug and optimize, facilitating the deployment of \os for new
+	processor types and avoiding rework.
+	The third principle is to \textit{view \os state as replicated instead of shared}, which improves system
 	scalability.
 
 	In \citeonline{Wisniewski2014}, the concept of scalability was pushed
 	to the extreme, towards \hpc.
 	The principal motivation is the creation of an \os that simultaneously supports
 	programmability through support \linux \api, and provides a lightweight kernel
-	to performance, scalability, and reliability.
+	that achieves performance, scalability, and reliability.
 	The \os, named \mos, provides as much of the hardware resources as
 	possible to the \hpc applications and the \linux kernel component
 	acts as a service that provides \linux functionalities.
 
 	Similarly, \citeonline{kluge2014} developed the \moosca.
 	With \moosca, they introduce abstractions that are easily composed, called Nodes,
-	Channels, and Servers.
-	Where Nodes represent execution resources, Channels represent communication
+	Channels, and Servers. Nodes represent execution resources, Channels represent communication
 	resources, \eg \noc resources, and lastly, Servers are nodes that provide
 	services to client Nodes.
-	To meet safety-critical requirements, they partition \manycore and distribute
-	replicas of Servers, turning the whole system more predictable.
+	To meet safety-critical requirements, the \manycore is partitioned and each partition
+	runs replicas of Servers, turning the whole system more predictable.
 	However, in order to deal with interferences in shared resources,
 	usage policies were introduced to make possible the prediction of system behavior.
 
@@ -101,21 +99,19 @@ different proposed \oss for manycores in general.
 	a uniform and straightforward set of \os abstractions.
 	The most important design decisions were to avoid unnecessary remote communication
 	by thinking about the penalty they have in \numa domains.
-	Also, request the minimum of hardware primitives so that architectures with many
-	constraints can be ported.
-	Moreover, request the minimum hardware resources to support architectures with little
+	Moreover, it requests a minimum set hardware resources to support architectures with little
 	computational power or memory constraints.
 
 \section{Discussion}
 
-	In \autoref{sec.works.manycores}, we discuss how \manycore architectures can be
+	In \autoref{sec.works.manycores}, we discussed how \manycore architectures can be
 	grouped over a common logic perspective.
 	They all have one or more logical units distributed and incorporated on clusters.
 	The clusters, interconnected through a network, communicate by message-exchange.
 	However, due to the domain for which these processors were designed, they end up
 	presenting several differences among them at the hardware level.
 
-	Additionally, \autoref{sec.works.os} presents \oss studies that focus
+	Additionally, \autoref{sec.works.os} presented \oss studies that focus
 	on the most efficient exploration of manycores processor characteristics.
 	Many of them introduce entirely new concepts, reducing the programmability
 	and portability of development environments. Some even seek to provide
@@ -123,18 +119,16 @@ different proposed \oss for manycores in general.
 	this can lead to optimization losses at near-hardware levels.
 	However, the \os and communication models presented fit well with the
 	distributed nature of manycores.
-
-	In this context, \nanvix \hal deals with the lowest possible layer
-	with a focus on aspects that make it challenging to work with a
-	specific group of manycores, \ie \lightweight \manycores.
-	The exported interfaces sought to group lightweight manycores on a common and effective view.
-	Above \hal, services will be developed that seek first and foremost
-	to provide greater programmability and portability through a fully-featured
-	\posix-compliant \os. Besides, many of these \oss work with \numa systems,
+	Finally, many of these \oss work with \numa systems,
 	where a complex bus system makes communication transparent. Therefore, there
-	is, in fact, no network programming. Unlike these \oss, \nanvix serves manycores
-	that require explicit programming of communication through \noc. Also, features
-	such as memory constraints, missing support for cache coherency, and heterogeneous
-	components punctually appear in \numa architectures. The combination of these
+	is, in fact, no network programming. 
+
+	In this context, \nanvix \hal offers the ground \os abstractions needed to make
+	\lightweight \manycores more easy to use and program.
+	The exported interfaces sought to group lightweight manycores on a common and effective view.
+	Above the \hal, services will be developed that seek first and foremost
+	to provide greater programmability and portability through a fully-featured
+	\posix-compliant \os. \nanvix is design specifically for manycores that require explicit
+	programming of communication through \noc, have
+	memory constraints and miss support for cache coherency. The combination of these
 	features makes designing an \os for \lightweight \manycores challenging.
-	
