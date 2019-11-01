@@ -1,12 +1,13 @@
 \chapter{Development}
 \label{ch.development}
 
-	The development of this undergraduate dissertation consists of two main contributions.
-	\autoref{sec.low-level-comm} presents the most extensive part of the work. That section
+	This work delivers two main contributions.
+	\autoref{sec.low-level-comm} presents the most extensive part of the
+	work. This section
 	discusses how \mppa hardware was used to provide three communication abstractions for
 	\nanvix \textit{\hal} and the challenges and solutions encountered during development.
 	Next, \autoref{sec.user-level-comm} presents a standard view of the user services
-	developed for \nanvix \microkernel that make use of the low-level interface.
+	developed for the \nanvix \microkernel that make use of the low-level interface.
 
 	\section{Low-Level Communication}
 	\label{sec.low-level-comm}
@@ -16,11 +17,12 @@
 		This module consists of three abstractions, named \sync, \mailbox, and \portal.
 		These abstractions provide more precise, easy-to-use, scalable, and easily
 		portable mechanisms for different architectures~\cite{wentzlaff_fleets:_2011}.
-		Above them, it is possible to create from the most straightforward services, such
-		as synchronization and data exchange, to more elaborate services
-		like \shm, \posix Semaphore, and \rmem~\cite{penna:rmen}.
-		Expected behavior can be simulated by both types of calls, synchronous or
-		asynchronous, depending only on hardware support.
+		On top of them, it is possible to create simple
+		facilities, such
+		as those for synchronization and data exchange, as well as more elaborate services
+		like \shm, \posix Semaphores, and \rmem~\cite{penna:rmen}.
+		These later semantics may be implemented on top of synchronous
+		or asynchronous kernel calls, depending only on hardware support.
 		Motivated to expose better \qos control to the upper layers, we decouple small data
 		transfers from large ones, \ie \mailbox and \portal.
 		Note that it would be possible to use an \noc for each abstraction if the hardware supported it.
@@ -41,16 +43,16 @@
 			The realization of low-level communication mainly depends on two \mppa features.
 			First, the interrupt system allows the configuration of handlers for messages
 			received and sent through \noc. Interrupts enable asynchronous operations,
-			which is a vital point in a microkernel-based operating system where the
+			which is an important point in a microkernel-based operating system where the
 			master cannot be blocked waiting for a single communication to complete.
-			If it were not possible to perform at least asynchronously receiving
+			If it were not possible to asynchronously receive
 			data/signals, upper layers would face severe performance issues. Second,
 			\dma is the mediator of all communications, either synchronous or asynchronous.
-			At this point, a \hypervisor virtualizes the \dma, separating it into two global
+			At this point, a \hypervisor virtualises the \dma, separating it into two global
 			logical structures, one for \cnoc and one for \dnoc. Each structure groups
 			registers for the send/receive configuration, and bit fields indicating which
 			slots generated an interrupt. The \hypervisor runs on \rms and asynchronously
-			controls read/write permissions of virtualized registers.
+			controls read/write permissions of virtualised registers.
 
 			The control made by the \hypervisor does not include allocation or manipulation
 			of resources. Consequently, we manually control allocation through bit fields.
@@ -70,12 +72,12 @@
 			$\mu$~thread. \cnoc only uses one line for receiving signals because
 			sending a signal (64-bit value) is explicitly performed by the core.
 			For each interrupt line, there is a specific handler, but they all
-			execute a similar algorithm. \autoref{alg.noc-handler} exemplifies
-			the behavior of an \noc handler. Because the line only notifies what
+			execute a similar algorithm. \autoref{alg.noc-handler} outlines
+			the behavior of the \noc handler. Because the line only notifies what
 			type of interrupt, it is the responsibility of the handler to search
 			the resources of each interface looking for who triggered the interrupt.
-			The handlers are reentrant to avoid loss of interrupts. Due to the
-			microkernel approach, concurrency issues are softened because only
+			The handlers are re-entrant to avoid loss of interrupts. Due to the
+			asymmetric microkernel design, concurrency issues are softened because only
 			the master handles interrupts.
 
 			\begin{algorithm}[!tb]
@@ -133,7 +135,7 @@
 			a communication. For instance, if the receiver sets up receiving on one
 			\dnoc resource and the sender sends it to another, even if the ID is correct,
 			the \dma will not notify the receiver. For this reason, the receive slots
-			of the \cnoc and \dnoc have been partitioned by abstraction. Within a
+			of the \cnoc and \dnoc are  partitioned by abstraction. Within a
 			partition, each slot is statically mapped to a logical ID, \eg 0 to 23 mappings.
 			In contrast, transfer channels can be dynamically allocated. However,
 			an essential concept of Nanvix HAL is to provide the resources required for
@@ -142,7 +144,7 @@
 			reserved for an entire job. \autoref{tab.noc-resources} presents each
 			abstraction, identified by the rows, and the partitioning of the resources
 			of each \noc, identified by the columns. Since \sync does not exchange
-			arbitrary data, no resources have been reserved in \dnoc. It is worth
+			arbitrary data, no resources were reserved in \dnoc. It is worth
 			noting that even without using all existing slots, improving
 			programmability by not having to specify communication features is a
 			strength of abstraction design.
@@ -178,11 +180,11 @@
 
 			Finally, we were able to remove almost all dependency on the software
 			stack provided by Kalray. However, by eliminating communication
-			libraries, the lack of documentation of hardware virtualization,
-			and functional examples of communication, limitations have arisen
+			libraries, the lack of documentation of hardware virtualisation,
+			and functional examples of communication, limitations arose
 			in the transfer of data through \dnoc. In summary, it was not possible
 			to correctly configure existing $\mu$~threads in the \dma for asynchronous
-			transfer, making it a future job. However, this limitation did not
+			transfer, thus making it a future work. However, this limitation did not
 			impact on the design of abstractions, requiring only that the master
 			core waste time transferring data manually.
 
@@ -192,19 +194,20 @@
 			Technically, \nanvix \hal does not know what types of applications
 			or kernels have used it. Thus, we must ensure a standard behavior
 			that does not affect the functionality of the upper layer. The
-			microkernel specifically restricts the master core from being
-			almost always available to handle slave requests. Therefore,
+			microkernel specifically assign the master core the task
+			of handling requests (\ie kernel calls) from slave cores. Therefore,
 			interfaces export only asynchronous calls. This decision forces
 			the upper layer, if desired, to create synchronous calls that
 			call the wait function right after the asynchronous operation.
-			Thus, at the microkernel level, we can ensure that the master
+			Thus, at the microkernel level, we can ensure that the
+			master core
 			sets or executes asynchronous functions and notifies blocked
 			slaves. In \mppa, spinlocks perform synchronization between the
 			master and the slaves. Upon completion of an operation, the master
 			releases the lock for the slave to continue its execution.
 
 			However, the limitation of the \dma, described in
-			\autoref{sec.mppa-hardware-resources} adds an aggravation to the
+			\autoref{sec.mppa-hardware-resources} adds a challenge to the
 			transfer operations of the mailbox and portal abstraction.
 			In these abstractions, there is a flow control where the receiver
 			must notify the sender, permitting him to transfer the data. This
@@ -346,7 +349,8 @@
 				with the master node ID, regardless of mode. The remaining identifiers,
 				provided they have no repetition, can be in any order. The other
 				functions use the abstraction identifier returned by the create
-				function. If any parameters are in disagreement or invalid, a
+				function. If any parameters are invalid or have wrong
+				semantics, a
 				negative value is returned indicating the error, \eg nodes pointer
 				equal to \texttt{NULL}.
 
@@ -361,7 +365,7 @@
 				A 64-bit mask, created from sender node IDs, configures the receiving
 				slot. Bits positioned on nodes IDs are 0. When receiving a signal,
 				\dma performs an \textit{OR-bitwise} with the previous value. When
-				all bits become 1's, \dma clears the register and triggers an interrupt.
+				all bits become one's, \dma clears the register and triggers an interrupt.
 
 % Como as operações funcionam?
 				A vector of internal structures controls the operations. Each structure
@@ -369,7 +373,7 @@
 				and a spinlock. \hal checks for discrepancies in IDs, control flags, or
 				parameters when creating, waiting, or unlinking a \sync. Finally,
 				the spinlock is used to synchronize the operation with slave cores.
-				On a microkernel-based system, the master core configures \sync, and
+				On our microkernel-based system, the master core configures \sync, and
 				the slave waits for the spinlock release. The interrupt handler of the
 				\sync identifies the structure and releases the lock. The lack of cache
 				coherence does not affect spinlocks because instructions that guarantee
@@ -487,7 +491,7 @@ int sync_signal(int syncid);
 				\fonte{Developed by the Author.}%
 			\end{figure}
 
-			\autoref{fig:mailbox-flow} exemplifies the communication flow between a
+			\autoref{fig:mailbox-flow} outlines the communication flow between a
 			receiver and a sender node. The receiver creates an empty message queue
 			where senders are free to send the first message. Subsequently, in order
 			not to overwrite old messages, all transmissions require the permission
@@ -518,7 +522,7 @@ int sync_signal(int syncid);
 					invalidating its cache, can read the message.
 					
 % % Recursos de hardware
-					\mailbox is more complicated than Sync in terms of hardware resources.
+					\mailbox is more complicated than \sync, in terms of hardware resources.
 					Specifically, the receiver requires one \dnoc receiving slot and one \cnoc
 					transfer channel. The need for one transfer channel for the lifetime
 					of the receiver limits the creation of only one mailbox per \noc node.
@@ -537,7 +541,7 @@ int sync_signal(int syncid);
 					interrupt, (ii) interrupts preempted by others did not find the \dnoc
 					resources that issued the interrupt, and (iii) cannot verify the
 					number of interrupts generated by a resource. A behavior similar to
-					lazy transfer has been implemented to circumvent these difficulties.
+					lazy transfer was implemented to circumvent these difficulties.
 					First, a global counter containing the total amount of messages
 					received allows the receiver to copy received messages on the
 					asynchronous read call. Second, if no messages are available, copying
@@ -625,7 +629,7 @@ int mailbox_wait(int mbxid);
 			The sender, in turn, can only communicate with one node.
 
 % Fluxo da operação
-			\autoref{fig:portal-flow} exemplifies the flow control of the \portal.
+			\autoref{fig:portal-flow} outlines the flow control of the \portal.
 			When attempting to transmit data to the receiver, the sender will block
 			until the receiver can accept it. By enabling one data exchange at a time,
 			the receiver sets the readout and notifies the sender. In this way,
@@ -658,7 +662,7 @@ int mailbox_wait(int mbxid);
 				\autoref{code:hal-portal-receiver} presents the Portal Interface for
 				Receiver Nodes. Like the \mailbox, the application must identify the
 				local node to create a \portal. The receiver must always perform
-				three operations to perform communication, i.e., \textit{allow},
+				three operations to perform communication, \ie \textit{allow},
 				\textit{read}, and \textit{wait}. The allow function allocates one
 				receiving slot relative to the given remote node, limiting one
 				channel per pair of nodes. However, the permission will only be
@@ -673,7 +677,7 @@ int mailbox_wait(int mbxid);
 				Such portals cannot communicate with the same node at the same time
 				because of the choice of the same physical slot. Read sets the
 				receiving slot to the buffer and size informed by the application.
-				The \dma eliminates intermediate copies like Mailbox because it
+				The \dma eliminates intermediate copies like Mailbox, because it
 				writes data directly to the application buffer. Consequently,
 				control structures have also been simplified, containing only
 				control flags and the spinlock for asynchronous operations.
@@ -759,7 +763,7 @@ int portal_wait(int portalid);
 		on the communication primitives.
 		Due to the Master-Slave model, the responsibility of protecting,
 		manipulating, and configuring \hal resources is of the master core.
-		The slave core will request operations through the system call interface,
+		The slave core will request operations through the kernel call interface,
 		passing the necessary information to the master.
 
 		Considering that the abstractions make up the fundamental elements of
@@ -786,21 +790,21 @@ int portal_wait(int portalid);
 		\subsection{Impacts of the Master-Slave Model}
 
 			Master-Slave model defines that the master core must exclusively manipulate
-			the internal structures of the \os. For this, each service has generic and
-			straightforward structures that hold control flags, parameters for resource
+			the internal structures of the \os. For this end, each service has generic and
+			simple structures that hold control flags, parameters for resource
 			identification, and storage of physical descriptors returned by \hal. Thus,
-			the system call interface separates the functions of the services into two
-			sets of functions. The first set is the system calls that request a particular
+			the kernel call interface separates the functions of the services into two
+			sets of functions. The first set is the kernel calls that request a particular
 			operation. The second set is functions that operate on the internal structures
 			and communicate with the \hal level. The master executes almost exclusive
 			the second set, except for the wait functions, which the slave performs entirely.
 
-			The system call set of functions follows the \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
+			The kernel call set follows the \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
 			notation. Its responsibilities are to find out which logical ID is attached to
 			the local node, if there is more than one, and perform the possible sanity
 			checks on the slave side. The internal set of functions follows the
 			\texttt{k\textit{abstraction}\_\textit{operation}} notation. Internally, it
-			is used by the system call engine to perform protection, handling, and
+			is used by the kernel call engine to perform protection, handling, and
 			multiplexing services. 
 
 			The requirement of the slave to perform wait functions is because the master
@@ -842,15 +846,17 @@ int portal_wait(int portalid);
 
 		\subsection{Input/Output Control}
 
-			The \mailbox and \portal services have a particular system call denominated
+			The \mailbox and \portal services have a particular kernel
+			call named
 			\ioctl. The \ioctl grants the implementation of operations that cannot be
-			expressed by regular system calls. In the case of communication services,
-			we implement two types of operations to query some informações about the
+			expressed by regular kernel calls. In the case of communication services,
+			we implement two types of operations to query some
+			information about the
 			transmissions performed. The first operation, named \texttt{IOCTL\_GET\_VOLUME},
 			queries the current number of bytes transmitted/received from a service.
 			The second operation, named \texttt{IOCTL\_GET\_LATENCY}, queries the sum
 			of measured communication latencies by the difference of two clock readings.
-			This system call may be extended in the future to introduce new features
+			This kernel call may be extended in the future to introduce new features
 			without causing changes to current interfaces.
 
 		\subsection{Validation and Correctness Tests}
