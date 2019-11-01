@@ -46,24 +46,25 @@
 			or to send configuration parameters to all nodes~\cite{url:mpitutorial}.
 
 			\begin{figure}[!tb]
-				\centering%
-				\caption{Example of \mpi Broadcast}%
-				\label{fig:exp-broadcast}%
-				\includegraphics[width=.6\textwidth]{mpi-broadcast.pdf}%
-				\fonte{Adapted from \citeonline{url:mpitutorial}.}%
+				\centering
+
+				\begin{minipage}{.4\textwidth}
+					\centering%
+					\caption{Example of \mpi Broadcast}%
+					\label{fig:exp-broadcast}%
+					\includegraphics[width=\textwidth]{mpi-broadcast.pdf}%
+					\fonte{Adapted from \citeonline{url:mpitutorial}.}%
+				\end{minipage}%
+				\hfill% 
+				\begin{minipage}{.4\textwidth}
+					\centering%
+					\caption{Example of \mpi Gather}%
+					\label{fig:exp-gather}%
+					\includegraphics[width=\textwidth]{mpi-gather.pdf}%
+					\fonte{Adapted from \citeonline{url:mpitutorial}.}%
+				\end{minipage}%
+
 			\end{figure}
-
-		% \subsection{Scatter}
-
-		% 	\begin{figure}[!tb]
-		% 		\centering%
-		% 		\caption{Example of \mpi Scatter}%
-		% 		\label{fig:mpi-scatter}%
-		% 		\includegraphics[width=.6\textwidth]{mpi-scatter.pdf}%
-		% 		\fonte{Adapted from \citeonline{url:mpitutorial}.}%
-		% 	\end{figure}
-
-		% 	Resultados iguais ao do broadcast
 
 		\subsection{Gather}
 
@@ -72,14 +73,6 @@
 			routine gathers the data distributed on a single node~\cite{url:mpitutorial}.
 			Similarly to broadcast, a flat tree was implemented where all root
 			nodes send their parts directly to the root node.
-
-			\begin{figure}[!tb]
-				\centering%
-				\caption{Example of \mpi Gather}%
-				\label{fig:exp-gather}%
-				\includegraphics[width=.6\textwidth]{mpi-gather.pdf}%
-				\fonte{Adapted from \citeonline{url:mpitutorial}.}%
-			\end{figure}
 
 		\subsection{AllGather}
 
@@ -91,13 +84,25 @@
 			implements the Bruck Algorithm where each node will send its data to a node
 			with distance $i$ and receive data from a distance $-i$ until all nodes
 			contain the complete data.
-
+			
 			\begin{figure}[!tb]
-				\centering%
-				\caption{Example of \mpi AllGather}%
-				\label{fig:exp-allgather}%
-				\includegraphics[width=.6\textwidth]{mpi-allgather.pdf}%
-				\fonte{Adapted from \citeonline{url:mpitutorial}.}%
+				\centering
+
+				\begin{minipage}{.4\textwidth}
+					\centering%
+					\caption{Example of \mpi AllGather}%
+					\label{fig:exp-allgather}%
+					\includegraphics[width=\textwidth]{mpi-allgather.pdf}%
+					\fonte{Adapted from \citeonline{url:mpitutorial}.}%
+				\end{minipage}%
+				\hfill% 
+				\begin{minipage}{.4\textwidth}
+					\centering%
+					\caption{Example of Ping-Pong}%
+					\label{fig:exp-ping-pong}%
+					\includegraphics[width=\textwidth]{mpi-ping-pong.pdf}%
+					\fonte{Develop by the Author.}%
+				\end{minipage}%
 			\end{figure}
 
 		\subsection{Ping-Pong}
@@ -107,13 +112,6 @@
 			Ping-Pong illustrates communication by focusing on the master node,
 			where the master receives and answers one request at a time.
 
-			\begin{figure}[!tb]
-			    \centering%
-			    \caption{Example of Ping-Pong}%
-			    \label{fig:exp-ping-pong}%
-			    \includegraphics[width=.6\textwidth]{mpi-ping-pong.pdf}%
-			    \fonte{Develop by the Author.}%
-			\end{figure}
 
 	\section{Portal Throughput Analysis}
 
