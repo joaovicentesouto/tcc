@@ -97,7 +97,7 @@ plot.axis.y.limits <- c(4, 512)
 
 # Legend
 plot.legend.title <- "Routines"
-plot.legend.labels <- c("AllGather", "Broadcast", "Gather", "Pingpong")
+plot.legend.labels <- c("AllGather", "Broadcast", "Gather", "Ping-Pong")
 
 plot <- plot.linespoint(
 	df = plot.df,
