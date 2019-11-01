@@ -56,11 +56,11 @@ if (length(args) == 0) {
 plot.variable.id  <- benchmark.variables.id
 
 plot.factors.id <- c(
-	"throughput"
+	"latency"
 )
 
 plot.factors.name <- c(
-	"Throughput (MB/s)"
+	"Latency (ms)"
 )
 
 # Build Plot Data Frame
@@ -68,13 +68,13 @@ plot.df <- subset(
 	data.digested,
 	variable %in% plot.factors.id
 )
-# plot.df$mean <- plot.df$mean/KILO
-# plot.df$sd <- plot.df$sd/KILO
+# plot.df$mean <- plot.df$mean * MEGA
+# plot.df$sd <- plot.df$sd * MEGA
 
 # Plot Titles
 if (script.params.plotTitles) {
 	plot.title <- benchmark.name
-	plot.subtitle <- paste("Mailbox Throughput")
+	plot.subtitle <- paste("Mailbox Latency")
 } else {
 	plot.title <- NULL
 	plot.subtitle <- NULL
@@ -90,14 +90,14 @@ plot.axis.x.title <- benchmark.variables.name
 plot.axis.x.breaks <- c(1:16)
 
 # Y Axis
-plot.axis.y.title <- bquote("Throughput (MB/s)")
-plot.axis.y.limits <- c(min(data.filtered$throughput), max(data.filtered$throughput))
+plot.axis.y.title <- bquote("Latency (ms)")
+plot.axis.y.limits <- c(min(data.filtered$latency), max(data.filtered$latency))
 # plot.axis.y.breaks <- c(4, 8, 16, 32, 64, 128, 256, 512)
 # plot.axis.y.limits <- c(4, 512)
 
 # Legend
-plot.legend.title <- NULL
-plot.legend.labels <- c("Broadcast", "Gather", "AllGather", "Pingpong")
+plot.legend.title <- "Routines"
+plot.legend.labels <- c("AllGather", "Broadcast", "Gather", "Pingpong")
 
 plot <- plot.linespoint(
 	df = plot.df,
@@ -108,8 +108,10 @@ plot <- plot.linespoint(
 	axis.y.title = plot.axis.y.title, axis.y.limits = plot.axis.y.limits#, axis.y.breaks = plot.axis.y.breaks, axis.y.trans = 'log2'
 ) +  outsideTheme + theme(legend.title = element_blank())
 
+print(paste("Saving", benchmark.id, script.variant))
+
 plot.save(
 	directory = paste("./img", sep = "/"),
-	filename  = paste(benchmark.id, script.variant, "throughput", sep = "-"),
+	filename  = paste(benchmark.id, script.variant, "latency", sep = "-"),
 	plot, width = 5, height = 2.8
 )

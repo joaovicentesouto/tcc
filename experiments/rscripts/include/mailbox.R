@@ -43,16 +43,20 @@ data.raw <- read.table(file = infile, sep = ";", header = TRUE)
 # Pre-Processing
 #==============================================================================
 
-data.raw$buffersize  <- data.raw$buffersize / KB
-data.raw$latency     <- data.raw$latency / MPPA.FREQ
-data.raw$throughput  <- (data.raw$volume / data.raw$latency) / MB
+# Convert latency to miliseconds
+data.raw$latency     <- (data.raw$latency / MPPA.FREQ) * KILO
+
+# Throughput of the mailbox
+# data.raw$buffersize  <- data.raw$buffersize / KB
+# data.raw$latency     <- data.raw$latency / MPPA.FREQ
+# data.raw$throughput  <- (data.raw$volume / data.raw$latency) / MB
 
 #===============================================================================
 # Pre-Processing
 #===============================================================================
 
 # Removes unnecessary columns
-data.filtered <- select(data.raw, -c(abstraction,nioclusters,buffersize,latency,volume))
+data.filtered <- select(data.raw, -c(abstraction,nioclusters,buffersize,volume))
 
 data.melted <- melt(data = data.filtered, id.vars = benchmark.variables.id)
 

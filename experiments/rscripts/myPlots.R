@@ -195,12 +195,8 @@ outsideTheme <- theme (
 	legend.title = element_blank(),
 	legend.text = element_text(size = 10, color = 'black'),
 	legend.justification = c(1.0, 1.0),
-	# legend.position = c(1.1, 0.98),
 	legend.position="right",
 	legend.background = element_rect(fill="white", size=0.5, linetype="solid", colour ="black"),
-
-	# Not clip the legend
-	# par(xpd=TRUE),
 	
 	# X Axis
 	axis.text.x = element_text(size = 10, color = 'black'),
@@ -249,7 +245,58 @@ ggplot(
     name = legend.title,
     labels = legend.labels,
 	values = c(21, 22, 23, 24, 25)
+  ) +
+  scale_x_continuous(
+    breaks = axis.x.breaks,
+	trans = axis.x.trans
+  ) +
+  scale_y_continuous(
+    expand = c(0, 0),
+    limits = axis.y.limits,
+    trans = axis.y.trans,
+    breaks = axis.y.breaks
+    # labels = trans_format(axis.y.trans, axis.y.trans.format)
+  ) +
+  theme_classic()
+}
 
+plot.linespointcolor <- function(
+  df,
+  factor, respvar, param,
+  title, subtitle = NULL,
+  legend.title, legend.labels,
+  axis.x.title, axis.x.breaks,
+  axis.x.trans = 'identity',
+  axis.y.title, axis.y.limits = NULL,
+  axis.y.trans = 'identity',
+  axis.y.trans.fn = function(x) x,
+  axis.y.breaks = trans_breaks(axis.y.trans,  axis.y.trans.fn),
+  axis.y.trans.format = math_format()(1:10))
+{
+ggplot(
+    data = df,
+    aes(x = get(factor), y = get(respvar), group = get(param))
+  ) +
+	geom_line(
+		aes(color = get(param))
+	) +
+	geom_point(
+		aes(color = get(param), shape = get(param))
+		# fill = "black"
+	) +
+	# geom_errorbar(aes(ymin = get(respvar) - cv, ymax = get(respvar) + cv),
+	# 				width = 0.1
+	# ) +
+  labs(
+    title = title,
+    subtitle = subtitle,
+    x = axis.x.title,
+    y = axis.y.title
+  ) +
+  scale_shape_manual(
+    name = legend.title,
+    labels = legend.labels,
+	values = c(21, 22, 23, 24, 25)
   ) +
   scale_x_continuous(
     breaks = axis.x.breaks,

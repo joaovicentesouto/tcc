@@ -96,8 +96,8 @@ plot.axis.y.breaks <- c(4, 8, 16, 32, 64, 128, 256, 512)
 plot.axis.y.limits <- c(4, 512)
 
 # Legend
-plot.legend.title <- NULL
-plot.legend.labels <- c("Broadcast", "Gather", "AllGather", "Pingpong")
+plot.legend.title <- "Routines"
+plot.legend.labels <- c("AllGather", "Broadcast", "Gather", "Pingpong")
 
 plot <- plot.linespoint(
 	df = plot.df,
@@ -107,6 +107,8 @@ plot <- plot.linespoint(
 	axis.x.title = plot.axis.x.title, axis.x.breaks = plot.axis.x.breaks, axis.x.trans = 'log2',
 	axis.y.title = plot.axis.y.title, axis.y.limits = plot.axis.y.limits, axis.y.breaks = plot.axis.y.breaks, axis.y.trans = 'log2'
 ) +  outsideTheme + theme(legend.title = element_blank())
+
+print(paste("Saving", benchmark.id, script.variant))
 
 plot.save(
 	directory = paste("./img", sep = "/"),

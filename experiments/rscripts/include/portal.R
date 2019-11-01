@@ -4,7 +4,7 @@
 #===============================================================================
 
 if (!exists(script.variant)) {
-	script.variant <- "all"
+	script.variant <- "essential"
 }
 
 benchmark.id                <- "portal"
