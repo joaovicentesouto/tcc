@@ -32,6 +32,10 @@ dissertation/imgs/*.pdf
 dissertation/imgs/*.jpg
 dissertation/imgs/*.png
 
+# Vim
+*.swp
+*.swo
+
 # Folders
 dissertation/_minted-main/
 *.DS_Store
