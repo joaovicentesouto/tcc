@@ -161,7 +161,7 @@
 			\centering%
 			\caption{Throughput of the Portal.}%
 			\label{fig:exp-portal}%
-			\includegraphics[width=.6\textwidth]{portal-throughput.pdf}%
+			\includegraphics[width=.7\textwidth]{portal-throughput.pdf}%
 			\fonte{Develop by the Author.}%
 		\end{figure}
 
@@ -193,14 +193,15 @@
 		exists only one node sending the messages impacts Mailbox latency.
 		Finally, the linear behavior of the Ping-Pong routine is tailored
 		by the overhead of sending messages to requesters. It can be noted
-		that Ping-Pong can be equated to the sum of Gather and Broadcast
-		costs, where despite the benefits of receiving requests in parallel,
-		the master spends most of his time handling requests sequentially.
+		that Ping-Pong has a slightly higher cost than the sum of Gather
+		and Broadcast costs, where despite the benefits of receiving
+		requests in parallel, the master spends most of his time handling
+		requests sequentially.
 
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Latency of the Mailbox.}%
 			\label{fig:exp-mailbox}%
-			\includegraphics[width=.6\textwidth]{mailbox-latency.pdf}%
+			\includegraphics[width=.7\textwidth]{mailbox-latency.pdf}%
 			\fonte{Develop by the Author.}%
 		\end{figure}
