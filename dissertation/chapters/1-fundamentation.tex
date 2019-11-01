@@ -198,14 +198,25 @@
 			The system calls are performed by the calling \cpu, avoiding concurrency issues.
 			Also, a producer-consumer model is sufficient for two different \cpus to communicate.
 
-			\todo[inline]{Márcio: Figs. 6 and 7 can be side-by-side.}
-
 			\begin{figure}[!tb]
-				\centering%
-				\caption{Replicated OS model.}%
-				\label{fig:replicated-os}%
-				\includegraphics[width=.4\textwidth]{replicated-os.pdf}%
-				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+				\centering
+
+				\begin{minipage}{.47\textwidth}
+					\centering
+					\caption{Replicated OS model.}
+					\label{fig:replicated-os}
+					\includegraphics[width=\textwidth]{replicated-os.pdf}
+					\fonte{Adapted from \citeonline{tanenbaum:4ed}.}
+				\end{minipage}%
+				\hfill% 
+				\begin{minipage}{.47\textwidth}
+					\centering
+					\caption{Master-Slave OS model.}
+					\label{fig:master-slave-os}
+					\includegraphics[width=\textwidth]{master-slave-os.pdf}
+					\fonte{Adapted from \citeonline{tanenbaum:4ed}.}
+				\end{minipage}%
+
 			\end{figure}
 
 			Notwithstanding, this model has imperceptible aspects~\cite{tanenbaum:4ed}.
@@ -232,14 +243,6 @@
 			the bottleneck of the system if it can not handle the number of the
 			incoming requests.
 
-			\begin{figure}[!tb]
-				\centering%
-				\caption{Master-Slave OS model.}%
-				\label{fig:master-slave-os}%
-				\includegraphics[width=.4\textwidth]{master-slave-os.pdf}%
-				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-			\end{figure}
-
 			Finally, the Symmetric model, called \smp, eliminates the centralization
 			problem of the foregoing model, as illustrated in \autoref{fig:smp-os}.
 			So, there is still only one copy of the \os structures but it is shared in memory.
@@ -257,7 +260,7 @@
 				\centering%
 				\caption{Symmetric OS model.}%
 				\label{fig:smp-os}%
-				\includegraphics[width=.55\textwidth]{symmetric-os.pdf}%
+				\includegraphics[width=.47\textwidth]{symmetric-os.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
@@ -323,6 +326,8 @@
 					{Grid.}%
 					{\includegraphics[width=\linewidth]{net-grid.pdf}}%
 
+				\vspace{0.5cm}%
+
 				\subcaptionminipage[fig:net-torus]%
 					{.25\linewidth}%
 					{Torus.}%
@@ -364,7 +369,7 @@
 				\centering%
 				\caption{Simple Multicomputer Example.}%
 				\label{fig:multicomputer}%
-				\includegraphics[width=.8\textwidth]{multicomputer.pdf}%
+				\includegraphics[width=.85\textwidth]{multicomputer.pdf}%
 				\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
 			\end{figure}
 
@@ -414,14 +419,14 @@
 				\label{fig:calls-types}%
 
 				\subcaptionminipage[fig:call-sync]%
-					{.9\linewidth}%
+					{.85\linewidth}%
 					{Synchronous call on sender node.}%
 					{\includegraphics[width=\linewidth]{call-sync.pdf}}%
 
-				\hfill
+				\vspace{0.5cm}%
 
 				\subcaptionminipage[fig:call-async]%
-					{.9\linewidth}%
+					{.85\linewidth}%
 					{Asynchronous call on sender node.}%
 					{\includegraphics[width=\linewidth]{call-async.pdf}}%
 
@@ -568,7 +573,7 @@
 		\centering%
 		\caption{Conceptual goals of the Nanvix OS.}%
 		\label{fig:nanvix-goal}%
-		\includegraphics[width=.4\textwidth]{nanvix-goal.pdf}%
+		\includegraphics[width=.5\textwidth]{nanvix-goal.pdf}%
 		\fonte{Adapted from \citeonline{penna:sbesc19}}%
 	\end{figure}
 
@@ -606,7 +611,7 @@
 			\centering%
 			\caption{Structural overview of the Nanvix HAL.}%
 			\label{fig:hal-overview}%
-			\includegraphics[width=.4\textwidth]{nanvix-hal-overview.pdf}%
+			\includegraphics[width=.5\textwidth]{nanvix-hal-overview.pdf}%
 			\fonte{Adapted from \citeonline{penna:compas19}}%
 		\end{figure}
 
@@ -655,7 +660,7 @@
 			\centering%
 			\caption{Concept Structural overview of the Nanvix Microkernel.}%
 			\label{fig:microkernel-overview}%
-			\includegraphics[width=.4\textwidth]{nanvix-microkernel-overview.pdf}%
+			\includegraphics[width=.5\textwidth]{nanvix-microkernel-overview.pdf}%
 			\fonte{Adapted from \citeonline{penna:sbesc19}}%
 		\end{figure}
 
@@ -699,13 +704,11 @@
 		\os structures.
 		Kernel calls that only query static parameters or structures (performing cache invalidation) are made locally.
 
-		\todo[inline]{Márcio:Ficou estranha essa caixa grande preta da Fig. 16. Não entendi o motivo de ter uma caixa preta desse tamanho.}
-
 		\begin{figure}[!tb]
 			\centering%
 			\caption{Execution example of the Nanvix microkernel.}%
 			\label{fig:microkernel-execution}%
-			\includegraphics[width=.8\textwidth]{nanvix-microkernel-execution.pdf}%
+			\includegraphics[width=.9\textwidth]{nanvix-microkernel-execution.pdf}%
 			\fonte{Developed by the Author.}%
 		\end{figure}
 
@@ -769,11 +772,20 @@
 		\nanvix \multikernel, where client-side interfaces abstract the communication
 		with servers distributed on the processor.
 		
-		\autoref{fig:multikernel-shm} exemplifies the existing layers to provide the \shm service.
-		When opening an \shm, the client does not have to worry about where data
-		will be allocated or whether other cores in other clusters are operating
-		over the same memory region.
-		\todo[inline]{Falou-se pouco da Fig. 18. Deves descrever, de forma geral, o que é cada um dos blocos.}
+		\autoref{fig:multikernel-shm} exemplifies the existing layers to provide
+		the \shm service. When opening an \shm, the client does not have to worry
+		about where data will be allocated or whether other cores in other clusters
+		are operating over the same memory region.
+		The \shm is divided into two blocks, the server block (\shm server) and the
+		client block (\posix \shm). The server block runs in a cluster in isolation,
+		receiving client requests, and triggering updates to shared regions in the
+		clusters. The client block contains several interfaces for requesting services.
+		The \shm is developed over the \rmem service, which actually performed
+		the memory upgrade. The name server maintains a mapping of server names to
+		node IDs to provide server location independence. All servers and clients
+		run on one instance of the microkernel, \eg requesting communication services.
+		Client interfaces, following the \posix standard, abstract the control,
+		location, and manipulation of distributed memory.
 		Consequently, we provide greater programmability and software portability
 		for manycores processors.
 
