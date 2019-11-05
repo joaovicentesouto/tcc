@@ -20,7 +20,7 @@
 	aplicações devido à natureza distribuída dos \manycores. O objetivo
 	deste trabalho é propor mecanismos de comunicação entre clusters
 	para o processador \manycore emergente MPPA-256. Estes mecanismos
-	faz parte de uma Camada de Abstração de Hardware genérica e flexível
+	fazem parte de uma Camada de Abstração de Hardware genérica e flexível
 	para \lightweight \manycores. A Camada de Abstração de Hardware lida
 	diretamente com os principais problemas encontrados no projeto de um
 	sistema operacional para esses processadores. Sob estes mecanismos,
@@ -29,12 +29,13 @@
 	um esqueleto básico para as abstrações de sistema. As contribuições
 	desta dissertação estão inseridas em um contexto de pesquisa mais
 	amplo, que procura investigar a criação de um sistema operacional
-	distribuído baseado em uma abordagem multikernel, denominado Nanvix OS.
-	O Nanvix OS se concentrará em questões de programabilidade e
-	portabilidade através de um sistemas operacional compatível com o
-	padrão POSIX para \lightweight \manycore. Os resultados mostraram
-	a adequação dos mecanismos no comportamento esperado das abstrações
-	de comunicação entre clusters.
+	distribuído baseado em uma abordagem multikernel, denominado
+	\textit{Nanvix OS}. O Nanvix OS se concentrará em questões de
+	programabilidade e portabilidade através de um sistemas operacional
+	compatível com o padrão POSIX para \lightweight \manycore. Os
+	resultados apresentam como algoritmos distribuídos conhecidos podem
+	ser eficientemente suportados pelo Nanvix OS e incentivam melhorias
+	providas pelo uso adequado dos aceleradores DMA.
 
 	% Atenção! a BU exige separação através de ponto (.). Ela recomanda de 3 a 5 keywords
 	\vspace{\baselineskip}
@@ -66,9 +67,9 @@
 	that aims to investigate the creation of a distributed \os based on a
 	multikernel approach, called \textit{Nanvix OS}. Nanvix OS focuses on
 	programmability and portability issues for manycores through a
-	POSIX-compliant \os. The results showed the adequacy of
-	the mechanisms in the expected behavior of the inter-cluster
-	communication abstractions.
+	POSIX-compliant \os. The results present how well known
+    distributed algorithms can be efficiently supported by Nanvix OS and
+    encourage improvements provided by the proper use of DMA accelerators.
 
 	\vspace{\baselineskip}
 	\textbf{Keywords:} HAL. Distributed Operating System. Lightweight Manycore. Kalray MPPA-256.
