@@ -1,44 +1,56 @@
 \chapter{Experiments}
 \label{ch.experiments}
 
+\todo[inline]{Se possível, para facilitar a leitura e análise de
+resultados, separar o capítulo em duas grandes seções. Na primeira,
+voce expõe toda a metodologia experimental (ex: descreve os
+benchmarks, explica o motivo deles terem sido
+escolhidos, quais os parametros, etc). Na segunda seção
+você mostra e discute os resultados.}
+
 % Neste capítulo
-	This chapter evaluates the performance of Nanvix Microkernel Services for
-	data exchange on \mppa, \ie \mailbox and \portal. The micro-benchmarks seek to
-	stimulate different collective communication configurations that are common in a
-	distributed system and present in the high-level services exported by Nanvix
-	Multikernel. For instance, message exchange between servers and clients, work
-	distribution, and collection of distribution results. Although the \sync service
-	has no specific experiments, it was used in all benchmarks to synchronize all nodes
-	before commencing communications.
+	This chapter evaluates the performance of communication services
+	(\ie \mailbox and \portal) of the Nanvix Microkernel in \mppa. To do
+	so, we relied in micro-benchmarks that seek to stimulate different
+	collective communication configurations that are usually found in 
+	distributed systems and present in the high-level services exported
+	by Nanvix Multikernel. For instance, message exchanging between
+	servers and clients, work distribution, and gathering
+	results. Noteworthy, although the \sync does not directly appear in
+	our performance analysis, it was used in all benchmarks to
+	synchronize clusters different peers of the system.
 
 % Como foram medidos os dados
 	Micro-benchmarks measured the data volume and communication latency of each
-	service through the \ioctl interface. In each cluster, only 1 \pe was used
+	service through the \ioctl interface. In each cluster, only one  \pe was used
 	to run the application. This \pe requested microkernel services to perform
 	communication. In \iocluster, only one of the available interfaces was used
 	because of the necessity to use the interface associated with the logical ID
-	of the node. The \iocluster also plays the master role when the communication
-	routine requires a master-slave behavior.
+	of the node. Additionally, in our experiments, the \iocluster also
+	plays the master role when the communication routine requires a
+	master-slave behavior.
 
 % Quantas iterações, limitações de memória e desvio padrão
 	\mppa has intrinsic characteristics that guarantee low variability between runs.
-	Thus, 50 iterations of each benchmark were performed. The first ten iterations
-	were discarded to eliminate the warm-up period. Finally, all results showed a
-	standard error of less than 1\%.
+	Thus, 50 iterations of each benchmark were performed. For each
+	experiment, the first ten iterations
+	were discarded to eliminate undesired warm-up effects. Finally, all
+	results discussed bellow preset a standard error inferior to 1\%.
 
 	\section{Micro-benchmarks}
 
-		To analyze the performance of the Communication Services, we used the typical
-		routines for collective communication of \mpi and common behaviors between
-		clients and servers. The following subsections conceptually introduced each
-		of these routines and behaviors.
+		To analyze the performance of the communication services, we
+		relied in collective communication patters of \mpi, as well as
+		common behaviors between clients and servers. The following
+		subsections conceptually introduced each of these routines and
+		behaviors.
 
 		\subsection{Broadcast}
 
-			Broadcast is the most common technique among collective communication
-			routines of the \mpi. In this routine, a node sends the same data to
-			all existing nodes. This submission can be implemented in several ways,
-			as such, flat tree, binary tree, double tree, and chain~\cite{mpi-survey}.
+			Broadcast is the most widely used communication pattern
+			in \mpi. In this routine, a node sends the same data to
+			all existing nodes. This process may be implemented in several ways,
+			such as, flat tree, binary tree, double tree, and chain~\cite{mpi-survey}.
 			\autoref{fig:exp-broadcast} presents the flat tree algorithm used in
 			the benchmark. The flat tree defines that the root node should send
 			data to everyone without delegating this function to other nodes.
@@ -115,12 +127,14 @@
 
 	\section{Portal Throughput Analysis}
 
-		The first experiment sought to analyze the throughput provided by the
-		Portal service. All micro-benchmarks involve 1 \iocluster and 16 \cclusters.
-		\autoref{fig:exp-portal} shows the transfer rate in MB/s, varying the size
-		of the buffer to be transmitted from 4~KB to 64~KB. They have not been
-		tested with values larger because of the memory limitation in the \cclusters.
-		For instance, AllGather requires approximately a total space of 1~MB ($17 nodes \times 64 KB$).
+		The first experiment sought to analyze the throughput provided
+		by the Portal service. All micro-benchmarks involve 1 \iocluster
+		and 16 \cclusters.  \autoref{fig:exp-portal} shows the transfer
+		rate in MB/s, varying the size of the buffer to be transmitted
+		from 4~KB to 64~KB. Larger values were not studied due to
+		limitation on physical memory size in \cclusters (\ie 2~MB).
+		For instance, AllGather requires approximately a total space of
+		1~MB ($17 nodes \times 64 KB$).
 
 		Results exhibit three distinct behaviors in the Portal results. First,
 		the Broadcast was expected to have the worst transmission rate due to
@@ -134,10 +148,24 @@
 		the Portal is only performed when allowed by the receiver. Finally,
 		the AllGather routine exhibited the best results because of the
 		parallelism of communications. Also, each communication pair co-occur,
-		and multiple read/write requests not happen int the same time on a node,
+		and multiple read/write requests not happen in the same time on a node,
 		softening the interruption of the master core. Overall, the results
 		were as expected, but we believe that the use of \dma accelerators could
-		significantly improve Portal performance.
+		significantly improve performance of Portal.
+
+		\todo[inline]{No texto acima, alertar que o ping-pong e gather
+			estão sobrepostos.}
+
+		\todo[inline]{Remotar brevemente que a discussao de não ter
+			usado DMA é apresentada na seção X}.
+
+		\todo[inline]{Traçar conclusões qualitativas dos resultados,
+			fazendo um paralelo com um sistema operacional. Por exemplo,
+		um portal é usado para grandes transferencia de dados, então
+			deve ser usado por subsistemas que exigem essa feature como
+		sistema de arquivos e paginacao. Nesse caso, um tamanho
+		favorecendo throughput um tamanho adequado seria 8 ou 16, pela
+		inclinacao de todas as linhas nos padroes executados.}
 
 		\begin{figure}[!tb]
 			\centering%
@@ -159,7 +187,7 @@
 		\iocluster also participates in communications.
 
 		\autoref{fig:exp-mailbox} presents the results of the experiments.
-		Generally speaking, the routines presented the expected behaviors.
+		Overall, the routines presented the expected behaviors.
 		First, Gather routine, one of the essential routines, had the best
 		results because receiving the messages occurs in parallel. Thus,
 		the cost after the first message is the overhead of the service
@@ -175,6 +203,19 @@
 		and Broadcast costs, where despite the benefits of receiving
 		requests in parallel, the master spends most of his time handling
 		requests sequentially.
+
+		\todo[inline]{Sempre que você disser que o comportamento foi
+			como o esperado, explicar antes o porque você esperava
+				aquele comportamento.}
+
+		\todo[inline]{Novamente, fazer um paralelo qualitativo dos
+		resultados com o uso dessas primitivas no sistema. Ping-pong
+		evidencia a latencia de comunicacao entre os subsistemas
+		do Nanvix com o kernel remoto, mostrando um potencial
+		para melhora com DMA pela plataforma. Broadcast, all
+		gather e gather evidenciam como algoritmos
+		distribuídos de concensus podem ser suportados
+		de forma eficiente no multikernel.}
 
 		\begin{figure}[!tb]
 			\centering%
