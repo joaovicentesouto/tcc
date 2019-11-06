@@ -578,8 +578,8 @@
 	\end{figure}
 
 	Nanvix \os is composed of three distinct kernel layers.
-	In a bottom-up approach of abstraction level, they are namely \nanvix \hal,
-	\nanvix \microkernel, and \nanvix \multikernel.
+	In a bottom-up approach of abstraction level, they are namely \textit{\nanvix \hal},
+	\textit{\nanvix \microkernel}, and \textit{\nanvix \multikernel}.
 	The next sections will introduce the concepts and problems addressed by
 	each layer.
 
@@ -646,7 +646,7 @@
 	\subsection{Nanvix Microkernel}
 	\label{sec.microkernel}
 
-		The \nanvix \microkernel, running above the \hal, provides
+		The \textit{\nanvix \microkernel}, running above the \hal, provides
 		bare bones system abstractions to the client applications~\cite{penna:sbesc19}.
 		Through a rich system call interface, it follows a Master-Slave \os model
 		to avoid cache coherence issues present in manycores.
@@ -691,7 +691,7 @@
 		\end{description}
 
 		\autoref{fig:microkernel-execution} details how thread creation
-		happens on \nanvix \microkernel.
+		happens on Nanvix \microkernel.
 		When a user thread makes a kernel call, a set of sanity checks are performed
 		to ensure the integrity of the operation.
 		After verifying the correctness of the parameters, the user thread notifies
@@ -715,7 +715,7 @@
 	\subsection{Nanvix Multikernel}
 	\label{sec.multikernel}
 
-		The \nanvix \multikernel follows a multikernel design, where \os services
+		The \textit{\nanvix \multikernel} follows a multikernel design, where \os services
 		are scattered across clusters and interact with user processes through a
 		Client-Server model.
 		Ideally, \os services run in isolation from user processes.
@@ -723,7 +723,7 @@
 		cooperate with other processes.
 
 		Research that explores the parallel and distributed nature of multicore and
-		manycore processors inspires the \nanvix \multikernel~\cite{wentzlaff_factored_2009, baumann_multikernel:_2009, Wisniewski2014}.
+		manycore processors inspires the Nanvix \multikernel~\cite{wentzlaff_factored_2009, baumann_multikernel:_2009, Wisniewski2014}.
 		By treating the processor as a network of independent cores, it is possible
 		to cover concepts of modern distributed systems.
 		At this level of abstraction, the following distributed system concepts can be exploited:
@@ -747,12 +747,12 @@
 		\end{description}
 
 		\autoref{fig:multikernel-overview} shows a possible configuration of a
-		manycore using the \nanvix \multikernel.
+		manycore using the Nanvix \multikernel.
 		Clusters located at the corners of the processor run kernel services
 		to better serve a nearby subset of clusters.
 		In the other clusters, we can see the distribution of two distinct applications.
 		An application does not necessarily need to use all cores in a cluster.
-		Now, looking carefully at a cluster, we can see that \nanvix \microkernel
+		Now, looking carefully at a cluster, we can see that Nanvix \microkernel
 		always reserves a single core for kernel execution, making the other cores
 		available for application execution.
 
@@ -764,12 +764,12 @@
 			\fonte{Adapted from \citeonline{penna:sbesc19}}%
 		\end{figure}
 
-		To enable Nanvix \os compliance with \posix, the \nanvix \multikernel is
+		To enable Nanvix \os compliance with \posix, the Nanvix \multikernel is
 		made up of high-level \os services that implement standardized interfaces.
 		It exports both the client and server interfaces developed atop	the
 		Nanvix Microkernel services.
 		From this perspective, user applications are easily ported to run on
-		\nanvix \multikernel, where client-side interfaces abstract the communication
+		Nanvix \multikernel, where client-side interfaces abstract the communication
 		with servers distributed on the processor.
 		
 		\autoref{fig:multikernel-shm} exemplifies the existing layers to provide

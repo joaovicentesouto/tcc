@@ -2,38 +2,38 @@
 
 \begin{resumo}[Resumo]
 	Em conjunto com a maior escalabilidade e eficiência energética, os
-	\lightweight \manycores trouxeram um novo conjunto de desafios no
+	\textit{\lightweight \manycores} trouxeram um novo conjunto de desafios no
 	desenvolvimento de software provenientes de suas particularidades
 	arquiteturais. Neste contexto, sistemas operacionais tornam o
 	desenvolvimento de aplicações menos onerosos, menos suscetíveis a
 	erros e mais eficientes. A camada de abstração provido pelos
 	sistemas operacionais suprime as características do hardware sob
-	uma perspectiva simplificada e eficez. No entanto, parte dos desafios
-	de desenvolvimento encontrados em \lightweight \manycores deriva
+	uma perspectiva simplificada e eficaz. No entanto, parte dos desafios
+	de desenvolvimento encontrados em \textit{\lightweight \manycores} deriva
 	diretamente de \textit{runtimes} e sistemas operacionais existentes,
 	que não lidam completamente com a complexidade arquitetural desses
 	processadores. Nós acreditamos que sistemas operacionais para a
-	próxima geração de \lightweight \manycores necessitam ser repensados
+	próxima geração de \textit{\lightweight \manycores} necessitam ser repensados
 	a partir de seus conceitos básicos levando em consideração as severas
 	restrições arquiteturais. Em particular, as abstrações de comunicação
 	desempenham um papel crucial na escalabilidade e desempenho das
-	aplicações devido à natureza distribuída dos \manycores. O objetivo
+	aplicações devido à natureza distribuída dos \textit{\manycores}. O objetivo
 	deste trabalho é propor mecanismos de comunicação entre clusters
-	para o processador \manycore emergente MPPA-256. Estes mecanismos
-	fazem parte de uma Camada de Abstração de Hardware genérica e flexível
-	para \lightweight \manycores. A Camada de Abstração de Hardware lida
+	para o processador \textit{\manycore} emergente MPPA-256. Estes mecanismos
+	fazem parte de uma Camada de Abstração de Hardware (HAL) genérica
+	e flexível para \textit{\lightweight \manycores} que lida
 	diretamente com os principais problemas encontrados no projeto de um
 	sistema operacional para esses processadores. Sob estes mecanismos,
 	serviços de comunicação também serão propostos para um sistema
 	operacional baseado no modelo \textit{microkernel}, que busca fornecer
-	um esqueleto básico para as abstrações de sistema. As contribuições
+	um esqueleto básico para as abstrações de comunicação. As contribuições
 	desta dissertação estão inseridas em um contexto de pesquisa mais
 	amplo, que procura investigar a criação de um sistema operacional
 	distribuído baseado em uma abordagem multikernel, denominado
 	\textit{Nanvix OS}. O Nanvix OS se concentrará em questões de
 	programabilidade e portabilidade através de um sistemas operacional
-	compatível com o padrão POSIX para \lightweight \manycore. Os
-	resultados apresentam como algoritmos distribuídos conhecidos podem
+	compatível com o padrão POSIX para \textit{\lightweight \manycore}. Os
+	resultados mostram como algoritmos distribuídos conhecidos podem
 	ser eficientemente suportados pelo Nanvix OS e incentivam melhorias
 	providas pelo uso adequado dos aceleradores DMA.
 
@@ -62,7 +62,7 @@
 	with the key issues encountered in designing an \os for these processors.
 	Above this facility, communication services will also be proposed for an
 	\os based on the \textit{microkernel} model, which seeks to provide a
-	basic framework for system abstractions. The contributions of this
+	basic framework for communication abstractions. The contributions of this
 	undergraduate dissertation are embedded in a broader research context
 	that aims to investigate the creation of a distributed \os based on a
 	multikernel approach, called \textit{Nanvix OS}. Nanvix OS focuses on

@@ -6,7 +6,7 @@
 	work and discusses how \mppa hardware was used to provide three communication abstractions for
 	\nanvix \textit{\hal} and the challenges and solutions encountered during development.
 	Next, \autoref{sec.user-level-comm} presents a standard view of the user services
-	developed for the \nanvix \microkernel that make use of the low-level interface.
+	developed for the \textit{\nanvix \microkernel} that make use of the low-level interface.
 
 	\section{Low-Level Communication}
 	\label{sec.low-level-comm}
@@ -63,7 +63,7 @@
 			permissions and ensuring cache consistency of operations. Finally, it is
 			noteworthy that there is no concurrency control over the commented
 			structures so as not to inflict a cost over the microkernel approach.
-			If the \nanvix \hal is used to develop a monolithic \os, it should be
+			If the Nanvix \hal is used to develop a monolithic \os, it should be
 			concerned with ensuring atomic operations.
 
 			The \dma coordinates three interruption lines. Two of these are used by
@@ -137,7 +137,7 @@
 			of the \cnoc and \dnoc are  partitioned by abstraction. Within a
 			partition, each slot is statically mapped to a logical ID, \eg 0 to 23 mappings.
 			In contrast, transfer channels can be dynamically allocated. However,
-			an essential concept of Nanvix HAL is to provide the resources required for
+			an essential concept of Nanvix \hal is to provide the resources required for
 			a given operation without performing additional optimizations. Thus, the
 			transfer channels were also partitioned by abstraction so that they are
 			reserved for an entire job. \autoref{tab.noc-resources} presents each
@@ -190,7 +190,7 @@
 		\subsection{General Concepts of Communication Abstractions}
 		\label{sec.general-concepts}
 
-			Technically, \nanvix \hal is not just designed for use by a
+			Technically, Nanvix \hal is not just designed for use by a
 			microkernel \os. Thus, we must ensure a standard behavior
 			that does not affect the functionality of the upper layer,
 			whether it is a replicated, microkernel or shared \os. The
@@ -344,7 +344,7 @@
 % O que é a interface?
 % Quais são os parâmetros para realizar uma operação?
 				\autoref{code:hal-sync-receiver} introduces the \sync interface for
-				receiver nodes proposed for the \nanvix \hal. The parameters required
+				receiver nodes proposed for the Nanvix \hal. The parameters required
 				for creating a synchronization point are a list of logical IDs, list size,
 				and mode of synchronization. The list must always be initialized
 				with the master node ID, regardless of the mode. The remaining identifiers,
@@ -501,7 +501,7 @@ int sync_signal(int syncid);
 			notifies the sender.
 			
 			In theory, the number of messages allowed per sender can be from
-			$1$ to $N$. However, \nanvix \hal statically allocates sufficient
+			$1$ to $N$. However, Nanvix \hal statically allocates sufficient
 			memory for the message queue inside the kernel. Therefore, we chose
 			to allow only one message due to memory constraints presented by
 			lightweight manycores. Furthermore, using one message is sufficient	for
@@ -758,7 +758,7 @@ int portal_wait(int portalid);
 		of the upper layers negatively.
 		For this, it does not provide rich management of the exposed abstractions.
 
-		In this scenario, the communication services of \nanvix \microkernel seek
+		In this scenario, the communication services of Nanvix \microkernel seek
 		to provide \ipc between distinct clusters.
 		Specifically, these services perform the multiplexing of the hardware
 		resources and the verification of the parameters that will be passed
@@ -772,7 +772,7 @@ int portal_wait(int portalid);
 		the construction of more complex services, the \microkernel services
 		were responsible for the management and multiplexing of the finite
 		resources for the many cores of a cluster.
-		In total, there are three communication services in the \nanvix \microkernel,
+		In total, there are three communication services in the Nanvix \microkernel,
 		each associated with an abstraction of the communication module,
 		analogously named \sync, \mailbox, and \portal services.
 		These services must take into account the memory constraints and the

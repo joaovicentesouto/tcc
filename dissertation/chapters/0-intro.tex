@@ -57,7 +57,7 @@
 	of Defense issued a report stipulating the energy efficiency of a
 	supercomputer should be around 50 GFLOPS/\watts~\cite{darpa:exascale}. 
 	To cope with this energy constraint, a new class of
-	parallel processors, called \lightweight \manycores, emerged to
+	parallel processors, called \textit{\lightweight \manycores}, emerged to
 	provide high parallelism with low power consumption.
 	Lightweight manycores differ from traditional large-scale
 	multicores and manycores in several points: 
@@ -121,11 +121,11 @@
 	architectural constraints. Based on this idea, a new fully-featured
 	distributed \os based on a multikernel approach~\cite{Baumann2009}
 	is under investigations~\cite{penna2017-1,penna2017-2,penna2019}.
-	The \nanvix \multikernel features a generic and flexible \hal for
+	The \textit{\nanvix \multikernel} features a generic and flexible \hal for
 	\lightweight \manycores that addresses the key issues encountered in
-	the development for these processors. On top of the \nanvix
-	\textit{\hal}, a microkernel is being designed and implemented
-	to provide the bare bones of the most important system abstractions.
+	the development for these processors. On top of the \textit{\nanvix \hal},
+	a microkernel is being designed and implemented to provide the bare bones
+	of the most important system abstractions.
 
 \section{Goals}
 \label{sec.goals}
@@ -137,14 +137,14 @@
 \label{sec.goals.main}
 
 	The main goal of this undergraduate dissertation is to propose an
-	\textit{Inter-Cluster Communication Module} to the \nanvix
-	\textit{\hal} and port it to the \mppa manycore
-	processor~\cite{DeDinechin2013-1}. This module exposes the
-	essential abstractions that allow overlying layers to create richer
-	communication services. Using this module, we also
-	propose \textit{Inter-Cluster Communication Services} to the \nanvix
-	\microkernel. This work is part of the collaborative project between
-	\ufsc, \pucminas, and \uga to develop an \os for \lightweight \manycore platforms.
+	\textit{Inter-Cluster Communication Module} to the \textit{\nanvix \hal}
+	and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
+	This module exposes the essential abstractions that allow overlying
+	layers to create richer communication services. Using this module, we
+	also propose \textit{Inter-Cluster Communication Services} to the
+	\textit{\nanvix \microkernel}. This work is part of the collaborative
+	project between \ufsc, \pucminas, and \uga to develop an \os for
+	\lightweight \manycore platforms.
 
 \subsection{Specific Goals}
 \label{sec.goals.specific}
@@ -152,11 +152,11 @@
 	\begin{itemize}
 		\item Definition and proposal of an \textit{Inter-Cluster Communication Interface} for lightweight manycores;
 
-		\item Implementation of the proposed interface in the \nanvix \hal for the \mppa lightweight manycore processor;
+		\item Implementation of the proposed interface in the \textit{Nanvix \hal} for the \mppa lightweight manycore processor;
         
-		\item Integration of the \nanvix \hal interface with the \nanvix \microkernel;
+		\item Integration of the Nanvix \hal interface with the \textit{Nanvix \microkernel};
 		
-		\item Performance evaluation of \nanvix \microkernel implementation using synthetic micro-benchmarks that reproduce the \textit{collective communication routines} of the \mpi programming model.
+		\item Performance evaluation of Nanvix \microkernel implementation using synthetic micro-benchmarks that reproduce the \textit{collective communication routines} of the \mpi programming model.
 	\end{itemize}
 
 \section{Organization Of The Work}
