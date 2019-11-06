@@ -10,9 +10,9 @@
 	each cluster. Noteworthy, the \sync was used in all benchmarks to
 	synchronize the nodes involved due to the different boot times and
 	the distinct node roles. The evaluation is divided into two sections.
-	First, Section \autoref{sec.evaluation-methodology} describes the
+	First, \autoref{sec.evaluation-methodology} describes the
 	micro-benchmarks, their motivations, and the parameters used. Second,
-	Section \autoref{sec.experimental-results} unveil and discusses our
+	\autoref{sec.experimental-results} unveil and discusses our
 	experimental results.
 
 	\section{Evaluation Methodology}
@@ -21,7 +21,7 @@
 		To deliver a comprehensive assessment of the communication service, we
 		stimulate the services with usual collective communication configurations.
 		These configurations are usually found in distributed systems and present
-		in the high-level services exported by Nanvix Multikernel. For instance,
+		in the high-level services exported by Nanvix Multikernel, such as
 		message exchanging between servers and clients, work distribution, and
 		gathering results.
 
@@ -39,7 +39,7 @@
 			To analyze the performance of the communication services, we
 			relied in collective communication patters of \mpi, as well as
 			common behaviors between clients and servers. The following
-			subsections conceptually introduced each of these routines and
+			subsections conceptually introduce each of these routines and
 			behaviors.
 
 			\subsubsection{Broadcast}
@@ -146,7 +146,7 @@
 			between runs. Thus, 50 iterations of each benchmark were performed.
 			For each experiment, the first ten iterations were discarded to
 			eliminate undesired warm-up effects. Finally, all results discussed
-			bellow preset a standard error inferior to 1\%.
+			bellow present a standard error inferior to 1\%.
 
 			\begin{table}[!tb]
 				\centering%
@@ -181,7 +181,7 @@
 			three distinct behaviors in the experiments. First, the Broadcast was
 			expected to have the worst transmission rate due to the use of a single
 			data transmitter. Since the measurement was done on the receiver side,
-			the last slave had to wait for master transmits to all other nodes,
+			the last slave had to wait for the master to transmit data to all other nodes,
 			considerably reducing the transfer rate in the Broadcast. Second, the
 			Gather and Ping-Pong routines exhibited similar results, overlapping
 			each other on the chart. This similarity is because the master node
@@ -189,8 +189,8 @@
 			The master node dictated the data flow in both benchmarks because
 			transmission is only performed when allowed by the receiver. Finally,
 			the AllGather routine exhibited the best results because of the
-			parallelism of communications. Also, each communication pair co-occur,
-			and multiple read/write requests not happen at the same time on a node,
+			parallelism of communications. Each communication pair is done in parallel
+			and multiple read/write requests do not happen at the same time on a node,
 			softening the interruption of the master core. In the context of \oss,
 			we have subsystems requiring large data transfers, such as file and
 			paging systems. In this case, observing the slope of the lines,
@@ -218,13 +218,13 @@
 			not the communication. Second, the AllGather routine exhibited similar
 			behavior to Gather because sending messages occurs before the reading
 			begins. So, when the clusters start reading, the latest messages are
-			already coming. The Broadcast routine also suffers from the same evil
-			as the on Portal benchmark, where because exists only one node sending
-			the messages impacts Mailbox latency. Finally, the overload of sending
+			already coming. The Broadcast routine also suffers from the same problem
+			as the Portal routine, because there is only one node sending
+			the messages. Finally, the overload of sending
 			messages to requesters caused the linear behavior of the Ping-Pong
 			routine. In this case, Ping-Pong has a slightly higher cost than the
 			sum of Gather and Broadcast costs, because, despite the benefits of
-			receiving requests in parallel, the master spends most of his time
+			receiving requests in parallel, the master spends most of its time
 			handling requests sequentially. Overall, Broadcast, Gather, and
 			AllGather showed how consensus distributed algorithms can be
 			efficiently supported in Nanvix Multikernel. Ping-Pong, in turn,
