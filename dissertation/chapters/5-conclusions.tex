@@ -1,12 +1,12 @@
 \chapter{Conclusions}
 \label{ch.conclusions}
 
-	Initially, this work presented a historical context of multicore processors
-    to the nowadays. By demonstrating the relationship between the growth of the
-    number of core and energy consumption, it was discussed how academia and
+	Initially, this work presented a historical evolution of processors from single core
+    to manycore. By demonstrating the relationship between the growth of the
+    number of cores and energy consumption, it was discussed how academia and
     industry began to develop alternatives to alleviate the technological barriers
     that have emerged. However, even new processors that emerge and stand out
-    because of their performance and power consumption, they lack on programmability
+    because of their performance and power consumption lack on programmability
     and portability, because of their architectural features, such as hybrid
     programming model, constrained memory subsystems, no cache coherency, and
     heterogeneous configurations. Part of the difficulty stems from the
@@ -19,27 +19,27 @@
     aspects of parallel and distributed architectures. Different models of \os
     approaches have been presented that can use the communication facility.
     Thus, to provide the essential functionalities for such \oss, three
-    communication abstractions have been proposed for \hal with the concern of
-    providing \qos. Among them is the \sync abstraction to create distributed
-    barriers. The \mailbox abstraction provides the exchange of small messages
-    with flow control. So finally, the \portal abstraction allows the exchange
+    communication abstractions have been proposed for the \nanvix \hal with the concern of
+    providing \qos: \sync, useful to create distributed
+    barriers; \mailbox, which provides the exchange of small messages
+    with flow control; and \portal, which allows the exchange
     of arbitrary amounts of data between two clusters.
 
 	Another contribution of this work was the communication services for an \os
-    based on the microkernel approach. These services provide for the multiplexing
-    of the resources exposed by \hal and the verification of the parameters for
+    based on the microkernel approach (\nanvix). These services can multiplex
+    the resources exposed by \hal and perform the verification of the parameters for
     each abstraction. In general, these services securely export the communication
     abstractions to the user, benefiting from the non-competition of \os internal
-    structures because of the separation of master and slave responsibilities.
+    structures, because of the separation of master and slave responsibilities.
 
 	The contributions of this dissertation are included in the investment of a
     distributed operating system. Several works are underway in this context,
     including a full port of the \mpi and implementation of a distributed paging
-    system using the results obtained. As future work at the \hal level, we will
+    system that will rely on the proposed abstractions. As future work at the \hal level, we will
     seek to properly utilize existing \dma $\mu$threads to perform asynchronous
-    submission and, consequently, increase the performance of abstractions. At
+    submissions and, consequently, to increase the performance of the abstractions. At
     the microkernel level, we will study the virtualization of the structures of
-    each service, and improves multiplexing algorithms, enriching the
-    programmability of applications. The results present how well known
-    distributed algorithms can be efficiently supported by Nanvix OS and
+    each service, and improve multiplexing algorithms, enriching the
+    programmability of applications. The results present how well-known
+    distributed algorithms can be efficiently supported by \nanvix \os and
     encourage improvements provided by the proper use of \dma accelerators.
