@@ -51,18 +51,18 @@ different proposed \oss for manycores in general.
 \label{sec.works.os}
 
 	\citeonline{Baumann2009} proposed a new \os design for scalable multicore
-	systems, called \multikernel.
+	systems, called Multikernel.
 	In their perspective, the next-generation of \oss should embrace the networked nature
 	of the machines, and thus borrow design ideas from large-scale distributed
 	systems.
 	Assuming that cores are independent nodes of a network, they build traditional
-	\os functionalities as fully-featured processes on userspace.
+	\os functionalities as fully-featured processes on user space.
 	These processes communicate via message-passing and do not share the internal
 	structures of the \os.
 	The work showed how expensive it is to maintain a state of the \os through
 	shared-memory instead of exchanging messages and the subsequent increase of
 	the complexity of cache-coherence protocols.
-	The \multikernel implementation, named Barelfish, follows three design principles.
+	The Multikernel implementation, named Barelfish, follows three design principles.
 	The first principle is to \textit{make all inter-core communication explicit}, which turns the system
 	amenable to human or automated analysis because processes communicate only
 	through well-defined interfaces.
@@ -122,12 +122,12 @@ different proposed \oss for manycores in general.
 	where a complex bus system makes communication transparent. Therefore, there
 	is, in fact, no network programming. 
 
-	In this context, Nanvix \hal offers the ground \os abstractions needed to make
+	In this context, \nanvixhal offers the ground \os abstractions needed to make
 	\lightweight \manycores more easy to use and program.
 	The exported interfaces sought to group lightweight manycores on a common and effective view.
-	Above the \hal, services will be developed that seek first and foremost
+	Above the \nanvixhal, services will be developed that seek first and foremost
 	to provide greater programmability and portability through a fully-featured
-	\posix-compliant \os. Nanvix \os is design specifically for manycores that require
+	\posix-compliant \os. \nanvixos is design specifically for manycores that require
 	explicit programming of communication through \noc, have
 	memory constraints and miss support for cache coherency. The combination of these
 	features makes designing an \os for \lightweight \manycores challenging.

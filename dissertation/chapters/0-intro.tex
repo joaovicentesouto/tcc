@@ -121,9 +121,9 @@
 	architectural constraints. Based on this idea, a new fully-featured
 	distributed \os based on a multikernel approach~\cite{Baumann2009}
 	is under investigations~\cite{penna2017-1,penna2017-2,penna2019}.
-	The \textit{\nanvix \multikernel} features a generic and flexible \hal for
+	The \textit{\nanvixmultikernel} features a generic and flexible \hal for
 	\lightweight \manycores that addresses the key issues encountered in
-	the development for these processors. On top of the \textit{\nanvix \hal},
+	the development for these processors. On top of the \textit{\nanvixhal},
 	a microkernel is being designed and implemented to provide the bare bones
 	of the most important system abstractions.
 
@@ -137,12 +137,12 @@
 \label{sec.goals.main}
 
 	The main goal of this undergraduate dissertation is to propose an
-	\textit{Inter-Cluster Communication Module} to the \textit{\nanvix \hal}
+	\textit{Inter-Cluster Communication Module} to the \textit{\nanvixhal}
 	and port it to the \mppa manycore processor~\cite{DeDinechin2013-1}.
 	This module exposes the essential abstractions that allow overlying
 	layers to create richer communication services. Using this module, we
 	also propose \textit{Inter-Cluster Communication Services} to the
-	\textit{\nanvix \microkernel}. This work is part of the collaborative
+	\textit{\nanvixmicrokernel}. This work is part of the collaborative
 	project between \ufsc, \pucminas, and \uga to develop an \os for
 	\lightweight \manycore platforms.
 
@@ -152,11 +152,11 @@
 	\begin{itemize}
 		\item Definition and proposal of an \textit{Inter-Cluster Communication Interface} for lightweight manycores;
 
-		\item Implementation of the proposed interface in the \textit{Nanvix \hal} for the \mppa lightweight manycore processor;
+		\item Implementation of the proposed interface in the \textit{\nanvixhal} for the \mppa lightweight manycore processor;
         
-		\item Integration of the Nanvix \hal interface with the \textit{Nanvix \microkernel};
+		\item Integration of the \nanvixhal interface with the \textit{\nanvixmicrokernel};
 		
-		\item Performance evaluation of Nanvix \microkernel implementation using synthetic micro-benchmarks that reproduce the \textit{collective communication routines} of the \mpi programming model.
+		\item Performance evaluation of \nanvixmicrokernel implementation using synthetic micro-benchmarks that reproduce the \textit{collective communication routines} of the \mpi programming model.
 	\end{itemize}
 
 \section{Organization Of The Work}

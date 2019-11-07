@@ -3,7 +3,7 @@
 
 % Neste capítulo
 	This chapter evaluates the performance of communication services of
-	the Nanvix Microkernel running on the \mppa processor, \ie \mailbox
+	the \nanvixmicrokernel running on the \mppa processor, \ie \mailbox
 	and \portal. The impacts of the synchronization mechanism were not
 	analyzed because it is a simple service that does not directly
 	influence node communication, depending greatly on the workload of
@@ -21,7 +21,7 @@
 		To deliver a comprehensive assessment of the communication service, we
 		stimulate the services with usual collective communication configurations.
 		These configurations are usually found in distributed systems and present
-		in the high-level services exported by Nanvix Multikernel, such as
+		in the high-level services exported by \nanvixmultikernel, such as
 		message exchanging between servers and clients, work distribution, and
 		gathering results.
 
@@ -227,7 +227,7 @@
 			receiving requests in parallel, the master spends most of its time
 			handling requests sequentially. Overall, Broadcast, Gather, and
 			AllGather showed how consensus distributed algorithms can be
-			efficiently supported in Nanvix Multikernel. Ping-Pong, in turn,
+			efficiently supported in \nanvixmultikernel. Ping-Pong, in turn,
 			highlights the latency of communication between Nanvix subsystems
 			with remote kernels, encouraging the potential for improvement using
 			\dma accelerators.

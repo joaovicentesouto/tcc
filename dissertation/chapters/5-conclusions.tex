@@ -19,14 +19,14 @@
     aspects of parallel and distributed architectures. Different models of \os
     approaches have been presented that can use the communication facility.
     Thus, to provide the essential functionalities for such \oss, three
-    communication abstractions have been proposed for the Nanvix \hal with the concern of
+    communication abstractions have been proposed for the \nanvixhal with the concern of
     providing \qos: \sync, useful to create distributed
     barriers; \mailbox, which provides the exchange of small messages
     with flow control; and \portal, which allows the exchange
     of arbitrary amounts of data between two clusters.
 
 	Another contribution of this work was the communication services for an \os
-    based on the microkernel approach (\nanvix). These services can multiplex
+    based on the microkernel approach (\textit{Nanvix}). These services can multiplex
     the resources exposed by \hal and perform the verification of the parameters for
     each abstraction. In general, these services securely export the communication
     abstractions to the user, benefiting from the non-competition of \os internal
@@ -41,5 +41,5 @@
     the microkernel level, we will study the virtualization of the structures of
     each service, and improve multiplexing algorithms, enriching the
     programmability of applications. The results present how well-known
-    distributed algorithms can be efficiently supported by Nanvix \os and
+    distributed algorithms can be efficiently supported by \nanvixos and
     encourage improvements provided by the proper use of \dma accelerators.
