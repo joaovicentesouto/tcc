@@ -26,17 +26,26 @@
 *.lol
 *.lot
 
-# Temporary PDFs
+# Dissertation
 dissertation/*.pdf
 dissertation/imgs/*.pdf
 dissertation/imgs/*.jpg
 dissertation/imgs/*.png
+dissertation/_minted-main/
+
+# Presentation
+presentation/*.pdf
+presentation/*.png
+presentation/*.jpg
+presentation/imgs/*.pdf
+presentation/imgs/*.png
+presentation/imgs/*.jpg
+presentation/_minted-main/
 
 # Vim
 *.swp
 *.swo
 
 # Folders
-dissertation/_minted-main/
 *.DS_Store
 *.vscode
