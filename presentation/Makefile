@@ -15,9 +15,10 @@ GNUPLOT=gnuplot
 ###################################################
 
 srcs=$(wildcard *.tex) $(wildcard *.bib)
-svgs=$(wildcard imgs/*.svg)
+svgs=$(wildcard imgs/svgs/*.svg)
 frames=$(foreach k,1 2 3 4 5,imgs/animation-$k.pdf)
 pdfs=$(svgs:.svg=.pdf) 
+others=$(wildcard imgs/others/*.pdf) $(wildcard imgs/others/*.jpg) $(wildcard imgs/others/*.png)
 
 ###################################################
 # phony targets                                   #
@@ -26,11 +27,13 @@ pdfs=$(svgs:.svg=.pdf)
 all: imgs main.robust.pdf
 
 imgs: $(pdfs)
+	mv $(pdfs) imgs
+	cp $(others) imgs
 
 .PHONY: all imgs clean
 
 clean: 
-	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log main.pdf main.robust.pdf *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *.prv _region*  *~ auto imgs/*.tmp.pdf {imgs,plots}/*-eps-converted-to.pdf; 
+	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log main.pdf main.robust.pdf *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *-*.pdf *-*.jpg *-*.png *.nav *.snm *.vrb *.prv _region*  *~ auto imgs/*.pdf {imgs,plots}/*-eps-converted-to.pdf; 
 
 ###################################################
 # SVG -> PDF conversion                           #
@@ -60,16 +63,16 @@ endef
 # Frane targets                                   #
 ###################################################
 
-imgs/animation-1.pdf: imgs/animation.svg
-	$(call svg2pdf,imgs/animation,gSlide1,imgs/animation-1)
-imgs/animation-2.pdf: imgs/animation.svg
-	$(call svg2pdf,imgs/animation,gSlide2,imgs/animation-2)
-imgs/animation-3.pdf: imgs/animation.svg
-	$(call svg2pdf,imgs/animation,gSlide3,imgs/animation-3)
-imgs/animation-4.pdf: imgs/animation.svg
-	$(call svg2pdf,imgs/animation,gSlide4,imgs/animation-4)
-imgs/animation-5.pdf: imgs/animation.svg
-	$(call svg2pdf,imgs/animation,gSlide5,imgs/animation-5)
+imgs/animation-1.pdf: imgs/svgs/animation.svg
+	$(call svg2pdf,imgs/svgs/animation,gSlide1,imgs/animation-1)
+imgs/animation-2.pdf: imgs/svgs/animation.svg
+	$(call svg2pdf,imgs/svgs/animation,gSlide2,imgs/animation-2)
+imgs/animation-3.pdf: imgs/svgs/animation.svg
+	$(call svg2pdf,imgs/svgs/animation,gSlide3,imgs/animation-3)
+imgs/animation-4.pdf: imgs/svgs/animation.svg
+	$(call svg2pdf,imgs/svgs/animation,gSlide4,imgs/animation-4)
+imgs/animation-5.pdf: imgs/svgs/animation.svg
+	$(call svg2pdf,imgs/svgs/animation,gSlide5,imgs/animation-5)
 
 ###################################################
 # main targets                                    #
