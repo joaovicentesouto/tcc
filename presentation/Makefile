@@ -16,7 +16,7 @@ GNUPLOT=gnuplot
 
 srcs=$(wildcard *.tex) $(wildcard *.bib)
 svgs=$(wildcard imgs/svgs/*.svg)
-frames=$(foreach k,1 2 3 4 5,imgs/animation-$k.pdf)
+frames=$(foreach k,1 2 3 4 5 6,imgs/processor-trend-$k.pdf)
 pdfs=$(svgs:.svg=.pdf) 
 others=$(wildcard imgs/others/*.pdf) $(wildcard imgs/others/*.jpg) $(wildcard imgs/others/*.png)
 
@@ -33,7 +33,7 @@ imgs: $(pdfs)
 .PHONY: all imgs clean
 
 clean: 
-	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log main.pdf main.robust.pdf *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *-*.pdf *-*.jpg *-*.png *.nav *.snm *.vrb *.prv _region*  *~ auto imgs/*.pdf {imgs,plots}/*-eps-converted-to.pdf; 
+	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log main.pdf main.robust.pdf *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *-*.pdf *-*.jpg *-*.png *.nav *.snm *.vrb *.prv _region*  *~ auto imgs/*.pdf imgs/*.jpg imgs/*.png {imgs,plots}/*-eps-converted-to.pdf; 
 
 ###################################################
 # SVG -> PDF conversion                           #
@@ -63,16 +63,18 @@ endef
 # Frane targets                                   #
 ###################################################
 
-imgs/animation-1.pdf: imgs/svgs/animation.svg
-	$(call svg2pdf,imgs/svgs/animation,gSlide1,imgs/animation-1)
-imgs/animation-2.pdf: imgs/svgs/animation.svg
-	$(call svg2pdf,imgs/svgs/animation,gSlide2,imgs/animation-2)
-imgs/animation-3.pdf: imgs/svgs/animation.svg
-	$(call svg2pdf,imgs/svgs/animation,gSlide3,imgs/animation-3)
-imgs/animation-4.pdf: imgs/svgs/animation.svg
-	$(call svg2pdf,imgs/svgs/animation,gSlide4,imgs/animation-4)
-imgs/animation-5.pdf: imgs/svgs/animation.svg
-	$(call svg2pdf,imgs/svgs/animation,gSlide5,imgs/animation-5)
+imgs/processor-trend-1.pdf: imgs/svgs/processor-trend.svg
+	$(call svg2pdf,imgs/svgs/processor-trend,gSlide1,imgs/processor-trend-1)
+imgs/processor-trend-2.pdf: imgs/svgs/processor-trend.svg
+	$(call svg2pdf,imgs/svgs/processor-trend,gSlide2,imgs/processor-trend-2)
+imgs/processor-trend-3.pdf: imgs/svgs/processor-trend.svg
+	$(call svg2pdf,imgs/svgs/processor-trend,gSlide3,imgs/processor-trend-3)
+imgs/processor-trend-4.pdf: imgs/svgs/processor-trend.svg
+	$(call svg2pdf,imgs/svgs/processor-trend,gSlide4,imgs/processor-trend-4)
+imgs/processor-trend-5.pdf: imgs/svgs/processor-trend.svg
+	$(call svg2pdf,imgs/svgs/processor-trend,gSlide5,imgs/processor-trend-5)
+imgs/processor-trend-6.pdf: imgs/svgs/processor-trend.svg
+	$(call svg2pdf,imgs/svgs/processor-trend,gSlide6,imgs/processor-trend-6)
 
 ###################################################
 # main targets                                    #
