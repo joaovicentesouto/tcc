@@ -43,120 +43,12 @@
 
 % Desse ponto em diante serão inseridos slides de pausa a cada \section
 % \showsections
-\section{Introduction}
 
-	\pholder[O que é um processador?]{Processadores}
-
-	% \pholder[Como deixar os CPUs mais poderosos?]{Evolução dos Processadores}
-
-	\begin{frame}{Processor Trend}
-		\begin{overprint}
-			\only<1>{\includegraphics[width=.9\linewidth]{processor-trend-1.pdf}}
-			\only<2>{\includegraphics[width=.9\linewidth]{processor-trend-2.pdf}}
-			\only<3>{\includegraphics[width=.9\linewidth]{processor-trend-3.pdf}}
-			\only<4>{\includegraphics[width=.9\linewidth]{processor-trend-4.pdf}}
-			\only<5>{\includegraphics[width=.9\linewidth]{processor-trend-5.pdf}}
-			\only<6>{\includegraphics[width=.9\linewidth]{processor-trend-6.pdf}}
-		\end{overprint}
-	\end{frame}
-
-	\pholder[O que motivou o surgimento do Lightweight Manycore?]{Preocupações atuais}
-
-	\pholder[Quais são as características de um Lightweight Manycore?]{Lightweight Manycore}
-
-	\pholder[Qual o contexto do trabalho? Contexto de pesquisa sobre SO para manycores]{Contexto do Trabalho}
-
-\section{Goals}
-
-	\pholder[Quais são os objetivos do trabalho?]{Objetivos}
-
-\section{Background}
-
-	\subsection{Operating Systems}
-
-		% \pholder[Quais modelos existem? Replicado, Mestre-Escravo e Compartilhado]{Multiprocessor Operating Systems}
-
-		\begin{frame}[fragile]{Replicated OS}
-			\addfiglw[texto 1]{imgs/replicated-os.pdf}
-		\end{frame}
-
-		\begin{frame}[fragile]{Master-Slave OS}
-			\addfiglw[texto 1]{imgs/master-slave-os.pdf}
-		\end{frame}
-
-		\begin{frame}[fragile]{Symmetric OS}
-			\addfiglw[texto 1]{imgs/symmetric-os.pdf}
-		\end{frame}
-
-	\subsection{Inter-Process Communication}
-
-		\pholder[Hybrid Programming]{Inter-Process Communication}
-
-		\pholder[Software que lida com interfaces e dma?]{Low level Communication}
-
-		\pholder[Tipos de envio/recebimento?]{User level Communication}
-
-	\subsection{MPPA-256}
-
-		\pholder[Descrever MPPA]{MPPA-256}
-
-	\subsection{Nanvix}
-
-		\pholder{Nanvix OS}
-
-		\pholder{Nanvix HAL}
-
-		\pholder{Nanvix Microkernel}
-
-		\pholder{Nanvix Multikernel}
-
-\section{Development}
-
-	\subsection{Low-Level Communication}
-
-		\pholder[Interrup System and DMA mediator]{MPPA-256 Hardware Resources}
-
-		\pholder{Noc Identifiers}
-
-		\pholder{Resource Identifiers}
-
-		\pholder{Hardware Limitations}
-
-		\pholder[Lazy transfer and Interface convention]{General Concepts of Comm. Abstrations}
-
-		\pholder[Concept]{Sync Abstration Concept}
-
-		\pholder[Implementation]{Sync Abstration Implementation}
-
-		\pholder[Concept]{Mailbox Abstration Concept}
-
-		\pholder[Implementation]{Mailbox Abstration Implementation}
-
-		\pholder[Concept]{Portal Abstration Concept}
-
-		\pholder[Implementation]{Portal Abstration Implementation}
-
-	\subsection{User-Level Communication}
-
-		\pholder{Impacts of the Master-Slave Model}
-
-		\pholder[Protection and Management, Multiplexing, Validation and Correctness Tests]{Details}
-
-\section{Experiments}
-
-	\pholder{Methodology}
-
-	\pholder{Micro-benchmarks}
-
-	\pholder{Design}
-
-	\pholder{Portal Analysis}
-
-	\pholder{Mailbox Analysis}
-
-\section{Conclusions}
-
-	\pholder[Quais foram as conclusões?]{Conclusions}
+\input{steps/0-introduction.tex}
+\input{steps/1-background.tex}
+\input{steps/2-development.tex}
+\input{steps/3-experiments.tex}
+\input{steps/4-conclusions.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Finalização
@@ -165,9 +57,7 @@
 \thanksframe
 \referencesframe{references}
 
-\begin{backup}
-  \pholder{Slide de backup}
-\end{backup}
+\input{steps/5-helper.tex}
 
 \end{document}
 
