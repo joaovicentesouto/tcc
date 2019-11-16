@@ -30,10 +30,18 @@ imgs: $(pdfs)
 	cp $(pdfs) imgs
 	cp $(others) imgs
 
-.PHONY: all imgs clean
+.PHONY: all imgs clean-main clean-latex clean-imgs clean
 
-clean: 
-	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log main.pdf main.robust.pdf *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *-*.pdf *-*.jpg *-*.png *.nav *.snm *.vrb *.prv _region*  *~ auto imgs/*.pdf imgs/svgs/*.pdf imgs/*.jpg imgs/*.png {imgs,plots}/*-eps-converted-to.pdf; 
+clean-main:
+	rm -fr main.pdf main.robust.pdf
+
+clean-latex:
+	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *-*.pdf *-*.jpg *-*.png *.nav *.snm *.vrb *.prv _region*  *~ auto; 
+
+clean-imgs:
+	rm -fr  {imgs,imgs/svgs}/*.pdf imgs/*.jpg imgs/*.png {imgs,plots}/*-eps-converted-to.pdf; 
+
+clean: clean-main clean-latex clean-imgs
 
 ###################################################
 # SVG -> PDF conversion                           #
