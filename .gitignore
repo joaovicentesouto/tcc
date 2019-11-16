@@ -31,6 +31,7 @@ dissertation/*.pdf
 dissertation/imgs/*.pdf
 dissertation/imgs/*.jpg
 dissertation/imgs/*.png
+dissertation/imgs/svgs/*.pdf
 dissertation/_minted-main/
 
 # Presentation
@@ -40,6 +41,7 @@ presentation/*.jpg
 presentation/imgs/*.pdf
 presentation/imgs/*.png
 presentation/imgs/*.jpg
+presentation/imgs/svgs/*.pdf
 presentation/_minted-main/
 
 # Vim
