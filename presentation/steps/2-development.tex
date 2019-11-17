@@ -261,8 +261,8 @@
 
 		\begin{frame}[fragile]{Integration with Nanvix Microkernel}
 			\begin{itemize}
-				\item Nanvix HAL does not provide \textbf{rich management} of the exposed abstractions
-				\item Nanvix Microkernel seek \textbf{to provide Inter-Process Communication} between clusters
+				\item Nanvix HAL does not provide \textbf{rich management} of the communication abstractions
+				\item Nanvix Microkernel seek \textbf{to provide}:
 				\begin{itemize}
 					\item Protection
 					\item Management
@@ -270,46 +270,28 @@
 				\end{itemize}
 			\end{itemize}
 
-			% The inter-cluster communication module, described in \autoref{sec.low-level-comm},
-			% is designed to export a standard and straightforward communication
-			% primitives to different lightweight manycores.
-			% These primitives can be used by various types of \oss and applications.
-			% Thus, the module is flexible enough not to impact the performance
-			% of the upper layers negatively.
-			% For this, it does not provide rich management of the exposed abstractions.
-
-			% In this scenario, the communication services of \nanvixmicrokernel seek
-			% to provide \ipc between distinct clusters.
-			% Specifically, these services perform the multiplexing of the hardware
-			% resources and the verification of the parameters that will be passed
-			% on the communication primitives.
-			% Due to the Master-Slave model, the master core is responsible of protecting,
-			% manipulating, and configuring \hal resources.
-			% The slave core will request operations through the kernel call interface,
-			% passing the necessary information to the master.
+			% Agora, como a HAL não exporta um gerenciamento rico das abstrações de comunicação.
+			% É responsabilidade do microkernel prover a proteção, gerenciamento e manipulação desses recursos.
 		\end{frame}
 
 		% \pholder{Impacts of the Master-Slave Model}
 		\begin{frame}[fragile]{Impacts of the Master-Slave Model}
 			\begin{itemize}
 				\item Only the master core manipulates internal structures of the OS
+				\item Slave only reads locks address from internal structures to block
 				\item Kernel call interface
 				\begin{itemize}
 					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
 					\item Slave calls: \texttt{k\textit{abstraction}\_\textit{operation}}
 				\end{itemize}
-				\item Slave only reads locks address from internal structures to block
 			\end{itemize}
 
-			% Master-Slave model defines that the master core must exclusively manipulate
-			% the internal structures of the \os. For this end, each service has generic and
-			% simple structures that hold control flags, parameters for resource
-			% identification, and storage of physical descriptors returned by \hal. Thus,
-			% the kernel call interface separates the functions of the services into two
-			% sets of functions. The first set contains the kernel calls that request a particular
-			% operation. The second set contains functions that operate on the internal structures
-			% and communicate with the \hal level. The master executes almost exclusive
-			% the second set, except for the wait functions, which the slave performs entirely.
+			% Devido ao modelo Mestre-Escravo, apenas o núcleo mestre manipula as estruturas das abstrações.
+			% Existe apenas uma excessão, que é o bloqueio do núcleo escravo.
+			% Para não exportar os endereços dos locks internos do kernel, é permitido que o escravo apenas consulte as estruturas para que possam aguardar a conlusão das operações.
+			% As chamadas de sistema exportadas seguem o seguinte padrão.
+			% Chamadas com kernel_ na frente sempre são executadas pelo mestre, com excessão do wait.
+			% E chamadas com kabstração sempre ocorrem do lado do escravo.
 		\end{frame}
 
 		% \pholder[Protection and Management, Multiplexing, Validation and Correctness Tests]{Details}
@@ -331,6 +313,11 @@
 					\item interacts with Nanvix HAL detecting errors
 				\end{itemize}
 			\end{itemize}
+
+			% As operações de proteção e gerênciamento ocorrem em duas fases.
+			% A fase do lado do escravo busca identificar erros o mais cedo possível nos argumentos das operações.
+			% Com isso, não perturbamos o mestre com operações falhas.
+			% A fase do mestre também envolve a verificação da corretude das operações e da manipulação dos recursos da HAL.
 		\end{frame}
 
 		\begin{frame}[fragile]{Multiplexing}
@@ -341,14 +328,10 @@
 				\item Forces \textbf{serialization} of the operations
 			\end{itemize}
 
-			% The identification of creations/openings with the same arguments
-			% allows multiple slaves to use the same resource at different times.
-			% For this, the internal structures of the \os keep, as simply as possible,
-			% the arguments used to create/open a service. When the same arguments are
-			% identified, a reference counter is incremented. The master sets the resource
-			% to busy when prompted for a read/write. A second slave who wants to read/write
-			%  will be prevented until the previous operation is completed. The resources
-			%  of the \hal will only be released when all references are removed.
+			% A princípio, a multiplexação implementada foi bem simples.
+			% O mestre apenas identifica aberturas de abstrações que possuem os mesmos argumentos, guardando um contador de referências.
+			% Quando uma operação complexa ocorre, por exemplo uma leitura, o recurso é marcado como ocupado.
+			% Isso força uma serialização das multiplexações das abstrações.
 		\end{frame}
 
 		\begin{frame}[fragile]{Validation and Correctness Tests}
@@ -366,14 +349,9 @@
 				\end{itemize}
 			\end{itemize}
 
-			% Validation and correctness testing of the implementation of services was
-			% performed through two sets of unit tests, \textit{API} and \textit{FAULT}
-			% tests, respectively. On the one hand, \textit{API} tests create, open, and
-			% stimulate services with arguments within valid value ranges. On the other
-			% hand, \textit{FAULT} tests use arguments outside the domain range of the
-			% operations. The failure should generate a previously known error value.
-			% The tests validate any changes made by verifying all expected behaviors
-			% of each service.
+			% Por fim, a validação e corretude da implementação foi avaliada através de dois conjuntos de testes unitários.
+			% O primeiro, realiza as operações ideais, com argumentos e semânticas válidas.
+			% O segundo, utiliza parametros invalidos, mescla operações conflitantes e confere valores esperados de erro.
 		\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
