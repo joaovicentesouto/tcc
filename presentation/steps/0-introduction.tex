@@ -2,11 +2,15 @@
 % \showsections
 \section{Introduction}
 
+	% Bom dia, agradeço a presença de todos.
+	% Especialmente do meu orientador Professor Márcio Bastos Castro, do meu coorientador Pedro Henrique Penna e dos avaliadores, Rômulo Silva de Oliveira e Odorico Machado Mendizabal.
+
 	% O meu trabalho de conclusão de curso envolve o desenvolvimento de mecanismos de comunicação para processadores lightweight manycores para o Sistema Operacional Nanvix
 
-	% \begin{frame}[fragile]{Introduction}
-	% 	\addfig[][width=.8\linewidth]{processors-example.pdf}
-	% \end{frame}
+	% Conforme o esboço da apresentação, primeiro vou contextualizar e apresentar os objetivos do meu trabalho.
+	% Em seguida, irei pontuar alguns conceitos básicos e apresentar o desenvolvimento.
+	% Depois, irei mostrar os experimentos e discutir os resultados.
+	% Por fim, apresentou as minhas conclusões.
 
 	\begin{frame}{Processor Trend}
 		\begin{overprint}
@@ -16,6 +20,14 @@
 			\only<4>{\addfig[][width=.9\linewidth]{processor-trend-4.pdf}}
 			\only<5>{\addfig[][width=.9\linewidth]{processor-trend-5.pdf}}
 		\end{overprint}
+
+		% Por muitos anos, o aumento da frequência dos processadores impulsionou os ganhos de desempenho dos sistemas computacionais modernos.
+		% No entanto, entre 2000 e 2005, as altas temperaturas provocadas por essa técnica impuseram um limite físico, conhecido como barreira de frequência.
+		% Paralelamente, o aprimoramento constante da tecnologia de semicondutores e o aperfeiçoamento de um único fluxo de execução amenizaram o impacto desse limite.
+		% Essa barreira também influenciou diretamento o surgimento dos primeiros processadores com mais de 1 núcleo de processamento, chamados de multicores.
+		% Em seguida, não demorou para que surgissem processadores com centenas a milhares de núcleos.
+		% Conhecidos como manycores, eles apresentam memória distribuída e requerem uma rede-em-chip.
+		% Atualmente, existe uma preocupação crescente com a relação entre a poder de processamento e o consumo de energia. Essa mudança de paradigma levou ao surgimento de uma nova classe de processadores paralelos, chamados Lightweight Manycores, que surgiram para fornecer alto paralelismo com baixo consumo de energia.
 	\end{frame}
 
 	\begin{frame}[fragile]{Lightweight Manycores Particularities}
@@ -33,6 +45,14 @@
 			\end{itemize}
 			\item Features a \textbf{heterogeneous configuration}
 		\end{itemize}
+
+		% Lightweight Manycores diferem dos multicores e manycores tradicionais em vários pontos.
+		% Eles integram centenas de núcleos de baixa potência agrupados em clusters;
+		% Trabalham com cargas de trabalho com múltiplos fluxos de instrução e dados;
+		% Dependem de uma rede-em-chip para comunicação entre cluster, o que força o uso de um modelo de programação híbrido, ou seja, memória compartilhada e troca de mensagens;
+		% Apresentam sistemas de memória restritívos, com multiplos espaços de endereçamento e muitas vezes pequenos;
+		% E possuem geralmente componentes heterogêneos.
+
 	\end{frame}
 
 	\begin{frame}[fragile]{Work Context}
@@ -48,6 +68,10 @@
 				\item \textbf{Nanvix OS}
 			\end{itemize}
 		\end{itemize}
+
+		% Parte dos desafios de se trabalhar com Lightweight Manycores originam-se de runtimes e sistemas operacionais existentes. Onde eles lidam parcialmente com as características do hardware ou escalabilidade do sistema.
+		% Assim, nós acreditamos que os sistemas operacionais para a próxima geração de Lightweight Manycores devem ser reprojetados do básico levando em consideração suas restrições arquitetônicas.
+		% Com base nessa idéia, buscamos desenvolver um sistema operacional distribuído baseado no modelo multikernel, chamado Nanvix OS.
 	\end{frame}
 
 \section{Goals}
@@ -65,6 +89,10 @@
 				\item \textbf{Collective communication routines}
 			\end{itemize}
 		\end{itemize}
+
+		% Neste contexto, os objetivos do trabalho é definir e propor uma Interface de Comunicação entre Clusters para Lightweight Manycores.
+		% Implementar essa interface na camada de abstração do Nanvix, focado no processodor MPPA-256.
+		% Depois, integrar com o Nanvix Microkernel e avaliar a perfomance utilizando rotinas comunicação coletivas.
 	\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
