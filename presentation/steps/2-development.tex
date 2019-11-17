@@ -30,21 +30,20 @@
 		% \pholder[Interrup System and DMA mediator]{MPPA-256 Hardware Resources}
 		\begin{frame}[fragile]{MPPA-256 Hardware Features}
 			\begin{itemize}
-				\item Low-level communication depends on two hardware features
+				\item Low-level communication depends on \textbf{two features}
 				\begin{itemize}
 					\item Interrupt System
 					\item DMA mediation
 				\end{itemize}
-				\item Three interrupt lines available
-				\item Explicit handler the NoC signals % to identify the resource
-				\item DMA limitations
+				\item \textbf{Explicit handler} the NoC interrupts % to identify the resource
+				\item \textbf{DMA limitations}
 			\end{itemize}
 		\end{frame}
 
 		% \pholder{Noc Identifiers}
 		\begin{frame}[fragile]{Noc Identifiers}
 			\begin{itemize}
-				\item NoC interfaces have two identifiers
+				\item NoC interfaces have \textbf{two identifiers}
 				\begin{itemize}
 					\item Physical ID
 					\item Logical ID
@@ -66,7 +65,7 @@
 		% \pholder{Resource Identifiers}
 		\begin{frame}[fragile]{Resource Identifiers}
 			\begin{itemize}
-				\item Senders need to know \textbf{resource ID} of the destination interface
+				\item Abstractions need to know \textbf{resource ID}
 				\item Communication resources are \textbf{partitioned by abstraction}
 			\end{itemize}
 
@@ -86,14 +85,16 @@
 		% \pholder[Lazy transfer and Interface convention]{General Concepts of Comm. Abstrations}
 		\begin{frame}[fragile]{General Concepts of Comm. Abstrations}
 			\begin{itemize}
-				\item Master core cannot be blocked
-				\item Communication Interfaces export only asynchronous calls
-				\item Slaves wait Master core complete a task
+				\item Master core \textbf{cannot be blocked}
+				\item Communication Interfaces export \textbf{only asynchronous calls}
 				\item \textbf{Lazy transfer algorithm}
-				\item Naming Convention
+			\end{itemize}
+
+			\begin{itemize}
+				\item \textbf{Naming Convention}
 				\begin{itemize}
-					\item Sender Role: \texttt{create}/\texttt{unlink}/\texttt{aread}/\texttt{wait}
-					\item Receiver Role: \texttt{open}/\texttt{close}/\texttt{awrite/signal}/\texttt{wait}.
+					\item Sender Role: \texttt{open}/\texttt{close}/\texttt{awrite/signal}/\texttt{wait}.
+					\item Receiver Role: \texttt{create}/\texttt{unlink}/\texttt{aread}/\texttt{wait}
 				\end{itemize}
 			\end{itemize}
 			% The microkernel specifically assigns the master core the task
@@ -130,26 +131,26 @@
 			\only<1>{
 				\begin{itemize}
 					\item Provides cluster synchronization across \textbf{distributed barriers}
-					\item Analogous to POSIX Signals
+					\item Analogous to \textbf{POSIX Signals}
 					\item Two modes
 					\begin{itemize}
 						\item \textbf{\texttt{ALL\_TO\_ONE}}
 						\item \texttt{ONE\_TO\_ALL}
 					\end{itemize}
 				\end{itemize}
-				\includegraphics[width=.75\linewidth]{imgs/sync-all-to-one.pdf}
+				\addfig[][width=.6\linewidth]{imgs/sync-all-to-one.pdf}
 			}
 			\only<2>{
 				\begin{itemize}
 					\item Provides cluster synchronization across \textbf{distributed barriers}
-					\item Analogous to POSIX Signals
+					\item Analogous to \textbf{POSIX Signals}
 					\item Two modes
 					\begin{itemize}
 						\item \texttt{ALL\_TO\_ONE}
 						\item \textbf{\texttt{ONE\_TO\_ALL}}
 					\end{itemize}
 				\end{itemize}
-				\includegraphics[width=.75\linewidth]{imgs/sync-one-to-all.pdf}
+				\addfig[][width=.6\linewidth]{imgs/sync-one-to-all.pdf}
 			}
 		\end{overprint}
 
@@ -180,36 +181,22 @@
 					\item Mode
 				\end{itemize}
 				\item Master node must be the first on the list
+				\item RX resources related to the Master ID
 			\end{itemize}
 
-			\begin{itemize}
-				\item Resources required
-				\begin{itemize}
-					\item Create: 1 RX CNoC
-					\item Open: 1 TX CNoC
-				\end{itemize}
-			\end{itemize}
-
-			\begin{itemize}
-				\item Simultaneous operations
-				\begin{itemize}
-					\item Create: 24
-					\item Open: 1
-				\end{itemize}
-			\end{itemize}
+			\addfig[][width=.6\linewidth]{imgs/sync-all-to-one.pdf}
 		\end{frame}
 
 		% \pholder[Concept]{Mailbox Abstration Concept}
 		\begin{frame}[fragile]{Mailbox Abstration}
 			\begin{itemize}
-				\item Allows exchange fixed-length message
-				\item Similarly to POSIX Message Queue
+				\item Allows exchange \textbf{fixed-length message}
+				\item Similarly to \textbf{POSIX Message Queue}
 				\item Receiver allocates space to N messages
 				\item Sender transfer to predefined location
 			\end{itemize}
 
-			\addfig[][width=.5\linewidth]{mailbox-concept.pdf}
-			\addfig[][width=.5\linewidth]{mailbox-flow.pdf}			
+			\addfig[][width=.4\linewidth]{mailbox-concept.pdf}		
 
 			% \textit{Message Queue Abstraction}, called \mailbox, allows clusters to exchange
 			% fixed-length messages with each other. The message size is designed to be
@@ -232,68 +219,160 @@
 		% \pholder[Implementation]{Mailbox Abstration Implementation}
 		\begin{frame}[fragile]{Mailbox Abstration Implementation}
 			\begin{itemize}
-				\item Parameters required
+				\item Parameters required for Receiver
 				\begin{itemize}
-					\item Node list
-					\item List size
-					\item Mode
+					\item Create: Local node ID
+					\item Read: Pointer and size of the buffer
 				\end{itemize}
-				\item Master node must be the first on the list
-			\end{itemize}
-
-			\begin{itemize}
-				\item Resources required
+				\item Parameters required for Sender
 				\begin{itemize}
-					\item Create: 1 RX CNoC
-					\item Open: 1 TX CNoC
+					\item Open: Target node ID
+					\item Write: Pointer and size of the buffer
 				\end{itemize}
 			\end{itemize}
 
-			\begin{itemize}
-				\item Simultaneous operations
-				\begin{itemize}
-					\item Create: 24
-					\item Open: 1
-				\end{itemize}
-			\end{itemize}
+			\addfig[][width=.75\linewidth]{mailbox-flow.pdf}	
 		\end{frame}
 
-		\pholder[Concept]{Portal Abstration Concept}
+		% \pholder[Concept]{Portal Abstration Concept}
+		\begin{frame}[fragile]{Portal Abstration}
+			\begin{itemize}
+				\item Allows exchange \textbf{arbitrary amounts of data} between two nodes
+				\item Similarly to \textbf{POSIX Pipes}
+				\item \textbf{One-way} channel for data transfer
+			\end{itemize}
+
+			\addfig[][width=.4\linewidth]{portal-concept.pdf}		
+
+			% Finally, \textit{Portal Abstraction} allows two nodes to exchange arbitrary
+			% amounts of data. \autoref{fig:portal-concept} presents the conceptual idea
+			% of the \portal, which resembles that of \posix Pipes with flow control.
+			% The cardinality of operations is always $1:1$, where a pair of nodes opens
+			% a one-way channel for data transfer. However, unlike \posix Pipes, which
+			% defines that the pipe exists only between two processes, the \portal allows
+			% the receiver to communicate with other nodes through the same channel.
+			% The sender, in turn, can only communicate with one node.
+		\end{frame}
 
 		% \pholder[Implementation]{Portal Abstration Implementation}
 		\begin{frame}[fragile]{Portal Abstration Implementation}
 			\begin{itemize}
-				\item Parameters required
+				\item Parameters required for Receiver
 				\begin{itemize}
-					\item Node list
-					\item List size
-					\item Mode
+					\item Create: Local node ID
+					\item Allow: Target node ID
+					\item Read: Pointer and size of the buffer
 				\end{itemize}
-				\item Master node must be the first on the list
-			\end{itemize}
-
-			\begin{itemize}
-				\item Resources required
+				\item Parameters required for Sender
 				\begin{itemize}
-					\item Create: 1 RX CNoC
-					\item Open: 1 TX CNoC
+					\item Open: Local and target node ID
+					\item Write: Pointer and size of the buffer
 				\end{itemize}
 			\end{itemize}
 
-			\begin{itemize}
-				\item Simultaneous operations
-				\begin{itemize}
-					\item Create: 24
-					\item Open: 1
-				\end{itemize}
-			\end{itemize}
+			\addfig[][width=.75\linewidth]{portal-flow.pdf}
+
+			% \autoref{fig:portal-flow} outlines the flow control of the \portal.
+			% When attempting to transmit data to the receiver, the sender will block
+			% until the receiver can accept it. By enabling one data exchange at a time,
+			% the receiver configures the read settings and notifies the sender. In this way,
+			% the flow control ensures that the receiver will not be overloaded, will
+			% not receive data without properly configured \dma, and will not overwrite
+			% previous data. Allowing communication empowers the receiver to choose which
+			% communications to prioritize.	
 		\end{frame}
 
 	\subsection{User-Level Communication}
 
-		\pholder{Impacts of the Master-Slave Model}
+		\begin{frame}[fragile]{Integration with Nanvix Microkernel}
+			\begin{itemize}
+				\item Nanvix HAL does not provide \textbf{rich management} of the exposed abstractions
+				\item Nanvix Microkernel seek \textbf{to provide Inter-Process Communication} between clusters
+				\begin{itemize}
+					\item Protection
+					\item Management
+					\item Manipulating
+				\end{itemize}
+			\end{itemize}
 
-		\pholder[Protection and Management, Multiplexing, Validation and Correctness Tests]{Details}
+			% The inter-cluster communication module, described in \autoref{sec.low-level-comm},
+			% is designed to export a standard and straightforward communication
+			% primitives to different lightweight manycores.
+			% These primitives can be used by various types of \oss and applications.
+			% Thus, the module is flexible enough not to impact the performance
+			% of the upper layers negatively.
+			% For this, it does not provide rich management of the exposed abstractions.
+
+			% In this scenario, the communication services of \nanvixmicrokernel seek
+			% to provide \ipc between distinct clusters.
+			% Specifically, these services perform the multiplexing of the hardware
+			% resources and the verification of the parameters that will be passed
+			% on the communication primitives.
+			% Due to the Master-Slave model, the master core is responsible of protecting,
+			% manipulating, and configuring \hal resources.
+			% The slave core will request operations through the kernel call interface,
+			% passing the necessary information to the master.
+		\end{frame}
+
+		% \pholder{Impacts of the Master-Slave Model}
+		\begin{frame}[fragile]{Impacts of the Master-Slave Model}
+			\begin{itemize}
+				\item Only the master core manipulates internal structures of the OS
+				\item Kernel call interface
+				\begin{itemize}
+					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
+					\item Slave calls: \texttt{k\textit{abstraction}\_\textit{operation}}
+				\end{itemize}
+				\item Slave only reads locks address from internal structures to block
+			\end{itemize}
+
+			% Master-Slave model defines that the master core must exclusively manipulate
+			% the internal structures of the \os. For this end, each service has generic and
+			% simple structures that hold control flags, parameters for resource
+			% identification, and storage of physical descriptors returned by \hal. Thus,
+			% the kernel call interface separates the functions of the services into two
+			% sets of functions. The first set contains the kernel calls that request a particular
+			% operation. The second set contains functions that operate on the internal structures
+			% and communicate with the \hal level. The master executes almost exclusive
+			% the second set, except for the wait functions, which the slave performs entirely.
+		\end{frame}
+
+		% \pholder[Protection and Management, Multiplexing, Validation and Correctness Tests]{Details}
+		\begin{frame}[fragile]{Protection and Management}
+			\begin{itemize}
+				\item Only master core manipulates internal structures of the OS
+				\item Kernel call interface
+				\begin{itemize}
+					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
+					\item Slave calls: \texttt{k\textit{abstraction}\_\textit{operation}}
+				\end{itemize}
+				\item Slave only reads locks address from internal structures to block
+			\end{itemize}
+		\end{frame}
+
+		\begin{frame}[fragile]{Multiplexing}
+			\begin{itemize}
+				\item Only master core manipulates internal structures of the OS
+				\item Kernel call interface
+				\begin{itemize}
+					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
+					\item Slave calls: \texttt{k\textit{abstraction}\_\textit{operation}}
+				\end{itemize}
+				\item Slave only reads locks address from internal structures to block
+			\end{itemize}
+		\end{frame}
+
+		\begin{frame}[fragile]{Validation and Correctness Tests}
+			\begin{itemize}
+				\item Only master core manipulates internal structures of the OS
+				\item Kernel call interface
+				\begin{itemize}
+					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
+					\item Slave calls: \texttt{k\textit{abstraction}\_\textit{operation}}
+				\end{itemize}
+				\item Slave only reads locks address from internal structures to block
+			\end{itemize}
+		\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
 % LocalWords:  Re-empacotamento fontsize Makefile pdflatex imgs PDFs

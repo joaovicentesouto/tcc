@@ -8,35 +8,27 @@
 		\begin{overprint}
 			\only<1>{
 				\begin{itemize}
-					\item Replicated OS
-					\item Master-Slave OS
-					\item Symmetric OS
-				\end{itemize}
-				\includegraphics[width=\linewidth]{imgs/blank-os.pdf}
-			}
-			\only<2>{
-				\begin{itemize}
 					\item \textbf{Replicated OS}
 					\item Master-Slave OS
 					\item Symmetric OS
 				\end{itemize}
-				\includegraphics[width=\linewidth]{imgs/replicated-os.pdf}
+				\addfig[][width=\linewidth]{imgs/replicated-os.pdf}
 			}
-			\only<3>{
+			\only<2>{
 				\begin{itemize}
 					\item Replicated OS
 					\item \textbf{Master-Slave OS}
 					\item Symmetric OS
 				\end{itemize}
-				\includegraphics[width=\linewidth]{imgs/master-slave-os.pdf}
+				\addfig[][width=\linewidth]{imgs/master-slave-os.pdf}
 			}
-			\only<4>{
+			\only<3>{
 				\begin{itemize}
 					\item Replicated OS
 					\item Master-Slave OS
 					\item \textbf{Symmetric OS}
 				\end{itemize}
-				\includegraphics[width=\linewidth]{imgs/master-slave-os.pdf}
+				\addfig[][width=\linewidth]{imgs/master-slave-os.pdf}
 			}
 		\end{overprint}
 		\end{frame}
@@ -59,23 +51,13 @@
 				\begin{itemize}
 					\item Send/receive primitives
 					\begin{itemize}
-						\item Synchronous calls
-						\item Asynchronous calls
-					\end{itemize}
-				\end{itemize}
-				\includegraphics[width=\linewidth]{imgs/call-blank.pdf}
-			}
-			\only<2>{
-				\begin{itemize}
-					\item Send/receive primitives
-					\begin{itemize}
 						\item \textbf{Synchronous calls}
 						\item Asynchronous calls
 					\end{itemize}
 				\end{itemize}
-				\includegraphics[width=\linewidth]{imgs/call-sync.pdf}
+				\addfig[][width=\linewidth]{imgs/call-sync.pdf}
 			}
-			\only<3>{
+			\only<2>{
 				\begin{itemize}
 					\item Send/receive primitives
 					\begin{itemize}
@@ -83,7 +65,7 @@
 						\item \textbf{Asynchronous calls}
 					\end{itemize}
 				\end{itemize}
-				\includegraphics[width=\linewidth]{imgs/call-async.pdf}
+				\addfig[][width=\linewidth]{imgs/call-async.pdf}
 			}
 		\end{overprint}
 		\end{frame}
@@ -122,7 +104,7 @@
 
 		% \pholder{Nanvix OS}
 		\begin{frame}[fragile]{Nanvix OS}
-			\addfig[Balance of the Nanvix OS's goals][width=.5\linewidth]{imgs/nanvix-goal.pdf}
+			\addfig[][width=.6\linewidth]{imgs/nanvix-goal.pdf}
 
 			% We believe that significant barriers will still arise in this scenario, and
 			% the solution is to rethink \os design from scratch without losing back

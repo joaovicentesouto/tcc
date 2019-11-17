@@ -1,14 +1,99 @@
 \section{Experiments}
 
-	\pholder{Methodology}
+	% \pholder{Methodology}
+	\begin{frame}[fragile]{Methodology}
+		\begin{itemize}
+			\item Evaluates the performance of data transfer services
+			\begin{itemize}
+				\item Mailbox
+				\item Portal
+			\end{itemize}
+			\item Micro-benchmarks measure data volume and communication latency
+		\end{itemize}
 
-	\pholder{Micro-benchmarks}
+		% This chapter evaluates the performance of communication services of
+		% the \nanvixmicrokernel running on the \mppa processor, \ie \mailbox
+		% and \portal. The impacts of the synchronization mechanism were not
+		% analyzed because it is a simple service that does not directly
+		% influence node communication, depending greatly on the workload of
 
-	\pholder{Design}
+		% To deliver a comprehensive assessment of the communication service, we
+		% stimulate the services with usual collective communication configurations.
 
-	\pholder{Portal Analysis}
+		% Micro-benchmarks measure the data volume and communication latency
+		% through the \ioctl interface.
+	each cluster.
+	\end{frame}
 
-	\pholder{Mailbox Analysis}
+	% \pholder{Micro-benchmarks}
+	\begin{frame}[fragile]{Micro-benchmarks}
+		\begin{overprint}
+			\only<1>{
+				\begin{itemize}
+					\item \textbf{Broadcast}
+					\item Gather
+					\item AllGather
+					\item Ping-Pong
+				\end{itemize}
+				\addfig[][width=.5\linewidth]{mpi-broadcast.pdf}
+			}
+			\only<2>{
+				\begin{itemize}
+					\item Broadcast
+					\item \textbf{Gather}
+					\item AllGather
+					\item Ping-Pong
+				\end{itemize}
+				\addfig[][width=.5\linewidth]{mpi-gather.pdf}
+			}
+			\only<3>{
+				\begin{itemize}
+					\item Broadcast
+					\item Gather
+					\item \textbf{AllGather}
+					\item Ping-Pong
+				\end{itemize}
+				\addfig[][width=.5\linewidth]{mpi-allgather.pdf}
+			}
+			\only<4>{
+				\begin{itemize}
+					\item Broadcast
+					\item Gather
+					\item AllGather
+					\item \textbf{Ping-Pong}
+				\end{itemize}
+				\addfig[][width=.5\linewidth]{mpi-ping-pong.pdf}
+			}
+		\end{overprint}
+	\end{frame}
+
+	% \pholder{Design}
+	\begin{frame}[fragile]{Experimental Design}
+		\begin{itemize}
+			\item \textbf{Throughput of the Portal}
+			\begin{itemize}
+				\item Cluster involved: 1 IO and 16 CCs
+				\item Data size: 4, 8, 16, 32, 64 KB
+			\end{itemize}
+			\item \textbf{Latency of the Mailbox}
+			\begin{itemize}
+				\item Cluster involved: 1 IO and 1 to 16 CCs
+				\item Data size: 120 B
+			\end{itemize}
+			\item \textbf{50 iterations}, discarding first ten
+			\item Standard error inferior to \textbf{1\%}
+		\end{itemize}
+	\end{frame}
+
+	% \pholder{Portal Analysis}
+	\begin{frame}[fragile]{Portal Analysis}
+		\addfig[][width=.9\linewidth]{portal-throughput.pdf}
+	\end{frame}
+
+	% \pholder{Mailbox Analysis}
+	\begin{frame}[fragile]{Mailbox Analysis}
+		\addfig[][width=.9\linewidth]{mailbox-latency.pdf}
+	\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
 % LocalWords:  Re-empacotamento fontsize Makefile pdflatex imgs PDFs
