@@ -10,7 +10,7 @@
 					\item Master-Slave OS
 					\item Symmetric OS
 				\end{itemize}
-				\addfig[][width=\linewidth]{imgs/replicated-os.pdf}
+				\addfig[][width=0.85\linewidth]{imgs/replicated-os.pdf}
 			}
 			\only<2>{
 				\begin{itemize}
@@ -18,7 +18,7 @@
 					\item \textbf{Master-Slave OS}
 					\item Symmetric OS
 				\end{itemize}
-				\addfig[][width=\linewidth]{imgs/master-slave-os.pdf}
+				\addfig[][width=0.85\linewidth]{imgs/master-slave-os.pdf}
 			}
 			\only<3>{
 				\begin{itemize}
@@ -26,7 +26,7 @@
 					\item Master-Slave OS
 					\item \textbf{Symmetric OS}
 				\end{itemize}
-				\addfig[][width=\linewidth]{imgs/master-slave-os.pdf}
+				\addfig[][width=0.85\linewidth]{imgs/symmetric-os.pdf}
 			}
 		\end{overprint}
 
@@ -41,8 +41,8 @@
 		% \pholder[Software que lida com interfaces e dma?]{Low-Level Communication}
 		\begin{frame}[fragile]{Low-Level Communication for Message-Passsing Model}
 			\begin{itemize}
-				\item Computer network concepts
-				\item \textbf{Network interfaces}
+				\item \textbf{Computer network concepts}
+				\item Network interfaces
 				\item Performance impacts
 				\begin{itemize}
 					\item Number of intermediare copies
@@ -107,17 +107,19 @@
 		\end{frame}
 
 		\begin{frame}[fragile]{Kalray MPPA-256 Communication Resources}
-			\item {Data NoC (DNoC)}
 			\begin{itemize}
-				\item 256 slots for receiving data;
-				\item 8 channels for sending data, and;
-				\item 8 $\mu$threads for sending asynchronous data.
-			\end{itemize}
+				\item \textbf{Data NoC (DNoC)}
+				\begin{itemize}
+					\item 256 slots for receiving data;
+					\item 8 channels for sending data, and;
+					\item 8 $\mu$threads for sending asynchronous data.
+				\end{itemize}
 
-			\item {Control NoC (CNoC)}
-			\begin{itemize}
-				\item 128 slots for receiving commands;
-				\item 4 channels for sending commands;
+				\item \textbf{Control NoC (CNoC)}
+				\begin{itemize}
+					\item 128 slots for receiving commands;
+					\item 4 channels for sending commands;
+				\end{itemize}
 			\end{itemize}
 
 			% A comunicação é realizada através de duas NoCs distintas, uma para dados e outra para comandos.
@@ -131,7 +133,7 @@
 		\begin{frame}[fragile]{Nanvix OS}
 			\addfig[][width=.6\linewidth]{imgs/nanvix-goal.pdf}
 			\begin{itemize}
-				\item Fully-feature POSIX-Compliant OS
+				\item Fully-feature \textbf{POSIX-Compliant OS}
 				\item Three abstractions layers
 				\begin{itemize}
 					\item Nanvix Hardware Abstraction Layer (HAL)
@@ -148,16 +150,16 @@
 		\begin{frame}[fragile]{Nanvix HAL}
 
 			\begin{itemize}
-				\item Generic and flexible hardware abstraction layer
-				\item The layer above the hardware
-				\item Standard view of these emerging processors
+				\item \textbf{Generic and flexible} hardware abstraction layer
+				\item \textbf{Standard view} of these emerging processors
+				\item Proposed interface within \textbf{Processador AL}
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{nanvix-hal-overview.pdf}
 
 			% A HAL é uma camada de abstração de hardware genérica e flexível.
-			% Ela é a primeira camada acima do hardware e prove uma visão padronizada dos processadores.
-			% Ela é composta por níveis que lidam com características de um núcleo, de todos os núcleos, e entre clusters.
+			% Ela prove uma visão padronizada dos processadores.
+			% Ela é composta por níveis que lidam com características de um único núcleo, entre os núcleos, e entre clusters.
 			% Este trabalho está incluso na Camada de abstração do Processador, que envolve a interface de comunicação.
 		\end{frame}
 
@@ -166,9 +168,9 @@
 
 			\begin{itemize}
 				\item Runs above the Nanvix HAL
-				\item Provides bare bones system abstractions
-				\item Follows a Master-Slave OS model
-				\item Rich system call interface
+				\item Provides \textbf{bare bones system abstractions}
+				\item Follows a \textbf{Master-Slave OS} model
+				\item Rich system call interface (Kernel Call)
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{nanvix-microkernel-overview.pdf}
@@ -182,9 +184,9 @@
 		\begin{frame}[fragile]{Nanvix Multikernel}
 
 			\begin{itemize}
-				\item Follows a multikernel design
-				\item OS services are processes and run in isolation from user processes
-				\item User processes request service via message-passing approach
+				\item Follows a \textbf{multikernel design}
+				\item \textbf{OS services are processes} and run in isolation from user processes
+				\item User processes \textbf{request service via message-passing} approach
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{nanvix-multikernel-overview.pdf}

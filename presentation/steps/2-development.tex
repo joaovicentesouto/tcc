@@ -35,10 +35,10 @@
 				\item \textbf{DMA limitations}
 			\end{itemize}
 
-			A comunicação da HAL no MPPA-256 depende de duas características.
-			O sistema de interrupções no qual é essencial para a configuração de interrupções provenientes da comunicação.
-			Onde o mestre, ao ser notificado de uma interrupção, deve trata-la e identificar manualmente o recurso que a gerou.
-			E a DMA, realiza o papel de mediador das comunicações. Entretanto, deviado a falta de documentação e exemplos, o uso da DMA é limitado a apenas realizar recebimento de forma assíncrona.
+			% A comunicação da HAL no MPPA-256 depende de duas características.
+			% O sistema de interrupções no qual é essencial para a configuração de interrupções provenientes da comunicação.
+			% Onde o mestre, ao ser notificado de uma interrupção, deve trata-la e identificar manualmente o recurso que a gerou.
+			% E a DMA, realiza o papel de mediador das comunicações. Entretanto, deviado a falta de documentação e exemplos, o uso da DMA é limitado a apenas realizar recebimento de forma assíncrona.
 		\end{frame}
 
 		% \pholder{Noc Identifiers}
@@ -167,10 +167,10 @@
 					\item Mode
 				\end{itemize}
 				\item Master node must be the first on the list
-				\item RX resources related to the Master ID
+				\item RX resources \textbf{related to the Master ID}
 			\end{itemize}
 
-			\addfig[][width=.6\linewidth]{imgs/sync-all-to-one.pdf}
+			% \addfig[][width=.6\linewidth]{imgs/sync-all-to-one.pdf}
 
 			% Os parametros para criar ou abrir um sync são os mesmos para ambos os papéis.
 			% No qual a lista de nós envolvidos deve sempre conter o mestre da operação na primeira posição.
@@ -201,12 +201,12 @@
 				\begin{itemize}
 					\item \textbf{One message} per NoC Node
 				\end{itemize}
-				\item Parameters required
-				\begin{itemize}
-					\item \textit{Create}: Local ID
-					\item \textit{Open}: Target ID
-					\item \textit{Read/Write}: Pointer and size of the buffer
-				\end{itemize}
+				% \item Parameters required
+				% \begin{itemize}
+				% 	\item \textit{Create}: Local ID
+				% 	\item \textit{Open}: Target ID
+				% 	\item \textit{Read/Write}: Pointer and size of the buffer
+				% \end{itemize}
 			\end{itemize}
 
 			\addfig[][width=.75\linewidth]{mailbox-flow.pdf}
@@ -240,12 +240,12 @@
 				\begin{itemize}
 					\item \textit{Receiver notifies sender} that it is able to receive
 				\end{itemize}
-				\item Parameters required
-				\begin{itemize}
-					\item \textit{Create}: Local ID, \textit{Allow}: Target ID
-					\item \textit{Open}: Local and target ID
-					\item \textit{Read/Write}: Pointer and size of the buffer
-				\end{itemize}
+				% \item Parameters required
+				% \begin{itemize}
+				% 	\item \textit{Create}: Local ID, \textit{Allow}: Target ID
+				% 	\item \textit{Open}: Local and target ID
+				% 	\item \textit{Read/Write}: Pointer and size of the buffer
+				% \end{itemize}
 			\end{itemize}
 
 			\addfig[][width=.75\linewidth]{portal-flow.pdf}
