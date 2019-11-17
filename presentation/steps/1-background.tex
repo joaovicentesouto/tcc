@@ -1,10 +1,8 @@
 \section{Background}
 
-	\subsection{Operating Systems}
+	\subsection{Operating Systems Models}
 
-		% \pholder[Quais modelos existem? Replicado, Mestre-Escravo e Compartilhado]{Multiprocessor Operating Systems}
-
-		\begin{frame}{Types of Operating Systems (OS)}
+		\begin{frame}{Models of Operating Systems (OS) for Multicores}
 		\begin{overprint}
 			\only<1>{
 				\begin{itemize}
@@ -31,6 +29,11 @@
 				\addfig[][width=\linewidth]{imgs/master-slave-os.pdf}
 			}
 		\end{overprint}
+
+			% Existem 3 modelos de sistema operacionais para multicores.
+			% O primeiro, e mais simples, é o modelo replicado, onde cada núcleo possuem uma cópia distinta do SO. Isso elimina problemas de concorrência mas necessitando de muito espaço de memória.
+			% Segundo, o modelo mestre-escravo define que apenas um único núcleo mestre lide com as estruturas do SO, e os escravos requisitem operações a ele. Também eliminando problemas de concorrência mas introduzindo um possível gargalo no sistema.
+			% Terceiro, o modelo simétrico é o mais conhecido, ele permite o compartilhamento das estruturas internas forçando o uso de sincronização entre os núcleos do sistema. O que pode ser um problema para processadores que não possuem coerência de cache.
 		\end{frame}
 
 	\subsection{Message-Passsing Model}
@@ -38,10 +41,20 @@
 		% \pholder[Software que lida com interfaces e dma?]{Low-Level Communication}
 		\begin{frame}[fragile]{Low-Level Communication for Message-Passsing Model}
 			\begin{itemize}
-				\item Network interfaces
+				\item Computer network concepts
+				\item \textbf{Network interfaces}
 				\item Performance impacts
-				\item Direct Memory Access (DMA)
+				\begin{itemize}
+					\item Number of intermediare copies
+					\item Direct Memory Access (DMA)
+				\end{itemize}
 			\end{itemize}
+
+			% Como Lightweight Manycores utilizam uma rede-em-chip para comunicação entre clusters,
+			% a comunicação de baixo nível se assemelha a comunicação de uma rede de computadores.
+			% Os nós da rede são conectados através de interfaces de rede.
+			% O qual tem grande impacto na performace do sistema.
+			% Por exemplo, a quantidade de cópias intermediárias ou no uso inadequado de DMAs podem afetar negativamente o desempenho.
 		\end{frame}
 
 		% \pholder[Tipos de envio/recebimento?]{User-Level Communication}
@@ -68,6 +81,11 @@
 				\addfig[][width=\linewidth]{imgs/call-async.pdf}
 			}
 		\end{overprint}
+
+			% Utilizando os recursos de baixo nível, geralmente se exportam primitivas de envio ou recebimento de dados.
+			% Essas primitivas podem implementar dois tipos de chamadas.
+			% Chamadas síncronas força o requisitante a ficar bloqueado até que toda a operações for concluida.
+			% Por outro lado, as chamadas assíncronas permitem que o requisitante continue sua executação após a configuração da primitiva. Isso permite que a síncronzação ocorra a posteriori.
 		\end{frame}
 
 	\subsection{Kalray MPPA-256}
@@ -81,23 +99,30 @@
 					\item {16 Compute Cluster (CC)}
 					\item {4 I/O Cluster (IO)}
 				\end{itemize}
-				\item {2 NoC's}
-				\begin{itemize}
-					\item {Data NoC (DNoC)}
-					\item {Control NoC (CNoC)}
-				\end{itemize}
 			\end{itemize}
 			\addfig[][width=.5\linewidth]{imgs/arch-mppa.pdf}
+
+			% O processador MPPA-256 é um Lightweight Manycore de alto desempenho e baixo consumo energético.
+			% Ele possui 288 núcleos de propósito geral agrupados em 16 clusters de computação e 4 clusters de entrada e saída.
 		\end{frame}
 
 		\begin{frame}[fragile]{Kalray MPPA-256 Communication Resources}
+			\item {Data NoC (DNoC)}
 			\begin{itemize}
-				\item 128 slots for receiving commands;
 				\item 256 slots for receiving data;
-				\item 4 channels for sending commands;
 				\item 8 channels for sending data, and;
 				\item 8 $\mu$threads for sending asynchronous data.
 			\end{itemize}
+
+			\item {Control NoC (CNoC)}
+			\begin{itemize}
+				\item 128 slots for receiving commands;
+				\item 4 channels for sending commands;
+			\end{itemize}
+
+			% A comunicação é realizada através de duas NoCs distintas, uma para dados e outra para comandos.
+			% Cada NoC apresenta um conjunto de recursos para envio ou recebimento.
+			% Entretanto, a CNoC permite apenas a troca de mensagens de 64 bits.
 		\end{frame}
 
 	\subsection{Nanvix OS}
@@ -105,24 +130,18 @@
 		% \pholder{Nanvix OS}
 		\begin{frame}[fragile]{Nanvix OS}
 			\addfig[][width=.6\linewidth]{imgs/nanvix-goal.pdf}
-
-			% We believe that significant barriers will still arise in this scenario, and
-			% the solution is to rethink \os design from scratch without losing back
-			% compatibility~\cite{penna:compas19, penna2019}.
-
-			% The main efforts in \nanvixos are focused on programmability and portability
-			% issues of lightweight manycores. This can be accomplished through a fully-featured
-			% \posix-compliant \os~\cite{penna:compas19}.
-
 			\begin{itemize}
-				\item Nanvix Hardware Abstraction Layer (HAL)
-				\item Nanvix Microkernel
-				\item Nanvix Multikernel
+				\item Fully-feature POSIX-Compliant OS
+				\item Three abstractions layers
+				\begin{itemize}
+					\item Nanvix Hardware Abstraction Layer (HAL)
+					\item Nanvix Microkernel
+					\item Nanvix Multikernel
+				\end{itemize}
 			\end{itemize}
 
-			% \nanvixos is composed of three distinct kernel layers.
-			% In a bottom-up approach of abstraction level, they are namely \textit{\nanvixhal},
-			% \textit{\nanvixmicrokernel}, and \textit{\nanvixmultikernel}.
+			% O Nanvix OS busca fornecer melhor programabilidade e portabilidade para Lightweight Manycores através de um sistema compatível com o padrão POSIX.
+			% Ele é subdivido em três níveis abstração, HAL, Microkernel e Multikernel.
 		\end{frame}
 
 		% \pholder{Nanvix HAL}
@@ -136,30 +155,10 @@
 
 			\addfig[][width=.6\linewidth]{nanvix-hal-overview.pdf}
 
-			% \nanvixos proposes a generic and flexible \hal around the
-			% intrinsic architectural characteristics of the \lightweight \manycores.
-
-			% Unlike other approaches that aim to design a fully-featured \os~\cite{Baumann2009,kluge2014,nightingale2009,rhoden2011},
-			% the \nanvixhal belongs to one level below.
-
-			% It is the first layer on top of the hardware and should provide a standard
-			% view of these emerging processors for a client application, \eg \os.
-			% At this level, we do not protect internal structures with locks.
-			% Thus, the upper-level decides how to protect and multiplex \hal access.
-
-			% \autoref{fig:hal-overview} pictures the three logic layers of the \nanvixhal, which are detailed below:
-
-			% \item[Core Abstraction Layer]
-			% Encapsula o gerenciamento de um único core, como, rotinas de manutenção da cache
-			% e support a tratamento de exceções e interrupções.
-
-			% \item[Cluster Abstraction Layer]
-			% Agrupa o gerenciamento de recursos que envolvem todos os núcleos,
-			% como memória virutal e notifição entre núcleos.
-
-			% \item[Processor Abstraction Layer]
-			% envolve características relacionadas a multiplos clusters,
-			% como o módulo de comunicação inter-cluster, foco deste trabalho.
+			% A HAL é uma camada de abstração de hardware genérica e flexível.
+			% Ela é a primeira camada acima do hardware e prove uma visão padronizada dos processadores.
+			% Ela é composta por níveis que lidam com características de um núcleo, de todos os núcleos, e entre clusters.
+			% Este trabalho está incluso na Camada de abstração do Processador, que envolve a interface de comunicação.
 		\end{frame}
 
 		% \pholder{Nanvix Microkernel}
@@ -168,28 +167,15 @@
 			\begin{itemize}
 				\item Runs above the Nanvix HAL
 				\item Provides bare bones system abstractions
-				\item Rich system call interface
 				\item Follows a Master-Slave OS model
+				\item Rich system call interface
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{nanvix-microkernel-overview.pdf}
 
-			% The \textit{\nanvixmicrokernel}, running above the \nanvixhal, provides
-			% bare bones system abstractions to the client applications~\cite{penna:sbesc19}.
-			% Through a rich system call interface, it follows a Master-Slave \os model
-			% to avoid cache coherence issues present in manycores.
-			% The scope of the \nanvixmicrokernel is within a single cluster.
-			% System calls and internal subsystems manage local and shared resources
-			% available to all cores to maintain the coherence of the \os.
-
-			% \item[IPC Facility]
-			% 	encapsulates the rest of this undergraduate dissertation, providing
-			% 	manipulation and protection of the inter-cluster communication abstractions.
-
-			% \item[Kernel Call Interface]
-			% 	isolates the microkernel internal structures through a rich system call interface.
-			% 	This interface implements the Master-Slave \os model
-			% 	and decides whether or not a kernel call should be executed locally or remotely.
+			% O Nanvix Microkernel executa sobre a HAL e prove o esqueleto das abstrações do sistema.
+			% Ele implementa o modelo Mestre-Escravo através de uma rica interface de chamadas de sistema.
+			% Desta forma, ele é responsável por gerenciar os recursos da HAL e separar as reponsabilidades de mestre e escravo.
 		\end{frame}
 
 		% \pholder{Nanvix Multikernel}
@@ -197,28 +183,15 @@
 
 			\begin{itemize}
 				\item Follows a multikernel design
-				\item OS services run in isolation from user processes
+				\item OS services are processes and run in isolation from user processes
 				\item User processes request service via message-passing approach
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{nanvix-multikernel-overview.pdf}
 
-			% The \textit{\nanvixmultikernel} follows a multikernel design, where \os services
-			% are scattered across clusters and interact with user processes through a
-			% Client-Server model.
-			% Ideally, \os services run in isolation from user processes.
-			% Via a message-passing approach, user processes request such services and
-			% cooperate with other processes.
-
-			% \autoref{fig:multikernel-overview} shows a possible configuration of a
-			% manycore using the \nanvixmultikernel.
-			% Clusters located at the corners of the processor run kernel services
-			% to better serve a nearby subset of clusters.
-			% In the other clusters, we can see the distribution of two distinct applications.
-			% An application does not necessarily need to use all cores in a cluster.
-			% Now, looking carefully at a cluster, we can see that \nanvixmicrokernel
-			% always reserves a single core for kernel execution, making the other cores
-			% available for application execution.
+			% O Nanvix Multikernel, como o nome sugere, segue o modelo multikernel.
+			% No qual os serviços do SO são processos que rodam isoladamente dos processos de usuário.
+			% Assim, os processos de usuário requisitam serviços através da troca de mensagens.
 		\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
