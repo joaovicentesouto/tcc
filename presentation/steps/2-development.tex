@@ -17,14 +17,10 @@
 				\item Easily portable
 			\end{itemize}
 
-			% \textit{\nanvixhal} provides the inter-cluster communication module to allow separate
-			% clusters to exchange information.
-			% This module consists of three abstractions, named \sync, \mailbox, and \portal.
-			% These abstractions provide more precise, easy-to-use, scalable, and easily
-			% portable mechanisms for different architectures~\cite{wentzlaff_fleets:_2011}.
-			% On top of them, it is possible to create simple facilities, such
-			% as those for synchronization and data exchange, as well as more elaborate services
-			% like \shm, \posix Semaphores, and \rmem~\cite{penna:rmen}.
+			% A Interface de Comunicação entre Clusters proposta provê 3 abstrações, sync, mailbox e portal.
+			% Essas abstrações buscam ser mais precisas, mais fáceis de usar, escalonáveis e facilmente portáveis.
+
+			% %%%%%% Sobre elas é possível desenvolver serviços mais complexos.
 		\end{frame}
 
 		% \pholder[Interrup System and DMA mediator]{MPPA-256 Hardware Resources}
@@ -33,15 +29,20 @@
 				\item Low-level communication depends on \textbf{two features}
 				\begin{itemize}
 					\item Interrupt System
-					\item DMA mediation
+					\item DMA
 				\end{itemize}
 				\item \textbf{Explicit handler} the NoC interrupts % to identify the resource
 				\item \textbf{DMA limitations}
 			\end{itemize}
+
+			A comunicação da HAL no MPPA-256 depende de duas características.
+			O sistema de interrupções no qual é essencial para a configuração de interrupções provenientes da comunicação.
+			Onde o mestre, ao ser notificado de uma interrupção, deve trata-la e identificar manualmente o recurso que a gerou.
+			E a DMA, realiza o papel de mediador das comunicações. Entretanto, deviado a falta de documentação e exemplos, o uso da DMA é limitado a apenas realizar recebimento de forma assíncrona.
 		\end{frame}
 
 		% \pholder{Noc Identifiers}
-		\begin{frame}[fragile]{Noc Identifiers}
+		\begin{frame}[fragile]{NoC Identifiers}
 			\begin{itemize}
 				\item NoC interfaces have \textbf{two identifiers}
 				\begin{itemize}
@@ -60,6 +61,10 @@
 					\multicolumn{1}{|l|}{\textbf{CCs}}  & 0-15                 & 8-23                \\ \hline
 				\end{tabular}
 			\end{table}
+
+			% As interface NoC na HAL possuem dois identificadores.
+			% O identificador físico é definido pelo próprio MPPA-256, o utilizando para rotear as comunicações através da NoC.
+			% Para eliminar a dependência do identificador físico, foi criado um mapeamento para um identificador lógico, o qual é utilizado pelas abstrações fora da HAL.
 		\end{frame}
 
 		% \pholder{Resource Identifiers}
@@ -80,6 +85,12 @@
 					\multicolumn{1}{|l|}{\textbf{Sync}}    & 48-71          & 3              & -              & -              \\ \hline
 				\end{tabular}
 			\end{table}
+
+			% Por outro lado, para prover transparência da comunicação das abstrações, é necessário que ela conheçam o recursos destino.
+			% Para isso, os recursos de comunicação foram particionados por abstração.
+			% Onde, dependendo dos nós envolvidos, é possível inferir os identificadores dos recursos.
+			
+			% %%%%%%Por exemplo, cada nó possui um slot de recebimento de dados na mailbox, permitindo que qualquer nó saiba o par interface, recurso que devem enviar os dados.
 		\end{frame}
 
 		% \pholder[Lazy transfer and Interface convention]{General Concepts of Comm. Abstrations}
@@ -87,7 +98,7 @@
 			\begin{itemize}
 				\item Master core \textbf{cannot be blocked}
 				\item Communication Interfaces export \textbf{only asynchronous calls}
-				\item \textbf{Lazy transfer algorithm}
+				\item \textbf{Lazy transfer}
 			\end{itemize}
 
 			\begin{itemize}
@@ -97,32 +108,18 @@
 					\item Receiver Role: \texttt{create}/\texttt{unlink}/\texttt{aread}/\texttt{wait}
 				\end{itemize}
 			\end{itemize}
-			% The microkernel specifically assigns the master core the task
-			% of handling requests (\ie kernel calls) from slave cores. Therefore,
-			% interfaces export only asynchronous calls. This decision forces
-			% the upper layer, if desired, to create synchronous calls that
-			% call the wait function right after the asynchronous operation.
-			% Thus, at the microkernel level, we can ensure that the master core
-			% sets or executes asynchronous functions and notifies blocked slaves.
 
-			% \autoref{alg:lazy-transfer} illustrates the behavior of
-			% lazy transfer, the algorithm defines that the master saves the
-			% parameters of transmission if it does not have desired permission
-			% and will accomplish other requests. Upon receiving permission
-			% from the receiver, the interrupt handler identifies the resource,
-			% actually sends the data and releases the slave that requested the
-			% send. This algorithm ensures that the master is always doing useful
-			% operations and never crashes the entire system.
+			% Como bloquear o mestre introduziria um grande problema de performance no nível do microkernel.
+			% Todas as interfaces exportam apenas operações assíncronas.
+			% Porém, deviado a limitação no uso da DMA, foi introduzido o conceito de envio preguiçoso.
+			% Onde caso o mestre não possua autorização para enviar os dados, ele guarda os parâmetros da operação nas estruturas do SO e continua atendendo requisitações.
+			% Ao ser notificado da permissão, ele transfere, de fato os dados.
 
-			% Finally, abstract interfaces follow a convention to distinguish
-			% between receiver and sender roles. Receivers use functions with
-			% \texttt{create}, \texttt{unlink}, \texttt{aread}, and \texttt{wait}
-			% suffixes. Senders, in turn, use functions with \texttt{open},
-			% \texttt{close}, \texttt{awrite/signal}, and \texttt{wait} suffixes.
-			% Because the \texttt{wait} function is shared, the abstraction must
-			% distinguish the role by the resource identifier. Discriminating the
-			% nature of operations helps both the user, being entirely intuitive,
-			% and implementing \hal by explaining what features will be needed.
+			% Outro ponto comum das abstrações, é a padronização dos papeis de emissor e receptor.
+			% Onde o emissor utiliza funções nomeados com open, close, entre outras.
+			% E o receptor utiliza create/unlink, etc.
+			% Apenas o wait é compartilhado.
+
 		\end{frame}
 
 		% \pholder[Concept]{Sync Abstration Concept}
@@ -154,21 +151,10 @@
 			}
 		\end{overprint}
 
-			% \textit{Synchronization Abstraction}, called \sync, provides the
-			% basis for cluster synchronization across distributed barriers.
-			% Its behavior is analogous to \posix Signals abstraction, but
-			% notifications do not carry information, they are only for synchronization.
-			% \sync defines two synchronization modes, \texttt{ALL\_TO\_ONE} and
-			% \texttt{ONE\_TO\_ALL}. In both modes, there is a single master node
-			% (\texttt{ONE}) and one or more slave nodes
-			% (\texttt{ALL}) involved in the communication. \autoref{fig:sync-all-to-one} illustrates the
-			% \texttt{ALL\_TO\_ONE} mode, where the master node waits blocked for
-			% the $N$ notifications coming from the slaves. In contrast,
-			% \autoref{fig:sync-one-to-all} pictures the \texttt{ONE\_TO\_ALL} mode,
-			% where the master notifies the $N$ slaves, releasing them from the lock.
-			% The sender nodes are responsible for sending a signal and will never
-			% block. Receiver nodes are responsible for waiting for all notifications
-			% to arrive.
+			% A abstração de sincronização provê a criação de barreiras distribuídas.
+			% Ela é analoga a POSIX Signals e possui dois modos de operação.
+			% O primeiro, ALL_TO_ONE, define que o mestre da operação deve aguardar N notificações de N escravos.
+			% De forma contrária, ONE_TO_ALL, é o mestre que emite N notificações, liberando cada um dos escravos.
 		\end{frame}
 
 		% \pholder[Implementation]{Sync Abstration Implementation}
@@ -185,6 +171,10 @@
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{imgs/sync-all-to-one.pdf}
+
+			% Os parametros para criar ou abrir um sync são os mesmos para ambos os papéis.
+			% No qual a lista de nós envolvidos deve sempre conter o mestre da operação na primeira posição.
+			% Na DMA, é alocado o recurso associado ao identificador do mestre e configurado com os nós da lista.
 		\end{frame}
 
 		% \pholder[Concept]{Mailbox Abstration Concept}
@@ -197,41 +187,35 @@
 			\end{itemize}
 
 			\addfig[][width=.4\linewidth]{mailbox-concept.pdf}		
-
-			% \textit{Message Queue Abstraction}, called \mailbox, allows clusters to exchange
-			% fixed-length messages with each other. The message size is designed to be
-			% relatively small, usually a few hundreds of bytes. The recipient consumes these
-			% messages without needing to know who sent them. Similarly, mailbox operations
-			% follow the behavior of the \posix message queue. \autoref{fig:mailbox-concept}
-			% conceptually illustrates one of the ways to implement a \mailbox. The receiver
-			% allocates enough space to receive one message from each possible sender.
-			% The sender transfers the message to a predefined location.
-
-			% \autoref{fig:mailbox-flow} outlines the communication flow between a
-			% receiver and a sender node. The receiver creates an empty message queue
-			% where senders are free to send the first message. Subsequently, to
-			% avoid overwriting old messages, all transmissions require the permission
-			% of the receiver. For this reason,  when the receiver consumes a message,
-			% it copies the message to the user buffer, releases the queue space, and
-			% notifies the sender.
+	
+			% A mailbox permite que clusters troquem mensagens de tamanho fixo.
+			% Ela é similar ao POSIX Message Queue, onde o receptor aloca espaço suficiente para receber N mensagens.
+			% Já os emissores, sempre transferem para uma localização pré-determinada.
 		\end{frame}
 
 		% \pholder[Implementation]{Mailbox Abstration Implementation}
 		\begin{frame}[fragile]{Mailbox Abstration Implementation}
 			\begin{itemize}
-				\item Parameters required for Receiver
+				\item Message queue allocated within the kernel space
+				\item \textbf{Quality of Service}
 				\begin{itemize}
-					\item Create: Local node ID
-					\item Read: Pointer and size of the buffer
+					\item \textbf{One message} per NoC Node
 				\end{itemize}
-				\item Parameters required for Sender
+				\item Parameters required
 				\begin{itemize}
-					\item Open: Target node ID
-					\item Write: Pointer and size of the buffer
+					\item \textit{Create}: Local ID
+					\item \textit{Open}: Target ID
+					\item \textit{Read/Write}: Pointer and size of the buffer
 				\end{itemize}
 			\end{itemize}
 
-			\addfig[][width=.75\linewidth]{mailbox-flow.pdf}	
+			\addfig[][width=.75\linewidth]{mailbox-flow.pdf}
+
+			% A fila de mensagens é alocada dentro do kernel para que o usuário não precise configurar um buffer previamente.
+			% A mailbox também provê um controle de fluxo, permitindo que cada nós só envie uma mensagem de cada vez.
+			% Os parâmetros necessário envolvem identificar a interface da qual desejam ler ou enviar dados.
+			
+			% %%%%%A leitura e envio ocorrem através da passagem do buffer contendo a mensagem.
 		\end{frame}
 
 		% \pholder[Concept]{Portal Abstration Concept}
@@ -242,44 +226,35 @@
 				\item \textbf{One-way} channel for data transfer
 			\end{itemize}
 
-			\addfig[][width=.4\linewidth]{portal-concept.pdf}		
+			\addfig[][width=.4\linewidth]{portal-concept.pdf}
 
-			% Finally, \textit{Portal Abstraction} allows two nodes to exchange arbitrary
-			% amounts of data. \autoref{fig:portal-concept} presents the conceptual idea
-			% of the \portal, which resembles that of \posix Pipes with flow control.
-			% The cardinality of operations is always $1:1$, where a pair of nodes opens
-			% a one-way channel for data transfer. However, unlike \posix Pipes, which
-			% defines that the pipe exists only between two processes, the \portal allows
-			% the receiver to communicate with other nodes through the same channel.
-			% The sender, in turn, can only communicate with one node.
+			% O portal permite a troca de quantidade arbitrárias de dados entre 2 nós.
+			% Similar ao POSIX pipes, a comunicação é unidirecional, ou seja, apenas um envia e o outro lê.
 		\end{frame}
 
 		% \pholder[Implementation]{Portal Abstration Implementation}
 		\begin{frame}[fragile]{Portal Abstration Implementation}
 			\begin{itemize}
-				\item Parameters required for Receiver
+				\item No intermediate copies
+				\item \textbf{Quality of Service}
 				\begin{itemize}
-					\item Create: Local node ID
-					\item Allow: Target node ID
-					\item Read: Pointer and size of the buffer
+					\item \textit{Receiver notifies sender} that it is able to receive
 				\end{itemize}
-				\item Parameters required for Sender
+				\item Parameters required
 				\begin{itemize}
-					\item Open: Local and target node ID
-					\item Write: Pointer and size of the buffer
+					\item \textit{Create}: Local ID, \textit{Allow}: Target ID
+					\item \textit{Open}: Local and target ID
+					\item \textit{Read/Write}: Pointer and size of the buffer
 				\end{itemize}
 			\end{itemize}
 
 			\addfig[][width=.75\linewidth]{portal-flow.pdf}
 
-			% \autoref{fig:portal-flow} outlines the flow control of the \portal.
-			% When attempting to transmit data to the receiver, the sender will block
-			% until the receiver can accept it. By enabling one data exchange at a time,
-			% the receiver configures the read settings and notifies the sender. In this way,
-			% the flow control ensures that the receiver will not be overloaded, will
-			% not receive data without properly configured \dma, and will not overwrite
-			% previous data. Allowing communication empowers the receiver to choose which
-			% communications to prioritize.	
+			% A configuração das comunicações do portal não necessitam de copias intermediárias.
+			% Ou seja, os dados são lidas/escritos diretamente da memória do usuário.
+			% Isto é possível por causa do controle de fluxo do portal.
+			% O qual o receptor precisa notificar o emissor que está apto a receber os dados.
+			% Os parâmetros são similares aos visto no mailbox, com diferença da função Allow da interface do receptor.
 		\end{frame}
 
 	\subsection{User-Level Communication}
