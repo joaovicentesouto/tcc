@@ -3,26 +3,17 @@
 	% \pholder{Methodology}
 	\begin{frame}[fragile]{Methodology}
 		\begin{itemize}
-			\item Evaluates the performance of data transfer services
+			\item Evaluates the performance of \textbf{data transfer services}
 			\begin{itemize}
 				\item Mailbox
 				\item Portal
 			\end{itemize}
-			\item Micro-benchmarks measure data volume and communication latency
+			\item Micro-benchmarks stimulate the services with usual MPI collective communication routines
 		\end{itemize}
 
-		% This chapter evaluates the performance of communication services of
-		% the \nanvixmicrokernel running on the \mppa processor, \ie \mailbox
-		% and \portal. The impacts of the synchronization mechanism were not
-		% analyzed because it is a simple service that does not directly
-		% influence node communication, depending greatly on the workload of
-
-		% To deliver a comprehensive assessment of the communication service, we
-		% stimulate the services with usual collective communication configurations.
-
-		% Micro-benchmarks measure the data volume and communication latency
-		% through the \ioctl interface.
-	each cluster.
+		% Os experimentos realizados buscam avaliar os serviços de transferência de dados, como mailbox e portal.
+		% Entretanto, o sync foi utilizado para realizar a sincronização de todos os clusters envolvidos.
+		% Para prover uma avaliação abrangente, os micro-benchmarks estimularam os serviços usando rotinas de comunicação coletivas.
 	\end{frame}
 
 	% \pholder{Micro-benchmarks}
@@ -65,6 +56,12 @@
 				\addfig[][width=.5\linewidth]{mpi-ping-pong.pdf}
 			}
 		\end{overprint}
+
+		% Ao todo foram implementados 4 rotinas.
+		% A rotina broadcast define um nó mestre enviando uma mesma mensagem para N escravos.
+		% Opostamente, a rotina gather, define que todos os escravos enviem seus dados para o mestre.
+		% A rotina AllGather é uma generalização do gather, no qual todos enviam e recebem dados de todos mundo.
+		% Por fim, a rotina Ping-Pong representa as diversas requisições e respostas de um modelo cliente-servidor.
 	\end{frame}
 
 	% \pholder{Design}
@@ -83,16 +80,37 @@
 			\item \textbf{50 iterations}, discarding first ten
 			\item Standard error inferior to \textbf{1\%}
 		\end{itemize}
+
+		% Para o serviço do Portal, foi avaliado a taxa de transferência de dados envolvendo sempre um número fixo de cluster. O que variou a quantidade de dados, variando de 4 KB até 64 KB.
+		% Já a latência da mailbox envolveu um número variável de clusters porque a mensagem trocada é fixada com o tamanho de 120 bytes.
+		% Todos os experimentos tiveram 50 iterações, mas as 10 primeiras foram descartadas para ignorar variações provenientes da inicialização do experimento.
+		% Por fim, todos os resultados obtiveram erro padrão menor que 1%.
 	\end{frame}
 
 	% \pholder{Portal Analysis}
 	\begin{frame}[fragile]{Portal Analysis}
 		\addfig[][width=.9\linewidth]{portal-throughput.pdf}
+
+		% O gráfico mostra a taxa de transferência do Portal em MB/s relativo a quantidade de dados transferido.
+		% Os resultados exibiram três comportamentos distintos.
+		% O primeiro, o broadcast apresentou os piores resultados como experado, por causa do único emissor envolvido.
+		% Segundo, Gather e Ping-Pongo estão sobrepostos porque tiveram resultados similares.
+		% Isso é causado por causa da serialização das leituras pelo mestre, o qual dita o fluxo dos dados.
+		% Terceiro, o melhor dos resultados foi do AllGather, porque as comunicações ocorriam em pares de nós, o que permite o paralelismo das tranferências.
+		% No contexto de Sistems Operacionais, onde teremos subsistemas requisitando grandes transferências de dados, como um sistema de paginação, podemos inferir que tamanhos entre 8 e 16 KB favorecem a taxa de transferência do Portal.
+		% Apesar de tudo, acreditamos que ao eliminar as limitações da DMA, o Portal deve ter ganhos significativos.
 	\end{frame}
 
 	% \pholder{Mailbox Analysis}
 	\begin{frame}[fragile]{Mailbox Analysis}
 		\addfig[][width=.9\linewidth]{mailbox-latency.pdf}
+
+		% Por outro lado, o gráfico da Mailbox apresenta a latencia em milisegundos relativo ao número de clusters de computação envolvidos.
+		% Primeiramente, as rotinas Gather e AllGather apresentaram os melhores resultados por causa do  paralelismo do recebimento das N mensagens. A diferença do AllGather se encontra na necessidade de envio e leitura, diferente da Gather.
+		% Segundo, o broadcast sofreu do mesmo mal da rotina no Portal, por causa do único emissor de mensagens.
+		% Por último, o ping-pong apresentou os piores resultados, onde é possível notar que seus resultados são similares as somas dos resultados do gather e do broadcast.
+		% O que indica que o ganho do mestre em receber as mensagens em paralelo foi atenuado pelo gargalo de enviar N mensagens.
+		% Entretanto, de forma geral, os resultados mostraram que é possível suportar de forma efficiente essas rotinas no Nanvix Multikernel. Os resultados do Ping-pongo, por sua vez, mostraram potenciais melhorias que devem ser estudadas na comunicação dos subsistemas do Nanvix.
 	\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
