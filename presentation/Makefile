@@ -16,7 +16,7 @@ GNUPLOT=gnuplot
 
 srcs=$(wildcard *.tex) $(wildcard *.bib)
 svgs=$(wildcard imgs/svgs/*.svg)
-frames=$(foreach k,1 2 3 4 5 6,imgs/processor-trend-$k.pdf)
+frames=$(foreach k,1 2 3 4 5,imgs/processor-trend-$k.pdf)
 pdfs=$(svgs:.svg=.pdf) 
 others=$(wildcard imgs/others/*.pdf) $(wildcard imgs/others/*.jpg) $(wildcard imgs/others/*.png)
 
@@ -24,7 +24,7 @@ others=$(wildcard imgs/others/*.pdf) $(wildcard imgs/others/*.jpg) $(wildcard im
 # phony targets                                   #
 ###################################################
 
-all: imgs main.robust.pdf
+all: imgs main.robust.pdf clean-latex
 
 imgs: $(pdfs)
 	cp $(pdfs) imgs
@@ -81,8 +81,6 @@ imgs/processor-trend-4.pdf: imgs/svgs/processor-trend.svg
 	$(call svg2pdf,imgs/svgs/processor-trend,gSlide4,imgs/processor-trend-4)
 imgs/processor-trend-5.pdf: imgs/svgs/processor-trend.svg
 	$(call svg2pdf,imgs/svgs/processor-trend,gSlide5,imgs/processor-trend-5)
-imgs/processor-trend-6.pdf: imgs/svgs/processor-trend.svg
-	$(call svg2pdf,imgs/svgs/processor-trend,gSlide6,imgs/processor-trend-6)
 
 ###################################################
 # main targets                                    #

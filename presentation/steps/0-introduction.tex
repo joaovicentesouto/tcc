@@ -2,9 +2,11 @@
 % \showsections
 \section{Introduction}
 
-	\pholder[O que é um processador?]{Processadores}
+	% O meu trabalho de conclusão de curso envolve o desenvolvimento de mecanismos de comunicação para processadores lightweight manycores para o Sistema Operacional Nanvix
 
-	% \pholder[Como deixar os CPUs mais poderosos?]{Evolução dos Processadores}
+	\begin{frame}[fragile]{Introduction}
+		\addfig[][width=.8\linewidth]{processors-example.pdf}
+	\end{frame}
 
 	\begin{frame}{Processor Trend}
 		\begin{overprint}
@@ -13,19 +15,57 @@
 			\only<3>{\includegraphics[width=.9\linewidth]{processor-trend-3.pdf}}
 			\only<4>{\includegraphics[width=.9\linewidth]{processor-trend-4.pdf}}
 			\only<5>{\includegraphics[width=.9\linewidth]{processor-trend-5.pdf}}
-			\only<6>{\includegraphics[width=.9\linewidth]{processor-trend-6.pdf}}
 		\end{overprint}
 	\end{frame}
 
-	\pholder[O que motivou o surgimento do Lightweight Manycore?]{Preocupações atuais}
+	\begin{frame}[fragile]{Lightweight Manycores Particularities}
+		\begin{itemize}
+			\item \textbf{Integrates thousands of low-power cores} grouped in clusters
+			\item Copes with \textbf{MIMD workloads}
+			\item \textbf{Relies on a Network-on-Chip (NoC)} % for fast and reliable message-passing communication
+			\begin{itemize}
+				\item Hybrid programming model
+			\end{itemize}
+			\item Has \textbf{constrained memory systems}
+			\begin{itemize}
+				\item Multiple physical address spaces
+				\item Small local memories
+			\end{itemize}
+			\item Features a \textbf{heterogeneous configuration}
+		\end{itemize}
+	\end{frame}
 
-	\pholder[Quais são as características de um Lightweight Manycore?]{Lightweight Manycore}
-
-	\pholder[Qual o contexto do trabalho? Contexto de pesquisa sobre SO para manycores]{Contexto do Trabalho}
+	\begin{frame}[fragile]{Work Context}
+		\begin{itemize}
+			\item \textbf{Existing Challenges} % derives from existing \textbf{runtimes} and \textbf{Operating Systems}.
+			\begin{itemize}
+				\item Runtimes
+				\item Operating Systems (OS)
+			\end{itemize}
+			\item \textbf{Next-generation of OSs} for Lightweight Manycores
+			\begin{itemize}
+				\item Redesigned from scratch
+				\item \textbf{Nanvix OS}
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
 
 \section{Goals}
 
-	\pholder[Quais são os objetivos do trabalho?]{Objetivos}
+	\begin{frame}[fragile]{Goals}
+		\begin{itemize}
+			\item Definition and proposal of an \textbf{Inter-Cluster Communication Interface} for lightweight manycores
+			\item Implementation in the \textbf{Nanvix HAL}
+			\begin{itemize}
+				\item Kalray MPPA-256 lightweight manycore processor
+			\end{itemize}
+			\item Integration with the \textbf{Nanvix Microkernel}
+			\item Performance evaluation using synthetic micro-benchmarks
+			\begin{itemize}
+				\item \textbf{Collective communication routines}
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
 % LocalWords:  Re-empacotamento fontsize Makefile pdflatex imgs PDFs
