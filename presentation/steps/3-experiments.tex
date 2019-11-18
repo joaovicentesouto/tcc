@@ -8,7 +8,7 @@
 				\item Mailbox
 				\item Portal
 			\end{itemize}
-			\item Micro-benchmarks stimulate the services with usual MPI collective communication routines
+			\item Micro-benchmarks stimulate the services with usual \textbf{MPI collective communication routines}
 		\end{itemize}
 
 		% Os experimentos realizados buscam avaliar os serviços de transferência de dados, como mailbox e portal.
@@ -69,13 +69,13 @@
 		\begin{itemize}
 			\item \textbf{Throughput of the Portal}
 			\begin{itemize}
-				\item Cluster involved: 1 IO and 16 CCs
-				\item Data size: 4, 8, 16, 32, 64 KB
+				\item Constant: 1 IO and 16 CCs
+				\item Variable: 4, 8, 16, 32, 64 KB
 			\end{itemize}
 			\item \textbf{Latency of the Mailbox}
 			\begin{itemize}
-				\item Cluster involved: 1 IO and 1 to 16 CCs
-				\item Data size: 120 B
+				\item Variable: 1 IO and 1 to 16 CCs
+				\item Constant: 120 B
 			\end{itemize}
 			\item \textbf{50 iterations}, discarding first ten
 			\item Standard error inferior to \textbf{1\%}

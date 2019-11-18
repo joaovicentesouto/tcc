@@ -160,12 +160,7 @@
 		% \pholder[Implementation]{Sync Abstration Implementation}
 		\begin{frame}[fragile]{Sync Abstration Implementation}
 			\begin{itemize}
-				\item Parameters required
-				\begin{itemize}
-					\item Node list
-					\item List size
-					\item Mode
-				\end{itemize}
+				\item Uses a \textbf{node list}
 				\item Master node must be the first on the list
 				\item RX resources \textbf{related to the Master ID}
 			\end{itemize}
@@ -277,9 +272,9 @@
 		% \pholder{Impacts of the Master-Slave Model}
 		\begin{frame}[fragile]{Impacts of the Master-Slave Model}
 			\begin{itemize}
-				\item Only the master core manipulates internal structures of the OS
+				\item Only the master manipulates internal structures of the OS
 				\item Slave only reads locks address from internal structures to block
-				\item Kernel call interface
+				\item \textbf{Naming Convention}
 				\begin{itemize}
 					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
 					\item Slave calls: \texttt{k\textit{abstraction}\_\textit{operation}}
