@@ -3,15 +3,15 @@
 	% \pholder{Methodology}
 	\begin{frame}[fragile]{Methodology}
 		\begin{itemize}
-			\item Evaluates the performance of \textbf{data transfer services}
+			\item Evaluation of the performance of \textbf{data transfer services}
 			\begin{itemize}
 				\item Mailbox
 				\item Portal
 			\end{itemize}
-			\item Micro-benchmarks stimulate the services with usual \textbf{MPI collective communication routines}
+			\item Micro-benchmarks stimulate the services with well-known \textbf{collective communication routines}
 		\end{itemize}
 
-		% Os experimentos realizados buscam avaliar os serviços de transferência de dados, como mailbox e portal.
+		% Os experimentos realizados buscaram avaliar os serviços de transferência de dados, como mailbox e portal.
 		% Entretanto, o sync foi utilizado para realizar a sincronização de todos os clusters envolvidos.
 		% Para prover uma avaliação abrangente, os micro-benchmarks estimularam os serviços usando rotinas de comunicação coletivas.
 	\end{frame}
@@ -94,7 +94,7 @@
 		% O gráfico mostra a taxa de transferência do Portal em MB/s relativo a quantidade de dados transferido.
 		% Os resultados exibiram três comportamentos distintos.
 		% O primeiro, o broadcast apresentou os piores resultados como experado, por causa do único emissor envolvido.
-		% Segundo, Gather e Ping-Pongo estão sobrepostos porque tiveram resultados similares.
+		% Segundo, Gather e Ping-Pong estão sobrepostos porque tiveram resultados similares.
 		% Isso é causado por causa da serialização das leituras pelo mestre, o qual dita o fluxo dos dados.
 		% Terceiro, o melhor dos resultados foi do AllGather, porque as comunicações ocorriam em pares de nós, o que permite o paralelismo das tranferências.
 		% No contexto de Sistems Operacionais, onde teremos subsistemas requisitando grandes transferências de dados, como um sistema de paginação, podemos inferir que tamanhos entre 8 e 16 KB favorecem a taxa de transferência do Portal.
@@ -110,7 +110,7 @@
 		% Segundo, o broadcast sofreu do mesmo mal da rotina no Portal, por causa do único emissor de mensagens.
 		% Por último, o ping-pong apresentou os piores resultados, onde é possível notar que seus resultados são similares as somas dos resultados do gather e do broadcast.
 		% O que indica que o ganho do mestre em receber as mensagens em paralelo foi atenuado pelo gargalo de enviar N mensagens.
-		% Entretanto, de forma geral, os resultados mostraram que é possível suportar de forma efficiente essas rotinas no Nanvix Multikernel. Os resultados do Ping-pongo, por sua vez, mostraram potenciais melhorias que devem ser estudadas na comunicação dos subsistemas do Nanvix.
+		% Entretanto, de forma geral, os resultados mostraram que é possível suportar de forma eficiente essas rotinas no Nanvix Multikernel. Os resultados do Ping-pong, por sua vez, mostraram potenciais melhorias que devem ser estudadas na comunicação dos subsistemas do Nanvix.
 	\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs

@@ -31,7 +31,7 @@
 					\item Interrupt System
 					\item DMA
 				\end{itemize}
-				\item \textbf{Explicit handler} the NoC interrupts % to identify the resource
+				% \item \textbf{Explicit handler} the NoC interrupts % to identify the resource
 				\item \textbf{DMA limitations}
 			\end{itemize}
 
@@ -42,7 +42,7 @@
 		\end{frame}
 
 		% \pholder{Noc Identifiers}
-		\begin{frame}[fragile]{NoC Identifiers}
+		\begin{frame}[fragile]{Network-on-Chip Identifiers}
 			\begin{itemize}
 				\item NoC interfaces have \textbf{two identifiers}
 				\begin{itemize}
@@ -78,11 +78,11 @@
 				\centering%
 				\begin{tabular}{l|l|l|l|l|}
 					\cline{2-5}
-														   & \multicolumn{2}{c|}{\textbf{CNoC}}               & \multicolumn{2}{c|}{\textbf{DNoC}}           \\ \cline{2-5}
-														   & \textbf{RX ID} & \textbf{TX ID} & \textbf{RX ID} & \textbf{TX ID} \\ \hline
-					\multicolumn{1}{|l|}{\textbf{Mailbox}} & 0-23           & 0              & 0-23           & 1-3            \\ \hline
-					\multicolumn{1}{|l|}{\textbf{Portal}}  & 24-47          & 1-2            & 24-47          & 4-7            \\ \hline
-					\multicolumn{1}{|l|}{\textbf{Sync}}    & 48-71          & 3              & -              & -              \\ \hline
+														   & \multicolumn{2}{c|}{\textbf{CNoC}} & \multicolumn{2}{c|}{\textbf{DNoC}} \\ \cline{2-5}
+														   & \textbf{RX ID} & \textbf{TX ID}    & \textbf{RX ID} & \textbf{TX ID}    \\ \hline
+					\multicolumn{1}{|l|}{\textbf{Mailbox}} & 0-23           & 0                 & 0-23           & 1-3               \\ \hline
+					\multicolumn{1}{|l|}{\textbf{Portal}}  & 24-47          & 1-2               & 24-47          & 4-7               \\ \hline
+					\multicolumn{1}{|l|}{\textbf{Sync}}    & 48-71          & 3                 & -              & -                 \\ \hline
 				\end{tabular}
 			\end{table}
 
@@ -161,7 +161,7 @@
 		\begin{frame}[fragile]{Sync Abstration Implementation}
 			\begin{itemize}
 				\item Uses a \textbf{node list}
-				\item Master node must be the first on the list
+				\item Master node must always be the first
 				\item RX resources \textbf{related to the Master ID}
 			\end{itemize}
 
@@ -208,8 +208,8 @@
 
 			% A fila de mensagens é alocada dentro do kernel para que o usuário não precise configurar um buffer previamente.
 			% A mailbox também provê um controle de fluxo, permitindo que cada nós só envie uma mensagem de cada vez.
-			% Os parâmetros necessário envolvem identificar a interface da qual desejam ler ou enviar dados.
 			
+			% Os parâmetros necessário envolvem identificar a interface da qual desejam ler ou enviar dados.
 			% %%%%%A leitura e envio ocorrem através da passagem do buffer contendo a mensagem.
 		\end{frame}
 
@@ -272,8 +272,10 @@
 		% \pholder{Impacts of the Master-Slave Model}
 		\begin{frame}[fragile]{Impacts of the Master-Slave Model}
 			\begin{itemize}
-				\item Only the master manipulates internal structures of the OS
-				\item Slave only reads locks address from internal structures to block
+				\item \textbf{Only the master changes the internal structures} of the OS
+				\begin{itemize}
+					\item Slaves need to read lock addresses to wait for asynchronous calls
+				\end{itemize}
 				\item \textbf{Naming Convention}
 				\begin{itemize}
 					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}

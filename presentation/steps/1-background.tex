@@ -39,7 +39,7 @@
 	\subsection{Message-Passsing Model}
 
 		% \pholder[Software que lida com interfaces e dma?]{Low-Level Communication}
-		\begin{frame}[fragile]{Low-Level Communication for Message-Passsing Model}
+		\begin{frame}[fragile]{Low-Level Communication for\\Message-Passsing Model}
 			\begin{itemize}
 				\item \textbf{Computer network concepts}
 				\item Network interfaces
@@ -58,7 +58,7 @@
 		\end{frame}
 
 		% \pholder[Tipos de envio/recebimento?]{User-Level Communication}
-		\begin{frame}[fragile]{User-Level Communication for Message-Passsing Model}
+		\begin{frame}[fragile]{User-Level Communication for\\Message-Passsing Model}
 		\begin{overprint}
 			\only<1>{
 				\begin{itemize}
@@ -68,7 +68,7 @@
 						\item Asynchronous calls
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=\linewidth]{imgs/call-sync.pdf}
+				\addfig[][width=.9\linewidth]{imgs/call-sync.pdf}
 			}
 			\only<2>{
 				\begin{itemize}
@@ -78,7 +78,7 @@
 						\item \textbf{Asynchronous calls}
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=\linewidth]{imgs/call-async.pdf}
+				\addfig[][width=.9\linewidth]{imgs/call-async.pdf}
 			}
 		\end{overprint}
 
@@ -168,7 +168,7 @@
 
 			\begin{itemize}
 				\item Runs above the Nanvix HAL
-				\item Provides \textbf{bare bones system abstractions}
+				\item Provides \textbf{bare-bones of system abstractions}
 				\item Follows a \textbf{Master-Slave OS} model
 				\item Rich system call interface (Kernel Call)
 			\end{itemize}
@@ -185,8 +185,8 @@
 
 			\begin{itemize}
 				\item Follows a \textbf{multikernel design}
-				\item \textbf{OS services are processes} and run in isolation from user processes
-				\item User processes \textbf{request service via message-passing} approach
+				\item \textbf{OS services are system processes} and run in isolation
+				\item User processes \textbf{request services via message-passing}
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{nanvix-multikernel-overview.pdf}
