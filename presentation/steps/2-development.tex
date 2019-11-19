@@ -5,11 +5,11 @@
 		\begin{frame}[fragile]{Inter-Cluster Communication Interface}
 
 			\begin{itemize}
-				\item Three communication abstractions:
+				\item \textbf{Three communication abstractions}
 				\begin{itemize}
-					\item \textit{Sync}
-					\item \textit{Mailbox}
-					\item \textit{Portal}
+					\item Sync
+					\item Mailbox
+					\item Portal
 				\end{itemize}
 				\item More precise
 				\item Easy-to-use
@@ -32,6 +32,9 @@
 					\item DMA
 				\end{itemize}
 				% \item \textbf{Explicit handler} the NoC interrupts % to identify the resource
+			\end{itemize}
+
+			\begin{itemize}
 				\item \textbf{DMA limitations}
 			\end{itemize}
 
@@ -102,7 +105,7 @@
 			\end{itemize}
 
 			\begin{itemize}
-				\item \textbf{Naming Convention}
+				\item \textbf{Naming Convention} (suffixes)
 				\begin{itemize}
 					\item Sender Role: \texttt{open}/\texttt{close}/\texttt{awrite/signal}/\texttt{wait}.
 					\item Receiver Role: \texttt{create}/\texttt{unlink}/\texttt{aread}/\texttt{wait}
@@ -128,26 +131,26 @@
 			\only<1>{
 				\begin{itemize}
 					\item Provides cluster synchronization across \textbf{distributed barriers}
-					\item Analogous to \textbf{POSIX Signals}
+					\item Similar to \textbf{POSIX Signals}
 					\item Two modes
 					\begin{itemize}
-						\item \textbf{\texttt{ALL\_TO\_ONE}}
-						\item \texttt{ONE\_TO\_ALL}
+						\item \textbf{ALL\_TO\_ONE}
+						\item ONE\_TO\_ALL
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=.6\linewidth]{imgs/sync-all-to-one.pdf}
+				\addfig[][width=.6\linewidth]{sync-all-to-one.pdf}
 			}
 			\only<2>{
 				\begin{itemize}
 					\item Provides cluster synchronization across \textbf{distributed barriers}
-					\item Analogous to \textbf{POSIX Signals}
+					\item Similar to \textbf{POSIX Signals}
 					\item Two modes
 					\begin{itemize}
-						\item \texttt{ALL\_TO\_ONE}
-						\item \textbf{\texttt{ONE\_TO\_ALL}}
+						\item ALL\_TO\_ONE
+						\item \textbf{ONE\_TO\_ALL}
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=.6\linewidth]{imgs/sync-one-to-all.pdf}
+				\addfig[][width=.6\linewidth]{sync-one-to-all.pdf}
 			}
 		\end{overprint}
 
@@ -160,12 +163,13 @@
 		% \pholder[Implementation]{Sync Abstration Implementation}
 		\begin{frame}[fragile]{Sync Abstration Implementation}
 			\begin{itemize}
-				\item Uses a \textbf{node list}
+				\item Uses only \textbf{CNoC} Resources
+				\item \textbf{Node list} of involved Logic IDs
 				\item Master node must always be the first
 				\item RX resources \textbf{related to the Master ID}
 			\end{itemize}
 
-			% \addfig[][width=.6\linewidth]{imgs/sync-all-to-one.pdf}
+			% \addfig[][width=.6\linewidth]{sync-all-to-one.pdf}
 
 			% Os parametros para criar ou abrir um sync são os mesmos para ambos os papéis.
 			% No qual a lista de nós envolvidos deve sempre conter o mestre da operação na primeira posição.
@@ -191,6 +195,7 @@
 		% \pholder[Implementation]{Mailbox Abstration Implementation}
 		\begin{frame}[fragile]{Mailbox Abstration Implementation}
 			\begin{itemize}
+				\item Merges the use of \textbf{DNoC and CNoC}
 				\item Message queue allocated within the kernel space
 				\item \textbf{Quality of Service}
 				\begin{itemize}
@@ -204,7 +209,7 @@
 				% \end{itemize}
 			\end{itemize}
 
-			\addfig[][width=.75\linewidth]{mailbox-flow.pdf}
+			\addfig[][width=.65\linewidth]{mailbox-flow.pdf}
 
 			% A fila de mensagens é alocada dentro do kernel para que o usuário não precise configurar um buffer previamente.
 			% A mailbox também provê um controle de fluxo, permitindo que cada nós só envie uma mensagem de cada vez.
@@ -230,6 +235,7 @@
 		% \pholder[Implementation]{Portal Abstration Implementation}
 		\begin{frame}[fragile]{Portal Abstration Implementation}
 			\begin{itemize}
+				\item Merges the use of \textbf{DNoC and CNoC}
 				\item No intermediate copies
 				\item \textbf{Quality of Service}
 				\begin{itemize}
@@ -243,7 +249,7 @@
 				% \end{itemize}
 			\end{itemize}
 
-			\addfig[][width=.75\linewidth]{portal-flow.pdf}
+			\addfig[][width=.65\linewidth]{portal-flow.pdf}
 
 			% A configuração das comunicações do portal não necessitam de copias intermediárias.
 			% Ou seja, os dados são lidas/escritos diretamente da memória do usuário.
@@ -257,6 +263,9 @@
 		\begin{frame}[fragile]{Integration with Nanvix Microkernel}
 			\begin{itemize}
 				\item Nanvix HAL does not provide \textbf{rich management} of the communication abstractions
+			\end{itemize}
+
+			\begin{itemize}
 				\item Nanvix Microkernel seek \textbf{to provide}:
 				\begin{itemize}
 					\item Protection
@@ -272,14 +281,17 @@
 		% \pholder{Impacts of the Master-Slave Model}
 		\begin{frame}[fragile]{Impacts of the Master-Slave Model}
 			\begin{itemize}
-				\item \textbf{Only the master changes the internal structures} of the OS
+				\item \textbf{Only Master changes the internal structures} of the OS
 				\begin{itemize}
 					\item Slaves need to read lock addresses to wait for asynchronous calls
 				\end{itemize}
-				\item \textbf{Naming Convention}
+			\end{itemize}
+
+			\begin{itemize}
+				\item \textbf{Naming Convention} (Prefixes)
 				\begin{itemize}
-					\item Master calls: \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
-					\item Slave calls: \texttt{k\textit{abstraction}\_\textit{operation}}
+					\item Master calls: \texttt{\textbf{kernel}\_\textit{abstraction}\_\textit{operation}}
+					\item Slave calls: \texttt{\textbf{k}\textit{abstraction}\_\textit{operation}}
 				\end{itemize}
 			\end{itemize}
 
@@ -295,6 +307,9 @@
 		\begin{frame}[fragile]{Protection and Management}
 			\begin{itemize}
 				\item Protection and management operations involve \textbf{two phases}
+			\end{itemize}
+			
+			\begin{itemize}
 				\item \textbf{Slave phase}
 				\begin{itemize}
 					\item valid file descriptors
@@ -302,6 +317,9 @@
 					\item buffer sizes within the stipulated limit
 					\item semantics of services
 				\end{itemize}
+			\end{itemize}
+
+			\begin{itemize}
 				\item \textbf{Master phase}
 				\begin{itemize}
 					\item multiple creations/openings
@@ -338,6 +356,9 @@
 					\item Arguments within valid value ranges
 					\item Operations with valid semantic
 				\end{itemize}
+			\end{itemize}
+
+			\begin{itemize}
 				\item \textbf{FAULT tests}
 				\begin{itemize}
 					\item Arguments outside domain range

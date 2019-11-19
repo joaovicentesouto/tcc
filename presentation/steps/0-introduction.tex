@@ -16,11 +16,11 @@
 
 	\begin{frame}{Processor Trend}
 		\begin{overprint}
-			\only<1>{\addfig[][width=.9\linewidth]{processor-trend-1.pdf}}
-			\only<2>{\addfig[][width=.9\linewidth]{processor-trend-2.pdf}}
-			\only<3>{\addfig[][width=.9\linewidth]{processor-trend-3.pdf}}
-			\only<4>{\addfig[][width=.9\linewidth]{processor-trend-4.pdf}}
-			\only<5>{\addfig[][width=.9\linewidth]{processor-trend-5.pdf}}
+			\only<1>{\addfig[Historical evolution of transistor-based processors][width=.9\linewidth]{processor-trend-1.pdf}}
+			\only<2>{\addfig[Historical evolution of transistor-based processors][width=.9\linewidth]{processor-trend-2.pdf}}
+			\only<3>{\addfig[Historical evolution of transistor-based processors][width=.9\linewidth]{processor-trend-3.pdf}}
+			\only<4>{\addfig[Historical evolution of transistor-based processors][width=.9\linewidth]{processor-trend-4.pdf}}
+			\only<5>{\addfig[Historical evolution of transistor-based processors][width=.9\linewidth]{processor-trend-5.pdf}}
 		\end{overprint}
 
 		% Por muitos anos, o aumento da frequência dos processadores impulsionou os ganhos de desempenho dos sistemas computacionais modernos.
@@ -64,7 +64,10 @@
 				\item Runtimes
 				\item Operating Systems (OS)
 			\end{itemize}
-			\item \textbf{Next-generation of OSs} for Lightweight Manycores
+		\end{itemize}
+
+		\begin{itemize}
+			\item \textbf{OSs for Next-generation for lightweight manycores}
 			\begin{itemize}
 				\item Redesigned from scratch
 				\item \textbf{Nanvix OS}
@@ -81,11 +84,20 @@
 	\begin{frame}[fragile]{Goals}
 		\begin{itemize}
 			\item Definition and proposal of an \textbf{Inter-Cluster Communication Interface} for lightweight manycores
+		\end{itemize}
+
+		\begin{itemize}
 			\item Implementation in the \textbf{Nanvix HAL}
 			\begin{itemize}
 				\item Kalray MPPA-256 lightweight manycore processor
 			\end{itemize}
+		\end{itemize}
+
+		\begin{itemize}
 			\item Integration with the \textbf{Nanvix Microkernel}
+		\end{itemize}
+
+		\begin{itemize}
 			\item Performance evaluation using synthetic micro-benchmarks
 			\begin{itemize}
 				\item \textbf{Collective communication routines}

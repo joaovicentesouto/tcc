@@ -10,7 +10,7 @@
 					\item Master-Slave OS
 					\item Symmetric OS
 				\end{itemize}
-				\addfig[][width=0.85\linewidth]{imgs/replicated-os.pdf}
+				\addfig[][width=0.75\linewidth]{replicated-os.pdf}
 			}
 			\only<2>{
 				\begin{itemize}
@@ -18,7 +18,7 @@
 					\item \textbf{Master-Slave OS}
 					\item Symmetric OS
 				\end{itemize}
-				\addfig[][width=0.85\linewidth]{imgs/master-slave-os.pdf}
+				\addfig[][width=0.75\linewidth]{master-slave-os.pdf}
 			}
 			\only<3>{
 				\begin{itemize}
@@ -26,7 +26,7 @@
 					\item Master-Slave OS
 					\item \textbf{Symmetric OS}
 				\end{itemize}
-				\addfig[][width=0.85\linewidth]{imgs/symmetric-os.pdf}
+				\addfig[][width=0.75\linewidth]{symmetric-os.pdf}
 			}
 		\end{overprint}
 
@@ -42,7 +42,13 @@
 		\begin{frame}[fragile]{Low-Level Communication for\\Message-Passsing Model}
 			\begin{itemize}
 				\item \textbf{Computer network concepts}
+			\end{itemize}
+
+			\begin{itemize}
 				\item Network interfaces
+			\end{itemize}
+
+			\begin{itemize}
 				\item Performance impacts
 				\begin{itemize}
 					\item Number of intermediare copies
@@ -68,7 +74,7 @@
 						\item Asynchronous calls
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=.9\linewidth]{imgs/call-sync.pdf}
+				\addfig[][width=.9\linewidth]{call-sync.pdf}
 			}
 			\only<2>{
 				\begin{itemize}
@@ -78,7 +84,7 @@
 						\item \textbf{Asynchronous calls}
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=.9\linewidth]{imgs/call-async.pdf}
+				\addfig[][width=.9\linewidth]{call-async.pdf}
 			}
 		\end{overprint}
 
@@ -93,14 +99,14 @@
 		% \pholder[Descrever MPPA]{MPPA-256}
 		\begin{frame}[fragile]{Kalray MPPA-256}
 			\begin{itemize}
-				\item {High-Performance and Low-Power Consunption}
-				\item {288 processing cores}
+				\item \textbf{High-Performance and Low-Power Consunption}
+				\item 288 processing cores
 				\begin{itemize}
 					\item {16 Compute Cluster (CC)}
 					\item {4 I/O Cluster (IO)}
 				\end{itemize}
 			\end{itemize}
-			\addfig[][width=.5\linewidth]{imgs/arch-mppa.pdf}
+			\addfig[][width=.5\linewidth]{arch-mppa.pdf}
 
 			% O processador MPPA-256 é um Lightweight Manycore de alto desempenho e baixo consumo energético.
 			% Ele possui 288 núcleos de propósito geral agrupados em 16 clusters de computação e 4 clusters de entrada e saída.
@@ -110,15 +116,17 @@
 			\begin{itemize}
 				\item \textbf{Data NoC (DNoC)}
 				\begin{itemize}
-					\item 256 slots for receiving data;
-					\item 8 channels for sending data, and;
-					\item 8 $\mu$threads for sending asynchronous data.
+					\item 256 slots for receiving data
+					\item 8 channels for sending data
+					\item 8 $\mu$threads for sending asynchronous data
 				\end{itemize}
+			\end{itemize}
 
+			\begin{itemize}
 				\item \textbf{Control NoC (CNoC)}
 				\begin{itemize}
-					\item 128 slots for receiving commands;
-					\item 4 channels for sending commands;
+					\item 128 slots for receiving commands
+					\item 4 channels for sending commands
 				\end{itemize}
 			\end{itemize}
 
@@ -131,10 +139,14 @@
 
 		% \pholder{Nanvix OS}
 		\begin{frame}[fragile]{Nanvix OS}
-			\addfig[][width=.6\linewidth]{imgs/nanvix-goal.pdf}
+			\addfig[][width=.55\linewidth]{nanvix-goal.pdf}
+
 			\begin{itemize}
 				\item Fully-feature \textbf{POSIX-Compliant OS}
-				\item Three abstractions layers
+			\end{itemize}
+
+			\begin{itemize}
+				\item \textbf{Three abstractions layers}
 				\begin{itemize}
 					\item Nanvix Hardware Abstraction Layer (HAL)
 					\item Nanvix Microkernel
