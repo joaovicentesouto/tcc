@@ -14,6 +14,8 @@
 
 				\begin{center}
 					Each core has a copy of the OS
+				\end{center}
+				\begin{center}
 					Less concurrency but needs a lot of memory
 				\end{center}
 			}
@@ -27,7 +29,9 @@
 
 				\begin{center}
 					Asymmetric execution where only one core handles the OS
-					Better scalability but inserts a possible bottleneck
+				\end{center}
+				\begin{center}
+					Better scalability and less inter-core interference but inserts a possible bottleneck
 				\end{center}
 			}
 			\only<3>{
@@ -40,7 +44,9 @@
 
 				\begin{center}
 					OS shared by all cores
-					Efficient on cache coherent processors but less scalable
+				\end{center}
+				\begin{center}
+					Inter-core interference and inefficient on processors without cache coherence
 				\end{center}
 			}
 		\end{overprint}
@@ -90,6 +96,10 @@
 					\end{itemize}
 				\end{itemize}
 				\addfig[][width=.9\linewidth]{call-sync.pdf}
+
+				\begin{center}
+					Requester waits for task to be completed
+				\end{center}
 			}
 			\only<2>{
 				\begin{itemize}
@@ -100,6 +110,10 @@
 					\end{itemize}
 				\end{itemize}
 				\addfig[][width=.9\linewidth]{call-async.pdf}
+
+				\begin{center}
+					Requester is released to continue to run in parallel
+				\end{center}
 			}
 		\end{overprint}
 
@@ -113,42 +127,57 @@
 
 		% \pholder[Descrever MPPA]{MPPA-256}
 		\begin{frame}[fragile]{Kalray MPPA-256}
-			\begin{itemize}
-				\item \textbf{High-Performance and Low-Power Consunption}
-				\item 288 processing cores
-				\begin{itemize}
-					\item {16 Compute Cluster (CC)}
-					\item {4 I/O Cluster (IO)}
-				\end{itemize}
-			\end{itemize}
-			\addfig[][width=.5\linewidth]{arch-mppa.pdf}
+
+			\vspace{-0.5cm}
+
+			\begin{columns}[totalwidth=\linewidth,t]
+				\column{0.60\linewidth}
+
+					\begin{itemize}
+						\item \textbf{High-Performance and Low-Power Consunption}
+					\end{itemize}
+
+					\begin{itemize}
+						\item \textbf{288 processing cores}
+						\begin{itemize}
+							\item {16 Compute Cluster (CC)}
+							\item {4 I/O Cluster (IO)}
+						\end{itemize}
+					\end{itemize}
+
+					\begin{itemize}
+						\item \textbf{Data NoC (DNoC)}
+						\begin{itemize}
+							\item 256 RX slots
+							\item 8 TX channels
+							\item 8 $\mu$threads for async TX
+						\end{itemize}
+					\end{itemize}
+
+					\begin{itemize}
+						\item \textbf{Control NoC (CNoC)}
+						\begin{itemize}
+							\item 128 RX slots
+							\item 4 TX channels
+						\end{itemize}
+					\end{itemize}
+
+				\column{0.4\linewidth}
+					\addfig[][width=.7\linewidth]{arch-mppa-2.pdf}
+			\end{columns}
+
+			
 
 			% O processador MPPA-256 é um Lightweight Manycore de alto desempenho e baixo consumo energético.
 			% Ele possui 288 núcleos de propósito geral agrupados em 16 clusters de computação e 4 clusters de entrada e saída.
 		\end{frame}
 
-		\begin{frame}[fragile]{Kalray MPPA-256 Communication Resources}
-			\begin{itemize}
-				\item \textbf{Data NoC (DNoC)}
-				\begin{itemize}
-					\item 256 slots for receiving data
-					\item 8 channels for sending data
-					\item 8 $\mu$threads for sending asynchronous data
-				\end{itemize}
-			\end{itemize}
+		% \begin{frame}[fragile]{Kalray MPPA-256 Communication Resources}
 
-			\begin{itemize}
-				\item \textbf{Control NoC (CNoC)}
-				\begin{itemize}
-					\item 128 slots for receiving commands
-					\item 4 channels for sending commands
-				\end{itemize}
-			\end{itemize}
-
-			% A comunicação é realizada através de duas NoCs distintas, uma para dados e outra para comandos.
-			% Cada NoC apresenta um conjunto de recursos para envio ou recebimento.
-			% Entretanto, a CNoC permite apenas a troca de mensagens de 64 bits.
-		\end{frame}
+		% 	% A comunicação é realizada através de duas NoCs distintas, uma para dados e outra para comandos.
+		% 	% Cada NoC apresenta um conjunto de recursos para envio ou recebimento.
+		% 	% Entretanto, a CNoC permite apenas a troca de mensagens de 64 bits.
+		% \end{frame}
 
 	\subsection{Nanvix OS}
 
