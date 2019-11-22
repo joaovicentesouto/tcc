@@ -2,7 +2,8 @@
 
 	\subsection{Operating Systems Models}
 
-		\begin{frame}{Models of Operating Systems (OS) for Multicores}
+		\begin{frame}[t]{Models of Operating Systems (OS)\\for Multicores}
+		% \vspace{0.3cm}
 		\begin{overprint}
 			\only<1>{
 				\begin{itemize}
@@ -10,13 +11,18 @@
 					\item Master-Slave OS
 					\item Symmetric OS
 				\end{itemize}
-				\addfig[][width=0.75\linewidth]{replicated-os.pdf}
+				
+				% \vspace{-0.3cm}
+
+				\addfig[][width=.55\linewidth]{replicated-os.pdf}
+
+				% \vspace{-0.3cm}
 
 				\begin{center}
-					Each core has a copy of the OS
+					Each core has a \textbf{copy of the OS}
 				\end{center}
 				\begin{center}
-					Less concurrency but needs a lot of memory
+					\textbf{Less concurrency} but needs \textbf{a lot of memory}\\\textcolor{white}{abc}
 				\end{center}
 			}
 			\only<2>{
@@ -25,13 +31,18 @@
 					\item \textbf{Master-Slave OS}
 					\item Symmetric OS
 				\end{itemize}
-				\addfig[][width=0.75\linewidth]{master-slave-os.pdf}
+				
+				% \vspace{-0.3cm}
+
+				\addfig[][width=.55\linewidth]{master-slave-os.pdf}
+
+				% \vspace{-0.3cm}
 
 				\begin{center}
-					Asymmetric execution where only one core handles the OS
+					\textbf{Asymmetric execution} where only one core handles the OS
 				\end{center}
 				\begin{center}
-					Better scalability and less inter-core interference but inserts a possible bottleneck
+					\textbf{Better scalability} and \textbf{less inter-core interference} but inserts a possible \textbf{bottleneck}
 				\end{center}
 			}
 			\only<3>{
@@ -40,13 +51,18 @@
 					\item Master-Slave OS
 					\item \textbf{Symmetric OS}
 				\end{itemize}
-				\addfig[][width=0.75\linewidth]{symmetric-os.pdf}
+				
+				% \vspace{-0.3cm}
+
+				\addfig[][width=.55\linewidth]{symmetric-os.pdf}
+
+				% \vspace{-0.3cm}
 
 				\begin{center}
-					OS shared by all cores
+					\textbf{OS shared} by all cores
 				\end{center}
 				\begin{center}
-					Inter-core interference and inefficient on processors without cache coherence
+					\textbf{Inter-core interference} and inefficient on processors without \textbf{cache coherence}
 				\end{center}
 			}
 		\end{overprint}
@@ -95,10 +111,13 @@
 						\item Asynchronous calls
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=.9\linewidth]{call-sync.pdf}
+
+				\vspace{0.2cm}
+
+				\addfig[][width=\linewidth]{call-sync.pdf}
 
 				\begin{center}
-					Requester waits for task to be completed
+					\textbf{Requester waits} for task to be completed
 				\end{center}
 			}
 			\only<2>{
@@ -109,10 +128,13 @@
 						\item \textbf{Asynchronous calls}
 					\end{itemize}
 				\end{itemize}
-				\addfig[][width=.9\linewidth]{call-async.pdf}
+
+				\vspace{0.2cm}
+
+				\addfig[][width=\linewidth]{call-async.pdf}
 
 				\begin{center}
-					Requester is released to continue to run in parallel
+					\textbf{Requester is released} to continue to run in parallel
 				\end{center}
 			}
 		\end{overprint}
@@ -125,13 +147,12 @@
 
 	\subsection{Kalray MPPA-256}
 
-		% \pholder[Descrever MPPA]{MPPA-256}
-		\begin{frame}[fragile]{Kalray MPPA-256}
+		\begin{frame}[fragile]{Kalray MPPA-256}{A Lightweight Manycore Processor}
 
-			\vspace{-0.5cm}
+			\vspace{-0.45cm}
 
 			\begin{columns}[totalwidth=\linewidth,t]
-				\column{0.60\linewidth}
+				\column{0.55\linewidth}
 
 					\begin{itemize}
 						\item \textbf{High-Performance and Low-Power Consunption}
@@ -146,7 +167,7 @@
 					\end{itemize}
 
 					\begin{itemize}
-						\item \textbf{Data NoC (DNoC)}
+						\item \textbf{Data NoC (D-NoC)}
 						\begin{itemize}
 							\item 256 RX slots
 							\item 8 TX channels
@@ -155,18 +176,16 @@
 					\end{itemize}
 
 					\begin{itemize}
-						\item \textbf{Control NoC (CNoC)}
+						\item \textbf{Control NoC (C-NoC)}
 						\begin{itemize}
 							\item 128 RX slots
 							\item 4 TX channels
 						\end{itemize}
 					\end{itemize}
 
-				\column{0.4\linewidth}
-					\addfig[][width=.7\linewidth]{arch-mppa-2.pdf}
+				\column{0.45\linewidth}
+					\addfig[][width=.63\linewidth]{arch-mppa-2.pdf}
 			\end{columns}
-
-			
 
 			% O processador MPPA-256 é um Lightweight Manycore de alto desempenho e baixo consumo energético.
 			% Ele possui 288 núcleos de propósito geral agrupados em 16 clusters de computação e 4 clusters de entrada e saída.
@@ -181,29 +200,118 @@
 
 	\subsection{Nanvix OS}
 
-		% \pholder{Nanvix OS}
-		\begin{frame}[fragile]{Nanvix OS}
-			\addfig[][width=.55\linewidth]{nanvix-goal.pdf}
+		\begin{frame}[fragile]{The Nanvix Operating System}{Overview - The Nanvix Project}
 
-			\begin{itemize}
-				\item Fully-feature \textbf{POSIX-Compliant OS}
-			\end{itemize}
+		\begin{columns}[totalwidth=\linewidth]
+		\column{.95\linewidth}
 
-			\begin{itemize}
-				\item \textbf{Three abstractions layers}
-				\begin{itemize}
-					\item Nanvix Hardware Abstraction Layer (HAL)
-					\item Nanvix Microkernel
-					\item Nanvix Multikernel
-				\end{itemize}
-			\end{itemize}
+			% \vspace{1cm}
 
-			% O Nanvix OS busca fornecer melhor programabilidade e portabilidade para Lightweight Manycores através de um sistema compatível com o padrão POSIX.
+			\begin{columns}[totalwidth=\linewidth]
+				\column{0.77\linewidth}
+
+					\begin{itemize}
+						\item \textbf{Open source} and \textbf{collaborative} project
+						\begin{itemize}
+							\item Home-grown instructional OS
+							\item 4 Professors (Brazil and France)
+							\item 1 PhD, 1 MSc and 3 BSc Students
+							\item 9 past contributors
+							\item UGA, PUC Minas, UFSC, and Grenoble INP
+						\end{itemize}
+					\end{itemize}
+
+				\column{0.23\linewidth}
+					\addfig[\tiny{\textit{Bingo, our mascot}}][width=\linewidth]{nanvix-logo.pdf}
+			\end{columns} 
+
+
+			% \vspace{.5cm}
+
+			\begin{columns}[totalwidth=\linewidth]
+				\column{0.6\linewidth}
+
+					\begin{itemize}
+						\item \textbf{Long-Term Goal}
+						\begin{itemize}
+							\item POSIX-Compliant OS
+							\item Multikernel OS structure
+							\item Asymmetric microkernels
+							\item Flexible view of the plataform
+						\end{itemize}
+					\end{itemize}
+
+				\column{0.4\linewidth}
+					\addfig[][width=\linewidth]{nanvix-goal.pdf}
+			\end{columns}
+
+			% \vspace{1cm}
+
+		\column{.1\linewidth}
+
+			\begin{figure}
+				\centering
+				\begin{subfigure}
+					\includegraphics[width=.5\linewidth]{logo-gnu.png}
+				\end{subfigure}%
+
+				\vspace{.5cm}%
+
+				\begin{subfigure}
+					\includegraphics[width=.5\linewidth]{logo-github.pdf}
+				\end{subfigure}%
+
+				\vspace{.5cm}%
+
+				\begin{subfigure}
+					\includegraphics[width=.5\linewidth]{logo-travis.png}
+				\end{subfigure}%
+
+				\vspace{.5cm}%
+
+				\begin{subfigure}
+					\includegraphics[width=.5\linewidth]{logo-docker.pdf}
+				\end{subfigure}%
+			\end{figure}
+
+		\end{columns}
+			% O Nanvix é um projeto de código aberto e colaborativo entre diversas universidades que busca fornecer melhor programabilidade e portabilidade para Lightweight Manycores através de um sistema compatível com o padrão POSIX.
+
 			% Ele é subdivido em três níveis abstração, HAL, Microkernel e Multikernel.
 		\end{frame}
 
-		% \pholder{Nanvix HAL}
-		\begin{frame}[fragile]{Nanvix HAL}
+		\begin{frame}[fragile]{Multikernel OS Structure}{Nanvix Multikernel Abstraction Layer}
+
+			\begin{itemize}
+				\item \textbf{OS services are system processes} and run in isolation
+			\end{itemize}
+			\begin{itemize}
+				\item User processes \textbf{request services via message-passing}
+			\end{itemize}
+
+			\addfig[][width=.6\linewidth]{nanvix-multikernel-overview.pdf}
+
+			% O Nanvix Multikernel, como o nome sugere, segue o modelo multikernel.
+			% No qual os serviços do SO são processos que rodam isoladamente dos processos de usuário.
+			% Assim, os processos de usuário requisitam serviços através da troca de mensagens.
+		\end{frame}
+
+		\begin{frame}[fragile]{Asymmetric Microkernel}{Nanvix Microkernel Abstraction Layer}
+
+			\begin{itemize}
+				\item Follows a \textbf{Master-Slave OS} model
+				\item Provides \textbf{bare-bones of system abstractions}
+				\item Rich system call interface (Kernel Call)
+			\end{itemize}
+
+			\addfig[][width=.6\linewidth]{nanvix-microkernel-overview.pdf}
+
+			% O Nanvix Microkernel executa sobre a HAL e prove o esqueleto das abstrações do sistema.
+			% Ele implementa o modelo Mestre-Escravo através de uma rica interface de chamadas de sistema.
+			% Desta forma, ele é responsável por gerenciar os recursos da HAL e separar as reponsabilidades de mestre e escravo.
+		\end{frame}
+
+		\begin{frame}[fragile]{Flexible View of the Plataform}{Nanvix Hardware Abstraction Layer (HAL)}
 
 			\begin{itemize}
 				\item \textbf{Generic and flexible} hardware abstraction layer
@@ -217,39 +325,6 @@
 			% Ela prove uma visão padronizada dos processadores.
 			% Ela é composta por níveis que lidam com características de um único núcleo, entre os núcleos, e entre clusters.
 			% Este trabalho está incluso na Camada de abstração do Processador, que envolve a interface de comunicação.
-		\end{frame}
-
-		% \pholder{Nanvix Microkernel}
-		\begin{frame}[fragile]{Nanvix Microkernel}
-
-			\begin{itemize}
-				\item Runs above the Nanvix HAL
-				\item Provides \textbf{bare-bones of system abstractions}
-				\item Follows a \textbf{Master-Slave OS} model
-				\item Rich system call interface (Kernel Call)
-			\end{itemize}
-
-			\addfig[][width=.6\linewidth]{nanvix-microkernel-overview.pdf}
-
-			% O Nanvix Microkernel executa sobre a HAL e prove o esqueleto das abstrações do sistema.
-			% Ele implementa o modelo Mestre-Escravo através de uma rica interface de chamadas de sistema.
-			% Desta forma, ele é responsável por gerenciar os recursos da HAL e separar as reponsabilidades de mestre e escravo.
-		\end{frame}
-
-		% \pholder{Nanvix Multikernel}
-		\begin{frame}[fragile]{Nanvix Multikernel}
-
-			\begin{itemize}
-				\item Follows a \textbf{multikernel design}
-				\item \textbf{OS services are system processes} and run in isolation
-				\item User processes \textbf{request services via message-passing}
-			\end{itemize}
-
-			\addfig[][width=.6\linewidth]{nanvix-multikernel-overview.pdf}
-
-			% O Nanvix Multikernel, como o nome sugere, segue o modelo multikernel.
-			% No qual os serviços do SO são processos que rodam isoladamente dos processos de usuário.
-			% Assim, os processos de usuário requisitam serviços através da troca de mensagens.
 		\end{frame}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
