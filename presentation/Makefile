@@ -16,7 +16,7 @@ GNUPLOT=gnuplot
 
 srcs=$(wildcard *.tex) $(wildcard *.bib)
 svgs=$(wildcard imgs/svgs/*.svg)
-frames=$(foreach k,1 2 3 4 5,imgs/processor-trend-$k.pdf)
+frames=$(foreach k,1 2 3 4 5,imgs/processor-trend-$k.pdf) $(foreach k,1 2 3,imgs/lazy-transfer-$k.pdf)
 pdfs=$(svgs:.svg=.pdf) 
 others=$(wildcard imgs/others/*.pdf) $(wildcard imgs/others/*.jpg) $(wildcard imgs/others/*.png)
 
@@ -39,7 +39,7 @@ clean-latex:
 	rm -fr *.64 main-logo.pdf _minted-* *.aux *.bbl *.blg *.brf *.out *.synctex.gz *.log *.idx *.ilg *.ind *.lof *.lot *.lol *.loalgorithm *.glsdefs *.xdy *.toc *.acn *.glo *.ist *-*.pdf *-*.jpg *-*.png *.nav *.snm *.vrb *.prv _region*  *~ auto; 
 
 clean-imgs:
-	rm -fr  {imgs,imgs/svgs}/*.pdf imgs/*.jpg imgs/*.png {imgs,plots}/*-eps-converted-to.pdf; 
+	rm -fr  imgs/*.pdf imgs/*.jpg imgs/*.png imgs/svgs/*.pdf {imgs,plots}/*-eps-converted-to.pdf; 
 
 clean: clean-main clean-latex clean-imgs
 
@@ -81,6 +81,13 @@ imgs/processor-trend-4.pdf: imgs/svgs/processor-trend.svg
 	$(call svg2pdf,imgs/svgs/processor-trend,gSlide4,imgs/processor-trend-4)
 imgs/processor-trend-5.pdf: imgs/svgs/processor-trend.svg
 	$(call svg2pdf,imgs/svgs/processor-trend,gSlide5,imgs/processor-trend-5)
+
+imgs/lazy-transfer-1.pdf: imgs/svgs/lazy-transfer.svg
+	$(call svg2pdf,imgs/svgs/lazy-transfer,gSlide1,imgs/lazy-transfer-1)
+imgs/lazy-transfer-2.pdf: imgs/svgs/lazy-transfer.svg
+	$(call svg2pdf,imgs/svgs/lazy-transfer,gSlide2,imgs/lazy-transfer-2)
+imgs/lazy-transfer-3.pdf: imgs/svgs/lazy-transfer.svg
+	$(call svg2pdf,imgs/svgs/lazy-transfer,gSlide3,imgs/lazy-transfer-3)
 
 ###################################################
 # main targets                                    #

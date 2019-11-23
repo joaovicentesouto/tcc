@@ -5,8 +5,8 @@
 		\begin{itemize}
 			\item Evaluation of the performance of \textbf{data transfer services}
 			\begin{itemize}
-				\item Mailbox
-				\item Portal
+				\item Sync + Mailbox
+				\item Sync + Portal
 			\end{itemize}
 		\end{itemize}
 
@@ -14,58 +14,88 @@
 			\item Micro-benchmarks stimulate the services with well-known \textbf{collective communication routines}
 		\end{itemize}
 
+		\begin{overprint}
+			\only<1>{
+				\begin{columns}[totalwidth=\linewidth]
+					\column{0.1\linewidth}
+					\column{0.4\linewidth}
+						\begin{itemize}
+							\item \textbf{Broadcast}
+							\item Gather
+							\item AllGather
+							\item Ping-Pong
+						\end{itemize}
+
+					\column{0.45\linewidth}
+						\addfig[][width=.9\linewidth]{mpi-broadcast.pdf}
+					\column{0.1\linewidth}
+				\end{columns} 
+			}
+			\only<2>{
+				\begin{columns}[totalwidth=\linewidth]
+					\column{0.1\linewidth}
+					\column{0.4\linewidth}
+						\begin{itemize}
+							\item Broadcast
+							\item \textbf{Gather}
+							\item AllGather
+							\item Ping-Pong
+						\end{itemize}
+
+					\column{0.45\linewidth}
+						\addfig[][width=.9\linewidth]{mpi-gather.pdf}
+					\column{0.1\linewidth}
+				\end{columns} 
+			}
+			\only<3>{
+				\begin{columns}[totalwidth=\linewidth]
+					\column{0.1\linewidth}
+					\column{0.4\linewidth}
+						\begin{itemize}
+							\item Broadcast
+							\item Gather
+							\item \textbf{AllGather}
+							\item Ping-Pong
+						\end{itemize}
+
+					\column{0.45\linewidth}
+						\addfig[][width=.9\linewidth]{mpi-allgather.pdf}
+					\column{0.1\linewidth}
+				\end{columns} 
+			}
+			\only<4>{
+				\begin{columns}[totalwidth=\linewidth]
+					\column{0.1\linewidth}
+					\column{0.4\linewidth}
+						\begin{itemize}
+							\item Broadcast
+							\item Gather
+							\item AllGather
+							\item \textbf{Ping-Pong}
+						\end{itemize}
+
+					\column{0.45\linewidth}
+						\addfig[][width=.9\linewidth]{mpi-ping-pong.pdf}
+					\column{0.1\linewidth}
+				\end{columns} 
+			}
+		\end{overprint}
+
 		% Os experimentos realizados buscaram avaliar os serviços de transferência de dados, como mailbox e portal.
 		% Entretanto, o sync foi utilizado para realizar a sincronização de todos os clusters envolvidos.
 		% Para prover uma avaliação abrangente, os micro-benchmarks estimularam os serviços usando rotinas de comunicação coletivas.
 	\end{frame}
 
-	% \pholder{Micro-benchmarks}
-	\begin{frame}[fragile]{Micro-benchmarks}
-		\begin{overprint}
-			\only<1>{
-				\begin{itemize}
-					\item \textbf{Broadcast}
-					\item Gather
-					\item AllGather
-					\item Ping-Pong
-				\end{itemize}
-				\addfig[][width=.5\linewidth]{mpi-broadcast.pdf}
-			}
-			\only<2>{
-				\begin{itemize}
-					\item Broadcast
-					\item \textbf{Gather}
-					\item AllGather
-					\item Ping-Pong
-				\end{itemize}
-				\addfig[][width=.5\linewidth]{mpi-gather.pdf}
-			}
-			\only<3>{
-				\begin{itemize}
-					\item Broadcast
-					\item Gather
-					\item \textbf{AllGather}
-					\item Ping-Pong
-				\end{itemize}
-				\addfig[][width=.5\linewidth]{mpi-allgather.pdf}
-			}
-			\only<4>{
-				\begin{itemize}
-					\item Broadcast
-					\item Gather
-					\item AllGather
-					\item \textbf{Ping-Pong}
-				\end{itemize}
-				\addfig[][width=.5\linewidth]{mpi-ping-pong.pdf}
-			}
-		\end{overprint}
+	% % \pholder{Micro-benchmarks}
+	% \begin{frame}[fragile]{Micro-benchmarks}
+		
 
-		% Ao todo foram implementados 4 rotinas.
-		% A rotina broadcast define um nó mestre enviando uma mesma mensagem para N escravos.
-		% Opostamente, a rotina gather, define que todos os escravos enviem seus dados para o mestre.
-		% A rotina AllGather é uma generalização do gather, no qual todos enviam e recebem dados de todos mundo.
-		% Por fim, a rotina Ping-Pong representa as diversas requisições e respostas de um modelo cliente-servidor.
-	\end{frame}
+	% 	% Ao todo foram implementados 4 rotinas.
+	% 	% A rotina broadcast define um nó mestre enviando uma mesma mensagem para N escravos.
+	% 	% Opostamente, a rotina gather, define que todos os escravos enviem seus dados para o mestre.
+	% 	% A rotina AllGather é uma generalização do gather, no qual todos enviam e recebem dados de todos mundo.
+	% 	% Por fim, a rotina Ping-Pong representa as diversas requisições e respostas de um modelo cliente-servidor.
+	% \end{frame}
 
 	% \pholder{Design}
 	\begin{frame}[fragile]{Experimental Design}
@@ -80,13 +110,14 @@
 		\begin{itemize}
 			\item \textbf{Latency of the Mailbox}
 			\begin{itemize}
-				\item Variable: 1 IO and 1 to 16 CCs
 				\item Constant: 120 B
+				\item Variable: 1 IO and 1 to 16 CCs
 			\end{itemize}
 		\end{itemize}
 
 		\begin{itemize}
-			\item \textbf{50 iterations}, discarding first ten
+			\item \textbf{50 iterations}, first 10 discardard to warmup
+			\item Metrics do not represent an aggregation
 			\item Standard error inferior to \textbf{1\%}
 		\end{itemize}
 
@@ -97,8 +128,22 @@
 	\end{frame}
 
 	% \pholder{Portal Analysis}
-	\begin{frame}[fragile]{Portal Analysis}
-		\addfig[][width=.9\linewidth]{portal-throughput.pdf}
+	\begin{frame}[t]{Portal Analysis}
+		\begin{overprint}
+				\only<1>{
+					\addfig[][width=.9\linewidth]{portal-throughput.pdf}
+					\begin{center}
+						\textbf{Three distinct behaviors}\\\textcolor{white}{abc}
+					\end{center}
+				}
+				\only<2>{
+					\addfig[][width=.9\linewidth]{portal-throughput.pdf}
+					\begin{center}
+						\textbf{Optimum size} between 8~KB and 16~KB\\
+						Use of asynchronous send should \textbf{improve performance}
+					\end{center}
+				}
+		\end{overprint}
 
 		% O gráfico mostra a taxa de transferência do Portal em MB/s relativo a quantidade de dados transferido.
 		% Os resultados exibiram três comportamentos distintos.
@@ -110,9 +155,22 @@
 		% Apesar de tudo, acreditamos que ao eliminar as limitações da DMA, o Portal deve ter ganhos significativos.
 	\end{frame}
 
-	% \pholder{Mailbox Analysis}
-	\begin{frame}[fragile]{Mailbox Analysis}
-		\addfig[][width=.9\linewidth]{mailbox-latency.pdf}
+	% % \pholder{Mailbox Analysis}
+	\begin{frame}[t]{Mailbox Analysis}
+		\begin{overprint}
+			\only<1>{
+				\addfig[][width=.9\linewidth]{mailbox-latency.pdf}
+				\begin{center}
+					\textbf{Three distinct behaviors too}\\\textcolor{white}{abc}
+				\end{center}
+			}
+			\only<2>{
+				\addfig[][width=.9\linewidth]{mailbox-latency.pdf}
+				\begin{center}
+					Well-known \textbf{distributed algorithms can be efficiently supported} by Nanvix OS
+				\end{center}
+			}
+		\end{overprint}
 
 		% Por outro lado, o gráfico da Mailbox apresenta a latencia em milisegundos relativo ao número de clusters de computação envolvidos.
 		% Primeiramente, as rotinas Gather e AllGather apresentaram os melhores resultados por causa do  paralelismo do recebimento das N mensagens. A diferença do AllGather se encontra na necessidade de envio e leitura, diferente da Gather.

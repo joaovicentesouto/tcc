@@ -31,11 +31,25 @@
 					\item Interrupt System
 					\item DMA
 				\end{itemize}
-				% \item \textbf{Explicit handler} the NoC interrupts % to identify the resource
 			\end{itemize}
 
 			\begin{itemize}
-				\item \textbf{DMA limitations}
+				\item Hardware \textbf{resource abstraction}
+				\begin{itemize}
+					\item NoC interfaces (Physical to Logical)
+					\item NoC resources (Partitioned by abstraction)
+				\end{itemize}
+			\end{itemize}
+
+			\begin{itemize}
+				\item \textbf{Work limitations}
+				\begin{itemize}
+					\item Closed product of a company
+					\item Poor documentation
+					\item Reverse engineer
+					\item Hardware com bugs
+					\item \textbf{Unable to asynchronous send yet}
+				\end{itemize}
 			\end{itemize}
 
 			% A comunicação da HAL no MPPA-256 depende de duas características.
@@ -45,72 +59,94 @@
 		\end{frame}
 
 		% \pholder{Noc Identifiers}
-		\begin{frame}[fragile]{Network-on-Chip Identifiers}
-			\begin{itemize}
-				\item NoC interfaces have \textbf{two identifiers}
-				\begin{itemize}
-					\item Physical ID
-					\item Logical ID
-				\end{itemize}
-			\end{itemize}
+		% \begin{frame}[fragile]{Network-on-Chip Identifiers}
+		% 	\begin{itemize}
+		% 		\item NoC interfaces have \textbf{two identifiers}
+		% 		\begin{itemize}
+		% 			\item Physical ID
+		% 			\item Logical ID
+		% 		\end{itemize}
+		% 	\end{itemize}
 
-			\begin{table}
-				\centering%
-				\begin{tabular}{l|l|l|}
-					\cline{2-3}
-											            & \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
-					\multicolumn{1}{|l|}{\textbf{IO 0}} & 128-131              & 0-3                 \\ \hline
-					\multicolumn{1}{|l|}{\textbf{IO 1}} & 192-195              & 4-7                 \\ \hline
-					\multicolumn{1}{|l|}{\textbf{CCs}}  & 0-15                 & 8-23                \\ \hline
-				\end{tabular}
-			\end{table}
+		% 	\begin{table}
+		% 		\centering%
+		% 		\begin{tabular}{l|l|l|}
+		% 			\cline{2-3}
+		% 									            & \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
+		% 			\multicolumn{1}{|l|}{\textbf{IO 0}} & 128-131              & 0-3                 \\ \hline
+		% 			\multicolumn{1}{|l|}{\textbf{IO 1}} & 192-195              & 4-7                 \\ \hline
+		% 			\multicolumn{1}{|l|}{\textbf{CCs}}  & 0-15                 & 8-23                \\ \hline
+		% 		\end{tabular}
+		% 	\end{table}
 
-			% As interface NoC na HAL possuem dois identificadores.
-			% O identificador físico é definido pelo próprio MPPA-256, o utilizando para rotear as comunicações através da NoC.
-			% Para eliminar a dependência do identificador físico, foi criado um mapeamento para um identificador lógico, o qual é utilizado pelas abstrações fora da HAL.
-		\end{frame}
+		% 	% As interface NoC na HAL possuem dois identificadores.
+		% 	% O identificador físico é definido pelo próprio MPPA-256, o utilizando para rotear as comunicações através da NoC.
+		% 	% Para eliminar a dependência do identificador físico, foi criado um mapeamento para um identificador lógico, o qual é utilizado pelas abstrações fora da HAL.
+		% \end{frame}
 
-		% \pholder{Resource Identifiers}
-		\begin{frame}[fragile]{Resource Identifiers}
-			\begin{itemize}
-				\item Abstractions need to know \textbf{resource ID}
-				\item Communication resources are \textbf{partitioned by abstraction}
-			\end{itemize}
+		% % \pholder{Resource Identifiers}
+		% \begin{frame}[fragile]{Resource Identifiers}
+		% 	\begin{itemize}
+		% 		\item Abstractions need to know \textbf{resource ID}
+		% 		\item Communication resources are \textbf{partitioned by abstraction}
+		% 	\end{itemize}
 
-			\begin{table}[!tb]
-				\centering%
-				\begin{tabular}{l|l|l|l|l|}
-					\cline{2-5}
-														   & \multicolumn{2}{c|}{\textbf{C-NoC}} & \multicolumn{2}{c|}{\textbf{D-NoC}} \\ \cline{2-5}
-														   & \textbf{RX ID} & \textbf{TX ID}     & \textbf{RX ID}  & \textbf{TX ID}    \\ \hline
-					\multicolumn{1}{|l|}{\textbf{Mailbox}} & 0-23           & 0                  & 0-23            & 1-3               \\ \hline
-					\multicolumn{1}{|l|}{\textbf{Portal}}  & 24-47          & 1-2                & 24-47           & 4-7               \\ \hline
-					\multicolumn{1}{|l|}{\textbf{Sync}}    & 48-71          & 3                  & -               & -                 \\ \hline
-				\end{tabular}
-			\end{table}
+		% 	\begin{table}[!tb]
+		% 		\centering%
+		% 		\begin{tabular}{l|l|l|l|l|}
+		% 			\cline{2-5}
+		% 												   & \multicolumn{2}{c|}{\textbf{C-NoC}} & \multicolumn{2}{c|}{\textbf{D-NoC}} \\ \cline{2-5}
+		% 												   & \textbf{RX ID} & \textbf{TX ID}     & \textbf{RX ID}  & \textbf{TX ID}    \\ \hline
+		% 			\multicolumn{1}{|l|}{\textbf{Mailbox}} & 0-23           & 0                  & 0-23            & 1-3               \\ \hline
+		% 			\multicolumn{1}{|l|}{\textbf{Portal}}  & 24-47          & 1-2                & 24-47           & 4-7               \\ \hline
+		% 			\multicolumn{1}{|l|}{\textbf{Sync}}    & 48-71          & 3                  & -               & -                 \\ \hline
+		% 		\end{tabular}
+		% 	\end{table}
 
-			% Por outro lado, para prover transparência da comunicação das abstrações, é necessário que ela conheçam o recursos destino.
-			% Para isso, os recursos de comunicação foram particionados por abstração.
-			% Onde, dependendo dos nós envolvidos, é possível inferir os identificadores dos recursos.
+		% 	% Por outro lado, para prover transparência da comunicação das abstrações, é necessário que ela conheçam o recursos destino.
+		% 	% Para isso, os recursos de comunicação foram particionados por abstração.
+		% 	% Onde, dependendo dos nós envolvidos, é possível inferir os identificadores dos recursos.
 			
-			% %%%%%%Por exemplo, cada nó possui um slot de recebimento de dados na mailbox, permitindo que qualquer nó saiba o par interface, recurso que devem enviar os dados.
-		\end{frame}
+		% 	% %%%%%%Por exemplo, cada nó possui um slot de recebimento de dados na mailbox, permitindo que qualquer nó saiba o par interface, recurso que devem enviar os dados.
+		% \end{frame}
 
 		% \pholder[Lazy transfer and Interface convention]{General Concepts of Comm. Abstrations}
 		\begin{frame}[fragile]{General Concepts of Comm. Abstrations}
 			\begin{itemize}
-				\item Master core \textbf{cannot be blocked}
-				\item Communication Interfaces export \textbf{only asynchronous calls}
-				\item \textbf{Lazy transfer}
+				\item \textbf{Naming Convention} (suffixes)
+				\begin{itemize}
+					\item Sender: \texttt{open}/\texttt{close}/\texttt{awrite/signal}/\texttt{wait}.
+					\item Receiver: \texttt{create}/\texttt{unlink}/\texttt{aread}/\texttt{wait}
+				\end{itemize}
 			\end{itemize}
 
 			\begin{itemize}
-				\item \textbf{Naming Convention} (suffixes)
-				\begin{itemize}
-					\item Sender Role: \texttt{open}/\texttt{close}/\texttt{awrite/signal}/\texttt{wait}.
-					\item Receiver Role: \texttt{create}/\texttt{unlink}/\texttt{aread}/\texttt{wait}
-				\end{itemize}
+				\item Interfaces export \textbf{only asynchronous calls}
+				\item Master core \textbf{cannot be blocked}
 			\end{itemize}
+
+			\only<1>{
+				\addfig[][width=.9\linewidth]{lazy-transfer-1.pdf}
+				\vspace{-0.7cm}
+				\begin{center}
+					\textbf{Lazy transfer} behavior
+				\end{center}
+			}
+			\only<2>{
+				\addfig[][width=.9\linewidth]{lazy-transfer-2.pdf}
+				\vspace{-0.7cm}
+				\begin{center}
+					\textbf{Master} without sending permission \textbf{keeps the parameters}
+				\end{center}
+			}
+			\only<3>{
+				\addfig[][width=.9\linewidth]{lazy-transfer-3.pdf}
+				\vspace{-0.7cm}
+				\begin{center}
+					\textbf{Master sends data upon allow} and releases slave
+				\end{center}
+			}
+
 
 			% Como bloquear o mestre introduziria um grande problema de performance no nível do microkernel.
 			% Todas as interfaces exportam apenas operações assíncronas.
@@ -262,7 +298,7 @@
 
 		\begin{frame}[fragile]{Integration with Nanvix Microkernel}
 			\begin{itemize}
-				\item Nanvix HAL does not provide \textbf{rich management} of the communication abstractions
+				\item \textbf{Rich resource management} is forwarded to the microkernel
 			\end{itemize}
 
 			\begin{itemize}
@@ -270,7 +306,15 @@
 				\begin{itemize}
 					\item Protection
 					\item Management
-					\item Manipulating
+					\item Multiplexing
+				\end{itemize}
+			\end{itemize}
+
+			\begin{itemize}
+				\item \textbf{Impacts of the Master-Slave Model}
+				\begin{itemize}
+					\item Only master changes the internal structures of the OS
+					\item Slaves allowed to read lock addresses to wait for async calls
 				\end{itemize}
 			\end{itemize}
 
@@ -278,54 +322,45 @@
 			% É responsabilidade do microkernel prover a proteção, gerenciamento e manipulação desses recursos.
 		\end{frame}
 
-		% \pholder{Impacts of the Master-Slave Model}
-		\begin{frame}[fragile]{Impacts of the Master-Slave Model}
-			\begin{itemize}
-				\item \textbf{Only Master changes the internal structures} of the OS
-				\begin{itemize}
-					\item Slaves need to read lock addresses to wait for asynchronous calls
-				\end{itemize}
-			\end{itemize}
+		% % \pholder{Impacts of the Master-Slave Model}
+		% \begin{frame}[fragile]{}
+			
 
-			\begin{itemize}
-				\item \textbf{Naming Convention} (Prefixes)
-				\begin{itemize}
-					\item Master calls: \texttt{\textbf{kernel}\_\textit{abstraction}\_\textit{operation}}
-					\item Slave calls: \texttt{\textbf{k}\textit{abstraction}\_\textit{operation}}
-				\end{itemize}
-			\end{itemize}
-
-			% Devido ao modelo Mestre-Escravo, apenas o núcleo mestre manipula as estruturas das abstrações.
-			% Existe apenas uma excessão, que é o bloqueio do núcleo escravo.
-			% Para não exportar os endereços dos locks internos do kernel, é permitido que o escravo apenas consulte as estruturas para que possam aguardar a conlusão das operações.
-			% As chamadas de sistema exportadas seguem o seguinte padrão.
-			% Chamadas com kernel_ na frente sempre são executadas pelo mestre, com excessão do wait.
-			% E chamadas com kabstração sempre ocorrem do lado do escravo.
-		\end{frame}
+		% 	% Devido ao modelo Mestre-Escravo, apenas o núcleo mestre manipula as estruturas das abstrações.
+		% 	% Existe apenas uma excessão, que é o bloqueio do núcleo escravo.
+		% 	% Para não exportar os endereços dos locks internos do kernel, é permitido que o escravo apenas consulte as estruturas para que possam aguardar a conlusão das operações.
+		% 	% As chamadas de sistema exportadas seguem o seguinte padrão.
+		% 	% Chamadas com kernel_ na frente sempre são executadas pelo mestre, com excessão do wait.
+		% 	% E chamadas com kabstração sempre ocorrem do lado do escravo.
+		% \end{frame}
 
 		% \pholder[Protection and Management, Multiplexing, Validation and Correctness Tests]{Details}
-		\begin{frame}[fragile]{Protection and Management}
+		\begin{frame}[fragile]{Microkernel}{Protection, Management and Multiplexing}
 			\begin{itemize}
-				\item Protection and management operations involve \textbf{two phases}
-			\end{itemize}
-			
-			\begin{itemize}
-				\item \textbf{Slave phase}
+				\item \textbf{Protection} and \textbf{management} involve two phases
 				\begin{itemize}
-					\item valid file descriptors
-					\item non-null buffer pointers
-					\item buffer sizes within the stipulated limit
-					\item semantics of services
+					\item \textbf{Slave phase}
+					\begin{itemize}
+						\item valid file descriptors
+						\item non-null buffer pointers
+						\item buffer sizes within the stipulated limit
+					\end{itemize}
+					\item \textbf{Master phase}
+					\begin{itemize}
+						\item conflicting operations
+						\item measures communication parameters
+						\item interacts with Nanvix HAL detecting errors
+					\end{itemize}
 				\end{itemize}
 			\end{itemize}
 
 			\begin{itemize}
-				\item \textbf{Master phase}
+				\item \textbf{Multiplexing}
 				\begin{itemize}
-					\item multiple creations/openings
-					\item conflicting operations
-					\item measures communication parameters
-					\item interacts with Nanvix HAL detecting errors
+					\item Identifies creations/openings with \textbf{same arguments}
+					\item Structures keep a \textbf{reference counter}
+					\item Operations of read/write set resources \textbf{to busy}
+					\item Forces \textbf{serialization} of the operations
 				\end{itemize}
 			\end{itemize}
 
@@ -335,21 +370,26 @@
 			% A fase do mestre também envolve a verificação da corretude das operações e da manipulação dos recursos da HAL.
 		\end{frame}
 
-		\begin{frame}[fragile]{Multiplexing}
-			\begin{itemize}
-				\item Identifies creations/openings with \textbf{same arguments}
-				\item Structures keep a \textbf{reference counter}
-				\item Operations of read/write set resources \textbf{to busy}
-				\item Forces \textbf{serialization} of the operations
-			\end{itemize}
+		% \begin{frame}[fragile]{Multiplexing}
+		% 	\begin{itemize}
+		% 		\item Identifies creations/openings with \textbf{same arguments}
+		% 		\item Structures keep a \textbf{reference counter}
+		% 		\item Operations of read/write set resources \textbf{to busy}
+		% 		\item Forces \textbf{serialization} of the operations
+		% 	\end{itemize}
 
-			% A princípio, a multiplexação implementada foi bem simples.
-			% O mestre apenas identifica aberturas de abstrações que possuem os mesmos argumentos, guardando um contador de referências.
-			% Quando uma operação complexa ocorre, por exemplo uma leitura, o recurso é marcado como ocupado.
-			% Isso força uma serialização das multiplexações das abstrações.
-		\end{frame}
+		% 	% A princípio, a multiplexação implementada foi bem simples.
+		% 	% O mestre apenas identifica aberturas de abstrações que possuem os mesmos argumentos, guardando um contador de referências.
+		% 	% Quando uma operação complexa ocorre, por exemplo uma leitura, o recurso é marcado como ocupado.
+		% 	% Isso força uma serialização das multiplexações das abstrações.
+		% \end{frame}
 
 		\begin{frame}[fragile]{Validation and Correctness Tests}
+
+			\begin{itemize}
+				\item Extra effort in \textbf{ensuring semantics} of implementations \textbf{across multiple architectures}
+			\end{itemize}
+
 			\begin{itemize}
 				\item \textbf{API tests}
 				\begin{itemize}
