@@ -62,7 +62,7 @@
 					\textbf{OS shared} by all cores
 				\end{center}
 				\begin{center}
-					\textbf{Inter-core interference} and inefficient on processors without \textbf{cache coherence}
+					\textbf{Efficient with few cores} and \textbf{cache consistency} but has \textbf{inter-core interference}
 				\end{center}
 			}
 		\end{overprint}
@@ -149,14 +149,13 @@
 
 		\begin{frame}[fragile]{Kalray MPPA-256}{A Lightweight Manycore Processor}
 
-			\vspace{-0.45cm}
 
-			\begin{columns}[totalwidth=\linewidth,t]
+			\begin{columns}[totalwidth=\linewidth]
 				\column{0.55\linewidth}
 
-					\begin{itemize}
-						\item \textbf{High-Performance and Low-Power Consunption}
-					\end{itemize}
+					% \begin{itemize}
+					% 	\item \textbf{High-Performance and Low-Power Consunption}
+					% \end{itemize}
 
 					\begin{itemize}
 						\item \textbf{288 processing cores}
@@ -166,6 +165,8 @@
 						\end{itemize}
 					\end{itemize}
 
+					\vspace{0.5cm}
+
 					\begin{itemize}
 						\item \textbf{Data NoC (D-NoC)}
 						\begin{itemize}
@@ -174,6 +175,8 @@
 							\item 8 $\mu$threads for async TX
 						\end{itemize}
 					\end{itemize}
+
+					\vspace{0.5cm}
 
 					\begin{itemize}
 						\item \textbf{Control NoC (C-NoC)}
@@ -228,19 +231,18 @@
 			\vspace{.5cm}
 
 			\begin{columns}[totalwidth=\linewidth]
-				\column{0.6\linewidth}
+				\column{0.55\linewidth}
 
 					\begin{itemize}
 						\item \textbf{Long-Term Goal}
 						\begin{itemize}
-							\item POSIX-Compliant OS
-							\item Multikernel OS structure
-							\item Asymmetric microkernels
-							\item Flexible view of the plataform
+							\item General purpose OS
+							\item Distributed OS
+							\item POSIX-Compliant
 						\end{itemize}
 					\end{itemize}
 
-				\column{0.4\linewidth}
+				\column{0.45\linewidth}
 					\addfig[][width=\linewidth]{nanvix-goal.pdf}
 			\end{columns}
 
@@ -248,9 +250,9 @@
 
 		\column{.1\linewidth}
 			\begin{center}
-				\addfig[][width=.45\linewidth]{logo-gnu.png}%
+				\addfig[][width=.45\linewidth]{logo-gnu.pdf}%
 				\addfig[][width=.45\linewidth]{logo-github.pdf}%
-				\addfig[][width=.45\linewidth]{logo-travis.png}%
+				\addfig[][width=.45\linewidth]{logo-travis.pdf}%
 				\addfig[][width=.45\linewidth]{logo-docker.pdf}%
 			\end{center}
 
@@ -260,7 +262,7 @@
 			% Ele é subdivido em três níveis abstração, HAL, Microkernel e Multikernel.
 		\end{frame}
 
-		\begin{frame}[fragile]{Multikernel OS Structure}{Nanvix Multikernel Abstraction Layer}
+		\begin{frame}[fragile]{Nanvix Multikernel}{Multikernel OS Structure}
 
 			\begin{itemize}
 				\item \textbf{OS services are system processes} and run in isolation
@@ -276,7 +278,7 @@
 			% Assim, os processos de usuário requisitam serviços através da troca de mensagens.
 		\end{frame}
 
-		\begin{frame}[fragile]{Asymmetric Microkernel}{Nanvix Microkernel Abstraction Layer}
+		\begin{frame}[fragile]{Nanvix Microkernel}{Asymmetric Microkernel}
 
 			\begin{itemize}
 				\item Follows a \textbf{Master-Slave OS} model
@@ -291,12 +293,11 @@
 			% Desta forma, ele é responsável por gerenciar os recursos da HAL e separar as reponsabilidades de mestre e escravo.
 		\end{frame}
 
-		\begin{frame}[fragile]{Flexible View of the Plataform}{Nanvix Hardware Abstraction Layer (HAL)}
+		\begin{frame}[fragile]{Nanvix Hardware Abstraction Layer (HAL)}{Kernel portability}
 
 			\begin{itemize}
 				\item \textbf{Generic and flexible} hardware abstraction layer
 				\item \textbf{Standard view} of these emerging processors
-				\item Proposed interface within \textbf{Processador AL}
 			\end{itemize}
 
 			\addfig[][width=.6\linewidth]{nanvix-hal-overview.pdf}

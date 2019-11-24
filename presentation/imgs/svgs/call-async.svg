@@ -15,7 +15,7 @@
    viewBox="0 0 245 55"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.4 (unknown)"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="call-async.svg">
   <defs
      id="defs2">
@@ -31,7 +31,7 @@
          inkscape:connector-curvature="0"
          id="path1071"
          d="M 5.77,0 -2.88,5 V -5 Z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:evenodd;stroke:#cccccc;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="scale(-0.4)" />
     </marker>
     <marker
@@ -314,13 +314,13 @@
      inkscape:cx="465.85099"
      inkscape:cy="115.04524"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g282"
      showgrid="false"
      width="210mm"
-     inkscape:window-width="1920"
-     inkscape:window-height="1012"
+     inkscape:window-width="1280"
+     inkscape:window-height="755"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="1"
      inkscape:window-maximized="1"
      inkscape:snap-intersection-paths="true"
      inkscape:snap-global="true"
@@ -541,7 +541,7 @@
          style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          sodipodi:nodetypes="cc" />
       <path
-         style="opacity:0.2;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 1;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1073)"
+         style="opacity:1;fill:#cccccc;stroke:#cccccc;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 1;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1073);fill-opacity:1"
          d="M 180.16639,255.34018 V 278.165"
          id="path150"
          inkscape:connector-curvature="0" />

@@ -26,6 +26,14 @@
 		% \pholder[Interrup System and DMA mediator]{MPPA-256 Hardware Resources}
 		\begin{frame}[fragile]{MPPA-256 Hardware Features}
 			\begin{itemize}
+				\item \textbf{Hardware independence} in resource identification
+				\begin{itemize}
+					\item NoC interfaces (Physical to Logical)
+					\item NoC resources (Partitioned by abstraction)
+				\end{itemize}
+			\end{itemize}
+
+			\begin{itemize}
 				\item Low-level communication depends on \textbf{two features}
 				\begin{itemize}
 					\item Interrupt System
@@ -34,18 +42,9 @@
 			\end{itemize}
 
 			\begin{itemize}
-				\item Hardware \textbf{resource abstraction}
-				\begin{itemize}
-					\item NoC interfaces (Physical to Logical)
-					\item NoC resources (Partitioned by abstraction)
-				\end{itemize}
-			\end{itemize}
-
-			\begin{itemize}
 				\item \textbf{Work limitations}
 				\begin{itemize}
-					\item Closed product of a company
-					\item Poor documentation
+					\item Poor documentation and examples
 					\item Reverse engineer
 					\item Hardware com bugs
 					\item \textbf{Unable to asynchronous send yet}
@@ -167,7 +166,7 @@
 			\only<1>{
 				\begin{itemize}
 					\item Provides cluster synchronization across \textbf{distributed barriers}
-					\item Similar to \textbf{POSIX Signals}
+					\item Similarly to \textbf{POSIX Signals}
 					\item Two modes
 					\begin{itemize}
 						\item \textbf{ALL\_TO\_ONE}
@@ -179,7 +178,7 @@
 			\only<2>{
 				\begin{itemize}
 					\item Provides cluster synchronization across \textbf{distributed barriers}
-					\item Similar to \textbf{POSIX Signals}
+					\item Similarly to \textbf{POSIX Signals}
 					\item Two modes
 					\begin{itemize}
 						\item ALL\_TO\_ONE
@@ -257,7 +256,7 @@
 		% \pholder[Concept]{Portal Abstration Concept}
 		\begin{frame}[fragile]{Portal Abstration}
 			\begin{itemize}
-				\item Allows exchange \textbf{arbitrary amounts of data} between two nodes
+				\item Allows exchange \textbf{arbitrary amounts of data} % between two nodes
 				\item Similarly to \textbf{POSIX Pipes}
 				\item \textbf{One-way} channel for data transfer
 			\end{itemize}
@@ -297,6 +296,7 @@
 	\subsection{User-Level Communication}
 
 		\begin{frame}[fragile]{Integration with Nanvix Microkernel}
+
 			\begin{itemize}
 				\item \textbf{Rich resource management} is forwarded to the microkernel
 			\end{itemize}
@@ -311,7 +311,7 @@
 			\end{itemize}
 
 			\begin{itemize}
-				\item \textbf{Impacts of the Master-Slave Model}
+				\item \textbf{Impacts of the Master-Slave OS Model}
 				\begin{itemize}
 					\item Only master changes the internal structures of the OS
 					\item Slaves allowed to read lock addresses to wait for async calls
