@@ -1,5 +1,21 @@
 \begin{backup}
 
+	\begin{frame}[fragile]{MIMD workload}
+		\addfig[][width=.55\linewidth]{mimd.pdf}
+	\end{frame}
+
+	\begin{frame}[fragile]{Type of network-on-chip of the MPPA-256}
+		\addfig[Torus network][width=.55\linewidth]{net-torus.pdf}
+	\end{frame}
+
+	\begin{frame}[fragile]{Execution example of the Nanvix Microkernel}
+		\addfig[][width=\linewidth]{nanvix-microkernel-execution.pdf}
+	\end{frame}
+
+	\begin{frame}[fragile]{POSIX Compliance example of Nanvix Multikernel}
+		\addfig[][width=\linewidth]{nanvix-multikernel-shm.pdf}
+	\end{frame}
+
 	\begin{frame}[fragile]{Network-on-Chip Identifiers}
 		\begin{table}
 			\centering%
@@ -106,6 +122,18 @@
 			% \fonte{Developed by the author.}%
 		\end{algorithm}
 
+	\end{frame}
+
+	\begin{frame}[fragile]{References used}
+		\begin{itemize}
+			\item Processor trend~\cite{url:microprocessor-trend-data}
+			\item Kalray MPPA-256~\cite{DeDinechin2013-1}
+			\item Multikernel~\cite{Baumann2009}
+			\item Nanvix Project~\cite{penna2017-1,penna2017-2,penna2019,penna:rmen}
+			\item Concepts about OSs~\cite{tanenbaum:4ed}
+			\item Models of OSs~\cite{Silberschatz:9ed}
+			\item MPI collective communication routines~\cite{mpi-survey,url:mpitutorial}
+		\end{itemize}
 	\end{frame}
 
 \end{backup}
