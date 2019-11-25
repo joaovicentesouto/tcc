@@ -1,5 +1,113 @@
 \begin{backup}
-  \pholder{Slide de backup}
+
+	\begin{frame}[fragile]{Network-on-Chip Identifiers}
+		\begin{table}
+			\centering%
+			\begin{tabular}{l|l|l|}
+				\cline{2-3}
+													& \textbf{Physical ID} & \textbf{Logical ID} \\ \hline
+				\multicolumn{1}{|l|}{\textbf{IO 0}} & 128-131              & 0-3                 \\ \hline
+				\multicolumn{1}{|l|}{\textbf{IO 1}} & 192-195              & 4-7                 \\ \hline
+				\multicolumn{1}{|l|}{\textbf{CCs}}  & 0-15                 & 8-23                \\ \hline
+			\end{tabular}
+		\end{table}
+
+		% As interface NoC na HAL possuem dois identificadores.
+		% O identificador físico é definido pelo próprio MPPA-256, o utilizando para rotear as comunicações através da NoC.
+		% Para eliminar a dependência do identificador físico, foi criado um mapeamento para um identificador lógico, o qual é utilizado pelas abstrações fora da HAL.
+	\end{frame}
+
+	\begin{frame}[fragile]{Resource Identifiers}
+		\begin{table}
+			\centering%
+			\begin{tabular}{l|l|l|l|l|}
+				\cline{2-5}
+														& \multicolumn{2}{c|}{\textbf{C-NoC}} & \multicolumn{2}{c|}{\textbf{D-NoC}} \\ \cline{2-5}
+														& \textbf{RX ID} & \textbf{TX ID}     & \textbf{RX ID}  & \textbf{TX ID}    \\ \hline
+				\multicolumn{1}{|l|}{\textbf{Mailbox}} & 0-23           & 0                  & 0-23            & 1-3               \\ \hline
+				\multicolumn{1}{|l|}{\textbf{Portal}}  & 24-47          & 1-2                & 24-47           & 4-7               \\ \hline
+				\multicolumn{1}{|l|}{\textbf{Sync}}    & 48-71          & 3                  & -               & -                 \\ \hline
+			\end{tabular}
+		\end{table}
+
+		% Por outro lado, para prover transparência da comunicação das abstrações, é necessário que ela conheçam o recursos destino.
+		% Para isso, os recursos de comunicação foram particionados por abstração.
+		% Onde, dependendo dos nós envolvidos, é possível inferir os identificadores dos recursos.
+
+		% %%%%%%Por exemplo, cada nó possui um slot de recebimento de dados na mailbox, permitindo que qualquer nó saiba o par interface, recurso que devem enviar os dados.
+	\end{frame}
+
+	\begin{frame}[fragile]{Simplified NoC handler algorithm}
+			
+		\begin{algorithm}
+			% \caption{Simplified NoC handler algorithm.}%
+			% \label{alg.noc-handler}%
+			\begin{algorithmic}[1]
+				\Require $status[M_{Interfaces}][N_{Resources}]$, interrupt status of a resource.
+				\Require $handlers[M_{Interfaces}][N_{Resources}]$, interrupt handler of a resource.
+				\Procedure{noc\_handler}{}
+				\For {$i \in [1, M_{Interfaces}]$}
+					\For {$j \in [1, N_{Resources}]$}
+						\If {$status[i][j] == Interrupt Triggered$}
+							\State {$\Call{clean\_status}{i, j}$}
+							\State {$\Call{handlers[i][j]}{i, j}$}
+						\EndIf
+					\EndFor
+				\EndFor
+				\EndProcedure
+			\end{algorithmic}%
+			% \fonte{Developed by the author.}%
+		\end{algorithm}
+
+	\end{frame}
+
+	\begin{frame}[fragile]{Simplified lazy transfer algorithm}
+			
+		\begin{algorithm}
+  			\scriptsize
+			% \caption{.}%
+			% \label{alg:lazy-transfer}%
+			\begin{algorithmic}[1]
+			\Require $resources$, Abstraction Resource Table
+
+			\Algphase{Configures data transfer.}
+
+				\Procedure{async\_write}{$id, message, size$}
+					\State {$resources[id].message \gets message$}
+					\State {$resources[id].size \gets size$}
+					\If {$resources[id].has\_permission$} 
+						\State {$\Call{do\_lazy\_transfer}{id}$}
+					\Else
+						\State {$resources[id].is\_waiting \gets True$}
+					\EndIf
+				\EndProcedure%
+
+			\Algphase{Receives permission.}
+
+				\Procedure{abstraction\_handler}{$id$} 
+					\If {$resources[id].is\_waiting$} 
+						\State {$\Call{do\_lazy\_transfer}{id}$} 
+					\Else
+						\State {$resources[id].has\_permission \gets True$}
+					\EndIf
+				\EndProcedure%
+
+			\Algphase{Transfers the data.}
+
+				\Procedure{do\_lazy\_transfer}{$id$} 
+					\State {$resources[id].is\_waiting \gets False$}
+					\State {$resources[id].has\_permission \gets False$}
+					\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$} 
+					\State {$\Call{unlock}{resources[id].lock}$}                                \Comment{Releases slave core.}
+				\EndProcedure%
+
+			\end{algorithmic}%
+
+			% \fonte{Developed by the author.}%
+		\end{algorithm}
+
+	\end{frame}
+
 \end{backup}
 
 % LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
