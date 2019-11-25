@@ -1,0 +1,76 @@
+% Ao menos uma linguagem (brazil ou english) deveria sempre ser fornecida
+\documentclass[english]{lapesd-slides}
+
+\usepackage{pgfgantt}
+\usepackage{subfigure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Metadados
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[An Inter-Cluster Comm. Facility for LMP in the Nanvix OS]{
+	An Inter-Cluster Communication Facility for Lightweight Manycore Processors in the Nanvix OS
+}
+% \subtitle{}
+\author[J. V. Souto]{
+	\large João Vicente Souto\\
+	{\small \texttt{joao.vicente.souto@grad.ufsc.br}}
+}
+
+\institute{
+	\fontsize{10.5}{12.6}\selectfont 
+	Graduação em Ciência da Computação\\ 
+	Depto. de Informática e Estatísitca\\
+	Universidade Federal de Santa Catarina - Florianópolis\\
+	\vspace{1em}
+	\large Orientador: Prof. Márcio Bastos Castro, Dr.\\
+	Coorientador: Pedro Henrique Penna, Me.
+}
+
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Slides
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\titleframe
+
+% Você não é obrigado a colocar um sumário!
+\begin{frame}{Presentation Outline}
+  \tableofcontents
+\end{frame}
+
+% Desse ponto em diante serão inseridos slides de pausa a cada \section
+\showsections
+
+\input{steps/0-introduction.tex}
+\input{steps/1-background.tex}
+\input{steps/2-development.tex}
+\input{steps/3-experiments.tex}
+\input{steps/4-conclusions.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Finalização
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\thanksframe
+
+\referencesframe{references}
+
+\input{steps/5-helper.tex}
+
+\end{document}
+
+% LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
+% LocalWords:  Re-empacotamento fontsize Makefile pdflatex imgs PDFs
+% LocalWords:  shell-escape frames SVG brazil english lapesd-slides
+% LocalWords:  disabletodonotes todonotes TODO's backup showbackup
+% LocalWords:  hidebackup abntexcite abntex natbib nobib titleframe
+% LocalWords:  frame showsections sidebar stopcountingframes default
+% LocalWords:  thanksframe Thank You Questions referencesframe titulo
+% LocalWords:  bibfiles pholder todonote placeholder inline addfig
+% LocalWords:  opts graphicx addfiglw width Citations dijkstra Direct
+% LocalWords:  Closure Parallel dynamic scheduling DoImportantStuff
+% LocalWords:  lccp merged cell svg pdf

@@ -1,0 +1,246 @@
+% Desse ponto em diante serão inseridos slides de pausa a cada \section
+% \showsections
+\section{Introduction}
+
+	% Bom dia, primeiramente quero agradecer a banca pelo tempo gasto na avaliação do meu trabalho e agradecer a presença de todos.
+
+	% Bom dia, agradeço a presença de todos.
+	% Especialmente do meu orientador Professor Márcio Bastos Castro, do meu coorientador Pedro Henrique Penna e dos avaliadores, Rômulo Silva de Oliveira e Odorico Machado Mendizabal.
+
+	% O meu trabalho de conclusão de curso envolve o desenvolvimento de mecanismos de comunicação para processadores lightweight manycores para o Sistema Operacional Nanvix
+
+	% Conforme o esboço da apresentação, primeiro vou contextualizar e apresentar os objetivos do meu trabalho.
+	% Em seguida, irei pontuar alguns conceitos básicos e apresentar o desenvolvimento.
+	% Depois, irei mostrar os experimentos e discutir os resultados.
+	% Por fim, apresentou as minhas conclusões.
+
+	\begin{frame}{Historical Evolution and Trend of Processors}
+		\begin{overprint}
+			\only<1>{
+				\addfig[][width=.9\linewidth]{processor-trend-1.pdf}
+				\begin{center}
+					Increase in \textbf{processor performance}
+				\end{center}
+			}
+			\only<2>{
+				\addfig[][width=.9\linewidth]{processor-trend-2.pdf}
+				\begin{center}
+					Limited by \textbf{frequency barrier}
+				\end{center}
+			}
+			\only<3>{
+				\addfig[][width=.9\linewidth]{processor-trend-3.pdf}
+				\begin{center}
+					Softened by \textbf{technological advancement}
+				\end{center}
+			}
+			\only<4>{
+				\addfig[][width=.9\linewidth]{processor-trend-4.pdf}
+				\begin{center}
+					Emergence of \textbf{multicores and manycores}
+				\end{center}
+			}
+			\only<5>{
+				\addfig[][width=.9\linewidth]{processor-trend-5.pdf}
+				\begin{center}
+					% \textbf{Processing power versus power consumption\\led to the advent of Lightweight Manycores}
+					Advent of \textbf{lightweight manycores}
+				\end{center}
+			}
+		\end{overprint}
+
+		% Por muitos anos, o aumento de frequência impulsionou o ganho de desempenho dos sistemas computacionais.
+		% Entretanto, em meados de 2005, a barreira de frequência causada pelas altas temperaturas dessa técnica limitou os processadores.
+		% Paralelamente, os avanços tecnológicos dos semicondutores e componentes internos amenizaram o impacto dessa limitação.
+		% A barreira de frequência também levou ao surgimento dos processadores com dezenas à milhares núcleos físicos, os chamadas multicores e manycores.
+		% Contudo, a crescente preocupação com a relação entre poder de processamento e consumo de energia levaram ao surgimento dos Lightweight Manycores.
+
+
+		% #########
+		% O crescente ganho de desempenho dos processadores ao decorrer dos anos foi limitado pelas altas temperaturas causas pelo aumento de frequência.
+		% O avanço tecnologico dos semicondutores e componentes do processador amenizaram essa limitação.
+	\end{frame}
+
+	\begin{frame}[fragile, t]{Lightweight Manycores Particularities}
+			\only<1>{
+				\addfig[\small{Overview of a Manycore}][width=.75\linewidth]{lightweight-manycore.pdf}
+
+				\vspace{-0.25cm}
+
+				\begin{itemize}
+					\item \textbf{Hundreds of Lightweight Cores}
+					\begin{itemize}
+						\item Expose Massive thread-level parallelism
+						\item Feature low-power consumption
+						\item Target MIMD workloads
+					\end{itemize}
+					\item Distributed Memory Architecture
+					\item On-Chip Heterogeneity
+				\end{itemize}
+			}
+			\only<2>{
+				\addfig[\small{Overview of a Manycore}][width=.75\linewidth]{lightweight-manycore.pdf}
+
+				\vspace{-0.25cm}
+
+				\begin{itemize}
+					\item Hundreds of Lightweight Cores
+					\item \textbf{Distributed Memory Architecture}
+					\begin{itemize}
+						\item Grants scalability
+						\item Relies on a Network-on-Chip (NoC)
+						\item Has constrained memory systems
+					\end{itemize}
+					\item On-Chip Heterogeneity
+				\end{itemize}
+			}
+			\only<3>{
+				\addfig[\small{Overview of a Manycore}][width=.75\linewidth]{lightweight-manycore.pdf}
+
+				\vspace{-0.25cm}
+
+				\begin{itemize}
+					\item Hundreds of Lightweight Cores
+					\item Distributed Memory Architecture
+					\item \textbf{On-Chip Heterogeneity}
+					\begin{itemize}
+						\item Features different components
+					\end{itemize}
+				\end{itemize}
+			}
+
+		% \begin{columns}[totalwidth=\linewidth,t]
+		% 	\column{0.55\linewidth}
+
+		% 		% \begin{itemize}
+		% 		% 	\item \textbf{Integrates thousands of low-power cores} grouped in clusters
+		% 		% 	\item Copes with \textbf{MIMD workloads}
+		% 		% 	\item \textbf{Relies on a Network-on-Chip (NoC)} % for fast and reliable message-passing communication
+		% 		% 	\begin{itemize}
+		% 		% 		\item Hybrid programming model
+		% 		% 	\end{itemize}
+		% 		% 	\item Has \textbf{constrained memory systems}
+		% 		% 	\begin{itemize}
+		% 		% 		\item Multiple and Small physical address spaces
+		% 		% 		\item Missing cache-coherence
+		% 		% 	\end{itemize}
+		% 		% 	\item Features a \textbf{heterogeneous configuration}
+		% 		% \end{itemize}
+				
+		% 			\begin{itemize}
+		% 				\item \textbf{Hundreds of Lightweight Cores}
+		% 				\begin{itemize}
+		% 					\item Expose Massive thread-level parallelism
+		% 					\item Feature low-power consuption
+		% 					\item Target MIMD workloads
+		% 				\end{itemize}
+		% 				\item \textbf{Distributed Memory Architecture}
+		% 				\begin{itemize}
+		% 					\item Grants scalability
+		% 					\item Has constrained memory systems
+		% 					\item Requires hybrid programming
+		% 				\end{itemize}
+		% 				\item \textbf{On-Chip Heterogeneity}
+		% 				\begin{itemize}
+		% 					\item Features different components
+		% 				\end{itemize}
+		% 			\end{itemize}
+
+		% 		% \only<1>{
+		% 		% 	\begin{itemize}
+		% 		% 		\item \textbf{Hundreds of Lightweight Cores}
+		% 		% 		\begin{itemize}
+		% 		% 			\item Expose Massive thread-level parallelism
+		% 		% 			\item Feature low-power consuption
+		% 		% 			\item Target MIMD workloads
+		% 		% 		\end{itemize}
+		% 		% 		\item Distributed Memory Architecture
+		% 		% 		\item On-Chip Heterogeneity
+		% 		% 	\end{itemize}
+		% 		% }
+		% 		% \only<2>{
+		% 		% 	\begin{itemize}
+		% 		% 		\item Hundreds of Lightweight Cores
+		% 		% 		\item \textbf{Distributed Memory Architecture}
+		% 		% 		\begin{itemize}
+		% 		% 			\item Grants scalability
+		% 		% 			\item Has constrained memory systems
+		% 		% 			\item Requires hybrid programming
+		% 		% 		\end{itemize}
+		% 		% 		\item On-Chip Heterogeneity
+		% 		% 	\end{itemize}
+		% 		% }
+		% 		% \only<3>{
+		% 		% 	\begin{itemize}
+		% 		% 		\item Hundreds of Lightweight Cores
+		% 		% 		\item Distributed Memory Architecture
+		% 		% 		\item \textbf{On-Chip Heterogeneity}
+		% 		% 		\begin{itemize}
+		% 		% 			\item Features different components
+		% 		% 		\end{itemize}
+		% 		% 	\end{itemize}
+		% 		% }
+
+		% 	\column{0.45\linewidth}
+		% 		\addfig[Overview of a manycore][width=\linewidth]{lightweight-manycore.pdf}
+		% \end{columns}
+
+		% Lightweight Manycores diferem dos multicores e manycores tradicionais em vários pontos.
+		% Eles integram centenas de núcleos de baixa potência agrupados em clusters;
+		% Trabalham com cargas de trabalho com múltiplos fluxos de instrução e dados;
+		% Dependem de uma rede-em-chip para comunicação entre cluster, o que força o uso de um modelo de programação híbrido, ou seja, memória compartilhada e troca de mensagens;
+		% Apresentam sistemas de memória restritívos, com pequenos e multiplos espaços de endereçamento sem coerência de cache;
+		% E possuem geralmente componentes heterogêneos.
+
+	\end{frame}
+
+\section{Goals}
+
+	\begin{frame}[fragile]{Context and Goals}
+		\begin{itemize}
+			\item \textbf{Work context}
+			\begin{itemize}
+				\setlength \itemsep{0.3em}
+
+				\item Challenges arising from \textbf{runtimes} and \textbf{OSs}
+				\item OSs for \textbf{next-generation} for lightweight manycores
+				\item \textbf{Nanvix OS}
+			\end{itemize}
+		\end{itemize}
+
+		\begin{itemize}
+			\item \textbf{Goals}
+			\begin{itemize}
+				\setlength \itemsep{0.3em}
+
+				\item Definition and proposal of an \textbf{Inter-Cluster Communication Interface} for lightweight manycores
+				\item Implementation in the \textbf{Nanvix HAL} on Kalray MPPA-256 Lightweight Manycore Processor
+				\item Integration with the \textbf{Nanvix Microkernel}
+				\item Performance evaluation using synthetic micro-benchmarks with \textbf{collective communication routines}
+			\end{itemize}
+		\end{itemize}
+
+		% Parte dos desafios de se trabalhar com Lightweight Manycores originam-se de runtimes e sistemas operacionais existentes. Onde eles lidam parcialmente com as características do hardware ou escalabilidade do sistema.
+		% Assim, nós acreditamos que os sistemas operacionais para a próxima geração de Lightweight Manycores devem ser reprojetados do básico levando em consideração suas restrições arquitetônicas.
+		% Com base nessa idéia, buscamos desenvolver um sistema operacional distribuído baseado no modelo multikernel, chamado Nanvix OS.
+	\end{frame}
+
+	% \begin{frame}[fragile]{Goals}
+		
+
+	% 	% Neste contexto, os objetivos do trabalho é definir e propor uma Interface de Comunicação entre Clusters para Lightweight Manycores.
+	% 	% Implementar essa interface na camada de abstração do Nanvix, focado no processodor MPPA-256.
+	% 	% Depois, integrar com o Nanvix Microkernel e avaliar a perfomance utilizando rotinas comunicação coletivas.
+	% \end{frame}
+
+% LocalWords:  template cls standalone GitHub Overleaf bugfixes SVGs
+% LocalWords:  Re-empacotamento fontsize Makefile pdflatex imgs PDFs
+% LocalWords:  shell-escape frames SVG brazil english lapesd-slides
+% LocalWords:  disabletodonotes todonotes TODO's backup showbackup
+% LocalWords:  hidebackup abntexcite abntex natbib nobib titleframe
+% LocalWords:  frame showsections sidebar stopcountingframes default
+% LocalWords:  thanksframe Thank You Questions referencesframe titulo
+% LocalWords:  bibfiles pholder todonote placeholder inline addfig
+% LocalWords:  opts graphicx addfiglw width Citations dijkstra Direct
+% LocalWords:  Closure Parallel dynamic scheduling DoImportantStuff
+% LocalWords:  lccp merged cell svg pdf
