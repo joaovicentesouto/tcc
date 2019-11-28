@@ -142,11 +142,12 @@
 			of \ccluster is changed between 1 and 16.
 
 		% Quantas iterações, limitações de memória e desvio padrão
-			\mppa has intrinsic characteristics that guarantee low variability
-			between runs. Thus, 50 iterations of each benchmark were performed.
-			For each experiment, the first ten iterations were discarded to
-			eliminate undesired warm-up effects. Finally, all results discussed
-			bellow present a standard error inferior to 1\%.
+			The \mppa is designed to provide low energy per operation and time
+			predictability which guarantees low variability between runs~\cite{DeDinechin2013-1}.
+			Thus, 50 iterations of each benchmark were performed. For each
+			experiment, the first ten iterations were discarded to eliminate
+			undesired warm-up effects. Finally, all results discussed bellow
+			present a standard error inferior to 1\%.
 
 			\begin{table}[!tb]
 				\centering%
@@ -171,8 +172,7 @@
 
 		In this section, we present our experimental results. First, we
 		analyze outcomes for \textit{Portal service}, and next we move to
-		a discussion on the results for the \textit{Mailbox service}. For
-		a detailed description of the experiments, see \autoref{sec.evaluation-methodology}.
+		a discussion on the results for the \textit{Mailbox service}.
 
 		\subsection{Portal Throughput Analysis}
 
@@ -196,7 +196,7 @@
 			paging systems. In this case, observing the slope of the lines,
 			we can infer that the 8~KB and 16~KB sizes favor Portal throughput.
 			Overall, the results were as expected, but we believe that solving
-			the problem with using DMA accelerators described in
+			the problem using DMA accelerators described in
 			\autoref{sec.mppa-hardware-resources} could significantly improve
 			Portal throughput.
 
@@ -226,7 +226,7 @@
 			sum of Gather and Broadcast costs, because, despite the benefits of
 			receiving requests in parallel, the master spends most of its time
 			handling requests sequentially. Overall, Broadcast, Gather, and
-			AllGather showed how consensus distributed algorithms can be
+			AllGather showed how message-passing distributed algorithms can be
 			efficiently supported in \nanvixmultikernel. Ping-Pong, in turn,
 			highlights the latency of communication between Nanvix subsystems
 			with remote kernels, encouraging the potential for improvement using
