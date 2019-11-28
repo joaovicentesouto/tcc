@@ -67,13 +67,13 @@
 			concerned with ensuring atomic operations.
 
 			The \dma coordinates three interruption lines. Two of these are used by
-			\dnoc to notify the data receipt and completion of data sending by a
-			$\mu$thread. \cnoc only uses one line for receiving signals because
+			\dnoc to notify the data receipt and completion of an asynchronous data
+			sending. \cnoc only uses one line for receiving signals because
 			sending a signal (64-bit value) is explicitly performed by the core.
 			For each interrupt line, there is a specific handler, but they all
 			execute a similar algorithm. \autoref{alg.noc-handler} outlines
 			the behavior of the \noc handler. Because the line only notifies what
-			type of interrupt, it is the responsibility of the handler to search
+			type of interruption, it is responsibility of the handler to search
 			the resources of each interface looking for who triggered the interrupt.
 			The handlers are re-entrant to avoid loss of interrupts. Due to the
 			asymmetric microkernel design, concurrency issues are softened because only
@@ -83,14 +83,14 @@
 				\caption{Simplified NoC handler algorithm.}%
 				\label{alg.noc-handler}%
 				\begin{algorithmic}[1]
-					\Require $status[M_{Interfaces}][N_{Resources}]$, interrupt status of a resource.
-					\Require $handlers[M_{Interfaces}][N_{Resources}]$, interrupt handler of a resource.
+					\Require $flags[M_{Interfaces}][N_{Resources}]$, Interruption flags of a resource.
+					\Require $handlers[M_{Interfaces}][N_{Resources}]$, Interruption handler of a resource.
 					\Procedure{noc\_handler}{}
 					\For {$i \in [1, M_{Interfaces}]$}
 						\For {$j \in [1, N_{Resources}]$}
-							\If {$status[i][j] == Interrupt Triggered$}
-								\State {$\Call{clean\_status}{i, j}$}
-								\State {$\Call{handlers[i][j]}{i, j}$}
+							\If {$flags[i][j] == Interrupt\_Triggered$}
+								\State {$\Call{clean\_flags}{i, j}$}   \Comment{Releases to receive new interrupts.}
+								\State {$handlers[i][j](i, j)$}         \Comment{Runs the associated handler.}
 							\EndIf
 						\EndFor
 					\EndFor
@@ -110,7 +110,7 @@
 			the clusters. Within each group, we have a set of physical identifiers
 			(second column) that are mapped 1 to 1 to logical identifiers (third column).
 			For example, the \iocluster 0 constitutes 4 \noc interfaces, where they are
-			mapped as follows: $128 \to 0$, $129 \to 1$, $130 \to 2$, and $131 \to 4$.
+			mapped as follows: $128 \to 0$, $129 \to 1$, $130 \to 2$, and $131 \to 3$.
 			This mapping is a more natural form to identify the \noc nodes of
 			different architectures.
 
@@ -344,7 +344,7 @@
 % O que é a interface?
 % Quais são os parâmetros para realizar uma operação?
 				\autoref{code:hal-sync-receiver} introduces the \sync interface for
-				receiver nodes proposed for the \nanvixhal. The parameters required
+				receiver nodes proposed for the \textit{Nanvix HAL}. The parameters required
 				for creating a synchronization point are a list of logical IDs, list size,
 				and mode of synchronization. The list must always be initialized
 				with the master node ID, regardless of the mode. The remaining identifiers,
@@ -652,7 +652,7 @@ int mailbox_wait(int mbxid);
 				\hspace{1cm}%
 				\subcaptionminipage[fig:portal-flow]%
 					{.55\linewidth}%
-					{Node 1 creates a portal and notifies node 2 to transfer the data.}%
+					{Receiver creates a portal and notifies Sender to transfer the data.}%
 					{\includegraphics[width=\linewidth]{portal-flow.pdf}}%
 
 				\fonte{Developed by the author.}%
@@ -763,7 +763,7 @@ int portal_wait(int portalid);
 		Specifically, these services perform the multiplexing of the hardware
 		resources and the verification of the parameters that will be passed
 		on the communication primitives.
-		Due to the Master-Slave model, the master core is responsible of protecting,
+		Due to the Master-Slave model, the master core is responsible for protecting,
 		manipulating, and configuring \hal resources.
 		The slave core will request operations through the kernel call interface,
 		passing the necessary information to the master.
@@ -791,14 +791,14 @@ int portal_wait(int portalid);
 
 		\subsection{Impacts of the Master-Slave Model}
 
-			Master-Slave model defines that the master core must exclusively manipulate
+			Master-Slave \os model defines that the master core must exclusively manipulate
 			the internal structures of the \os. For this end, each service has generic and
 			simple structures that hold control flags, parameters for resource
 			identification, and storage of physical descriptors returned by \hal. Thus,
 			the kernel call interface separates the functions of the services into two
 			sets of functions. The first set contains the kernel calls that request a particular
 			operation. The second set contains functions that operate on the internal structures
-			and communicate with the \hal level. The master executes almost exclusive
+			and communicate with the \hal level. The master executes almost exclusively
 			the second set, except for the wait functions, which the slave performs entirely.
 
 			The kernel call set follows the \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
@@ -812,24 +812,25 @@ int portal_wait(int portalid);
 			The requirement of the slave to perform wait functions is because the master
 			cannot block indefinitely waiting for an operation. At this point, the slave
 			must access the internal structure of the \os to query the physical descriptor
-			for access to the \hal spinlock. So, the master updates local memory whenever
-			a modification is made, and the slave invalidates its cache to ensure structure
-			coherence.
+			for access to the \hal spinlock. The spinlock is used to wait for an asynchronous
+			operation to complete. So, the master updates local memory whenever a modification
+			is made, and the slave invalidates its cache to ensure structure coherence.
 
 		\subsection{Protection and Management}
 
-			Protection and management operations involve two phases, the slave and the master phase.
-			In the slave phase, all problems that could be detected before requesting the operation
-			to the master are checked.
-			Examples of theses verifications are:
+			Protection and management operations involve two phases, the slave
+			and the master phase. The slave phase performs several checks to
+			identify all possible problems with the arguments before wasting
+			master time with an invalid operation. Examples of theses
+			verifications are:
 			(i) valid file descriptors,
 			(ii) non-null buffer pointers,
 			(iii) buffer sizes within the stipulated limit, and
-			(iv) the semantics of services, e.g., synchronization with itself.
-
-			The master phase performs the same checks as the slave and has the
-			responsibility to check the semantics of operations on a given resource.
-			Specifically, the master:
+			(iv) the semantics of the arguments, e.g., synchronization with itself.
+			
+			The master phase performs more robust checks than those performed
+			by the slave phase, where it is possible to verify the semantics
+			of operations on a given resource. Specifically, the master:
 			(i) identifies multiple creations/openings
 			(ii) checks for conflicting operations, e.g., writing to read-only resources,
 			(iii) measures communication time and total number of bytes transmitted/received, and
@@ -863,11 +864,18 @@ int portal_wait(int portalid);
 
 		\subsection{Validation and Correctness Tests}
 
-			Validation and correctness testing of the implementation of services was
-			performed through two sets of unit tests, \textit{API} and \textit{FAULT}
-			tests, respectively. On the one hand, \textit{API} tests create, open, and
-			stimulate services with arguments within valid value ranges. On the other
-			hand, \textit{FAULT} tests use arguments outside the domain range of the
-			operations. The failure should generate a previously known error value.
-			The tests validate any changes made by verifying all expected behaviors
-			of each service.
+			Extra effort has been made to ensure that deployment across the
+			multiple supported architectures exhibits the same expected behavior.
+			To this end, two sets of tests ensure the validation and correctness
+			of the implementation, named \textit{API} and \textit{FAULT} tests.
+			On the one hand, \textit{API} tests create, open, and stimulate
+			services with arguments within valid value ranges and the correct
+			semantics of the operations. On the other hand, \textit{FAULT} tests
+			use arguments outside the domain of functions and incorrect semantics
+			of operations. The failure of an operation also should generate a
+			previously known error value. These sets of tests sought to cover the
+			most common and predictable errors that occur when using communication
+			services. However, a robust coverage test should be performed to ensure
+			that the tests verify all possible errors.
+
+
