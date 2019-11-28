@@ -219,7 +219,8 @@
 
 			\end{figure}
 
-			Notwithstanding, this model has imperceptible aspects~\cite{tanenbaum:4ed}.
+			This model is still better than having separate computers. Nevertheless,
+			the application of this model must first assess three aspects~\cite{tanenbaum:4ed}.
 			First, since each \cpu has its own process and page tables, it is impossible
 			to optimize the use of resources.
 			For instance, if many of processes are waiting for use an overloaded \cpu,
@@ -447,7 +448,7 @@
 			\begin{itemize}
 				\item \textit{Blocking sending:} \cpu hibernates or schedules another
 					process, while the message is transmitted;
-				\item \textit{Non-blocking sending with copying:} realizes an extra copy of
+				\item \textit{Non-blocking sending with copying:} performs an extra copy of
 					the message to a kernel buffer, degrading performance;
 				\item \textit{Non-blocking sending with interrupt:} notifies the \cpu
 					when the send finishes, where the buffer must remain untouchable,
@@ -734,7 +735,8 @@
 				security, locking, access, integrity, and failover mechanisms.
 
 			\item[Replication Independence:] Servers and data can be replicated across multiple
-				nodes, being transparently and automatically synchronized.
+				nodes, where servers can service nearby nodes to decrease network traffic and
+				perform a consistency and synchronization algorithm to ensure access to updated data.
 
 			\item[Non-dependency on a central node:] When replicating servers, the system no
 				longer relies on a central node.
