@@ -8,14 +8,6 @@
 	dealing with inputs and generating outputs from/to \io devices.
 	Modern processors still follow this model, but some components and
 	behaviors are specialized or replicated to increase performance.
-
-	\begin{figure}[!tb]
-		\centering%
-		\caption{Von Neumann architecture model.}%
-		\label{fig:neumann}%
-		\includegraphics[width=.6\textwidth]{neumann.pdf}%
-		\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
-	\end{figure}
 	
 	According to \citeonline{tanenbaum:4ed}, there are three models of
 	modern multiple processor architectures.
@@ -28,6 +20,14 @@
 	Then, \autoref{sec.mppa} presents the \mppa processor.
 	Finally, \autoref{sec.nanvix} shows an overview of \nanvixos and the
 	three levels of abstraction designed for \lightweight \manycores processors.
+
+	\begin{figure}[!hb]
+		\centering%
+		\caption{Von Neumann architecture model.}%
+		\label{fig:neumann}%
+		\includegraphics[width=.6\textwidth]{neumann.pdf}%
+		\fonte{Adapted from \citeonline{tanenbaum:4ed}.}%
+	\end{figure}
 
 	\section{Multiprocessors}
 	\label{sec.multiprocessors}
@@ -77,7 +77,7 @@
 			The protocols that guarantee these properties are called cache-coherence
 			protocols~\cite{tanenbaum:4ed}.
 
-			\begin{figure}[!tb]
+			\begin{figure}[!b]
 				\centering%
 				\caption{Two bus-based UMA multiprocessor examples.}%
 				\label{fig:uma}%
@@ -313,29 +313,29 @@
 				\label{fig:net-topologies}%
 
 				\subcaptionminipage[fig:net-start]%
-					{.25\linewidth}%
+					{.23\linewidth}%
 					{Star.}%
 					{\includegraphics[width=\linewidth]{net-star.pdf}}%
 				\hspace{1cm}%
 				\subcaptionminipage[fig:net-ring]%
-					{.25\linewidth}%
+					{.23\linewidth}%
 					{Ring.}%
 					{\includegraphics[width=\linewidth]{net-ring.pdf}}%
 				\hspace{1cm}%
 				\subcaptionminipage[fig:net-grid]%
-					{.25\linewidth}%
+					{.23\linewidth}%
 					{Grid.}%
 					{\includegraphics[width=\linewidth]{net-grid.pdf}}%
 
 				\vspace{0.5cm}%
 
 				\subcaptionminipage[fig:net-torus]%
-					{.25\linewidth}%
+					{.23\linewidth}%
 					{Torus.}%
 					{\includegraphics[width=\linewidth]{net-torus.pdf}}%
 				\hspace{1cm}%
 				\subcaptionminipage[fig:net.grid-3d]%
-					{.25\linewidth}%
+					{.23\linewidth}%
 					{Grid 3D.}%
 					{\includegraphics[width=\linewidth]{net-3d.pdf}}%
 
@@ -420,14 +420,14 @@
 				\label{fig:calls-types}%
 
 				\subcaptionminipage[fig:call-sync]%
-					{.85\linewidth}%
+					{\linewidth}%
 					{Synchronous call on sender node.}%
 					{\includegraphics[width=\linewidth]{call-sync.pdf}}%
 
 				\vspace{0.5cm}%
 
 				\subcaptionminipage[fig:call-async]%
-					{.85\linewidth}%
+					{\linewidth}%
 					{Asynchronous call on sender node.}%
 					{\includegraphics[width=\linewidth]{call-async.pdf}}%
 
@@ -480,14 +480,6 @@
 
 \section{MPPA-256 Lightweight Manycore Processor}
 \label{sec.mppa}
-
-	\begin{figure}[!tb]
-		\centering%
-		\caption{Architectural overview of the Kalray MPPA-256 processor.}%
-		\label{fig:mppa-arch}%
-		\includegraphics[width=.7\textwidth]{arch-mppa.pdf}%
-		\fonte{\citeonline{Penna2018}.}%
-	\end{figure}
 	
 	The lightweight manycores class features processors that have a vast
 	number of cores and endeavor to be energy efficient. In general,
@@ -507,6 +499,14 @@
 	Besides, all cores have caches and \mmus with software-managed \tlbs.
 	Finally, the 288 cores are grouped into 16 \cclusters, dedicated to
 	the payload, and 4 \ioclusters, responsible for communicating with peripherals.
+
+	\begin{figure}[!hb]
+		\centering%
+		\caption{Architectural overview of the Kalray MPPA-256 processor.}%
+		\label{fig:mppa-arch}%
+		\includegraphics[width=.65\textwidth]{arch-mppa.pdf}%
+		\fonte{\citeonline{Penna2018}.}%
+	\end{figure}
 
 	Each \ccluster features 16 \pes, an \rm, an \noc interface and 2~MB of \sram.
 	The hardware does not support cache coherence to improve energy consumption.
@@ -570,19 +570,19 @@
 	issues of lightweight manycores. This can be accomplished through a fully-featured
 	\posix-compliant \os~\cite{penna:compas19}.
 
-	\begin{figure}[!tb]
+	\nanvixos is composed of three distinct kernel layers.
+	In a bottom-up approach of abstraction level, they are namely \textit{\nanvixhal},
+	\textit{\nanvixmicrokernel}, and \textit{\nanvixmultikernel}.
+	The next sections will introduce the concepts and problems addressed by
+	each layer.
+
+	\begin{figure}[!hb]
 		\centering%
 		\caption{Conceptual goals of the Nanvix OS.}%
 		\label{fig:nanvix-goal}%
 		\includegraphics[width=.5\textwidth]{nanvix-goal.pdf}%
 		\fonte{Adapted from \citeonline{penna:sbesc19}}%
 	\end{figure}
-
-	\nanvixos is composed of three distinct kernel layers.
-	In a bottom-up approach of abstraction level, they are namely \textit{\nanvixhal},
-	\textit{\nanvixmicrokernel}, and \textit{\nanvixmultikernel}.
-	The next sections will introduce the concepts and problems addressed by
-	each layer.
 
 	\subsection{Nanvix Hardware Abstract Layer (HAL)}
 	\label{sec.hal}
@@ -608,16 +608,7 @@
 		\autoref{fig:hal-overview} pictures the three logic layers of the \nanvixhal, which are
 		detailed below:
 
-		\begin{figure}[!tb]
-			\centering%
-			\caption{Structural overview of the Nanvix HAL.}%
-			\label{fig:hal-overview}%
-			\includegraphics[width=.5\textwidth]{nanvix-hal-overview.pdf}%
-			\fonte{Adapted from \citeonline{penna:compas19}}%
-		\end{figure}
-
 		\begin{description}
-
 			\item[Core Abstraction Layer]
 				encapsulates the management of a single core.
 				It provides a uniform view and maintenance routines for \tlbs, \mmu and cache,
@@ -628,12 +619,10 @@
 				For example, a context switch mechanism was not provided in the
 				\textit{Core Package} because this would force the client \os
 				to write code in assembly, hurting the conceptual idea of the \nanvixhal.
-
 			\item[Cluster Abstraction Layer]
 				bundles the resource management that concern all cores in a cluster.
 				It provides support for virtual memory, cross-core notification through events,
 				clock counter fetching, and access to \io resources such as \mmio and \dma.
-
 			\item[Processor Abstraction Layer]
 				embraces architectural features related to multiple clusters.
 				The \textit{inter-cluster communication module}, which is the focus of
@@ -641,8 +630,15 @@
 				exports three main abstractions to allow synchronization and data
 				exchange among clusters, based on ideas proposed along with the
 				\nodeos distributed runtime system~\cite{DeDinechin2013-1}.
-
 		\end{description}
+
+		\begin{figure}[!b]
+			\centering%
+			\caption{Structural overview of the Nanvix HAL.}%
+			\label{fig:hal-overview}%
+			\includegraphics[width=.55\textwidth]{nanvix-hal-overview.pdf}%
+			\fonte{Adapted from \citeonline{penna:compas19}}%
+		\end{figure}
 
 	\subsection{Nanvix Microkernel}
 	\label{sec.microkernel}
@@ -657,11 +653,11 @@
 		\autoref{fig:microkernel-overview} pictures the five logic layers of the
 		\nanvixmicrokernel, which are detailed below:
 
-		\begin{figure}[!tb]
+		\begin{figure}[!b]
 			\centering%
 			\caption{Concept Structural overview of the Nanvix Microkernel.}%
 			\label{fig:microkernel-overview}%
-			\includegraphics[width=.5\textwidth]{nanvix-microkernel-overview.pdf}%
+			\includegraphics[width=.55\textwidth]{nanvix-microkernel-overview.pdf}%
 			\fonte{Adapted from \citeonline{penna:sbesc19}}%
 		\end{figure}
 
@@ -709,7 +705,7 @@
 			\centering%
 			\caption{Execution example of the Nanvix Microkernel.}%
 			\label{fig:microkernel-execution}%
-			\includegraphics[width=.9\textwidth]{nanvix-microkernel-execution.pdf}%
+			\includegraphics[width=.95\textwidth]{nanvix-microkernel-execution.pdf}%
 			\fonte{Developed by the author.}%
 		\end{figure}
 
@@ -758,7 +754,7 @@
 		always reserves a single core for kernel execution, making the other cores
 		available for application execution.
 
-		\begin{figure}[!tb]
+		\begin{figure}[!b]
 			\centering%
 			\caption{Possible configurations on Nanvix Multikernel.}%
 			\label{fig:multikernel-overview}%

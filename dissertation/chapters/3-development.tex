@@ -79,7 +79,7 @@
 			asymmetric microkernel design, concurrency issues are softened because only
 			the master handles interrupts.
 
-			\begin{algorithm}[!tb]
+			\begin{algorithm}[!b]
 				\caption{Simplified NoC handler algorithm.}%
 				\label{alg.noc-handler}%
 				\begin{algorithmic}[1]
@@ -222,7 +222,7 @@
 			send. This algorithm ensures that the master is always doing useful
 			operations and never crashes the entire system.
 
-			\begin{algorithm}[!tb]
+			\begin{algorithm}[!b]
 				\caption{Simplified lazy transfer algorithm.}%
 				\label{alg:lazy-transfer}%
 				\begin{algorithmic}[1]
@@ -321,7 +321,7 @@
 			block. Receiver nodes are responsible for waiting for all notifications
 			to arrive.
 
-			\begin{figure}[!tb]
+			\begin{figure}[!b]
 				\centering%
 				\caption{Synchronization abstraction example.}%
 				\label{fig:sync-concepts}%
@@ -384,7 +384,7 @@
 				% A lista de nós foi projetada para utilizar os IDs das interfaces NoCs
 				% ao invés dos IDs dos Cluster para não desperdiçar as DMAs extras existentes nos Cluster I/O.
 
-\begin{listing}[!tb]
+\begin{listing}[!b]
 \caption{Nanvix HAL: Sync interface for receiver node.}
 \label{code:hal-sync-receiver}
 \begin{minted}{c}
@@ -431,7 +431,7 @@ int sync_wait(int syncid);
 				performing the notification, a signal will be sent to each target
 				of this list.
 
-\begin{listing}[!tb]
+\begin{listing}[!bh]
 \caption{Nanvix HAL: Sync interface for sender node.}
 \label{code:hal-sync-sender}
 \begin{minted}{c}
@@ -630,6 +630,24 @@ int mailbox_wait(int mbxid);
 			the receiver to communicate with other nodes through the same channel.
 			The sender, in turn, can only communicate with one node.
 
+			\begin{figure}[!h]
+				\centering%
+				\caption{Portal abstraction concept.}%
+				\label{fig:portal}%
+
+				\subcaptionminipage[fig:portal-concept]%
+					{.3\linewidth}%
+					{Conceptual Overview.}%
+					{\includegraphics[width=\linewidth]{portal-concept.pdf}}%
+				\hspace{1cm}%
+				\subcaptionminipage[fig:portal-flow]%
+					{.5\linewidth}%
+					{Receiver creates a portal and notifies Sender to transfer the data.}%
+					{\includegraphics[width=\linewidth]{portal-flow.pdf}}%
+
+				\fonte{Developed by the author.}%
+			\end{figure}
+
 % Fluxo da operação
 			\autoref{fig:portal-flow} outlines the flow control of the \portal.
 			When attempting to transmit data to the receiver, the sender will block
@@ -639,24 +657,6 @@ int mailbox_wait(int mbxid);
 			not receive data without properly configured \dma, and will not overwrite
 			previous data. Allowing communication empowers the receiver to choose which
 			communications to prioritize.
-
-			\begin{figure}[!tb]
-				\centering%
-				\caption{Portal abstraction concept.}%
-				\label{fig:portal}%
-
-				\subcaptionminipage[fig:portal-concept]%
-					{.32\linewidth}%
-					{Conceptual Overview.}%
-					{\includegraphics[width=\linewidth]{portal-concept.pdf}}%
-				\hspace{1cm}%
-				\subcaptionminipage[fig:portal-flow]%
-					{.55\linewidth}%
-					{Receiver creates a portal and notifies Sender to transfer the data.}%
-					{\includegraphics[width=\linewidth]{portal-flow.pdf}}%
-
-				\fonte{Developed by the author.}%
-			\end{figure}
 
 			\subsubsection{Receiver-side Implementation}
 
@@ -684,7 +684,7 @@ int mailbox_wait(int mbxid);
 				control structures have also been simplified, containing only
 				control flags and the spinlock for asynchronous operations.
 
-\begin{listing}[!tb]
+\begin{listing}[!b]
 \caption{Nanvix HAL: Portal interface for receiver node.}
 \label{code:hal-portal-receiver}
 \begin{minted}{c}
@@ -728,7 +728,7 @@ int portal_wait(int portalid);
 				parameters needed to perform the lazy transfer and a spinlock to
 				asynchronous operations.
 
-\begin{listing}[!tb]
+\begin{listing}[!bh]
 \caption{Nanvix HAL: Portal interface for sender node.}
 \label{code:hal-portal-sender}
 \begin{minted}{c}
