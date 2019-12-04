@@ -240,22 +240,6 @@
 	pages = {1--16},
 }
 
-@inproceedings{Baumann2009,
-	address = {Big Sky, Montana, USA},
-	series = {{SOSP} `09},
-	title = {The {Multikernel}: {A} {New} {OS} {Architecture} for {Scalable} {Multicore} {Systems}},
-	isbn = {978-1-60558-752-3},
-	url = {https://dl.acm.org/citation.cfm?doid=1629575.1629579},
-	doi = {10.1145/1629575.1629579},
-	language = {English},
-	booktitle = {Proceedings of the 22nd {ACM} {Symposium} on {Operating} {Systems} {Principles}},
-	publisher = {ACM},
-	author = {Baumann, Andrew and Barham, Paul and Dagand, Pierre-Evariste and Harris, Tim and Isaacs, Rebecca and Peter, Simon and Roscoe, Timothy and Schüpbach, Adrian and Singhania, Akhilesh},
-	month = oct,
-	year = {2009},
-	pages = {29--44},
-}
-
 @inproceedings{berezecki2011,
 	address = {Orlando, Florida, USA},
 	series = {{IGCC} `11},
@@ -927,22 +911,6 @@
 	file = {Lange et al. - 2010 - Palacios and Kitten New High Performance Operatin.pdf:/home/ppenna/Zotero/storage/6X5LAB5I/Lange et al. - 2010 - Palacios and Kitten New High Performance Operatin.pdf:application/pdf}
 }
 
-@article{wentzlaff_factored_2009,
-	title = {Factored Operating Systems ({FOS}): The Case for a Scalable Operating System for Multicores},
-	volume = {43},
-	issn = {0163-5980},
-	url = {https://dl.acm.org/citation.cfm?doid=1531793.1531805},
-	doi = {10.1145/1531793.1531805},
-	abstract = {The next decade will afford us computer chips with 100's to 1,000's of cores on a single piece of silicon. Contemporary operating systems have been designed to operate on a single core or small number of cores and hence are not well suited to manage and provide operating system services at such large scale. If multicore trends continue, the number of cores that an operating system will be managing will continue to double every 18 months. The traditional evolutionary approach of redesigning {OS} subsystems when there is insufficient parallelism will cease to work because the rate of increasing parallelism will far outpace the rate at which {OS} designers will be capable of redesigning subsystems. The fundamental design of operating systems and operating system data structures must be rethought to put scalability as the prime design constraint. This work begins by documenting the scalability problems of contemporary operating systems. These studies are used to motivate the design of a factored operating system (fos). fos is a new operating system targeting manycore systems with scalability as the primary design constraint, where space sharing replaces time sharing to increase scalability.We describe fos, which is built in a message passing manner, out of a collection of Internet inspired services. Each operating system service is factored into a set of communicating servers which in aggregate implement a system service. These servers are designed much in the way that distributed Internet services are designed, but instead of providing high level Internet services, these servers provide traditional kernel services and replace traditional kernel data structures in a factored, spatially distributed manner. fos replaces time sharing with space sharing. In other words, fos's servers are bound to distinct processing cores and by doing so do not fight with end user applications for implicit resources such as {TLBs} and caches. We describe how fos's design is well suited to attack the scalability challenge of future multicores and discuss how traditional application-operating systems interfaces can be redesigned to improve scalability.},
-	pages = {76--85},
-	number = {2},
-	journaltitle = {{ACM} {SIGOPS} Operating Systems Review},
-	author = {Wentzlaff, David and Agarwal, Anant},
-	date = {2009-04},
-	keywords = {{PhD}, Operating Systems, Multikernel, Starred, {FOS}},
-	file = {Wentzlaff and Agarwal - 2009 - Factored Operating Systems (FOS) The Case for a S.pdf:/home/ppenna/Zotero/storage/U6YDWHR3/Wentzlaff and Agarwal - 2009 - Factored Operating Systems (FOS) The Case for a S.pdf:application/pdf}
-}
-
 @inproceedings{boyd-wickizer_corey:_2008,
 	location = {San Diego, California, {USA}},
 	title = {Corey: An Operating System for Many Cores},
@@ -1027,7 +995,7 @@
 	file = {Liedtke - 1995 - On Micro-Kernel Construction.pdf:/home/ppenna/Zotero/storage/7A7C485T/Liedtke - 1995 - On Micro-Kernel Construction.pdf:application/pdf}
 }
 
-@inproceedings{baumann_multikernel:_2009,
+@inproceedings{Baumann2009,
 	location = {Big Sky, Montana, {USA}},
 	title = {The Multikernel: A New {OS} Architecture for Scalable Multicore Systems},
 	isbn = {978-1-60558-752-3},
