@@ -1,138 +1,406 @@
 \chapter{Source Code}
 \label{ch:source-code}
 
-\Section{Nanvix Project Structure}
-\label{sec:code-structure}
+\newmenumacro{\nixfile}[/]{hyphenatepaths}
+\newmenumacro{\nixpath}[/]{hyphenatepathswithfolder}
+\newmenumacro{\winpath}[bslash]{hyphenatepathswithfolder}
+\newmenumacro{\winfile}[bslash]{hyphenatepaths}
 
-O código fonte deste trabalho está incluído no desenvolvimento de um sistema
-operacional distribuído de proprósito geral para processadores lightweight manycores,
-denominado Nanvix OS. O Nanvix OS é o resultado de um projeto de código aberto
-e colaborativo disponibilizado na plataforma Github. O Projeto Nanvix é detalhado em
-maiores detalhes nas Seções A, B, C.
+\section{Nanvix Project Structure}
 
-Existe um repositório separado no Github para cada camada de abstração que é mantido
-e atualizado pelos colaboradores do Nanvix. A dependência das camadas superiores é
-resolvido através do uso de submódulos, suportado pelo git. Por meio dos submódulos,
-é criado de forma implicita um hieraquia de dependências por entre os repositórios do Nanvix.
-Deste modo, cada camada que dependa e utilize outra camada tem garantias de seu funcionamento
-mas é isento de sua implementação. Isto torna os códigos mais bem gerenciáveis, modulares e,
-por consequência, melhores portáveis. Para garantir a correta implementação das interfaces
-exportadas nas diversas arquiteturas suportadas, todos os repositórios contém conjuntos de
-testes, \ie testes API e FAULT.
+    The development of a general-purpose distributed operating system for
+    lightweight manycores processors, called \nanvixos, includes the source
+    code for this undergraduate dissertation. \nanvixos is the result of an
+    open-source, collaborative project made available on the Github platform.
+    Since it is not semantically interesting to have only part of the source
+    code and it is impossible to insert all OS code into this document, this
+    appendix details where find and test the developed code. The Nanvix
+    Project is detailed in \autoref{sec.nanvix}.
 
-A implementação referente a está dissertação é dividada em quatro repositórios, ordenados por
-depênciancia (Microkernel-Benchmarks -> LibNanvix -> Microkernel -> HAL):
+    Specifically, there is a separate Github repository for each abstraction
+    layer that is maintained and updated by Nanvix contributors. Submodules,
+    supported by the git tool, create an implicit dependency hierarchy
+    between the Nanvix repositories. Thus, each layer that depends on another
+    has guarantees of its operation and is exempt from its implementation.
+    Theses guarantees make the codes better manageable, modular, and better
+    portable. All repositories contain test sets (Validation and Fault tests)
+    to ensure the correct implementation of exported interfaces on the several
+    supported architectures.
 
-- Microkernel-Benchmarks: Contém a implementação dos micro-benchmarks que estimulam os serviços
-de comunicação. Especificamente, existem quatro micro-benchmarks para cada serviço de transferência de dados,
-isto é, mailbox e portal. Neste repositório também existem scripts para compilação e executação dos
-experimentos na plataforma do \mppa. A branch que contém a implementação está nomeada de collective-comm-routines.
+    All repositories follow a branch naming convention, where only two
+    branches are, in fact, essential. First, the master branch contains
+    the most stable version of the system and marks the significant
+    releases of Nanvix versions. Second, the unstable branch contains
+    the most current version, but there may still exist bugs or required
+    parts missing. The other branches are intended to implement new features,
+    improve existing ones, or fix bugs. These other branches are incorporated
+    into the unstable branch when passing all regression tests.
 
-- LibNanvix: complemento do microkernel, este repositório exporta e implementa a interface
-de usuário das chamadas de sistemas.
+    The following subsections, ordered by dependency, detail the four
+    repositories that contain the source code of this undergraduate dissertation.
 
-- Microkernel: implementação de parte do microkernel assíncrono detalhado na Seção 2.
-Este repositório contém toda as estruturas internas do SO e a implementação das chamadas
-do lado do núcleo mestre.
+    \subsection{Microkernel-Benchmarks}
+    
+        implements the micro-benchmarks that
+        stimulate communication services. Specifically, there are four
+        micro-benchmarks for each data transfer service, detailed in
+        \autoref{sec.evaluation-methodology}. In this repository, there
+        are also scripts for compiling and running experiments on the
+        \mppa platform. Available in \texttt{collective-comm-routines} branch at
+        \url{https://github.com/joaovicentesouto/microkernel-benchmarks}.
 
-- HAL: define e implementa as interfaces das abstrações de mais baixo nível.
-ste repositório lida diretamente com as diversas arquiteturas suportadas, entre elas,
-\mppa, \optimsoc, \hero e uma implementação para testes sobre o sistema operacional \unix.
-Maiores detalhes na Seção 1.
+        Commit: aafd9a70f8188105efabd651050bc7cafc39d343
+        
+        Developed Source Files
 
-Os Links para acessar cada um dos repositórios é:
+        % \begin{itemize}
+        %     \item microkernel-benchmarks/include/kbench.h
+        %     \item microkernel-benchmarks/src/utils/args.c
+        %     \item microkernel-benchmarks/src/utils/barrier.c
+        %     \item microkernel-benchmarks/src/utils/crt0.c
+        %     \item microkernel-benchmarks/src/utils/node.c
+        %     \item microkernel-benchmarks/src/utils/results.c
+        %     \item microkernel-benchmarks/src/utils/string.c
+        %     \item microkernel-benchmarks/src/utils/times.c
+        %     \item microkernel-benchmarks/src/mailbox/allgather/main.c
+        %     \item microkernel-benchmarks/src/mailbox/broadcast/main.c
+        %     \item microkernel-benchmarks/src/mailbox/gather/main.c
+        %     \item microkernel-benchmarks/src/mailbox/pingpong/main.c
+        %     \item microkernel-benchmarks/src/portal/allgather/main.c
+        %     \item microkernel-benchmarks/src/portal/broadcast/main.c
+        %     \item microkernel-benchmarks/src/portal/gather/main.c
+        %     \item microkernel-benchmarks/src/portal/pingpong/main.c
+        % \end{itemize}
 
-- Microkernel-Benchmarks:\url{https://github.com/joaovicentesouto/microkernel-benchmarks/tree/collective-comm-routines}
-- LibNanvix:\url{https://github.com/nanvix/libnanvix}
-- Microkernel:\url{https://github.com/nanvix/microkernel}
-- HAL:\url{https://github.com/nanvix/hal}
+        \begin{figure}[!h]
+            \begin{forest}
+            for tree={
+                grow'=0,
+                parent anchor=children,
+                child anchor=parent,
+                anchor=parent,
+            },
+            where level=0{
+                draw
+            }{
+                if={(n()==1)&&(level()>1)}{
+                calign with current edge
+                }{},
+                if n children=0{folder}{},
+                edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+            }
+            [microkernel-benchmarks
+                [include
+                    [kbench.h]
+                ]
+                [src
+                    [utils
+                        [args.c]
+                        [barrier.c]
+                        [crt0.c]
+                        [node.c]
+                        [results.c]
+                        [string.c]
+                        [times.c]
+                    ]
+                    [mailbox
+                        [allgather
+                            [main.c]
+                        ]
+                        [broadcast
+                            [main.c]
+                        ]
+                        [gather
+                            [main.c]
+                        ]
+                        [pingpong
+                            [main.c]
+                        ]
+                    ]
+                    [portal
+                        [allgather
+                            [main.c]
+                        ]
+                        [broadcast
+                            [main.c]
+                        ]
+                        [gather
+                            [main.c]
+                        ]
+                        [pingpong
+                            [main.c]
+                        ]
+                    ]
+                ]
+            ]
+            \end{forest}
+            \caption{Source tree.}
+        \end{figure}
 
-\Section{Version of the Source Code}
-\label{sec:code-version}
+    \subsection{LibNanvix}
+    
+        exports and implements the user-side operations and
+        responsibilities of the kernel call interface described in
+        \autoref{sec.microkernel}. Briefly, this repository is the
+        Microkernel repository add-on.
+        Available at \url{https://github.com/nanvix/libnanvix}.
 
-Todos os repositórios seguem um convenção na nomenclatura dos branchs, onde apenas duas branchs
-são, de fato, importantes.
-Primeiro, a branch master contém a versão mais estável do sistema e marca os grandes releases das versões do Nanvix.
-Segundo, a branch unstable contém a versão mais atual, porém, ainda podem existir bugs e partes importantes faltando.
-As demais branchs são destinadas a implementar novos recursos, melhorar os existentes ou resolver bugs.
-Essas outras branchs são incorporadas a branch unstable quando estiverem passando em todos os testes de regressão.
+        % \begin{itemize}
+        %     \item LibNanvix: a9dcb35dd8727aefe41d316ac2609c88073e160e
+        %     \item libnanvix/include/nanvix/mailbox.h
+        %     \item libnanvix/include/nanvix/noc.h
+        %     \item libnanvix/include/nanvix/portal.h
+        %     \item libnanvix/include/nanvix/sync.h
+        %     \item libnanvix/src/libnanvix/ikc/mailbox.c
+        %     \item libnanvix/src/libnanvix/ikc/noc.c
+        %     \item libnanvix/src/libnanvix/ikc/portal.c
+        %     \item libnanvix/src/libnanvix/ikc/sync.c
+        %     \item libnanvix/src/test/kmailbox.c
+        %     \item libnanvix/src/test/knoc.c
+        %     \item libnanvix/src/test/kportal.c
+        %     \item libnanvix/src/test/ksync.c
+        % \end{itemize}
+        \begin{figure}[!h]
+            \begin{forest}
+            for tree={
+                grow'=0,
+                parent anchor=children,
+                child anchor=parent,
+                anchor=parent,
+            },
+            where level=0{
+                draw
+            }{
+                if={(n()==1)&&(level()>1)}{
+                calign with current edge
+                }{},
+                if n children=0{folder}{},
+                edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+            }
+            [libnanvix
+                [include
+                    [nanvix
+                        [mailbox.h]
+                        [noc.h]
+                        [portal.h]
+                        [sync.h]
+                    ]
+                ]
+                [src
+                    [libnanvix
+                        [ikc
+                            [mailbox.c]
+                            [noc.c]
+                            [portal.c]
+                            [sync.c]
+                        ]
+                    ]
+                    [test
+                        [kmailbox.c]
+                        [knoc.c]
+                        [kportal.c]
+                        [ksync.c]
+                    ]
+                ]
+            ]
+            \end{forest}
+            \caption{Source tree.}
+        \end{figure}
 
-O código fonte desta dissertação está contido nos referentes commits do Github:
+    \subsection{Microkernel}
+    
+        implements of part of the asynchronous microkernel
+        detailed in \autoref{sec.microkernel}. This repository contains all
+        internal \os structures and the implementation of master-side calls.
+        Available at \url{https://github.com/nanvix/microkernel}.
 
-- Microkernel-Benchmarks: aafd9a70f8188105efabd651050bc7cafc39d343
--- microkernel-benchmarks/include/kbench.h
--- microkernel-benchmarks/src/utils/args.c
--- microkernel-benchmarks/src/utils/barrier.c
--- microkernel-benchmarks/src/utils/crt0.c
--- microkernel-benchmarks/src/utils/node.c
--- microkernel-benchmarks/src/utils/results.c
--- microkernel-benchmarks/src/utils/string.c
--- microkernel-benchmarks/src/utils/times.c
--- microkernel-benchmarks/src/mailbox/allgather/main.c
--- microkernel-benchmarks/src/mailbox/broadcast/main.c
--- microkernel-benchmarks/src/mailbox/gather/main.c
--- microkernel-benchmarks/src/mailbox/pingpong/main.c
--- microkernel-benchmarks/src/portal/allgather/main.c
--- microkernel-benchmarks/src/portal/broadcast/main.c
--- microkernel-benchmarks/src/portal/gather/main.c
--- microkernel-benchmarks/src/portal/pingpong/main.c
-- LibNanvix: a9dcb35dd8727aefe41d316ac2609c88073e160e
--- libnanvix/include/nanvix/mailbox.h
--- libnanvix/include/nanvix/noc.h
--- libnanvix/include/nanvix/portal.h
--- libnanvix/include/nanvix/sync.h
--- libnanvix/src/libnanvix/ikc/mailbox.c
--- libnanvix/src/libnanvix/ikc/noc.c
--- libnanvix/src/libnanvix/ikc/portal.c
--- libnanvix/src/libnanvix/ikc/sync.c
--- libnanvix/src/test/kmailbox.c
--- libnanvix/src/test/knoc.c
--- libnanvix/src/test/kportal.c
--- libnanvix/src/test/ksync.c
-- Microkernel: a9826dec62baa3fe47ab3a77b15f3ccfdd84b79a
--- microkernel/include/nanvix/mailbox.h
--- microkernel/include/nanvix/noc.h
--- microkernel/include/nanvix/portal.h
--- microkernel/include/nanvix/syscall.h
--- microkernel/src/kernel/noc/mailbox.c
--- microkernel/src/kernel/noc/portal.c
--- microkernel/src/kernel/noc/sync.c
-- HAL: 1e7d3bc64decff023ac91cdecc2e0ac6c53ac946
--- hal/include/nanvix/hal/target/mailbox.h
--- hal/include/nanvix/hal/target/portal.h
--- hal/include/nanvix/hal/target/sync.h
--- hal/include/nanvix/hal/processor/clusters.h
--- hal/include/nanvix/hal/processor/noc.h
--- hal/include/arch/target/kalray/mppa256/mailbox.h
--- hal/include/arch/target/kalray/mppa256/portal.h
--- hal/include/arch/target/kalray/mppa256/sync.h
--- hal/include/arch/processor/bostan/clusters.h
--- hal/include/arch/processor/bostan/noc.h
--- hal/include/arch/processor/bostan/noc/tag.h
--- hal/include/arch/processor/bostan/noc/ctag.h
--- hal/include/arch/processor/bostan/noc/dtag.h
--- hal/include/arch/processor/bostan/noc/dma.h
--- hal/src/hal/arch/target/mppa256/mailbox.c
--- hal/src/hal/arch/target/mppa256/portal.c
--- hal/src/hal/arch/target/mppa256/sync.c
--- hal/src/hal/arch/processor/bostan/clusters.c
--- hal/src/hal/arch/processor/bostan/noc.c
--- hal/src/hal/arch/processor/bostan/ctag.c
--- hal/src/hal/arch/processor/bostan/dtag.c
--- hal/src/hal/arch/processor/bostan/dma.c
--- hal/src/test/target/mailbox.c
--- hal/src/test/target/portal.c
--- hal/src/test/target/sync.c
--- hal/src/test/processor/clusters.c
--- hal/src/test/processor/cnoc.c
--- hal/src/test/processor/dnoc.c
--- hal/src/test/processor/noc.c
+        % \begin{itemize}
+        %     \item Microkernel: a9826dec62baa3fe47ab3a77b15f3ccfdd84b79a
+        %     \item microkernel/include/nanvix/mailbox.h
+        %     \item microkernel/include/nanvix/noc.h
+        %     \item microkernel/include/nanvix/portal.h
+        %     \item microkernel/include/nanvix/syscall.h
+        %     \item microkernel/src/kernel/noc/mailbox.c
+        %     \item microkernel/src/kernel/noc/portal.c
+        %     \item microkernel/src/kernel/noc/sync.c
+        % \end{itemize}
+        \begin{figure}[!h]
+            \begin{forest}
+            for tree={
+                grow'=0,
+                parent anchor=children,
+                child anchor=parent,
+                anchor=parent,
+            },
+            where level=0{
+                draw
+            }{
+                if={(n()==1)&&(level()>1)}{
+                calign with current edge
+                }{},
+                if n children=0{folder}{},
+                edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+            }
+            [microkernel
+                [include
+                    [nanvix
+                        [mailbox.h]
+                        [noc.h]
+                        [portal.h]
+                        [sync.h]
+                    ]
+                ]
+                [src
+                    [kernel
+                        [noc
+                            [mailbox.c]
+                            [portal.c]
+                            [sync.c]
+                        ]
+                    ]
+                ]
+            ]
+            \end{forest}
+            \caption{Source tree.}
+        \end{figure}
 
-\Section{Exemplo de executação dos testes de regressão}
+    \subsection{HAL}
+    
+        defines and implements the interfaces of the lowest level
+        abstractions. This repository deals directly with the multiple
+        supported architectures, including \mppa, \optimsoc, \hero, and a
+        \unix implementation for testing. More details in \autoref{sec.hal}.
+        Available at \url{https://github.com/nanvix/hal}.
+
+        % \begin{itemize}
+        %     \item HAL: 1e7d3bc64decff023ac91cdecc2e0ac6c53ac946
+        %     \item hal/include/nanvix/hal/target/mailbox.h
+        %     \item hal/include/nanvix/hal/target/portal.h
+        %     \item hal/include/nanvix/hal/target/sync.h
+        %     \item hal/include/nanvix/hal/processor/clusters.h
+        %     \item hal/include/nanvix/hal/processor/noc.h
+        %     \item hal/include/arch/target/kalray/mppa256/mailbox.h
+        %     \item hal/include/arch/target/kalray/mppa256/portal.h
+        %     \item hal/include/arch/target/kalray/mppa256/sync.h
+        %     \item hal/include/arch/processor/bostan/clusters.h
+        %     \item hal/include/arch/processor/bostan/noc.h
+        %     \item hal/include/arch/processor/bostan/noc/tag.h
+        %     \item hal/include/arch/processor/bostan/noc/ctag.h
+        %     \item hal/include/arch/processor/bostan/noc/dtag.h
+        %     \item hal/include/arch/processor/bostan/noc/dma.h
+        %     \item hal/src/hal/arch/target/mppa256/mailbox.c
+        %     \item hal/src/hal/arch/target/mppa256/portal.c
+        %     \item hal/src/hal/arch/target/mppa256/sync.c
+        %     \item hal/src/hal/arch/processor/bostan/clusters.c
+        %     \item hal/src/hal/arch/processor/bostan/noc.c
+        %     \item hal/src/hal/arch/processor/bostan/ctag.c
+        %     \item hal/src/hal/arch/processor/bostan/dtag.c
+        %     \item hal/src/hal/arch/processor/bostan/dma.c
+        %     \item hal/src/test/target/mailbox.c
+        %     \item hal/src/test/target/portal.c
+        %     \item hal/src/test/target/sync.c
+        %     \item hal/src/test/processor/clusters.c
+        %     \item hal/src/test/processor/cnoc.c
+        %     \item hal/src/test/processor/dnoc.c
+        %     \item hal/src/test/processor/noc.c
+        % \end{itemize}
+        \begin{figure}[!h]
+            \begin{forest}
+            for tree={
+                grow'=0,
+                parent anchor=children,
+                child anchor=parent,
+                anchor=parent,
+            },
+            where level=0{
+                draw
+            }{
+                if={(n()==1)&&(level()>1)}{
+                calign with current edge
+                }{},
+                if n children=0{folder}{},
+                edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+            }
+            [hal
+                [include
+                    [nanvix/hal
+                            [processor
+                                [clusters.h]
+                                [noc.h]
+                            ]
+                            [target
+                                [mailbox.h]
+                                [portal.h]
+                                [sync.h]
+                            ]
+                    ]
+                    [hal/arch
+                        [processor/bostan
+                            [clusters.h]
+                            [noc.h]
+                            [noc
+                                [tag.h]
+                                [ctag.h]
+                                [dtag.h]
+                                [dma.h]
+                            ]
+                        ]
+                        [target/kalray/mppa256
+                            [mailbox.h]
+                            [portal.h]
+                            [sync.h]
+                        ]
+                    ]
+                ]
+                [src
+                    [hal
+                        [arch
+                            [processor/bostan
+                                [clusters.c]
+                                [noc.c]
+                                [ctag.c]
+                                [dtag.c]
+                                [dma.c]
+                            ]
+                            [target/mppa256
+                                [mailbox.c]
+                                [portal.c]
+                                [sync.c]
+                            ]
+                        ]
+                    ]
+                    [test
+                        [processor
+                            [clusters.c]
+                            [cnoc.c]
+                            [dnoc.c]
+                            [noc.c]
+                        ]
+                        [target
+                            [mailbox.c]
+                            [portal.c]
+                            [sync.c]
+                        ]
+                    ]
+                ]
+            ]
+            \end{forest}
+            \caption{Source tree.}
+        \end{figure}
+
+    % The links to access each of the repositories are:
+
+    % \begin{description}
+    %     \item[Microkernel-Benchmarks] \url{https://github.com/joaovicentesouto/microkernel-benchmarks/tree/collective-comm-routines}
+    %     \item[LibNanvix] \url{https://github.com/nanvix/libnanvix}
+    %     \item[Microkernel] \url{https://github.com/nanvix/microkernel}
+    %     \item[HAL] \url{https://github.com/nanvix/hal}
+    % \end{description}
+
+\section{Exemplo de executação dos testes de regressão}
 \label{sec:code-example}
 
-O Código X exemplifica o download do código fonte da LibNanvix, sua compilação para a plataforma \mppa, e
-a executação dos testes de regressão.
+O Código X exemplifica o download do código fonte da LibNanvix, sua compilação para a plataforma MPPA, e a executação dos testes de regressão.
 
 % \begin{description}
     
