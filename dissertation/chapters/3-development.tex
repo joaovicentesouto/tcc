@@ -26,14 +26,14 @@
 		transfers from large ones, \ie \mailbox and \portal.
 		Note that it would be possible to use a \noc for each abstraction if the hardware supported it.
 		We did not do this in \mppa because \cnoc only provides the transfer of 64-bit values.
-		
+
 		This section is organized as follows.
 		\autoref{sec.mppa-hardware-resources} clarifies the use of \mppa hardware resources.
 		\autoref{sec.general-concepts} covers commonalities between all abstractions.
 		\autoref{sec.sync-abs},
 		\autoref{sec.mailbox-abs}, and
 		\autoref{sec.portal-abs}
-		conceptually present each of the abstractions, encompassed problems, and 
+		conceptually present each of the abstractions, encompassed problems, and
 		implementation details.
 
 		\subsection{\mppa Hardware Resources}
@@ -67,30 +67,30 @@
 			concerned with ensuring atomic operations.
 
 			The \dma coordinates three interruption lines. Two of these are used by
-			\dnoc to notify the data receipt and completion of data sending by a
-			$\mu$thread. \cnoc only uses one line for receiving signals because
+			\dnoc to notify the data receipt and completion of an asynchronous data
+			sending. \cnoc only uses one line for receiving signals because
 			sending a signal (64-bit value) is explicitly performed by the core.
 			For each interrupt line, there is a specific handler, but they all
 			execute a similar algorithm. \autoref{alg.noc-handler} outlines
 			the behavior of the \noc handler. Because the line only notifies what
-			type of interrupt, it is the responsibility of the handler to search
+			type of interruption, it is responsibility of the handler to search
 			the resources of each interface looking for who triggered the interrupt.
 			The handlers are re-entrant to avoid loss of interrupts. Due to the
 			asymmetric microkernel design, concurrency issues are softened because only
 			the master handles interrupts.
 
-			\begin{algorithm}[!tb]
+			\begin{algorithm}[!b]
 				\caption{Simplified NoC handler algorithm.}%
 				\label{alg.noc-handler}%
 				\begin{algorithmic}[1]
-					\Require $status[M_{Interfaces}][N_{Resources}]$, interrupt status of a resource.
-					\Require $handlers[M_{Interfaces}][N_{Resources}]$, interrupt handler of a resource.
+					\Require $flags[M_{Interfaces}][N_{Resources}]$, Interruption flags of a resource.
+					\Require $handlers[M_{Interfaces}][N_{Resources}]$, Interruption handler of a resource.
 					\Procedure{noc\_handler}{}
 					\For {$i \in [1, M_{Interfaces}]$}
 						\For {$j \in [1, N_{Resources}]$}
-							\If {$status[i][j] == Interrupt Triggered$}
-								\State {$\Call{clean\_status}{i, j}$}
-								\State {$\Call{handlers[i][j]}{i, j}$}
+							\If {$flags[i][j] == Interrupt\_Triggered$}
+								\State {$\Call{clean\_flags}{i, j}$}   \Comment{Releases to receive new interrupts.}
+								\State {$handlers[i][j](i, j)$}         \Comment{Runs the associated handler.}
 							\EndIf
 						\EndFor
 					\EndFor
@@ -110,7 +110,7 @@
 			the clusters. Within each group, we have a set of physical identifiers
 			(second column) that are mapped 1 to 1 to logical identifiers (third column).
 			For example, the \iocluster 0 constitutes 4 \noc interfaces, where they are
-			mapped as follows: $128 \to 0$, $129 \to 1$, $130 \to 2$, and $131 \to 4$.
+			mapped as follows: $128 \to 0$, $129 \to 1$, $130 \to 2$, and $131 \to 3$.
 			This mapping is a more natural form to identify the \noc nodes of
 			different architectures.
 
@@ -147,18 +147,6 @@
 			noting that even without using all existing slots, improving
 			programmability by not having to specify communication features is a
 			strength of abstraction design.
-
-			% To perform the communication between two clusters, it is necessary that the
-			% sender knows which resource the receiver will use.
-			% For this reason, the receive slot range of \cnoc and \dnoc are partitioned
-			% by abstraction, as can be seen in \autoref{tab.noc-resources}.
-			% Within a partition, each slot is associated with a cluster's logical ID.
-			% 	\todo{"On the another hand" does not make sense AGAIN.}
-			% On the other hand, the transmitters use sending channels that need to
-			% be reserved during the entire operation.
-			% 	\todo{Explain the table.}
-			% Thus, \autoref{tab.noc-resources} also shows the partition of the
-			% sending channels for each abstraction.
 
 			\begin{table}[!tb]
 				\centering%
@@ -222,7 +210,7 @@
 			send. This algorithm ensures that the master is always doing useful
 			operations and never crashes the entire system.
 
-			\begin{algorithm}[!tb]
+			\begin{algorithm}[!b]
 				\caption{Simplified lazy transfer algorithm.}%
 				\label{alg:lazy-transfer}%
 				\begin{algorithmic}[1]
@@ -233,7 +221,7 @@
 					\Procedure{async\_write}{$id, message, size$}
 						\State {$resources[id].message \gets message$}
 						\State {$resources[id].size \gets size$}
-						\If {$resources[id].has\_permission$} 
+						\If {$resources[id].has\_permission$}
 							\State {$\Call{do\_lazy\_transfer}{id}$}
 						\Else
 							\State {$resources[id].is\_waiting \gets True$}
@@ -242,9 +230,9 @@
 
 				\Algphase{Receives permission.}
 
-					\Procedure{abstraction\_handler}{$id$} 
-						\If {$resources[id].is\_waiting$} 
-							\State {$\Call{do\_lazy\_transfer}{id}$} 
+					\Procedure{abstraction\_handler}{$id$}
+						\If {$resources[id].is\_waiting$}
+							\State {$\Call{do\_lazy\_transfer}{id}$}
 						\Else
 							\State {$resources[id].has\_permission \gets True$}
 						\EndIf
@@ -252,10 +240,10 @@
 
 				\Algphase{Transfers the data.}
 
-					\Procedure{do\_lazy\_transfer}{$id$} 
+					\Procedure{do\_lazy\_transfer}{$id$}
 						\State {$resources[id].is\_waiting \gets False$}
 						\State {$resources[id].has\_permission \gets False$}
-						\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$} 
+						\State {$\Call{transfer\_data}{resources[id].message, resources[id].size}$}
 						\State {$\Call{unlock}{resources[id].lock}$}                                \Comment{Releases slave core.}
 					\EndProcedure%
 
@@ -273,34 +261,6 @@
 			distinguish the role by the resource identifier. Discriminating the
 			nature of operations helps both the user, being entirely intuitive,
 			and implementing \hal by explaining what features will be needed.
-
-			% Por fim, como já comentado anteriormente, o Nanvix HAL não realiza nenhum tipo de multiplexação dos recursos físicos do hardware.
-			% A quantidade de recursos de comunicação disponíveis é diretamente relativa a quantidade de recursos físico para realizar uma dada operação.
-			% A tabela 4 mostra quais recursos físicos são necessário para cada abstração e a quantidade total de abstrações simultaneas que podem existir.
-			% Por exemplo, a criação de um portal precisa de um slot de recebimento da DNoC e 1 canal de transmissão da CNoC.
-			% As quantidades são baixas devido aos poucos canais de transmissão, porém quem deve se preocupar com a multiplexação dos recursos deve ser da camada superior.
-
-			% \begin{table}[!tb]
-			% 	\centering%
-			% 	\caption{Physical requirements by abstraction.}%
-			% 	\label{tab.abstractions-amount}%
-
-			% 	\begin{tabular}{l|l|l|l|l|l|l|}
-			% 		\cline{2-7}
-			% 												& \multicolumn{3}{c|}{\textbf{Create}}  & \multicolumn{3}{c|}{\textbf{Open}}                              \\ \cline{2-7}
-			% 												& \multicolumn{1}{|c|}{\textbf{RX}}
-			% 												            & \multicolumn{1}{|c|}{\textbf{TX}}
-			% 															            & \multicolumn{1}{|c|}{\textbf{Available}}
-			% 																		                & \multicolumn{1}{|c|}{\textbf{RX}}
-			% 																				                    & \multicolumn{1}{|c|}{\textbf{TX}}
-			% 																				        			            & \multicolumn{1}{|c|}{\textbf{Available}} \\ \hline
-			% 		\multicolumn{1}{|l|}{\textbf{\mailbox}} & 1 (\dnoc) & 1 (\cnoc) & 1             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
-			% 		\multicolumn{1}{|l|}{\textbf{\portal}}  & 1 (\dnoc) & 1 (\cnoc) & 2             & 1 (\cnoc) & 1 (\dnoc) & 4                                        \\ \hline
-			% 		\multicolumn{1}{|l|}{\textbf{\sync}}    & 1 (\cnoc) & 0         & 24            & 0         & 1 (\cnoc) & 1                                        \\ \hline
-			% 	\end{tabular}
-
-			% 	\fonte{Developed by the author.}%
-			% \end{table}
 
 		\subsection{Sync Abstraction}
 		\label{sec.sync-abs}
@@ -321,7 +281,7 @@
 			block. Receiver nodes are responsible for waiting for all notifications
 			to arrive.
 
-			\begin{figure}[!tb]
+			\begin{figure}[!b]
 				\centering%
 				\caption{Synchronization abstraction example.}%
 				\label{fig:sync-concepts}%
@@ -341,10 +301,8 @@
 
 			\subsubsection{Receiver-side Implementation}
 
-% O que é a interface?
-% Quais são os parâmetros para realizar uma operação?
 				\autoref{code:hal-sync-receiver} introduces the \sync interface for
-				receiver nodes proposed for the \nanvixhal. The parameters required
+				receiver nodes proposed for the \textit{Nanvix HAL}. The parameters required
 				for creating a synchronization point are a list of logical IDs, list size,
 				and mode of synchronization. The list must always be initialized
 				with the master node ID, regardless of the mode. The remaining identifiers,
@@ -355,7 +313,6 @@
 				negative value is returned indicating the error, \eg nodes pointer
 				equal to \texttt{NULL}.
 
-% Quais recursos são necessário para cada tipo de operação, envio e recebimento?
 				Receipt of notifications requires booking one \cnoc receiving slot
 				related to the Master ID. This relation eliminates the conflict of
 				using the same slot across different synchronization settings.
@@ -368,7 +325,6 @@
 				\dma performs an \textit{OR-bitwise} with the previous value. When
 				all bits are set to 1, \dma clears the register and triggers an interrupt.
 
-% Como as operações funcionam?
 				A vector of internal structures controls the operations. Each structure
 				is reserved for a physical slot and holds control flags, the initial mask,
 				and a spinlock. \hal checks for discrepancies in IDs, control flags, or
@@ -380,11 +336,7 @@
 				coherence does not affect spinlocks because instructions that guarantee
 				the atomicity are used to implement the lock.
 
-% Como foi resolvido o problema de multiplos nós nos IOs? PRECISA FALAR? DARIA PRA ARRUMAR ISSO NO CÓDIGO FORÇANDO QUE O ID[1] FOSSE O ID LOCAL (CASO NAO FOR O MESTRE).
-				% A lista de nós foi projetada para utilizar os IDs das interfaces NoCs
-				% ao invés dos IDs dos Cluster para não desperdiçar as DMAs extras existentes nos Cluster I/O.
-
-\begin{listing}[!tb]
+\begin{listing}[!b]
 \caption{Nanvix HAL: Sync interface for receiver node.}
 \label{code:hal-sync-receiver}
 \begin{minted}{c}
@@ -405,8 +357,6 @@ int sync_wait(int syncid);
 
 			\subsubsection{Sender-side Implementation}
 
-% O que é a interface?
-% Quais são os parâmetros para realizar uma operação?
 				The \sync interface for sender nodes, presented in
 				\autoref{code:hal-sync-sender}, uses the same create parameters for
 				opening a \sync point. The standardization of parameters simplifies
@@ -418,8 +368,6 @@ int sync_wait(int syncid);
 				sender. The rest of the implementation follows what was already
 				explained in the previous section.
 
-% Quais recursos são necessário para cada tipo de operação, envio e recebimento?
-% Como as operações funcionam?
 				Unlike the receiver, the sender needs one \cnoc transfer channel to
 				open a \sync point. Due to the separation of channels described in
 				the \autoref{tab.noc-resources}, a node can only open one \sync at
@@ -431,7 +379,7 @@ int sync_wait(int syncid);
 				performing the notification, a signal will be sent to each target
 				of this list.
 
-\begin{listing}[!tb]
+\begin{listing}[!bh]
 \caption{Nanvix HAL: Sync interface for sender node.}
 \label{code:hal-sync-sender}
 \begin{minted}{c}
@@ -452,18 +400,6 @@ int sync_signal(int syncid);
 
 		\subsection{Mailbox Abstraction}
 		\label{sec.mailbox-abs}
-
-
-			% The \textit{Mailbox Abstraction} allows clusters to exchange fixed-size
-			% messages with each other.
-			% The message was thought to be a relatively small size, usually a few hundred bytes.
-			% Similarly, the operation of the \mailbox follows \posix message queue behavior.
-			% For example, the message can be used to encode small operations and system
-			% control signals.
-			% As illustrated in \autoref{fig:mailbox}, the operation cardinality is N:1,
-			% where N senders can transfer one message at a time to a receiver queue.
-			% When the receiver consumes a message, it notifies the sender to ensure
-			% control of the flow.
 
 			\textit{Message Queue Abstraction}, called \mailbox, allows clusters to exchange
 			fixed-length messages with each other. The message size is designed to be
@@ -499,7 +435,7 @@ int sync_signal(int syncid);
 			of the receiver. For this reason,  when the receiver consumes a message,
 			it copies the message to the user buffer, releases the queue space, and
 			notifies the sender.
-			
+
 			In theory, the number of messages allowed per sender can be from
 			$1$ to $N$. However, \nanvixhal statically allocates sufficient
 			memory for the message queue inside the kernel. Therefore, we chose
@@ -507,10 +443,9 @@ int sync_signal(int syncid);
 			lightweight manycores. Furthermore, using one message is sufficient	for
 			servers to handle requests at the \nanvixmultikernel level. For instance, the
 			message can be used to encode small operations and system control signals.
-			
+
 			\subsubsection{Receiver-side Implementation}
 
-% % Interface e seus parâmetros
 					\autoref{code:hal-mailbox-receiver} presents the Mailbox interface for
 					receiver nodes. Since the \iocluster has multiple nodes, it is necessary
 					to inform the local node ID on the creation of the \mailbox (\texttt{mailbox\_create}). The other
@@ -521,8 +456,7 @@ int sync_signal(int syncid);
 					the slave that performs the \texttt{mailbox\_wait} function. In the release protocol, the
 					master core flushes the message to the SRAM so that the slave, when
 					invalidating its cache, can read the message.
-					
-% % Recursos de hardware
+
 					\mailbox is more complicated than \sync, in terms of hardware resources.
 					Specifically, the receiver requires one \dnoc receiving slot and one \cnoc
 					transfer channel. The need for one transfer channel for the lifetime
@@ -535,8 +469,7 @@ int sync_signal(int syncid);
 					the useful message, and a footer for handler control. The transfer channel,
 					in turn, is used after copying the useful message to the user buffer,
 					notifying the header ID.
-					
-% % Desafios da implementação
+
 					Parallelism in receiving messages introduced some challenges in the
 					asynchronous reading of Mailbox because: (i) each message generates an
 					interrupt, (ii) interrupts suspended by new incoming messages may
@@ -575,7 +508,6 @@ int mailbox_wait(int mbxid);
 
 			\subsubsection{Sender-side Implementation}
 
-% Interface e seus parâmetros
 				\autoref{code:hal-mailbox-sender} displays the Mailbox interface for
 				sender nodes. Opening a mailbox requires the application to inform
 				the receiver ID to allocate related resources. The \texttt{mailbox\_awrite} function,
@@ -584,12 +516,6 @@ int mailbox_wait(int mbxid);
 				The \texttt{mailbox\_wait} function is the same function used by the receiver node where
 				the slave core waits blocked until receiving the transfer permission.
 
-				% If the sender attempts to send a message before the receiver has consumed
-				% the previous message, the sender will be blocked waiting for the sender's notification.
-				% In this way, flow control is guaranteed, and the sender will not overwrite
-				% messages unread by the receiver.
-
-% Recursos de hardware
 				The sender implementation also requires the allocation of resources
 				from both \nocs. However, the resources are opposite to the receiver,
 				where it allocates one \cnoc receiving slot and one \dnoc transfer channel.
@@ -620,7 +546,6 @@ int mailbox_wait(int mbxid);
 		\subsection{Portal Abstraction}
 		\label{sec.portal-abs}
 
-% Apresentação do portal e o conceito.
 			Finally, \textit{Portal Abstraction} allows two nodes to exchange arbitrary
 			amounts of data. \autoref{fig:portal-concept} presents the conceptual idea
 			of the \portal, which resembles that of \posix Pipes with flow control.
@@ -630,7 +555,24 @@ int mailbox_wait(int mbxid);
 			the receiver to communicate with other nodes through the same channel.
 			The sender, in turn, can only communicate with one node.
 
-% Fluxo da operação
+			\begin{figure}[!h]
+				\centering%
+				\caption{Portal abstraction concept.}%
+				\label{fig:portal}%
+
+				\subcaptionminipage[fig:portal-concept]%
+					{.3\linewidth}%
+					{Conceptual Overview.}%
+					{\includegraphics[width=\linewidth]{portal-concept.pdf}}%
+				\hspace{1cm}%
+				\subcaptionminipage[fig:portal-flow]%
+					{.5\linewidth}%
+					{Receiver creates a portal and notifies Sender to transfer the data.}%
+					{\includegraphics[width=\linewidth]{portal-flow.pdf}}%
+
+				\fonte{Developed by the author.}%
+			\end{figure}
+
 			\autoref{fig:portal-flow} outlines the flow control of the \portal.
 			When attempting to transmit data to the receiver, the sender will block
 			until the receiver can accept it. By enabling one data exchange at a time,
@@ -640,27 +582,8 @@ int mailbox_wait(int mbxid);
 			previous data. Allowing communication empowers the receiver to choose which
 			communications to prioritize.
 
-			\begin{figure}[!tb]
-				\centering%
-				\caption{Portal abstraction concept.}%
-				\label{fig:portal}%
-
-				\subcaptionminipage[fig:portal-concept]%
-					{.32\linewidth}%
-					{Conceptual Overview.}%
-					{\includegraphics[width=\linewidth]{portal-concept.pdf}}%
-				\hspace{1cm}%
-				\subcaptionminipage[fig:portal-flow]%
-					{.55\linewidth}%
-					{Node 1 creates a portal and notifies node 2 to transfer the data.}%
-					{\includegraphics[width=\linewidth]{portal-flow.pdf}}%
-
-				\fonte{Developed by the author.}%
-			\end{figure}
-
 			\subsubsection{Receiver-side Implementation}
 
-% Interface e seus parâmetros
 				\autoref{code:hal-portal-receiver} presents the Portal interface for
 				receiver nodes. Like the \mailbox, the application must identify the
 				local node to create a \portal. The receiver must always perform
@@ -672,7 +595,6 @@ int mailbox_wait(int mbxid);
 				node will block in the \texttt{portal\_wait} function until receiving the informed
 				data size.
 
-% Recursos de hardware
 				A receiver allocates one \dnoc receiving slot and one \cnoc transfer
 				channel. Unlike \mailbox, the \portal has two transfer channels
 				available, which allows the creation of two simultaneous portals.
@@ -684,7 +606,7 @@ int mailbox_wait(int mbxid);
 				control structures have also been simplified, containing only
 				control flags and the spinlock for asynchronous operations.
 
-\begin{listing}[!tb]
+\begin{listing}[!b]
 \caption{Nanvix HAL: Portal interface for receiver node.}
 \label{code:hal-portal-receiver}
 \begin{minted}{c}
@@ -708,7 +630,6 @@ int portal_wait(int portalid);
 
 			\subsubsection{Sender-side Implementation}
 
-% Interface e seus parâmetros
 				\autoref{code:hal-portal-sender} presents the Portal interface for
 				sender nodes. When opening a \portal, the application is required to
 				inform the local node ID and the receiver node ID. The local ID serves
@@ -718,7 +639,6 @@ int portal_wait(int portalid);
 				be lost even if the permission arrives before the sender sets up the
 				transfer. The transfer configuration follows the lazy transfer algorithm.
 
-% Recursos de hardware
 				The hardware resources required to open a portal are the opposite of
 				resources to create. Specifically, one \cnoc receiving slot and one
 				\dnoc transfer channel are required. The transfer channel is reserved
@@ -728,7 +648,7 @@ int portal_wait(int portalid);
 				parameters needed to perform the lazy transfer and a spinlock to
 				asynchronous operations.
 
-\begin{listing}[!tb]
+\begin{listing}[!bh]
 \caption{Nanvix HAL: Portal interface for sender node.}
 \label{code:hal-portal-sender}
 \begin{minted}{c}
@@ -763,7 +683,7 @@ int portal_wait(int portalid);
 		Specifically, these services perform the multiplexing of the hardware
 		resources and the verification of the parameters that will be passed
 		on the communication primitives.
-		Due to the Master-Slave model, the master core is responsible of protecting,
+		Due to the Master-Slave model, the master core is responsible for protecting,
 		manipulating, and configuring \hal resources.
 		The slave core will request operations through the kernel call interface,
 		passing the necessary information to the master.
@@ -778,7 +698,7 @@ int portal_wait(int portalid);
 		These services must take into account the memory constraints and the
 		Master-Slave model chosen for the \nanvixmicrokernel.
 
-		The impacts of the Master-Slave model, protection, management and manipulation 
+		The impacts of the Master-Slave model, protection, management and manipulation
 		operations are similar to all services.
 		They will be provided through interfaces that function as wrappers
 		for the \hal abstraction functions.
@@ -786,19 +706,19 @@ int portal_wait(int portalid);
 		between low-level identifiers, associated with \hal resources,
 		and high-level identifiers, associated with resource protection structures.
 
-		The following sections provide an overview of these topics punctuating 
+		The following sections provide an overview of these topics punctuating
 		the differences of each service.
 
 		\subsection{Impacts of the Master-Slave Model}
 
-			Master-Slave model defines that the master core must exclusively manipulate
+			Master-Slave \os model defines that the master core must exclusively manipulate
 			the internal structures of the \os. For this end, each service has generic and
 			simple structures that hold control flags, parameters for resource
 			identification, and storage of physical descriptors returned by \hal. Thus,
 			the kernel call interface separates the functions of the services into two
 			sets of functions. The first set contains the kernel calls that request a particular
 			operation. The second set contains functions that operate on the internal structures
-			and communicate with the \hal level. The master executes almost exclusive
+			and communicate with the \hal level. The master executes almost exclusively
 			the second set, except for the wait functions, which the slave performs entirely.
 
 			The kernel call set follows the \texttt{kernel\_\textit{abstraction}\_\textit{operation}}
@@ -807,29 +727,30 @@ int portal_wait(int portalid);
 			checks on the slave side. The internal set of functions follows the
 			\texttt{k\textit{abstraction}\_\textit{operation}} notation. Internally, it
 			is used by the kernel call engine to perform protection, handling, and
-			multiplexing services. 
+			multiplexing services.
 
 			The requirement of the slave to perform wait functions is because the master
 			cannot block indefinitely waiting for an operation. At this point, the slave
 			must access the internal structure of the \os to query the physical descriptor
-			for access to the \hal spinlock. So, the master updates local memory whenever
-			a modification is made, and the slave invalidates its cache to ensure structure
-			coherence.
+			for access to the \hal spinlock. The spinlock is used to wait for an asynchronous
+			operation to complete. So, the master updates local memory whenever a modification
+			is made, and the slave invalidates its cache to ensure structure coherence.
 
 		\subsection{Protection and Management}
 
-			Protection and management operations involve two phases, the slave and the master phase.
-			In the slave phase, all problems that could be detected before requesting the operation
-			to the master are checked.
-			Examples of theses verifications are:
+			Protection and management operations involve two phases, the slave
+			and the master phase. The slave phase performs several checks to
+			identify all possible problems with the arguments before wasting
+			master time with an invalid operation. Examples of theses
+			verifications are:
 			(i) valid file descriptors,
 			(ii) non-null buffer pointers,
 			(iii) buffer sizes within the stipulated limit, and
-			(iv) the semantics of services, e.g., synchronization with itself.
+			(iv) the semantics of the arguments, e.g., synchronization with itself.
 
-			The master phase performs the same checks as the slave and has the
-			responsibility to check the semantics of operations on a given resource.
-			Specifically, the master:
+			The master phase performs more robust checks than those performed
+			by the slave phase, where it is possible to verify the semantics
+			of operations on a given resource. Specifically, the master:
 			(i) identifies multiple creations/openings
 			(ii) checks for conflicting operations, e.g., writing to read-only resources,
 			(iii) measures communication time and total number of bytes transmitted/received, and
@@ -863,11 +784,16 @@ int portal_wait(int portalid);
 
 		\subsection{Validation and Correctness Tests}
 
-			Validation and correctness testing of the implementation of services was
-			performed through two sets of unit tests, \textit{API} and \textit{FAULT}
-			tests, respectively. On the one hand, \textit{API} tests create, open, and
-			stimulate services with arguments within valid value ranges. On the other
-			hand, \textit{FAULT} tests use arguments outside the domain range of the
-			operations. The failure should generate a previously known error value.
-			The tests validate any changes made by verifying all expected behaviors
-			of each service.
+			Extra effort has been made to ensure that deployment across the
+			multiple supported architectures exhibits the same expected behavior.
+			To this end, two sets of tests ensure the validation and correctness
+			of the implementation, named \textit{API} and \textit{FAULT} tests.
+			On the one hand, \textit{API} tests create, open, and stimulate
+			services with arguments within valid value ranges and the correct
+			semantics of the operations. On the other hand, \textit{FAULT} tests
+			use arguments outside the domain of functions and incorrect semantics
+			of operations. The failure of an operation also should generate a
+			previously known error value. These sets of tests sought to cover the
+			most common and predictable errors that occur when using communication
+			services. However, a robust coverage test should be performed to ensure
+			that the tests verify all possible errors.

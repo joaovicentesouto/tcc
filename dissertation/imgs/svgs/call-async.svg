@@ -31,7 +31,7 @@
          inkscape:connector-curvature="0"
          id="path1071"
          d="M 5.77,0 -2.88,5 V -5 Z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:evenodd;stroke:#cccccc;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="scale(-0.4)" />
     </marker>
     <marker
@@ -310,11 +310,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35355339"
-     inkscape:cx="513.58876"
-     inkscape:cy="74.981287"
+     inkscape:zoom="1"
+     inkscape:cx="603.42917"
+     inkscape:cy="100.65412"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g5475"
      showgrid="false"
      width="210mm"
      inkscape:window-width="1280"
@@ -336,7 +336,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -348,6 +348,11 @@
     <g
        id="g5475"
        transform="translate(53.468939,-29.014527)">
+      <path
+         style="opacity:1;fill:#cccccc;stroke:#cccccc;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 1;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1073);fill-opacity:1"
+         d="m 130.76181,281.87641 v 22.82482"
+         id="path150"
+         inkscape:connector-curvature="0" />
       <path
          style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2.00000006, 1.00000003;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker2438)"
          d="m 14.795166,278.70139 v 22.82482"
@@ -514,11 +519,22 @@
          d="m 130.72495,300.51462 v 8.2319"
          style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          sodipodi:nodetypes="cc" />
-      <path
-         style="opacity:0.2;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 1;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1073)"
-         d="m 130.76181,281.87641 v 22.82482"
-         id="path150"
-         inkscape:connector-curvature="0" />
+      <g
+         transform="translate(6.206106,-58.232707)"
+         id="g1021"
+         style="fill:#cccccc;fill-opacity:1">
+        <text
+           id="text1015"
+           y="351.74442"
+           x="155.02769"
+           style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           xml:space="preserve"><tspan
+             id="tspan1013"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.3499999px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#cccccc;fill-opacity:1;stroke-width:0.26458332"
+             y="351.74442"
+             x="155.02769"
+             sodipodi:role="line">Notify completion</tspan></text>
+      </g>
     </g>
   </g>
 </svg>

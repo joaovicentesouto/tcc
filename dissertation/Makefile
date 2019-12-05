@@ -17,7 +17,7 @@ others=$(wildcard imgs/others/*.pdf) $(wildcard imgs/others/*.jpg) $(wildcard im
 all: imgs main.robust.pdf
 
 imgs: $(pdfs)
-	mv $(pdfs) imgs
+	cp $(pdfs) imgs
 	cp $(others) imgs
 
 .PHONY: all imgs clean

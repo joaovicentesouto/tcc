@@ -3,6 +3,7 @@
 % Outros \usepackage{}
 \usepackage{todonotes}
 \usepackage{algpseudocode}
+\usepackage[edges]{forest}
 
 % Níveis abaixo de \subsection não são listados no Contents
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
@@ -53,7 +54,7 @@
 
 \textual%
 \glsresetall
-\input{chapters/0-intro.tex}
+\input{chapters/0-introduction.tex}
 \input{chapters/1-background.tex}
 \input{chapters/2-related-work.tex}
 \input{chapters/3-development.tex}
@@ -61,8 +62,9 @@
 \input{chapters/5-conclusions.tex}
 
 \postextual%
-\input{pos-textual/epilog.tex}
 
 \bibliography{references}
+
+\input{pos-textual/epilog.tex}
 
 \end{document}

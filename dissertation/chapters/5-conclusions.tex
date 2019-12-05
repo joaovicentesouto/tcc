@@ -2,44 +2,44 @@
 \label{ch.conclusions}
 
 	Initially, this work presented a historical evolution of processors from single core
-    to manycore. By demonstrating the relationship between the growth of the
-    number of cores and energy consumption, it was discussed how academia and
-    industry began to develop alternatives to alleviate the technological barriers
-    that have emerged. However, even new processors that emerge and stand out
-    because of their performance and power consumption lack on programmability
-    and portability, because of their architectural features, such as hybrid
-    programming model, constrained memory subsystems, no cache coherency, and
-    heterogeneous configurations. Part of the difficulty stems from the
-    incompleteness of existing \oss and runtimes in dealing with severe
-    architectural constraints.
+	to manycore. By demonstrating the relationship between the growth of the
+	number of cores and energy consumption, it was discussed how academia and
+	industry began to develop alternatives to alleviate the technological barriers
+	that have emerged. However, even new processors that emerge and stand out
+	because of their performance and power consumption lack on programmability
+	and portability, because of their architectural features, such as hybrid
+	programming model, constrained memory subsystems, no cache coherency, and
+	heterogeneous configurations. Part of the difficulty stems from the
+	incompleteness of existing \oss and runtimes in dealing with severe
+	architectural constraints.
 
 	In this work, we present an inter-cluster communication facility designed
-    around the main points in the development of an \os for
-    \textit{lightweight manycores}. As a basis, we discussed hardware and software
-    aspects of parallel and distributed architectures. Different models of \os
-    approaches have been presented that can use the communication facility.
-    Thus, to provide the essential functionalities for such \oss, three
-    communication abstractions have been proposed for the \nanvixhal with the concern of
-    providing \qos: \sync, useful to create distributed
-    barriers; \mailbox, which provides the exchange of small messages
-    with flow control; and \portal, which allows the exchange
-    of arbitrary amounts of data between two clusters.
+	around the main points in the development of an \os for
+	\textit{lightweight manycores}. As a basis, we discussed hardware and software
+	aspects of parallel and distributed architectures. Different models of
+	\os approaches that can use the communication facility have been presented.
+	Thus, to provide the essential functionalities for such \oss, three
+	communication abstractions have been proposed for the \nanvixhal with the concern of
+	providing \qos: \sync, useful to create distributed
+	barriers; \mailbox, which provides the exchange of small messages
+	with flow control; and \portal, which allows the exchange
+	of arbitrary amounts of data between two clusters.
 
 	Another contribution of this work was the communication services for an \os
-    based on the microkernel approach (\textit{Nanvix}). These services can multiplex
-    the resources exposed by \hal and perform the verification of the parameters for
-    each abstraction. In general, these services securely export the communication
-    abstractions to the user, benefiting from the non-competition of \os internal
-    structures, because of the separation of master and slave responsibilities.
+	based on the microkernel approach (\textit{Nanvix}). These services can multiplex
+	the resources exposed by \hal and perform the verification of the parameters for
+	each abstraction. In general, these services securely export the communication
+	abstractions to the user, benefiting from the non-competition of \os internal
+	structures, because of the separation of master and slave responsibilities.
 
 	The contributions of this dissertation are included in the investment of a
-    distributed operating system. Several works are underway in this context,
-    including a full port of the \mpi and implementation of a distributed paging
-    system that will rely on the proposed abstractions. As future work at the \hal level, we will
-    seek to properly utilize existing \dma $\mu$threads to perform asynchronous
-    submissions and, consequently, to increase the performance of the abstractions. At
-    the microkernel level, we will study the virtualization of the structures of
-    each service, and improve multiplexing algorithms, enriching the
-    programmability of applications. The results present how well-known
-    distributed algorithms can be efficiently supported by \nanvixos and
-    encourage improvements provided by the proper use of \dma accelerators.
+	distributed operating system. Several works are underway in this context,
+	including a full port of the \mpi and implementation of a distributed paging
+	system that will rely on the proposed abstractions. As future work at the \hal level, we will
+	seek to properly utilize existing \dma $\mu$threads to perform asynchronous
+	submissions and, consequently, to increase the performance of the abstractions. At
+	the microkernel level, we will study the virtualization of the structures of
+	each service, and improve multiplexing algorithms, enriching the
+	programmability of applications. The results present how well-known
+	distributed algorithms can be efficiently supported by \nanvixos and
+	encourage improvements provided by the proper use of \dma accelerators.

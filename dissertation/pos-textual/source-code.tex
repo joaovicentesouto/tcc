@@ -1,0 +1,420 @@
+\chapter{Source Code}
+\label{ch:source-code}
+
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+\setcounter{figure}{0}
+
+\renewcommand{\thelisting}{\thechapter-\arabic{listing}}
+\setcounter{listing}{0}
+
+\section{Nanvix Project Structure}
+
+	The development of a general-purpose distributed operating system for
+	lightweight manycores processors, called Nanvix OS, includes the source
+	code for this undergraduate dissertation. \nanvixos is the result of an
+	open-source, collaborative project made available on the Github platform.
+	Since it is not semantically interesting to have only part of the source
+	code and it is impossible to insert all OS code into this document, this
+	appendix details where find and test the developed code. The Nanvix
+	Project is detailed in \autoref{sec.nanvix}.
+
+	Specifically, there is a separate \textit{Github} repository for each abstraction
+	layer that is maintained and updated by Nanvix contributors. Submodules,
+	supported by the \textit{git} tool, create an implicit dependency hierarchy
+	between the Nanvix repositories. Thus, each layer that depends on another
+	has guarantees of its operation and is exempt from its implementation.
+	Theses guarantees make the codes better manageable, modular, and better
+	portable. All repositories contain test sets (validation and fault tests)
+	to ensure the correct implementation of exported interfaces on the several
+	supported architectures.
+
+	All repositories follow a branch naming convention, where only two
+	branches are, in fact, essential. First, the master branch contains
+	the most stable version of the system and marks the significant
+	releases of Nanvix versions. Second, the unstable branch contains
+	the most current version, but there may still exist bugs or required
+	parts missing. The other branches are intended to implement new features,
+	improve existing ones, or fix bugs. These other branches are merged
+	into the unstable branch when passing all regression tests.
+
+	The following sub-sections, ordered by dependency, detail the four
+	repositories that contain the source code of this undergraduate dissertation.
+
+	\subsection{Microkernel-Benchmarks Repository}
+
+		The \textit{Microkernel-Benchmarks} implements the micro-benchmarks
+		that stimulate communication services. Specifically, there are four
+		micro-benchmarks for each data transfer service, detailed in
+		\autoref{sec.evaluation-methodology}. In this repository, there
+		are also scripts for compiling and running experiments on the
+		\mppa platform.
+
+		The developed code version are available at
+		\url{https://github.com/joaovicentesouto/microkernel-benchmarks},
+		in the \textit{collective-comm-routines branch} or, specifically,
+		in the \textit{commit aafd9a70f8188105efabd651050bc7cafc39d343}.
+		\autoref{fig:tree.benchs} presents, in the form of a directory
+		tree, all files that are fully, or partially, developed. The
+		\textit{\texttt{include}} folder contains only one file with static
+		experiment settings. The \textit{\texttt{src}} folder is made up of
+		auxiliary files and the micro-benchmarks themselves.
+
+		\begin{figure}[!ht]
+			\centering%
+			\caption{Directory tree with developed source codes in Microkernel-Benchmarks repository.}%
+			\label{fig:tree.benchs}%
+			\begin{forest}
+			for tree={
+				grow'=0,
+				parent anchor=children,
+				child anchor=parent,
+				anchor=parent,
+			},
+			where level=0{
+				draw
+			}{
+				if={(n()==1)&&(level()>1)}{
+				calign with current edge
+				}{},
+				if n children=0{folder}{},
+				edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+			}
+			[microkernel-benchmarks
+				[include
+					[kbench.h]
+				]
+				[src
+					[utils
+						[args.c]
+						[barrier.c]
+						[crt0.c]
+						[node.c]
+						[results.c]
+						[string.c]
+						[times.c]
+					]
+					[mailbox
+						[allgather
+							[main.c]
+						]
+						[broadcast
+							[main.c]
+						]
+						[gather
+							[main.c]
+						]
+						[pingpong
+							[main.c]
+						]
+					]
+					[portal
+						[allgather
+							[main.c]
+						]
+						[broadcast
+							[main.c]
+						]
+						[gather
+							[main.c]
+						]
+						[pingpong
+							[main.c]
+						]
+					]
+				]
+			]
+			\end{forest}%
+			\fonte{Developed by the author.}%
+		\end{figure}
+
+	\subsection{LibNanvix Repository}
+
+		LibNanvix defines and exports user interfaces for Nanvix Microkernel
+		services. Implementations, in turn, have the responsibility of making
+		requests to the master core through the kernel call interface exported
+		by the microkernel repository, detailed in \autoref{sec.microkernel}.
+		Briefly, this repository is the complement of the Microkernel repository.
+
+		\autoref{fig:tree.libnanvix} illustrates, as a directory tree,
+		all files developed of the communication abstraction user
+		interface. First, the files in the \textit{\texttt{include}} folder
+		define the user interfaces. Second, files within the
+		\textit{\texttt{ikc}} folder perform checks to identify potential
+		problems. Finally, the test folder contains the validation
+		and correctness tests of user abstractions. The code version
+		is available in \textit{commit a9dcb35dd8727aefe41d316ac2609c88073e160e}
+		at \url{https://github.com/nanvix/libnanvix}.
+
+		\begin{figure}[!ht]
+			\centering%
+			\caption{Directory tree with developed source codes in LibNanvix repository.}%
+			\label{fig:tree.libnanvix}%
+			\begin{forest}
+			for tree={
+				grow'=0,
+				parent anchor=children,
+				child anchor=parent,
+				anchor=parent,
+			},
+			where level=0{
+				draw
+			}{
+				if={(n()==1)&&(level()>1)}{
+				calign with current edge
+				}{},
+				if n children=0{folder}{},
+				edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+			}
+			[libnanvix
+				[include/nanvix/sys
+					[mailbox.h]
+					[portal.h]
+					[sync.h]
+					[noc.h]
+				]
+				[src
+					[libnanvix/ikc
+						[mailbox.c]
+						[portal.c]
+						[sync.c]
+						[noc.c]
+					]
+					[test
+						[kmailbox.c]
+						[kportal.c]
+						[ksync.c]
+						[knoc.c]
+					]
+				]
+			]
+			\end{forest}%
+			\fonte{Developed by the author.}%
+		\end{figure}
+
+	\subsection{Microkernel Repository}
+
+		Microkernel, in the context of the asymmetric microkernel, covers the
+		responsibilities of the master core. This repository contains all
+		internal microkernel structures, manipulation functions, and
+		master-side kernel calls. In association with LibNanvix, they provide
+		the skeletons of system abstractions within the cluster of a lightweight
+		manycores. For more details, see \autoref{sec.microkernel}.
+
+		\autoref{fig:tree.microkernel} exemplifies the three developed file sets.
+		First, the \textit{\texttt{include}} folder defines static kernel configurations;
+		exports internal call interfaces, i.e., executed by the master; and
+		external calls, i.e., the kernel call system. Second, the files within
+		the \textit{\texttt{noc}} folder integrate the internal structures and proper
+		protection, manipulation, and multiplexing functions. Finally, the
+		\textit{\texttt{sys}} folder contains the implementation of kernel calls.
+		The code version
+		is available in \textit{commit a9826dec62baa3fe47ab3a77b15f3ccfdd84b79a}
+		at \url{https://github.com/nanvix/microkernel}.
+
+		\begin{figure}[!ht]
+			\centering%
+			\caption{Directory tree with developed source codes in Microkernel repository.}%
+			\label{fig:tree.microkernel}%
+			\begin{forest}
+			for tree={
+				grow'=0,
+				parent anchor=children,
+				child anchor=parent,
+				anchor=parent,
+			},
+			where level=0{
+				draw
+			}{
+				if={(n()==1)&&(level()>1)}{
+				calign with current edge
+				}{},
+				if n children=0{folder}{},
+				edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+			}
+			[microkernel
+				[include/nanvix
+					[syscall.h]
+					[mailbox.h]
+					[portal.h]
+					[sync.h]
+				]
+				[src/kernel
+					[noc
+						[mailbox.c]
+						[portal.c]
+						[sync.c]
+					]
+					[sys
+						[syscall.c]
+						[mailbox.c]
+						[portal.c]
+						[sync.c]
+						[noc.c]
+					]
+				]
+			]
+			\end{forest}%
+			\fonte{Developed by the author.}%
+		\end{figure}
+
+	\subsection{Hardware Abstraction Layer (HAL) Repository}
+
+		\hal defines and exports the lowest-level abstraction interfaces, detailed
+		in \autoref{sec.hal}. This repository deals directly with multiple supported
+		architectures, currently including \mppa, \optimsoc, and \hero.
+		An implementation on a \unix \os has also been developed to allow easy
+		debugging of the developed systems.
+
+		\autoref{fig:tree.hal} illustrates the logical structure designed to
+		facilitate \hal portability. In this framework, there are levels that
+		abstract the hardware layers from the essential element (\textit{core})
+		to the level that abstracts the architecture as a whole (\textit{target}).
+		Expressly, this work was restricted to \textit{processor} and
+		\textit{target} levels. The file hierarchy follows what is described in
+		the previous sub-sections, dividing the files into interfaces and
+		implementations. The code version is available in
+		\textit{commit 1e7d3bc64decff023ac91cdecc2e0ac6c53ac946} at
+		\url{https://github.com/nanvix/hal}.
+
+		The interfaces are included in the include folder. However, there is a
+		distinction between exported interfaces and architecture-specific
+		interfaces. The \textit{\texttt{nanvix/hal}} folder covers interfaces exported
+		to other repositories, as well as static checking of specific interfaces.
+		The \textit{\texttt{hal/arch}} folder actually exports what architecture has
+		hardware capabilities. If it does not implement a hardware limitation
+		feature, a default implementation will be used. For each hardware
+		interface defined in the \textit{\texttt{hal/arch}}, there is a corresponding
+		source file (\textit{\texttt{src}} folder). Specific implementations of \mppa
+		architecture, for example, contain implementations of low-level
+		communications, including handling and manipulation of different
+		existing \nocs. Finally, the test folder constitutes the integration
+		tests that validate the various implementations.
+
+		\begin{figure}[!ht]
+			\centering%
+			\caption{Directory tree with developed source codes in HAL repository.}%
+			\label{fig:tree.hal}%
+			\begin{forest}
+			for tree={
+				grow'=0,
+				parent anchor=children,
+				child anchor=parent,
+				anchor=parent,
+			},
+			where level=0{
+				draw
+			}{
+				if={(n()==1)&&(level()>1)}{
+				calign with current edge
+				}{},
+				if n children=0{folder}{},
+				edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
+			}
+			[hal
+				[include
+					[nanvix/hal
+							[processor
+								[noc.h]
+								[clusters.h]
+							]
+							[target
+								[mailbox.h]
+								[portal.h]
+								[sync.h]
+							]
+					]
+					[hal/arch
+						[processor/bostan
+							[noc.h]
+							[clusters.h]
+							[noc
+								[tag.h]
+								[ctag.h]
+								[dtag.h]
+								[dma.h]
+							]
+						]
+						[target/kalray/mppa256
+							[mailbox.h]
+							[portal.h]
+							[sync.h]
+						]
+					]
+				]
+				[src
+					[hal/arch
+							[processor/bostan
+								[dma.c]
+								[noc.c]
+								[ctag.c]
+								[dtag.c]
+								[clusters.c]
+							]
+							[target/mppa256
+								[mailbox.c]
+								[portal.c]
+								[sync.c]
+							]
+					]
+					[test
+						[processor
+							[noc.c]
+							[cnoc.c]
+							[dnoc.c]
+							[clusters.c]
+						]
+						[target
+							[mailbox.c]
+							[portal.c]
+							[sync.c]
+						]
+					]
+				]
+			]
+			\end{forest}%
+			\fonte{Developed by the author.}%
+		\end{figure}
+
+\section{Regression Testing Example}
+\label{sec:code-example}
+
+	\autoref{code:regression-tests} exemplifies the running of user interfaces
+	regression tests on the \mppa platform. A server that contains an installed
+	\mppa card compiles and executes the tests remotely. The tests can still
+	run locally using the \textit{Docker} tool, where a virtual machine
+	simulates one of the architectures supported by Nanvix OS.
+
+\begin{listing}[!hb]
+\caption{Bash script for regression testing on the MPPA-256 platform.}
+\label{code:regression-tests}
+\begin{minted}{bash}
+#!/bin/bash
+# A Shell Script To Runs Regression Tests on MPPA-256
+# Nanvix Project - 2019
+
+# Defines the target architecture.
+export TARGET=mppa256
+
+# Download the LibNanvix repository.
+git clone https://github.com/nanvix/libnanvix.git
+
+# Enter the folder containing the source code.
+cd libnanvix
+
+# Switch to the version developed in this work.
+git checkout a9dcb35dd8727aefe41d316ac2609c88073e160e
+
+# Download submodules recursively.
+git submodule update --init --recursive
+
+# Compile the dependencies.
+make contrib
+
+# Compile, link to libraries, and create the executable.
+make all
+
+# Runs the regression tests.
+make test
+\end{minted}
+\fonte{Developed by the author.}
+\end{listing}

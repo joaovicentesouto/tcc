@@ -35,7 +35,7 @@
 	The ever-increasing number of transistors and cores in a chip
 	quickly led to the advent of \manycores. Notwithstanding, the line
 	between \textit{multicores} and \manycores is very tenuous. Some
-	researchers argue that the in latter architectures, losing a core it
+	researchers argue that in the latter architectures, losing a core it
 	will not significantly impact the performance of the platform. A
 	system is classified as \manycore when there is a need for
 	distributed memory and on-chip networking~\cite{freitas:thesis}.
@@ -111,7 +111,7 @@
 	them in a transparent way. Thus, fundamental \os mechanisms, such
 	as core multiplexing, core partitioning, and process and data
 	migration, may not be addressed. On the other hand, the complicated
-	portability and scalability of traditional \oss with a monolithic
+	portability and scalability of traditional \oss with monolithic
 	kernels, which were designed to homogeneous hardware, is leading to
 	alternative \os designs~\cite{Baumann2009, kluge2014, nightingale2009, rhoden2011}.
 
@@ -123,7 +123,7 @@
 	is under investigations~\cite{penna2017-1,penna2017-2,penna2019}.
 	The \textit{\nanvixmultikernel} features a generic and flexible \hal for
 	\lightweight \manycores that addresses the key issues encountered in
-	the development for these processors. On top of the \textit{\nanvixhal},
+	the development for these processors. On top of the \textit{Nanvix \hal},
 	a microkernel is being designed and implemented to provide the bare bones
 	of the most important system abstractions.
 
@@ -153,7 +153,7 @@
 		\item Definition and proposal of an \textit{Inter-Cluster Communication Interface} for lightweight manycores;
 
 		\item Implementation of the proposed interface in the \textit{\nanvixhal} for the \mppa lightweight manycore processor;
-        
+		
 		\item Integration of the \nanvixhal interface with the \textit{\nanvixmicrokernel};
 		
 		\item Performance evaluation of \nanvixmicrokernel implementation using synthetic micro-benchmarks that reproduce the \textit{collective communication routines} of the \mpi programming model.
@@ -161,11 +161,14 @@
 
 \section{Organization Of The Work}
 \label{sec.organization}
-	
+
 	The remainder of this work is organized as follows.
-	\autoref{ch.background} details the background of this work.
-	\autoref{ch.related-work} discusses the principal related work.
-	\autoref{ch.development} presents the development of this work.
-	\autoref{ch.experiments} describes the experiments accomplished and
-	discusses the results. Finally, \autoref{ch.conclusions} outlines
-	the main conclusions of this work.
+	In \autoref{ch.background}, we present a background on \os and communication
+	design for multicores and multicomputers, the MPPA-256 lightweight manycore
+	processor and the Nanvix project.
+	In \autoref{ch.related-work}, we discuss the principal related work.
+	In \autoref{ch.development}, we discuss the design and implementation
+	of the inter-cluster communication facility.
+	In \autoref{ch.experiments}, we detail the evaluation methodology
+	that we adopted and analyze our experimental results.
+	Finally, in \autoref{ch.conclusions}, we draw our conclusions and future work.
