@@ -1,10 +1,17 @@
 \chapter{Source Code}
 \label{ch:source-code}
 
-\newmenumacro{\nixfile}[/]{hyphenatepaths}
-\newmenumacro{\nixpath}[/]{hyphenatepathswithfolder}
-\newmenumacro{\winpath}[bslash]{hyphenatepathswithfolder}
-\newmenumacro{\winfile}[bslash]{hyphenatepaths}
+% \let\svaddcontentsline\addcontentsline
+% \renewcommand\addcontentsline[3]{%
+%   \ifthenelse{\equal{#1}{lof}}{}%
+%   {\ifthenelse{\equal{#1}{lot}}{}{\svaddcontentsline{#1}{#2}{#3}}}}
+
+% \renewcommand\thefigure{\thesection.\arabic{figure}}
+
+% \counterwithin{figure}{section}
+
+\renewcommand{\thefigure}{B-\arabic{figure}}
+\setcounter{figure}{0}
 
 \section{Nanvix Project Structure}
 
@@ -33,7 +40,7 @@
     releases of Nanvix versions. Second, the unstable branch contains
     the most current version, but there may still exist bugs or required
     parts missing. The other branches are intended to implement new features,
-    improve existing ones, or fix bugs. These other branches are incorporated
+    improve existing ones, or fix bugs. These other branches are merged
     into the unstable branch when passing all regression tests.
 
     The following subsections, ordered by dependency, detail the four
@@ -41,38 +48,25 @@
 
     \subsection{Microkernel-Benchmarks}
     
-        implements the micro-benchmarks that
-        stimulate communication services. Specifically, there are four
+        The \textit{Microkernel-Benchmarks} implements the micro-benchmarks
+        that stimulate communication services. Specifically, there are four
         micro-benchmarks for each data transfer service, detailed in
         \autoref{sec.evaluation-methodology}. In this repository, there
         are also scripts for compiling and running experiments on the
-        \mppa platform. Available in \texttt{collective-comm-routines} branch at
-        \url{https://github.com/joaovicentesouto/microkernel-benchmarks}.
+        \mppa platform.
 
-        Commit: aafd9a70f8188105efabd651050bc7cafc39d343
-        
-        Developed Source Files
+        The developed code version are available at
+        \url{https://github.com/joaovicentesouto/microkernel-benchmarks},
+        in the \textit{collective-comm-routines branch} or, especificaty,
+        in the \textit{commit aafd9a70f8188105efabd651050bc7cafc39d343}.
+        \autoref{fig:tree.benchs} presents, in the form of a file system
+        tree, all files that are fully, or partially, developed. The
+        \textit{include} folder contains only one file with static
+        experiment settings. The \textit{src} folder is made up of
+        auxiliary files and the micro-benchmarks themselves.
 
-        % \begin{itemize}
-        %     \item microkernel-benchmarks/include/kbench.h
-        %     \item microkernel-benchmarks/src/utils/args.c
-        %     \item microkernel-benchmarks/src/utils/barrier.c
-        %     \item microkernel-benchmarks/src/utils/crt0.c
-        %     \item microkernel-benchmarks/src/utils/node.c
-        %     \item microkernel-benchmarks/src/utils/results.c
-        %     \item microkernel-benchmarks/src/utils/string.c
-        %     \item microkernel-benchmarks/src/utils/times.c
-        %     \item microkernel-benchmarks/src/mailbox/allgather/main.c
-        %     \item microkernel-benchmarks/src/mailbox/broadcast/main.c
-        %     \item microkernel-benchmarks/src/mailbox/gather/main.c
-        %     \item microkernel-benchmarks/src/mailbox/pingpong/main.c
-        %     \item microkernel-benchmarks/src/portal/allgather/main.c
-        %     \item microkernel-benchmarks/src/portal/broadcast/main.c
-        %     \item microkernel-benchmarks/src/portal/gather/main.c
-        %     \item microkernel-benchmarks/src/portal/pingpong/main.c
-        % \end{itemize}
-
-        \begin{figure}[!h]
+        \begin{figure}[!ht]
+            \centering%
             \begin{forest}
             for tree={
                 grow'=0,
@@ -104,63 +98,44 @@
                         [times.c]
                     ]
                     [mailbox
-                        [allgather
-                            [main.c]
-                        ]
-                        [broadcast
-                            [main.c]
-                        ]
-                        [gather
-                            [main.c]
-                        ]
-                        [pingpong
-                            [main.c]
-                        ]
+                        [allgather/main.c]
+                        [broadcast/main.c]
+                        [gather/main.c]
+                        [pingpong/main.c]
                     ]
                     [portal
-                        [allgather
-                            [main.c]
-                        ]
-                        [broadcast
-                            [main.c]
-                        ]
-                        [gather
-                            [main.c]
-                        ]
-                        [pingpong
-                            [main.c]
-                        ]
+                        [allgather/main.c]
+                        [broadcast/main.c]
+                        [gather/main.c]
+                        [pingpong/main.c]
                     ]
                 ]
             ]
-            \end{forest}
-            \caption{Source tree.}
+            \end{forest}%
+            \caption{Source tree.}%
+            \label{fig:tree.benchs}%
         \end{figure}
 
     \subsection{LibNanvix}
-    
-        exports and implements the user-side operations and
-        responsibilities of the kernel call interface described in
-        \autoref{sec.microkernel}. Briefly, this repository is the
-        Microkernel repository add-on.
-        Available at \url{https://github.com/nanvix/libnanvix}.
 
-        % \begin{itemize}
-        %     \item LibNanvix: a9dcb35dd8727aefe41d316ac2609c88073e160e
-        %     \item libnanvix/include/nanvix/mailbox.h
-        %     \item libnanvix/include/nanvix/noc.h
-        %     \item libnanvix/include/nanvix/portal.h
-        %     \item libnanvix/include/nanvix/sync.h
-        %     \item libnanvix/src/libnanvix/ikc/mailbox.c
-        %     \item libnanvix/src/libnanvix/ikc/noc.c
-        %     \item libnanvix/src/libnanvix/ikc/portal.c
-        %     \item libnanvix/src/libnanvix/ikc/sync.c
-        %     \item libnanvix/src/test/kmailbox.c
-        %     \item libnanvix/src/test/knoc.c
-        %     \item libnanvix/src/test/kportal.c
-        %     \item libnanvix/src/test/ksync.c
-        % \end{itemize}
-        \begin{figure}[!h]
+        LibNanvix defines and exports user interfaces for Nanvix Microkernel
+        services. Implementations, in turn, have the responsibility of making
+        requests to the master core through the kernel call interface exported
+        by the microkernel repository, detailed in \autoref{sec.microkernel}.
+        Briefly, this repository is the complement of the Microkernel repository.
+
+        \autoref{fig:tree.libnanvix} illustrates, as a file system tree,
+        all files developed of the communication abstraction user
+        interface. First, the files in the \textit{include} folder
+        define the user interfaces. Second, files within the
+        \textit{ikc} folder perform checks to identify potential
+        problems. Finally, the test folder contains the validation
+        and correctness tests of user abstractions. The code version
+        is available in \textit{commit a9dcb35dd8727aefe41d316ac2609c88073e160e}
+        at \url{https://github.com/nanvix/libnanvix}.
+
+        \begin{figure}[!ht]
+            \centering%
             \begin{forest}
             for tree={
                 grow'=0,
@@ -178,22 +153,18 @@
                 edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
             }
             [libnanvix
-                [include
-                    [nanvix
-                        [mailbox.h]
-                        [noc.h]
-                        [portal.h]
-                        [sync.h]
-                    ]
+                [include/nanvix
+                    [mailbox.h]
+                    [noc.h]
+                    [portal.h]
+                    [sync.h]
                 ]
                 [src
-                    [libnanvix
-                        [ikc
-                            [mailbox.c]
-                            [noc.c]
-                            [portal.c]
-                            [sync.c]
-                        ]
+                    [libnanvix/ikc
+                        [mailbox.c]
+                        [noc.c]
+                        [portal.c]
+                        [sync.c]
                     ]
                     [test
                         [kmailbox.c]
@@ -203,8 +174,9 @@
                     ]
                 ]
             ]
-            \end{forest}
-            \caption{Source tree.}
+            \end{forest}%
+            \caption{Source tree.}%
+            \label{fig:tree.libnanvix}%
         \end{figure}
 
     \subsection{Microkernel}
@@ -224,7 +196,8 @@
         %     \item microkernel/src/kernel/noc/portal.c
         %     \item microkernel/src/kernel/noc/sync.c
         % \end{itemize}
-        \begin{figure}[!h]
+        \begin{figure}[!ht]
+            \centering%
             \begin{forest}
             for tree={
                 grow'=0,
@@ -242,22 +215,16 @@
                 edge path'={(!u.parent anchor) -- ++(5pt,0) |- (.child anchor)},
             }
             [microkernel
-                [include
-                    [nanvix
-                        [mailbox.h]
-                        [noc.h]
-                        [portal.h]
-                        [sync.h]
-                    ]
+                [include/nanvix
+                    [mailbox.h]
+                    [noc.h]
+                    [portal.h]
+                    [sync.h]
                 ]
-                [src
-                    [kernel
-                        [noc
-                            [mailbox.c]
-                            [portal.c]
-                            [sync.c]
-                        ]
-                    ]
+                [src/kernel/noc
+                    [mailbox.c]
+                    [portal.c]
+                    [sync.c]
                 ]
             ]
             \end{forest}
@@ -304,7 +271,8 @@
         %     \item hal/src/test/processor/dnoc.c
         %     \item hal/src/test/processor/noc.c
         % \end{itemize}
-        \begin{figure}[!h]
+        \begin{figure}[!ht]
+            \centering%
             \begin{forest}
             for tree={
                 grow'=0,
@@ -325,8 +293,8 @@
                 [include
                     [nanvix/hal
                             [processor
-                                [clusters.h]
                                 [noc.h]
+                                [clusters.h]
                             ]
                             [target
                                 [mailbox.h]
@@ -336,8 +304,8 @@
                     ]
                     [hal/arch
                         [processor/bostan
-                            [clusters.h]
                             [noc.h]
+                            [clusters.h]
                             [noc
                                 [tag.h]
                                 [ctag.h]
@@ -353,28 +321,26 @@
                     ]
                 ]
                 [src
-                    [hal
-                        [arch
+                    [hal/arch
                             [processor/bostan
-                                [clusters.c]
+                                [dma.c]
                                 [noc.c]
                                 [ctag.c]
                                 [dtag.c]
-                                [dma.c]
+                                [clusters.c]
                             ]
                             [target/mppa256
                                 [mailbox.c]
                                 [portal.c]
                                 [sync.c]
                             ]
-                        ]
                     ]
                     [test
                         [processor
-                            [clusters.c]
+                            [noc.c]
                             [cnoc.c]
                             [dnoc.c]
-                            [noc.c]
+                            [clusters.c]
                         ]
                         [target
                             [mailbox.c]
