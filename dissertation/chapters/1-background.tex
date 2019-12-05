@@ -8,7 +8,7 @@
 	dealing with inputs and generating outputs from/to \io devices.
 	Modern processors still follow this model, but some components and
 	behaviors are specialized or replicated to increase performance.
-	
+
 	According to \citeonline{tanenbaum:4ed}, there are three models of
 	modern multiple processor architectures.
 	A shared-memory multiprocessor, a message-passing multicomputer, and a wide
@@ -98,18 +98,18 @@
 			Nevertheless, the number of cores in \uma multiprocessors are limited
 			to a few dozens of \cpus.
 			\numa multiprocessors provide much more scalability by employing a single
-			address space visible to all \cpus through an interconnection network, as 
+			address space visible to all \cpus through an interconnection network, as
 			shown in \autoref{fig:numa}. The network is used to interconnect
 			several memory blocks (also known as local memories) into a single address space,\
 			allowing hundreds of cores to communicate more efficiently. The side effect is that
 			the interconnection network affects the latency observed by the processors to access
-			the main memory, because the memory access time will depend on the memory location 
-			relative to the processor, which could be \textit{local} or \textit{remote}.			
+			the main memory, because the memory access time will depend on the memory location
+			relative to the processor, which could be \textit{local} or \textit{remote}.
 			The single address space provided by \numa multiprocessors
 			allows parallel programs that were originally developed for \uma processors to
 			run without any source code changes. However, these applications usually achieve
 			sub-optimal performance on \numa multiprocessors, because there were not optimized
-			to take into account local and remote memory accesses. 
+			to take into account local and remote memory accesses.
 
 			\begin{figure}[!tb]
 				\centering%
@@ -208,7 +208,7 @@
 					\includegraphics[width=\textwidth]{replicated-os.pdf}
 					\fonte{Adapted from \citeonline{tanenbaum:4ed}.}
 				\end{minipage}%
-				\hfill% 
+				\hfill%
 				\begin{minipage}{.47\textwidth}
 					\centering
 					\caption{Master-Slave OS model.}
@@ -480,7 +480,7 @@
 
 \section{MPPA-256 Lightweight Manycore Processor}
 \label{sec.mppa}
-	
+
 	The lightweight manycores class features processors that have a vast
 	number of cores and endeavor to be energy efficient. In general,
 	they no longer provide global memory and work with distributed memory, and
@@ -666,11 +666,11 @@
 			\item[IPC Facility]
 				encapsulates the rest of this undergraduate dissertation, providing
 				manipulation and protection of the inter-cluster communication abstractions.
-				
+
 			\item[Thread System]
 				implements a rich mechanism for creation, management, and protection of threads.
 				This system features schedules, sleep, and wake up routines of the user threads.
-				
+
 			\item[Memory System]
 				provides a rich memory management and virtual memory support at cluster level.
 				It is based in a two-level paging scheme, supports pages of heterogeneous sizes
@@ -769,7 +769,7 @@
 		From this perspective, user applications are easily ported to run on
 		\nanvixmultikernel, where client-side interfaces abstract the communication
 		with servers distributed on the processor.
-		
+
 		\autoref{fig:multikernel-shm} exemplifies the existing layers to provide
 		the \shm service. When opening an \shm, the client does not have to worry
 		about where data will be allocated or whether other cores in other clusters
