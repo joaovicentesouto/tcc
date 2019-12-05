@@ -1,19 +1,10 @@
 \chapter{Source Code}
 \label{ch:source-code}
 
-% \let\svaddcontentsline\addcontentsline
-% \renewcommand\addcontentsline[3]{%
-%   \ifthenelse{\equal{#1}{lof}}{}%
-%   {\ifthenelse{\equal{#1}{lot}}{}{\svaddcontentsline{#1}{#2}{#3}}}}
-
-% \renewcommand\thefigure{\thesection.\arabic{figure}}
-
-% \counterwithin{figure}{section}
-
-\renewcommand{\thefigure}{B-\arabic{figure}}
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}}
 \setcounter{figure}{0}
 
-\renewcommand{\thelisting}{B-\arabic{listing}}
+\renewcommand{\thelisting}{\thechapter-\arabic{listing}}
 \setcounter{listing}{0}
 
 \section{Nanvix Project Structure}
@@ -46,7 +37,7 @@
 	improve existing ones, or fix bugs. These other branches are merged
 	into the unstable branch when passing all regression tests.
 
-	The following subsections, ordered by dependency, detail the four
+	The following sub-sections, ordered by dependency, detail the four
 	repositories that contain the source code of this undergraduate dissertation.
 
 	\subsection{Microkernel-Benchmarks Repository}
@@ -384,15 +375,6 @@
 			\fonte{Developed by the author.}%
 		\end{figure}
 
-	% The links to access each of the repositories are:
-
-	% \begin{description}
-	%     \item[Microkernel-Benchmarks] \url{https://github.com/joaovicentesouto/microkernel-benchmarks/tree/collective-comm-routines}
-	%     \item[LibNanvix] \url{https://github.com/nanvix/libnanvix}
-	%     \item[Microkernel] \url{https://github.com/nanvix/microkernel}
-	%     \item[HAL] \url{https://github.com/nanvix/hal}
-	% \end{description}
-
 \section{Regression Testing Example}
 \label{sec:code-example}
 
@@ -400,7 +382,7 @@
 	regression tests on the \mppa platform. A server that contains an installed
 	\mppa card compiles and executes the tests remotely. The tests can still
 	run locally using the \textit{Docker} tool, where a virtual machine
-	simulates one of the architectures supported by \nanvixos.
+	simulates one of the architectures supported by Nanvix OS.
 
 \begin{listing}[!hb]
 \caption{Bash script for regression testing on the MPPA-256 platform.}
