@@ -28,20 +28,20 @@ clean:
 
 # directly convert a SVG to PDF. The SVG's contents will be cropped to the page
 imgs/%.pdf: imgs/%.svg
-	$(INKS) -z -C -A="$$(pwd)/$@" "$$(pwd)/$<"
+	$(INKS) -o "$$(pwd)/$@" -p "$$(pwd)/$<"
 
 #Possible bug: inkscape -z -D -i gSlide1 -A=out.pdf in.svg
 #Workaround: generate a pdf of the whole drawing (-D, beyond page borders); get bottom:left:width:height of object; convert px to PostScript pts; crop from the pdf
 #Quirk: inkscape -Y has top-left corner of page at origin
 define svg2pdf
-	$(INKS) -z -D -A=$(3).tmp.pdf $(1).svg
+	$(INKS) -D -o $(3).tmp.pdf -p $(1).svg
 	PTS=$$($(PDFINFO) $(3).tmp.pdf | grep 'Page size' | sed 's/[^0-9]*\([0-9]*\.[0-9]*\)[^0-9].*/\1/'); \
-	IW=$$($(INKS) -z --query-width $(1).svg); \
+	IW=$$($(INKS) --query-width $(1).svg); \
 	FAC=$$(echo "scale=3; 100 * $$PTS / $$IW" | bc); \
-	X=$$(awk "BEGIN {printf \"%.3f\", $$FAC * $$($(INKS) -z -I $(2) -X $(1).svg)}"); \
-	Y=$$(awk "BEGIN {printf \"%.3f\", $$FAC * (-1)*($$($(INKS) -z -I $(2) -Y $(1).svg))}"); \
-	W=$$(awk "BEGIN {printf \"%.3f\", $$FAC * $$($(INKS) -z -I $(2) -W $(1).svg)}"); \
-	H=$$(awk "BEGIN {printf \"%.3f\", $$FAC * $$($(INKS) -z -I $(2) -H $(1).svg)}"); \
+	X=$$(awk "BEGIN {printf \"%.3f\", $$FAC * $$($(INKS) -I $(2) -X $(1).svg)}"); \
+	Y=$$(awk "BEGIN {printf \"%.3f\", $$FAC * (-1)*($$($(INKS) -I $(2) -Y $(1).svg))}"); \
+	W=$$(awk "BEGIN {printf \"%.3f\", $$FAC * $$($(INKS) -I $(2) -W $(1).svg)}"); \
+	H=$$(awk "BEGIN {printf \"%.3f\", $$FAC * $$($(INKS) -I $(2) -H $(1).svg)}"); \
 	$(PODOFOBOX) $(3).tmp.pdf $(3).pdf media $$X $$Y $$W $$H
 	rm $(3).tmp.pdf
 endef
